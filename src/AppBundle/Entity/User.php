@@ -49,11 +49,11 @@ class User
     /**
      * @ORM\Column(type="string", length=31, nullable=true)
      */
-    private $group;
+    private $part; //group is a reserved word in sql.
 
     public function __toString()
     {
-        return 'User '.$this->getLogin();
+        return $this->getFirstname().' '.$this->getLastname();
     }
 
     /** Auto generated methods*/
@@ -157,17 +157,17 @@ class User
     /**
      * @return mixed
      */
-    public function getGroup()
+    public function getPart()
     {
-        return $this->group;
+        return $this->part;
     }
 
     /**
-     * @param mixed $group
+     * @param mixed $part
      */
-    public function setGroup($group)
+    public function setPart($part)
     {
-        $this->group = $group;
+        $this->part = $part;
     }
 
 }

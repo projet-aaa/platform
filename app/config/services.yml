@@ -67,3 +67,9 @@ services:
         arguments: [~, AppBundle\Entity\Thread, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Thread }
+
+    admin.user:
+        class: AppBundle\Admin\UserAdmin
+        arguments: [~, AppBundle\Entity\User, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: User }
