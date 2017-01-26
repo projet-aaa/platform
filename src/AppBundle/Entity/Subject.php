@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * @ApiResource
  * @ORM\Entity
@@ -24,9 +25,15 @@ class Subject
      */
     private $session;
 
+    /**
+     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=511, nullable=false)
+     */
+    private $resource;
+
     public function __toString()
     {
-        return 'Subject '.$this->id;
+        return 'Subject ' . $this->id;
     }
 
     /**
@@ -60,5 +67,22 @@ class Subject
     {
         $this->session = $session;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getResource()
+    {
+        return $this->resource;
+    }
+
+    /**
+     * @param mixed $resource
+     */
+    public function setResource($resource)
+    {
+        $this->resource = $resource;
+    }
+
 
 }

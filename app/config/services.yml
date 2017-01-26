@@ -43,3 +43,9 @@ services:
         arguments: [~, AppBundle\Entity\Session, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Session }
+
+    admin.subject:
+        class: AppBundle\Admin\SubjectAdmin
+        arguments: [~, AppBundle\Entity\Subject, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Subject }
