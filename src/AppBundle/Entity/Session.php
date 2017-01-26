@@ -53,7 +53,7 @@ class Session
     /**
      * @ORM\OneToMany(targetEntity="Test", mappedBy="session")
      */
-    private $test;
+    private $tests;
 
     /**
      * @ORM\ManyToOne(targetEntity="Discipline", inversedBy="sessions")
@@ -167,17 +167,17 @@ class Session
     /**
      * @return mixed
      */
-    public function getTest()
+    public function getTests()
     {
-        return $this->test;
+        return $this->tests;
     }
 
     /**
-     * @param mixed $test
+     * @param mixed $tests
      */
-    public function setTest($test)
+    public function setTests($tests)
     {
-        $this->test = $test;
+        $this->tests = $tests;
     }
 
     /**

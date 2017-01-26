@@ -7,29 +7,27 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
-class SessionAdmin extends AbstractAdmin
+class TestAdmin extends AbstractAdmin
 {
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper->add('name')
-            ->add('type')
-            ->add('updatedAt')
-            ->add('subjects')
-            ->add('threads')
-            ->add('tests')
-            ->add('discipline');
+        $formMapper->add('title')
+        ->add('gitPath')
+        ->add('questions')
+        ->add('session');
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-        $datagridMapper->add('discipline')
-            ->add('tests');
+        $datagridMapper->add('title')
+        ->add('session');
     }
 
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper->addIdentifier('id')
-            ->add('name')
-            ->add('discipline');
+            ->add('title')
+            ->add('gitPath')
+            ->add('session');
     }
 }

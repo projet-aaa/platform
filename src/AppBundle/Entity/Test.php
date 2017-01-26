@@ -35,7 +35,7 @@ class Test
     private $questions;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Session", inversedBy="test")
+     * @ORM\ManyToOne(targetEntity="Session", inversedBy="tests")
      * @ORM\JoinColumn(name="session_id", referencedColumnName="id")
      */
     private $session;
