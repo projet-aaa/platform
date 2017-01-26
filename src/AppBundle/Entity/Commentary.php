@@ -60,4 +60,124 @@ class Commentary
      * )
      */
     private $downVoters;
+
+    public function __toString()
+    {
+        return 'Commentary '.$this->getId().''.substr($this->getComment(),0,100);
+    }
+
+    /** auto generated methods */
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @param mixed $comment
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPostedAt()
+    {
+        return $this->postedAt;
+    }
+
+    /**
+     * @param mixed $postedAt
+     */
+    public function setPostedAt($postedAt)
+    {
+        $this->postedAt = $postedAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getThread()
+    {
+        return $this->thread;
+    }
+
+    /**
+     * @param mixed $thread
+     */
+    public function setThread($thread)
+    {
+        $this->thread = $thread;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlusVoters()
+    {
+        return $this->plusVoters;
+    }
+
+    /**
+     * @param mixed $plusVoters
+     */
+    public function setPlusVoters($plusVoters)
+    {
+        $this->plusVoters = $plusVoters;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDownVoters()
+    {
+        return $this->downVoters;
+    }
+
+    /**
+     * @param mixed $downVoters
+     */
+    public function setDownVoters($downVoters)
+    {
+        $this->downVoters = $downVoters;
+    }
+
 }

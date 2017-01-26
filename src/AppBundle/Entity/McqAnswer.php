@@ -30,4 +30,61 @@ class McqAnswer
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
+
+    public function __toString()
+    {
+        return 'McqAnswer '.$this->getId();
+    }
+
+    /** auto generated methods */
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMcqChoice()
+    {
+        return $this->mcqChoice;
+    }
+
+    /**
+     * @param mixed $mcqChoice
+     */
+    public function setMcqChoice($mcqChoice)
+    {
+        $this->mcqChoice = $mcqChoice;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+
 }

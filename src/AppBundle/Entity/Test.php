@@ -38,4 +38,92 @@ class Test
      * @ORM\JoinColumn(name="session_id", referencedColumnName="id")
      */
     private $session;
+
+    public function __toString()
+    {
+        return 'Test '.$this->getTitle().' '.substr($this->getId(),0,5);
+    }
+
+    /** Auto generated methods*/
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param mixed $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGitPath()
+    {
+        return $this->gitPath;
+    }
+
+    /**
+     * @param mixed $gitPath
+     */
+    public function setGitPath($gitPath)
+    {
+        $this->gitPath = $gitPath;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getQuestions()
+    {
+        return $this->questions;
+    }
+
+    /**
+     * @param mixed $questions
+     */
+    public function setQuestions($questions)
+    {
+        $this->questions = $questions;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSession()
+    {
+        return $this->session;
+    }
+
+    /**
+     * @param mixed $session
+     */
+    public function setSession($session)
+    {
+        $this->session = $session;
+    }
+
 }
