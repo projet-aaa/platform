@@ -25,3 +25,9 @@ services:
         arguments: [~, AppBundle\Entity\McqAnswer, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: MCQ Answer }
+
+    admin.mcq_coice:
+        class: AppBundle\Admin\McqChoiceAdmin
+        arguments: [~, AppBundle\Entity\McqChoice, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: MCQ Choice }
