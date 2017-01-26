@@ -48,7 +48,7 @@ class Session
     /**
      * @ORM\OneToMany(targetEntity="Thread", mappedBy="session")
      */
-    private $thread;
+    private $threads;
 
     /**
      * @ORM\OneToMany(targetEntity="Test", mappedBy="session")
@@ -135,7 +135,7 @@ class Session
     /**
      * @return mixed
      */
-    public function getSubject()
+    public function getSubjects()
     {
         return $this->subjects;
     }
@@ -143,7 +143,7 @@ class Session
     /**
      * @param mixed $subject
      */
-    public function setSubject($subjects)
+    public function setSubjects($subjects)
     {
         $this->subjects = $subjects;
     }
@@ -151,17 +151,17 @@ class Session
     /**
      * @return mixed
      */
-    public function getThread()
+    public function getThreads()
     {
-        return $this->thread;
+        return $this->threads;
     }
 
     /**
-     * @param mixed $thread
+     * @param mixed $threads
      */
-    public function setThread($thread)
+    public function setThreads($threads)
     {
-        $this->thread = $thread;
+        $this->threads = $threads;
     }
 
     /**

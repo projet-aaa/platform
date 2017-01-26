@@ -36,7 +36,7 @@ class Thread
     private $commentaries;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Session", inversedBy="thread")
+     * @ORM\ManyToOne(targetEntity="Session", inversedBy="threads")
      * @ORM\JoinColumn(name="session_id", referencedColumnName="id")
      */
     private $session;
