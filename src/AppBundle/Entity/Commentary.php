@@ -22,7 +22,7 @@ class Commentary
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
      */
-    private $comment;
+    private $text;
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
@@ -33,7 +33,7 @@ class Commentary
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $user;
+    private $author;
 
     /**
      * @ORM\ManyToOne(targetEntity="Thread", inversedBy="commentaries")
@@ -63,7 +63,7 @@ class Commentary
 
     public function __toString()
     {
-        return 'Commentary '.$this->getId().''.substr($this->getComment(),0,100);
+        return 'Commentary '.$this->getId().''.substr($this->getText(),0,100);
     }
 
     /** auto generated methods */
@@ -87,17 +87,17 @@ class Commentary
     /**
      * @return mixed
      */
-    public function getComment()
+    public function getText()
     {
-        return $this->comment;
+        return $this->text;
     }
 
     /**
-     * @param mixed $comment
+     * @param mixed $text
      */
-    public function setComment($comment)
+    public function setText($text)
     {
-        $this->comment = $comment;
+        $this->text = $text;
     }
 
     /**
@@ -119,17 +119,17 @@ class Commentary
     /**
      * @return mixed
      */
-    public function getUser()
+    public function getAuthor()
     {
-        return $this->user;
+        return $this->author;
     }
 
     /**
-     * @param mixed $user
+     * @param mixed $author
      */
-    public function setUser($user)
+    public function setAuthor($author)
     {
-        $this->user = $user;
+        $this->author = $author;
     }
 
     /**

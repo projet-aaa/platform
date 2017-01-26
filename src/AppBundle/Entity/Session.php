@@ -22,17 +22,19 @@ class Session
     private $id;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $name;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $type;
 
     /**
-     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Column(type="datetime", nullable=false)
      */
     private $updatedAt;
 

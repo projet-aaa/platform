@@ -19,6 +19,8 @@ class McqChoice
     private $id;
 
     /**
+     * A text that describes the answer in a MCQ
+     *
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255, nullable=false)
      */
@@ -27,7 +29,7 @@ class McqChoice
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $justification;
+    private $text;
 
     /**
      * @Assert\NotNull()
@@ -89,17 +91,17 @@ class McqChoice
     /**
      * @return mixed
      */
-    public function getJustification()
+    public function getText()
     {
-        return $this->justification;
+        return $this->text;
     }
 
     /**
-     * @param mixed $justification
+     * @param mixed $text
      */
-    public function setJustification($justification)
+    public function setText($text)
     {
-        $this->justification = $justification;
+        $this->text = $text;
     }
 
     /**

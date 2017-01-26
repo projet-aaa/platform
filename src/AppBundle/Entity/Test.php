@@ -19,6 +19,7 @@ class Test
     private $id;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $title;

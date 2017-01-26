@@ -27,9 +27,8 @@ class McqAnswer
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $user;
+    private $author;
 
     public function __toString()
     {
@@ -73,17 +72,17 @@ class McqAnswer
     /**
      * @return mixed
      */
-    public function getUser()
+    public function getAuthor()
     {
-        return $this->user;
+        return $this->author;
     }
 
     /**
-     * @param mixed $user
+     * @param mixed $author
      */
-    public function setUser($user)
+    public function setAuthor($author)
     {
-        $this->user = $user;
+        $this->author = $author;
     }
 
 

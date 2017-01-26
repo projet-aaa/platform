@@ -19,11 +19,13 @@ class Thread
     private $id;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $title;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="text", nullable=false)
      */
     private $text;
@@ -43,7 +45,7 @@ class Thread
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
      */
-    private $user;
+    private $author;
 
     public function __toString()
     {
@@ -135,17 +137,17 @@ class Thread
     /**
      * @return mixed
      */
-    public function getUser()
+    public function getAuthor()
     {
-        return $this->user;
+        return $this->author;
     }
 
     /**
-     * @param mixed $user
+     * @param mixed $author
      */
-    public function setUser($user)
+    public function setAuthor($author)
     {
-        $this->user = $user;
+        $this->author = $author;
     }
 
 }

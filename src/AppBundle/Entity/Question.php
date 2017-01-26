@@ -20,6 +20,7 @@ class Question
     private $id;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $text;
@@ -30,6 +31,7 @@ class Question
     private $explication;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $typeAnswer;
