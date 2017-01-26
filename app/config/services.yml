@@ -55,3 +55,9 @@ services:
         arguments: [~, AppBundle\Entity\Test, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Test }
+
+    admin.text_answer:
+        class: AppBundle\Admin\TextAnswerAdmin
+        arguments: [~, AppBundle\Entity\TextAnswer, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Text Answer }
