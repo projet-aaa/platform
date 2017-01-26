@@ -1,0 +1,35 @@
+web:
+    build: .
+    environment:
+        SYMFONY_ENV: dev
+    links:
+        - database
+        - redis
+    volumes:
+        - .:/app
+    ports:
+        - 80:80
+
+database:
+    image: mysql
+    environment:
+        MYSQL_ROOT_PASSWORD: changeme
+        MYSQL_DATABASE: api_platform
+        MYSQL_USER: api_platform
+        MYSQL_PASSWORD: api_platform
+
+redis:
+    image: redis
+    ports:
+        - 6379:6379
+
+nodejs:
+    build: nodejs
+    links:
+        - redis
+    volumes:
+        - ./nodejs:/app
+        - /app/node_modules
+
+    ports:
+        - 8088:8088

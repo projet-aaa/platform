@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>PHP Part</title>
+  </head>
+  <body>
+ 
+  <section id="wrap">
+    Enter a name of a person you want to greet:<br>
+    <input type="text" id="greeting" />
+    <button id="trigger">Send Greeting</button>
+  </section>
+ 
+  <script>
+    var trigger = document.querySelector('#trigger')
+      , input = document.querySelector('#greeting')
+      , xhr = new XMLHttpRequest();
+ 
+    var sendGreeting = function() {
+        if (input.value) {
+            xhr.open('GET', '/app_dev.php/socket/' + input.value, true);
+            xhr.send();
+            input.value = '';
+        }
+    };
+ 
+    trigger.addEventListener('click', sendGreeting);
+ 
+    input.addEventListener('keydown', function(e) {
+        if (e.keyCode === 13) {
+            sendGreeting();
+        }
+    });
+  </script>
+    <section id="sss"></section>
+ 
+  <script src="//cdn.sockjs.org/sockjs-0.3.min.js"></script>
+  <script>
+    var sock = new SockJS('http://127.0.0.1:8088/websockets')
+      , wrap = document.querySelector('#sss');
+ 
+    sock.onmessage = function(e) {
+        wrap.innerHTML = 'Hello <strong>'+e.data+'</strong>, wow are you doing today?';
+    };
+  </script>
+  </body>
+  </body>
+</html>

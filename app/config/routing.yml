@@ -1,0 +1,22 @@
+api:
+    resource: '.'
+    type:     'api_platform'
+    prefix:   '/api' # Optional
+
+
+app:
+    resource: '@AppBundle/Action/'
+    type:     'annotation'
+
+app_controller:
+    resource: '@AppBundle/Controller/'
+    type:     'annotation'
+
+admin_area:
+    resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
+    prefix: /admin
+
+_sonata_admin:
+    resource: .
+    type: sonata_admin
+    prefix: /admin
