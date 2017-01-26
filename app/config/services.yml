@@ -19,3 +19,9 @@ services:
         arguments: [~, AppBundle\Entity\Commentary, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Commentary }
+
+    admin.mcq_answer:
+        class: AppBundle\Admin\McqAnswerAdmin
+        arguments: [~, AppBundle\Entity\McqAnswer, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: MCQ Answer }
