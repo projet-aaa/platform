@@ -27,7 +27,7 @@ class Commentary
     /**
      * @ORM\Column(type="datetime", nullable=false)
      */
-    private $postedAt;
+    private $createdAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
@@ -103,17 +103,17 @@ class Commentary
     /**
      * @return mixed
      */
-    public function getPostedAt()
+    public function getCreatedAt()
     {
-        return $this->postedAt;
+        return $this->createdAt;
     }
 
     /**
-     * @param mixed $postedAt
+     * @param mixed $createdAt
      */
-    public function setPostedAt($postedAt)
+    public function setCreatedAt($createdAt)
     {
-        $this->postedAt = $postedAt;
+        $this->createdAt = $createdAt;
     }
 
     /**
