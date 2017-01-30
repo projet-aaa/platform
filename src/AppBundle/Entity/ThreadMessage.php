@@ -3,14 +3,17 @@
 namespace AppBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * A commentary -
+ *
  * @ApiResource
  * @ORM\Entity
  */
-class Commentary
+class ThreadMessage
 {
     /**
      * @ORM\Id
@@ -20,6 +23,8 @@ class Commentary
     private $id;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $text;
@@ -36,7 +41,7 @@ class Commentary
     private $author;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Thread", inversedBy="commentaries")
+     * @ORM\ManyToOne(targetEntity="Thread", inversedBy="threadMessages")
      * @ORM\JoinColumn(name="thread_id", referencedColumnName="id")
      */
     private $thread;
@@ -63,13 +68,13 @@ class Commentary
 
     public function __toString()
     {
-        return 'Commentary '.$this->getId().''.substr($this->getText(),0,100);
+        return 'ThreadMessage '.$this->getId().''.substr($this->getText(),0,100);
     }
 
     /** auto generated methods */
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getId()
     {
@@ -77,7 +82,7 @@ class Commentary
     }
 
     /**
-     * @param mixed $id
+     * @param integer $id
      */
     public function setId($id)
     {
@@ -85,7 +90,7 @@ class Commentary
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getText()
     {
@@ -93,7 +98,7 @@ class Commentary
     }
 
     /**
-     * @param mixed $text
+     * @param string $text
      */
     public function setText($text)
     {
@@ -101,7 +106,7 @@ class Commentary
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -109,7 +114,7 @@ class Commentary
     }
 
     /**
-     * @param mixed $createdAt
+     * @param \DateTime $createdAt
      */
     public function setCreatedAt($createdAt)
     {
@@ -117,7 +122,7 @@ class Commentary
     }
 
     /**
-     * @return mixed
+     * @return User
      */
     public function getAuthor()
     {
@@ -125,15 +130,15 @@ class Commentary
     }
 
     /**
-     * @param mixed $author
+     * @param User $author
      */
-    public function setAuthor($author)
+    public function setAuthor(User $author)
     {
         $this->author = $author;
     }
 
     /**
-     * @return mixed
+     * @return Thread
      */
     public function getThread()
     {
@@ -141,15 +146,15 @@ class Commentary
     }
 
     /**
-     * @param mixed $thread
+     * @param Thread $thread
      */
-    public function setThread($thread)
+    public function setThread(Thread $thread)
     {
         $this->thread = $thread;
     }
 
     /**
-     * @return mixed
+     * @return Collection
      */
     public function getPlusVoters()
     {
@@ -157,7 +162,7 @@ class Commentary
     }
 
     /**
-     * @param mixed $plusVoters
+     * @param Collection $plusVoters
      */
     public function setPlusVoters($plusVoters)
     {

@@ -100,3 +100,14 @@ nelmio_api_doc:
         request_format:
             formats:
                 json:       'application/json'
+
+be_simple_sso_auth:
+        admin_sso:
+            protocol:
+                id: cas
+                version: 2
+            server:
+                id: cas
+                login_url: https://cas-test.inp-toulouse.fr/login
+                logout_url: https://cas-test.inp-toulouse.fr/logout
+                validation_url: https://cas-test.inp-toulouse.fr/serviceValidate

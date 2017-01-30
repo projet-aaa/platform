@@ -19,7 +19,11 @@ class AppKernel extends Kernel
             new ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle(),
             new Nelmio\CorsBundle\NelmioCorsBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
+
             new AppBundle\AppBundle(),
+
+            //authentification
+            new BeSimple\SsoAuthBundle\BeSimpleSsoAuthBundle(),
             
             new Sonata\CoreBundle\SonataCoreBundle(),
             new Sonata\BlockBundle\SonataBlockBundle(),

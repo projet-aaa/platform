@@ -31,9 +31,9 @@ class Thread
     private $text;
 
     /**
-     * @ORM\OneToMany(targetEntity="Commentary", mappedBy="thread")
+     * @ORM\OneToMany(targetEntity="ThreadMessage", mappedBy="thread")
      */
-    private $commentaries;
+    private $threadMessages;
 
     /**
      * @ORM\ManyToOne(targetEntity="Session", inversedBy="threads")
@@ -105,17 +105,17 @@ class Thread
     /**
      * @return mixed
      */
-    public function getCommentaries()
+    public function getThreadMessages()
     {
-        return $this->commentaries;
+        return $this->threadMessages;
     }
 
     /**
      * @param mixed $commentaries
      */
-    public function setCommentaries($commentaries)
+    public function setThreadMessages($threadMessages)
     {
-        $this->commentaries = $commentaries;
+        $this->threadMessages = $threadMessages;
     }
 
     /**

@@ -4,8 +4,8 @@ security:
 
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory:
-            memory: ~
+           my_provider:
+               entity: { class: 'AppBundle\Entity\User', property: login }
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -13,12 +13,27 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        main:
+        my_firewall:
+            pattern: ^/
             anonymous: ~
-            # activate different ways to authenticate
+            trusted_sso:
+                manager: admin_sso
+                login_action: false         # BeSimpleSsoAuthBundle:TrustedSso:login
+                logout_action: false        # BeSimpleSsoAuthBundle:TrustedSso:logout
+                create_users: true
+                created_users_roles: [ROLE_ELEVE ]
+                login_path: /login
+                check_path: /login_check
+            logout:
+                path:   /logout
+                target: /
 
-            # http_basic: ~
-            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_PROF
+        ROLE_PROF: ROLE_ELEVE
 
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+
+    access_control:
+      - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: ^/admin, roles: ROLE_ADMIN }
+      - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
