@@ -90,7 +90,7 @@ class User implements UserInterface
      */
     public function getPassword()
     {
-        return "";
+        return $this->token;
     }
 
     /**
