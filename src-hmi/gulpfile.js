@@ -19,21 +19,25 @@ function getApp() {
   }
 }
 
-gulp.task('through', function () {
+gulp.task('through-all', function() {
+	return gulp.src(['src/dist/general/**'])
+    .pipe(gulp.dest('dist/') )
+})
+
+gulp.task('through-index', function () {
   var app = getApp()
 
-	return gulp
-    .src(['src/views/index.html'])
-    .pipe(gulp.dest('dist/' + app + '/') );
+	return gulp.src(['src/dist/index.html'])
+    .pipe(gulp.dest('dist/' + app + '/') )
 });
 
 gulp.task('compile', function () {
   var result = gulp.src('src/**/*{ts,tsx}')
-    .pipe(project());
-  return result.js.pipe(gulp.dest('.tmp'));
+    .pipe(project())
+  return result.js.pipe(gulp.dest('.tmp'))
 });
 
-gulp.task('bundle', ['through','compile'], function () {
+gulp.task('bundle', ['through-index', 'through-all', 'compile'], function () {
   var app = getApp()
 
   var b = browserify('.tmp/apps/' + app + '/index.js');
@@ -44,5 +48,6 @@ gulp.task('bundle', ['through','compile'], function () {
 });
 
 gulp.task('clean', function (done) {
-  del(['.tmp'], done.bind(this));
+  del(['.tmp'], done.bind(this))
+  del(['dist'], done.bind(this))
 });
