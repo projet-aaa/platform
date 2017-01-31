@@ -4,3 +4,4 @@ typings/modules/
 *.swp
 .tmp/
 dist/
+!src/dist
