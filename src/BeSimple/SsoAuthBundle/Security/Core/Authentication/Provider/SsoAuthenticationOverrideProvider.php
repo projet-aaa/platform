@@ -2,17 +2,11 @@
 
 namespace BeSimple\SsoAuthBundle\Security\Core\Authentication\Provider;
 
-use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\User\UserCheckerInterface;
+
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\AuthenticationServiceException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
-use BeSimple\SsoAuthBundle\Sso\Manager;
-use BeSimple\SsoAuthBundle\Security\Core\Authentication\Token\SsoToken;
-use BeSimple\SsoAuthBundle\Sso\ValidationInterface;
 use BeSimple\SsoAuthBundle\Security\Core\User\UserFactoryInterface;
 
 /**
@@ -68,8 +62,6 @@ class SsoAuthenticationOverrideProvider extends SsoAuthenticationProvider
         } catch (\Exception $repositoryProblem) {
             throw new AuthenticationServiceException($repositoryProblem->getMessage(), 0, $repositoryProblem);
         }
-        dump('aaa');
-        dump($user);
         return $user;
     }
 
