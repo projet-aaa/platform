@@ -1,0 +1,7 @@
+node_modules
+typings/globals/
+typings/modules/
+*.swp
+.tmp/
+dist/*
+!dist/todo.json

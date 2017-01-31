@@ -1,0 +1,13 @@
+{
+  "name": "src-nodeserver",
+  "version": "1.0.0",
+  "description": "the node 'router' for communicating with the users",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/socket.io": "^1.4.27",
+    "redis": "^2.6.5",
+    "socket.io": "^1.7.2"
+  }
+}
