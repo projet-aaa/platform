@@ -23,10 +23,19 @@ export class View extends React.Component<Props, any> {
 
         return (
             <div>
-                score : {score} <br/>
-                rang : {rank} <br/>
-                high score : {highScore} <br/>
-                moyenne : {average}
+                <div className="panel panel-blue">
+                    <div className="panel-heading">
+                        Scores :
+                    </div>
+                    <div className="panel-body pan white-background">
+                        <div className="pal">
+                            <h4>Score global : {score}</h4>
+                            <h4>Rang : {rank}</h4>
+                            <h4>high score : {highScore}</h4>
+                            <h4>moyenne : {average}</h4>
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }

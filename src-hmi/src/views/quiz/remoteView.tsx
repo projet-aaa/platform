@@ -30,11 +30,22 @@ export class View extends React.Component<Props, any> {
             validateAnswer
         } = this.props;
         
+        let question = true,
+            left = question ?  
+                    <QuizContainer quiz={ quiz } validate={ validateAnswer }/> :
+                    <FeedbackContainer/>
         return (
             <div>
-                <QuizContainer quiz={ quiz } validate={ validateAnswer }/>
-                <ScoreContainer/>
-                <FeedbackContainer/>
+                <div className="page-content">
+                    <div className="row">
+                        <div className="col-lg-8">
+                            { left }
+                        </div>
+                        <div className="col-lg-4">
+                            <ScoreContainer/>
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }

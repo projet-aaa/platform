@@ -51,9 +51,22 @@ export class View extends React.Component<Props, any> {
         }
         return (
             <div>
-                <h2>Question : { quiz.question } </h2>
-                { answers }
-                <button onClick={ () => validate(quiz.id) } > Valider </button>
+                <div className="portlet box">
+                    <div className="portlet-header">
+                        <div className="caption">Quiz</div>
+                    </div>
+                    <div className="portlet-body">
+                        <h3>Enoncé : { quiz.question }</h3>
+                        { answers }
+                        <div className="row">
+                            <div className="col-md-offset-8 col-md-4 col-xs-12">
+                                <div className="btn btn-lg btn-success" onClick={ () => validate(quiz.id) }>
+                                    Valider réponse
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }

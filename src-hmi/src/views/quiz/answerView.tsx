@@ -23,10 +23,13 @@ export class View extends React.Component<Props, any> {
 
         return (
             <li>
-                <a onClick={ choose }>
-                    {text} { chosen ? ": [choisi]" : "" } 
-                </a>
+                <div className="checkbox" onClick={ choose }>
+                    <label><input type="checkbox" value=""/>{text}</label>
+                </div>
             </li>
+            /*<a onClick={ choose }>
+                {text} { chosen ? ": [choisi]" : "" } 
+            </a>*/
         );
     }
 }
