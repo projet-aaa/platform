@@ -24,6 +24,7 @@ class AppKernel extends Kernel
 
             //authentification
             new BeSimple\SsoAuthBundle\BeSimpleSsoAuthBundle(),
+            new Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle(),
             
             new Sonata\CoreBundle\SonataCoreBundle(),
             new Sonata\BlockBundle\SonataBlockBundle(),
