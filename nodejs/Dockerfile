@@ -1,8 +1,12 @@
 FROM node:boron
 
-RUN mkdir -p /app
-ADD package.json /app
-WORKDIR /app
-RUN npm install
+WORKDIR work/src-nodeserver 
 
-CMD [ "npm", "start" ]
+RUN npm install 
+RUN npm install gulp
+RUN ls ../..
+RUN gulp deploy
+
+WORKDIR work/nodejs
+
+CMD node js/index.js
