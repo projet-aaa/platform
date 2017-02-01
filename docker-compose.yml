@@ -33,3 +33,13 @@ nodejs:
 
     ports:
         - 8088:8088
+
+build-hmi:
+    build: src-hmi
+    volumes:
+        - .:/work
+
+build-nodews:
+    build: src-nodeserver
+    volumes:
+        - .:/work
