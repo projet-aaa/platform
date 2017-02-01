@@ -7035,3 +7035,7 @@ ul.chats li.out .message {
     color: #1ab394;
     display: block;
 }
+
+.white-background {
+    background: #fff;
+}

@@ -22,15 +22,25 @@ export class View extends React.Component<Props, any> {
 
         return (
             <div>
-                <button onClick={ signalPanic }>
-                    Panique !
-                </button>
-                <button onClick={ signalSlow }>
-                    Trop lent !
-                </button>
-                <button onClick={ signalFast }>
-                    Trop rapide !
-                </button>
+                <div className="row">
+                    <div className="col-lg-12 text-center">
+                        <div className="btn btn-lg btn-danger" onClick={ signalPanic }>
+                        Panique
+                        </div>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-lg-6 text-center">
+                        <div className="btn btn-lg btn-warning" onClick={ signalFast }>
+                        Trop Rapide
+                        </div>
+                    </div>
+                    <div className="col-lg-6 text-center">
+                        <div className="btn btn-lg btn-success" onClick={ signalSlow }>
+                        Trop Lent
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }

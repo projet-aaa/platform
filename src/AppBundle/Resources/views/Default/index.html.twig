@@ -6,6 +6,12 @@
   <body>
   <div id="content">
         Loading ...
+    <form action="{{ path('api_login_check') }}" method="POST">
+      <input type="text" placeholder="username" name="_username" ><br>
+      <input type="text" placeholder="password" name="_password" ><br>
+
+      <button type="submit">Valider</button>
+    </form>
   </div>
   </body>
 </html>
