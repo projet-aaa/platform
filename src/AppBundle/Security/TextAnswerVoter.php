@@ -75,21 +75,49 @@ class TextAnswerVoter extends BaseVoter
         throw new \LogicException('This code should not be reached!');
     }
 
+    /**
+     * Determines if $user can create $textAnswer
+     *
+     * @param TextAnswer $textAnswer
+     * @param User $user
+     * @return bool
+     */
     private function canCreate(TextAnswer $textAnswer, User $user)
     {
         return true;
     }
 
+    /**
+     * Determines if $user can read $textAnswer
+     *
+     * @param TextAnswer $textAnswer
+     * @param User $user
+     * @return bool
+     */
     private function canRead(TextAnswer $textAnswer, User $user)
     {
         return $textAnswer->getAuthor() === $user || $user->getRole() === 'ROLE_ADMIN';
     }
 
+    /**
+     * Determines if $user can update $textAnswer
+     *
+     * @param TextAnswer $textAnswer
+     * @param User $user
+     * @return bool
+     */
     private function canUpdate(TextAnswer $textAnswer, User $user)
     {
         return $textAnswer->getAuthor() === $user || $user->getRole() === 'ROLE_ADMIN';
     }
 
+    /**
+     * Determines if $user can delete $textAnswer
+     *
+     * @param TextAnswer $textAnswer
+     * @param User $user
+     * @return bool
+     */
     private function canDelete(TextAnswer $textAnswer, User $user)
     {
         return $textAnswer->getAuthor() === $user || $user->getRole() === 'ROLE_ADMIN';

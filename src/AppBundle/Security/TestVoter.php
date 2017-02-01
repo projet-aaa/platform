@@ -75,21 +75,49 @@ class TestVoter extends BaseVoter
         throw new \LogicException('This code should not be reached!');
     }
 
+    /**
+     * Determines if $user can create $test
+     *
+     * @param Test $test
+     * @param User $user
+     * @return bool
+     */
     private function canCreate(Test $test, User $user)
     {
         return ($user->getRole() !== 'ROLE_ELEVE');
     }
 
+    /**
+     * Determines if $user can update $test
+     *
+     * @param Test $test
+     * @param User $user
+     * @return bool
+     */
     private function canRead(Test $test, User $user)
     {
         return true;
     }
 
+    /**
+     * Determines if $user can update $test
+     *
+     * @param Test $test
+     * @param User $user
+     * @return bool
+     */
     private function canUpdate(Test $test, User $user)
     {
         return ($user->getRole() !== 'ROLE_ELEVE');
     }
 
+    /**
+     * Determines if $user can delete $test
+     *
+     * @param Test $test
+     * @param User $user
+     * @return bool
+     */
     private function canDelete(Test $test, User $user)
     {
         return ($user->getRole() !== 'ROLE_ELEVE');

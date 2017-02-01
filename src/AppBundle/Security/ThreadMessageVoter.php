@@ -75,21 +75,49 @@ class ThreadMessageVoter extends BaseVoter
         throw new \LogicException('This code should not be reached!');
     }
 
+    /**
+     * Determines if $user can create $threadMessage
+     *
+     * @param ThreadMessage $threadMessage
+     * @param User $user
+     * @return bool
+     */
     private function canCreate(ThreadMessage $threadMessage, User $user)
     {
         return true;
     }
 
+    /**
+     * Determines if $user can read $threadMessage
+     *
+     * @param ThreadMessage $threadMessage
+     * @param User $user
+     * @return bool
+     */
     private function canRead(ThreadMessage $threadMessage, User $user)
     {
         return true;
     }
 
+    /**
+     * Determines if $user can update $threadMessage
+     *
+     * @param ThreadMessage $threadMessage
+     * @param User $user
+     * @return bool
+     */
     private function canUpdate(ThreadMessage $threadMessage, User $user)
     {
         return $threadMessage->getAuthor() === $user || $user->getRole() === 'ROLE_PROF'|| $user->getRole() === 'ROLE_ADMIN';
     }
 
+    /**
+     * Determines if $user can delete $threadMessage
+     *
+     * @param ThreadMessage $threadMessage
+     * @param User $user
+     * @return bool
+     */
     private function canDelete(ThreadMessage $threadMessage, User $user)
     {
         return $threadMessage->getAuthor() === $user || $user->getRole() === 'ROLE_PROF'|| $user->getRole() === 'ROLE_ADMIN';

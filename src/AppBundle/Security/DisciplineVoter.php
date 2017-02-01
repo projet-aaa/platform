@@ -75,21 +75,49 @@ class DisciplineVoter extends BaseVoter
         throw new \LogicException('This code should not be reached!');
     }
 
+    /**
+     * Determines if $user can create $disciplines
+     *
+     * @param Discipline $discipline
+     * @param User $user
+     * @return bool
+     */
     private function canCreate(Discipline $discipline, User $user)
     {
         return $user->getRole() === 'ROLE_ADMIN';
     }
 
+    /**
+     * Determines if $user can read $discipline
+     *
+     * @param Discipline $discipline
+     * @param User $user
+     * @return bool
+     */
     private function canRead(Discipline $discipline, User $user)
     {
         return true;
     }
 
+    /**
+     * Determines if $user can update $discipline
+     *
+     * @param Discipline $discipline
+     * @param User $user
+     * @return bool
+     */
     private function canUpdate(Discipline $discipline, User $user)
     {
         return $user->getRole() === 'ROLE_ADMIN';
     }
 
+    /**
+     * Determines if $user can delete $discipline
+     *
+     * @param Discipline $discipline
+     * @param User $user
+     * @return bool
+     */
     private function canDelete(Discipline $discipline, User $user)
     {
         return $user->getRole() === 'ROLE_ADMIN';

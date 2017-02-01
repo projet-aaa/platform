@@ -13,6 +13,9 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 abstract class BaseVoter extends Voter{
 
+    /**
+     * CRUD actions for the voters
+     */
     const CREATE = 'create';
     const READ = 'read';
     const UPDATE = 'update';

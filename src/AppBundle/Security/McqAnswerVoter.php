@@ -76,21 +76,49 @@ class McqAnswerVoter extends BaseVoter
         throw new \LogicException('This code should not be reached!');
     }
 
+    /**
+     * Determines if $user can create $mcqAnswer
+     *
+     * @param McqAnswer $mcqAnswer
+     * @param User $user
+     * @return bool
+     */
     private function canCreate(McqAnswer $mcqAnswer, User $user)
     {
         return true;
     }
 
+    /**
+     * Determines if $user can read $mcqAnswer
+     *
+     * @param McqAnswer $mcqAnswer
+     * @param User $user
+     * @return bool
+     */
     private function canRead(McqAnswer $mcqAnswer, User $user)
     {
         return $mcqAnswer->getAuthor() === $user || $user->getRole() === 'ROLE_ADMIN';
     }
 
+    /**
+     * Determines if $user can update $mcqAnswer
+     *
+     * @param McqAnswer $mcqAnswer
+     * @param User $user
+     * @return bool
+     */
     private function canUpdate(McqAnswer $mcqAnswer, User $user)
     {
         return $mcqAnswer->getAuthor() === $user || $user->getRole() === 'ROLE_ADMIN';
     }
 
+    /**
+     * Determines if $user can delete $mcqAnswer
+     *
+     * @param McqAnswer $mcqAnswer
+     * @param User $user
+     * @return bool
+     */
     private function canDelete(McqAnswer $mcqAnswer, User $user)
     {
         return $mcqAnswer->getAuthor() === $user || $user->getRole() === 'ROLE_ADMIN';

@@ -75,21 +75,49 @@ class SessionVoter extends BaseVoter
         throw new \LogicException('This code should not be reached!');
     }
 
+    /**
+     * Determines if $user can create $session
+     *
+     * @param Session $session
+     * @param User $user
+     * @return bool
+     */
     private function canCreate(Session $session, User $user)
     {
         return ($user->getRole() !== 'ROLE_ELEVE');
     }
 
+    /**
+     * Determines if $user can read $session
+     *
+     * @param Session $session
+     * @param User $user
+     * @return bool
+     */
     private function canRead(Session $session, User $user)
     {
         return true;
     }
 
+    /**
+     * Determines if $user can update $session
+     *
+     * @param Session $session
+     * @param User $user
+     * @return bool
+     */
     private function canUpdate(Session $session, User $user)
     {
         return ($user->getRole() !== 'ROLE_ELEVE');
     }
 
+    /**
+     * Determines if $user can delete $session
+     *
+     * @param Session $session
+     * @param User $user
+     * @return bool
+     */
     private function canDelete(Session $session, User $user)
     {
         return ($user->getRole() !== 'ROLE_ELEVE');

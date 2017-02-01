@@ -76,21 +76,49 @@ class QuestionVoter extends BaseVoter
         throw new \LogicException('This code should not be reached!');
     }
 
+    /**
+     * Determines if $user can create $question
+     *
+     * @param Question $question
+     * @param User $user
+     * @return bool
+     */
     private function canCreate(Question $question, User $user)
     {
         return ($user->getRole() !== 'ROLE_ELEVE');
     }
 
+    /**
+     * Determines if $user can read $question
+     *
+     * @param Question $question
+     * @param User $user
+     * @return bool
+     */
     private function canRead(Question $question, User $user)
     {
         return true;
     }
 
+    /**
+     * Determines if $user can update $question
+     *
+     * @param Question $question
+     * @param User $user
+     * @return bool
+     */
     private function canUpdate(Question $question, User $user)
     {
         return ($user->getRole() !== 'ROLE_ELEVE');
     }
 
+    /**
+     * Determines if $user can delete $question
+     *
+     * @param Question $question
+     * @param User $user
+     * @return bool
+     */
     private function canDelete(Question $question, User $user)
     {
         return ($user->getRole() !== 'ROLE_ELEVE');

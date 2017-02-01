@@ -76,21 +76,50 @@ class McqChoiceVoter extends BaseVoter
         throw new \LogicException('This code should not be reached!');
     }
 
+    /**
+     * Determines if $user can create $mcqChoice
+     *
+     * @param McqChoice $mcqChoice
+     * @param User $user
+     * @return bool
+     */
     private function canCreate(McqChoice $mcqChoice, User $user)
     {
         return ($user->getRole() !== 'ROLE_ELEVE');
     }
 
+    /**
+     * Determines if $user can read $mcqChoice
+     *
+     * @param McqChoice $mcqChoice
+     * @param User $user
+     * @return bool
+     */
     private function canRead(McqChoice $mcqChoice, User $user)
     {
         return true;
     }
 
+    /**
+     * Determines if $user can update $mcqChoice
+     *
+     * @param McqChoice $mcqChoice
+     * @param User $user
+     * @return bool
+     */
     private function canUpdate(McqChoice $mcqChoice, User $user)
     {
         return ($user->getRole() !== 'ROLE_ELEVE');
     }
 
+
+    /**
+     * Determines if $user can delete $mcqChoice
+     *
+     * @param McqChoice $mcqChoice
+     * @param User $user
+     * @return bool
+     */
     private function canDelete(McqChoice $mcqChoice, User $user)
     {
         return ($user->getRole() !== 'ROLE_ELEVE');

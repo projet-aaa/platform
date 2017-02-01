@@ -75,21 +75,49 @@ class SubjectVoter extends BaseVoter
         throw new \LogicException('This code should not be reached!');
     }
 
+    /**
+     * Determines if $user can create $subject
+     *
+     * @param Subject $subject
+     * @param User $user
+     * @return bool
+     */
     private function canCreate(Subject $subject, User $user)
     {
         return ($user->getRole() !== 'ROLE_ELEVE');
     }
 
+    /**
+     * Determines if $user can read $subject
+     *
+     * @param Subject $subject
+     * @param User $user
+     * @return bool
+     */
     private function canRead(Subject $subject, User $user)
     {
         return true;
     }
 
+    /**
+     * Determines if $user can update $subject
+     *
+     * @param Subject $subject
+     * @param User $user
+     * @return bool
+     */
     private function canUpdate(Subject $subject, User $user)
     {
         return ($user->getRole() !== 'ROLE_ELEVE');
     }
 
+    /**
+     * Determines if $user can delete $subject
+     *
+     * @param Subject $subject
+     * @param User $user
+     * @return bool
+     */
     private function canDelete(Subject $subject, User $user)
     {
         return ($user->getRole() !== 'ROLE_ELEVE');

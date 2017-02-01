@@ -74,21 +74,49 @@ class UserVoter extends BaseVoter
         throw new \LogicException('This code should not be reached!');
     }
 
+    /**
+     * Determines if $user can create $oUser
+     *
+     * @param User $oUser
+     * @param User $user
+     * @return bool
+     */
     private function canCreate(User $oUser, User $user)
     {
         return $user->getRole() !== 'ROLE_ADMIN';
     }
 
+    /**
+     * Determines if $user can read $oUser
+     *
+     * @param User $oUser
+     * @param User $user
+     * @return bool
+     */
     private function canRead(User $oUser, User $user)
     {
         return $user === $oUser || $user->getRole() !== 'ROLE_ADMIN';
     }
 
+    /**
+     * Determines if $user can update $oUser
+     *
+     * @param User $oUser
+     * @param User $user
+     * @return bool
+     */
     private function canUpdate(User $oUser, User $user)
     {
         return $user === $oUser || $user->getRole() !== 'ROLE_ADMIN';
     }
 
+    /**
+     * Determines if $user can delete $oUser
+     *
+     * @param User $oUser
+     * @param User $user
+     * @return bool
+     */
     private function canDelete(User $oUser, User $user)
     {
         return $user === $oUser || $user->getRole() !== 'ROLE_ADMIN';
