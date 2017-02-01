@@ -49,19 +49,30 @@ export class View extends React.Component<Props, any> {
                 </input>)
             break
         }
+        var bigSizeText = {
+            fontSize: 50
+        }
+        var mediumSizeText = {
+            fontSize: 30
+        }
         return (
             <div>
-                <div className="portlet box">
-                    <div className="portlet-header">
-                        <div className="caption">Quiz</div>
+                <div className="panel">
+                    <div className="panel-heading" style={mediumSizeText}>
+                        Quiz
                     </div>
-                    <div className="portlet-body">
-                        <h3>Enoncé : { quiz.question }</h3>
-                        { answers }
-                        <div className="row">
-                            <div className="col-md-offset-8 col-md-4 col-xs-12">
-                                <div className="btn btn-lg btn-success" onClick={ () => validate(quiz.id) }>
-                                    Valider réponse
+                    <div className="panel-body pan white-background">
+                        <div className="pal">
+                            <h3 style={bigSizeText}>Enoncé : { quiz.question }</h3>
+                            <br/><br/>
+                            <ul>
+                                { answers }
+                            </ul>
+                            <div className="row">
+                                <div className="col-md-offset-8 col-md-4 col-xs-12">
+                                    <div className="btn btn-lg btn-success" onClick={ () => validate(quiz.id) }>
+                                        Valider réponse
+                                    </div>
                                 </div>
                             </div>
                         </div>

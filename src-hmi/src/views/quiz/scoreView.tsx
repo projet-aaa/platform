@@ -21,14 +21,18 @@ export class View extends React.Component<Props, any> {
             score, rank, highScore, average
         } = this.props;
 
+        var mediumSizeText = {
+            fontSize: 30
+        }
+
         return (
             <div>
                 <div className="panel panel-blue">
-                    <div className="panel-heading">
+                    <div className="panel-heading" style={mediumSizeText}>
                         Scores :
                     </div>
                     <div className="panel-body pan white-background">
-                        <div className="pal">
+                        <div className="pal" style={mediumSizeText}>
                             <h4>Score global : {score}</h4>
                             <h4>Rang : {rank}</h4>
                             <h4>high score : {highScore}</h4>

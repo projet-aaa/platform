@@ -21,11 +21,14 @@ export class View extends React.Component<Props, any> {
             chosen,choose,text
         } = this.props;
 
+        var mediumSizeText = {
+            fontSize: 30
+        }
+
         return (
-            <li>
-                <div className="checkbox" onClick={ choose }>
-                    <label><input type="checkbox" value=""/>{text}</label>
-                </div>
+            <li className="without-bullet">
+                <input type="radio" checked={chosen} onClick={ choose }/>
+                    <label className="tab" style={mediumSizeText}>{text}</label>
             </li>
             /*<a onClick={ choose }>
                 {text} { chosen ? ": [choisi]" : "" } 

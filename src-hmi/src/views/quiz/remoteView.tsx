@@ -38,10 +38,10 @@ export class View extends React.Component<Props, any> {
             <div>
                 <div className="page-content">
                     <div className="row">
-                        <div className="col-lg-8">
+                        <div className="col-md-8">
                             { left }
                         </div>
-                        <div className="col-lg-4">
+                        <div className="col-md-4">
                             <ScoreContainer/>
                         </div>
                     </div>

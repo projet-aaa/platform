@@ -7039,3 +7039,11 @@ ul.chats li.out .message {
 .white-background {
     background: #fff;
 }
+
+.without-bullet {
+    list-style-type: none;
+}
+
+.tab {
+    margin-left:1em
+}
