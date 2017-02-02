@@ -23,16 +23,3 @@ redis:
     ports:
         - 6379:6379
 
-nodejs:
-    build: nodejs
-    links:
-        - redis
-    volumes:
-        - .:/work
-    ports:
-        - 8088:8088
-
-build-hmi:
-    build: src-hmi
-    volumes:
-        - .:/work
