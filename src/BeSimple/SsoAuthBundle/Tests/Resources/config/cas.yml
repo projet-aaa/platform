@@ -1,0 +1,37 @@
+imports:
+    - { resource: common.yml }
+
+framework:
+    router:
+        resource: "%kernel.root_dir%/Resources/routing/cas.yml"
+
+services:
+    be_simple.sso_auth.server_controller.cas:
+        class: BeSimple\SsoAuthBundle\Tests\Controller\Server\CasController
+        arguments: [@service_container]
+
+security:
+    firewalls:
+        cas:
+            access_denied_url: /forbidden
+            pattern:           ^/secured.*$
+            trusted_sso:
+                manager:       cas
+                login_path:    /login
+                check_path:    /secured/check
+                login_action:  be_simple.sso_auth.test_controller.trusted:loginAction
+                logout_action: be_simple.sso_auth.test_controller.trusted:logoutAction
+            logout:
+                path:          /secured/logout
+
+be_simple_sso_auth:
+    cas:
+        protocol:
+            id: cas
+            version: 2
+        server:
+            id: cas
+            login_url: /server/login
+            logout_url: /server/logout
+            logout_target: /home
+            validation_url: /server/validation
