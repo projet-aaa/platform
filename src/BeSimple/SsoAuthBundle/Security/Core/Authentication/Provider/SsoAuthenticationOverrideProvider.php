@@ -3,11 +3,13 @@
 namespace BeSimple\SsoAuthBundle\Security\Core\Authentication\Provider;
 
 
+use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\AuthenticationServiceException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use BeSimple\SsoAuthBundle\Security\Core\User\UserFactoryInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
  * Overrides SsoAuthenticationProvider (same namespace) to handle connexion and create
@@ -17,6 +19,11 @@ use BeSimple\SsoAuthBundle\Security\Core\User\UserFactoryInterface;
  */
 class SsoAuthenticationOverrideProvider extends SsoAuthenticationProvider
 {
+
+    public function __construct(UserProviderInterface $userProvider, UserCheckerInterface $userChecker, $createUsers = false, array $createdUsersRoles = array('ROLE_USER'), $hideUserNotFound = true)
+    {
+        parent::__construct($userProvider, $userChecker, $createUsers, $createdUsersRoles, $hideUserNotFound);
+    }
 
     /**
      * @throws \Symfony\Component\Security\Core\Exception\UsernameNotFoundException
