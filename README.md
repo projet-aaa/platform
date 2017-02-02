@@ -1,8 +1,7 @@
-Api Platform + ReactJs Proof of Concept
-=======================================
+AAA Platform
+============
 
-This repository contains a proof of concept for projet-aaa development. It aims at creating
-a double channel using on the one hand Api Platform for REST API calls and on the other hand a websocket with NodeJs.
+The AAA Platform is a platform to help teacher
 
 To run that repository, you need :
 
@@ -14,8 +13,8 @@ To run that repository, you need :
 To begin with, clone the project :
 
 ```sh
-git clone https://github.com/projet-aaa/Api-Poc.git
-cd Api-Poc
+git clone https://github.com/projet-aaa/platform.git
+cd platform
 ```
 
 ## Usage
@@ -25,6 +24,7 @@ To make the containers run, you can use the following commands :
 ```sh
 docker-compose build
 docker-compose up -d
+
 ```
 
 The shortcut command for this is :

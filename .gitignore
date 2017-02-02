@@ -3,6 +3,7 @@
 /phpunit.xml
 /nodejs/node_modules
 /src/AppBundle/Entity/*.php~
+/src-hmi/src/*.log
 /var/*
 !/var/cache
 /var/cache/*
