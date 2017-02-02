@@ -20,7 +20,7 @@ let initialState: QuizStatsArrayInfo = [
                 percentChosen: 36
             }
         ],
-        id: 0,
+        title:"mon premier quiz",
         correctAnswer: 2,
         state: 0
     },
@@ -37,7 +37,7 @@ let initialState: QuizStatsArrayInfo = [
                 percentChosen: undefined
             }
         ],
-        id: 1,
+        title:"mon deuxieme quiz",
         correctAnswer: 1,
         state: 2
     }
@@ -47,7 +47,7 @@ const name = "quizStatsArray"
 const reducer = handleActions({
     [ActionTypes.LAUNCH]: function(state: QuizStatsArrayInfo, action: Action<LaunchAction>): QuizStatsArrayInfo {
          return state.map(quiz => {
-            if(quiz.id == action.payload.id) {
+            if(quiz.title == action.payload.title) {
                 return Object.assign({}, quiz, {
                     state: 1
                 })

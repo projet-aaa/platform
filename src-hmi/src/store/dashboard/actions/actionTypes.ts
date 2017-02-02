@@ -4,7 +4,7 @@ export const ActionTypes = {
 }
 
 export interface LaunchAction {
-    id: number
+    title: string
 }
 
 

@@ -7,7 +7,7 @@ import { QuizStats, Choices } from "../../models/dashboard"
 
 export interface StateProps {
     quizStats: QuizStats
-    id: number
+    title: string
 }
 
 export interface ActionProps { 
@@ -22,23 +22,23 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
-            quizStats,id,
+            quizStats,title,
             launch
         } = this.props;
 
         let res = null
         if (quizStats.state==0) {
-            res = "Quiz " + id + " : " 
+            res = "Quiz " + title + " : " 
                 + quizStats.choices[quizStats.correctAnswer-1].percentChosen + "%";
         } else if (quizStats.state==1){
             res = "Quiz launched";
         } else {
-            res = <button onClick={launch}> {"Quiz " + id} </button>
+            res = <button className="btn btn-lg btn-primary" onClick={launch}> {"Quiz " + title} </button>
         }
 
 
         return (
-            <li> {res} </li>
+            <li><h3> {res} </h3></li>
         );
     }
 }

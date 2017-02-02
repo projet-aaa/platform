@@ -7047,3 +7047,24 @@ ul.chats li.out .message {
 .tab {
     margin-left:1em
 }
+
+
+/**************************************************************************/
+
+/*Indicator*/
+
+.indic-light {
+	height: 40px;
+	width: 40px;
+	border-radius: 20px;
+	background-color: grey;
+}
+
+.warn-triggered {
+	background-color: red !important;
+}
+
+
+
+
+

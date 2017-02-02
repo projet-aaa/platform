@@ -22,7 +22,7 @@ viewTestFactory<Props>(Dashboardview, {
                    percentChosen: 36
                }
            ],
-           id: 0,
+           title:"mon premier quiz",
            correctAnswer: 2,
            state: 0
        },
@@ -39,7 +39,7 @@ viewTestFactory<Props>(Dashboardview, {
                    percentChosen: undefined
                }
            ],
-           id: 1,
+           title:"mon quiz n2",
            correctAnswer: 1,
            state: 2
        }

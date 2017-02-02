@@ -3,11 +3,11 @@ import * as fetch from 'isomorphic-fetch'
 import { Action } from '../../../utils'
 import { ActionTypes, LaunchAction, UpdateFeedbackAction } from './actionTypes'
 
-export function launchAction(id: number): Action<LaunchAction> {
+export function launchAction(title: string): Action<LaunchAction> {
     return {
         type: ActionTypes.LAUNCH,
         payload: {
-            id
+            title
         }
     }
 }

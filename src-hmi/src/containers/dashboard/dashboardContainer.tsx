@@ -14,7 +14,7 @@ function mapStateToProps(state: any): any {
 }
 function mapDispatchToProps(dispatch): any {
     return {
-        launchQuiz: (id) => dispatch(launchAction(id))
+        launchQuiz: (title) => dispatch(launchAction(title))
     }
 }
 

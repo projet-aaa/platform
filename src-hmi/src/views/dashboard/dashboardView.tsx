@@ -15,7 +15,7 @@ export interface StateProps {
 }
 
 export interface ActionProps {
-    launchQuiz(quizId: number)
+    launchQuiz(quizTitle: string)
 }
 
 
@@ -39,8 +39,8 @@ export class View extends React.Component<Props, any> {
             launchQuiz
         } = this.props;
 
-        var quizInfoItem = quizStatsArray.map((item,i) => {
-            return <QuizLauncherView quizStats={item} key={i} id={i} launch={() => launchQuiz(i)}> </QuizLauncherView>;
+        var quizInfoItem = quizStatsArray.map((item) => {
+            return <QuizLauncherView quizStats={item} key={item.title} title={item.title} launch={() => launchQuiz(item.title)}> </QuizLauncherView>;
         });
 
         var quizInfos = 
@@ -48,21 +48,35 @@ export class View extends React.Component<Props, any> {
             {quizInfoItem}
         </ul>)
 
+
+
         return (
-            <div>
-                <div className="row">
-                    <div className="col-lg-6">
+            <div className="page-content" >
+                <div className="row ">
+                    <div className="col-md-8">
                         <QuizStatView quizStats={getLastCompleted(quizStatsArray)}> </QuizStatView>
                     </div>
-                    <div className="col-lg-6">
-                        {quizInfos}
+
+                    <div className="col-md-4">
+                        <div className="panel">
+                            <div className="panel-heading">
+                                Statistiques de quizz
+                            </div>
+                            <div className="panel-body pan white-background">
+                                <div className="pal">
+                                    {quizInfos}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <StudentFeedbackView panicAlert={studentFeedback.panicAlert} 
+                <div className="row">
+                    <div className="col-md-12">
+                        <StudentFeedbackView panicAlert={studentFeedback.panicAlert} 
                                     slowerAlert={studentFeedback.slowerAlert}
-                                    quickerAlert={studentFeedback.quickerAlert}
-                > </StudentFeedbackView>
+                                    quickerAlert={studentFeedback.quickerAlert}> </StudentFeedbackView>
+                    </div>
+                </div>
             </div>
         );
     }
