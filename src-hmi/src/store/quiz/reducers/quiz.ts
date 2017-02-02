@@ -12,7 +12,7 @@ let initialState: QuizInfo = {
     quiz: [{
         id: 0,
         type: QuizType.MCQ,
-        question: "Ceci est une question?",
+        question: "Ceci est une question encore plus longue. En effet, j'avais envie de tester l'affichage d'une question sur plusieurs lignes. Comme il faut qu'il y ait réellement une question : comment ça va ?",
         choices: ["ok", "oui", "non"],
         choice: -1,
         isValidated: false

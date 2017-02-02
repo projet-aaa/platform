@@ -7,7 +7,14 @@
   "license": "ISC",
   "dependencies": {
     "@types/socket.io": "^1.4.27",
+    "gulp": "^3.9.1",
     "redis": "^2.6.5",
     "socket.io": "^1.7.2"
+  },
+  "devDependencies": {
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-typescript": "^3.1.4",
+    "typescript": "^2.1.5"
   }
 }

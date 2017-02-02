@@ -5,31 +5,39 @@ var gulp        = require('gulp'),
     ts          = require('gulp-typescript'),
     browserify  = require('browserify'),
     source      = require('vinyl-source-stream'),
-    del         = require('del')
+    del         = require('del'),
+    fs          = require('fs'),
+    path        = require('path')
 
 var project = ts.createProject('src/tsconfig.json', { typescript: typescript });
 
-var defaultApp = "todo"
-
 function getApp() {
   if(process.argv.length > 3) {
-    return process.argv[3].substring(2)
+      return [process.argv[3].substring(2)]
   } else {
-    return defaultApp
+      return getFolders('src/apps')
   }
 }
-
-gulp.task('through-all', function() {
-	return gulp.src(['src/dist/general/**'])
-    .pipe(gulp.dest('dist/') )
-})
+function getFolders(dir) {
+  return fs.readdirSync(dir)
+    .filter(function(file) {
+      return fs.statSync(path.join(dir, file)).isDirectory();
+    });
+}
 
 gulp.task('through-index', function () {
-  var app = getApp()
+  var apps = getApp()
 
-	return gulp.src(['src/dist/index.html'])
-    .pipe(gulp.dest('dist/' + app + '/') )
+  return apps.map(function(app) {
+    return gulp.src(['src/dist/index.html'])
+      .pipe(gulp.dest('dist/' + app + '/') )
+  })
 });
+
+gulp.task('through-all', function() {
+  return gulp.src(['src/dist/general/**'])
+    .pipe(gulp.dest('dist/') )
+})
 
 gulp.task('compile', function () {
   var result = gulp.src('src/**/*{ts,tsx}')
@@ -37,17 +45,28 @@ gulp.task('compile', function () {
   return result.js.pipe(gulp.dest('.tmp'))
 });
 
-gulp.task('bundle', ['through-index', 'through-all', 'compile'], function () {
-  var app = getApp()
+gulp.task('build', ['through-index', 'through-all', 'compile'], function () {
+  var apps = getApp()
+  
+  return apps.map(function(app) {
+    var b = browserify('.tmp/apps/' + app + '/index.js')
+    return b.bundle()
+      .pipe(source('bundle.js'))
+      .pipe(gulp.dest('dist/' + app))
+  })
+})
 
-  var b = browserify('.tmp/apps/' + app + '/index.js');
-  return b.bundle()
-    .pipe(source('bundle.js'))
-    .pipe(gulp.dest('dist/' + app))
-  ;
-});
+gulp.task('deploy', ['build'], function() {
+  gulp.src('dist/**/*')
+    .pipe(gulp.dest('../src/AppBundle/Resources/views'))
+
+  gulp.src('dist/')
+
+  return gulp.src('dist/**/*')
+    .pipe(gulp.dest('../web/webassets'))
+})
 
 gulp.task('clean', function (done) {
-  del(['.tmp'], done.bind(this))
-  del(['dist'], done.bind(this))
+    del(['.tmp'], done.bind(this))
+    del(['dist'], done.bind(this))
 });

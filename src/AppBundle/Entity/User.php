@@ -4,159 +4,48 @@ namespace AppBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
+use FOS\UserBundle\Model\User as BaseUser;
+use FOS\UserBundle\Model\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
- * @ApiResource
  * @ORM\Entity
+ * @ApiResource(attributes={
+ *     "normalization_context"={"groups"={"user", "user-read"}},
+ *     "denormalization_context"={"groups"={"user", "user-write"}}
+ * })
  */
-class User implements UserInterface
+class User extends BaseUser
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="guid")
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
-     * @Assert\NotBlank()
-     * @ORM\Column(type="string", length=15, nullable=false)
+     * @ORM\Column(type="string", length=63, nullable=true)
+     * @Groups({"user"})
      */
-    private $login;
+    protected $firstname;
 
     /**
-     * @Assert\NotBlank()
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=63, nullable=true)
+     * @Groups({"user"})
      */
-    private $firstname;
+    protected $lastname;
 
     /**
-     * @Assert\NotBlank()
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @Groups({"user"})
      */
-    private $lastname;
+    protected $username;
 
-    /**
-     * @ORM\Column(type="string", length=63, nullable=false)
-     */
-    private $token;
-
-    /**
-     * @ORM\Column(type="string", length=31, nullable=false)
-     */
-    private $role;
-
-    /**
-     * @ORM\Column(type="string", length=31, nullable=true)
-     */
-    private $part; //group is a reserved word in sql.
-
-    public function __toString()
+    public function __construct()
     {
-        return $this->getFirstname().' '.$this->getLastname();
-    }
-
-    /** match the Interface */
-
-    /**
-     * Returns the roles granted to the user.
-     *
-     * <code>
-     * public function getRoles()
-     * {
-     *     return array('ROLE_USER');
-     * }
-     * </code>
-     *
-     * Alternatively, the roles might be stored on a ``roles`` property,
-     * and populated in any number of different ways when the user object
-     * is created.
-     *
-     * @return (Role|string)[] The user roles
-     */
-    public function getRoles()
-    {
-        return array($this->getRole());
-    }
-
-    /**
-     * Returns the password used to authenticate the user.
-     *
-     * This should be the encoded password. On authentication, a plain-text
-     * password will be salted, encoded, and then compared to this value.
-     *
-     * @return string The password
-     */
-    public function getPassword()
-    {
-        return $this->token;
-    }
-
-    /**
-     * Returns the salt that was originally used to encode the password.
-     *
-     * This can return null if the password was not encoded using a salt.
-     *
-     * @return string|null The salt
-     */
-    public function getSalt()
-    {
-        return null;
-    }
-
-    /**
-     * Returns the username used to authenticate the user.
-     *
-     * @return string The username
-     */
-    public function getUsername()
-    {
-        $this->getLogin();
-    }
-
-    /**
-     * Removes sensitive data from the user.
-     *
-     * This is important if, at any given point, sensitive information like
-     * the plain-text password is stored on this object.
-     */
-    public function eraseCredentials()
-    {
-    }
-
-    /** Auto generated methods*/
-
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLogin()
-    {
-        return $this->login;
-    }
-
-    /**
-     * @param mixed $login
-     */
-    public function setLogin($login)
-    {
-        $this->login = $login;
+        parent::__construct();
+        // your own logic
+        $this->roles = array('ROLE_ELEVE');
     }
 
     /**
@@ -178,6 +67,22 @@ class User implements UserInterface
     /**
      * @return mixed
      */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getLastname()
     {
         return $this->lastname;
@@ -194,49 +99,22 @@ class User implements UserInterface
     /**
      * @return mixed
      */
-    public function getToken()
+    public function getUsername()
     {
-        return $this->token;
+        return $this->username;
     }
 
     /**
-     * @param mixed $token
+     * @param mixed $username
      */
-    public function setToken($token)
+    public function setUsername($username)
     {
-        $this->token = $token;
+        $this->username = $username;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getRole()
-    {
-        return $this->role;
-    }
 
-    /**
-     * @param mixed $role
-     */
-    public function setRole($role)
+    public function isUser(UserInterface $user = null)
     {
-        $this->role = $role;
+        return $user instanceof self && $user->id === $this->id;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getPart()
-    {
-        return $this->part;
-    }
-
-    /**
-     * @param mixed $part
-     */
-    public function setPart($part)
-    {
-        $this->part = $part;
-    }
-
 }

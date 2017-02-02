@@ -23,6 +23,7 @@ class AppKernel extends Kernel
             new AppBundle\AppBundle(),
 
             //authentification
+            new FOS\UserBundle\FOSUserBundle(),
             new BeSimple\SsoAuthBundle\BeSimpleSsoAuthBundle(),
             new Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle(),
             
