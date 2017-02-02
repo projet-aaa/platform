@@ -73,10 +73,3 @@ services:
         arguments: [~, AppBundle\Entity\User, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: User }
-
-
-    security.authentication.provider.sso:
-        class: BeSimple\SsoAuthBundle\Security\Core\Authentication\Provider\SsoAuthenticationOverrideProvider
-        abstract: true
-        public: false
-        arguments: [~, "@security.user_checker", ~, ~, "%security.authentication.hide_user_not_found%"]
