@@ -5,15 +5,17 @@ import { Action } from "../../../utils"
 interface ScoreInfo {
    score: number
    rank: number
+   population: number
    highScore: number
    average: number
 }
 
 let initialState: ScoreInfo = {
-   score: -1,
-   rank: 1,
-   highScore: -1,
-   average: -1,
+   score: 230,
+   rank: 22,
+   population: 24,
+   highScore: 400,
+   average: 200,
 }
 
 const name = "score"

@@ -20,7 +20,7 @@ let initialState: QuizStatsArrayInfo = [
                 percentChosen: 36
             }
         ],
-        title:"mon premier quiz",
+        title:"Mon premier quiz",
         correctAnswer: 2,
         state: 0
     },
@@ -37,7 +37,7 @@ let initialState: QuizStatsArrayInfo = [
                 percentChosen: undefined
             }
         ],
-        title:"mon deuxieme quiz",
+        title:"Mon deuxieme quiz",
         correctAnswer: 1,
         state: 2
     }

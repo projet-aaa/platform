@@ -14,26 +14,24 @@ export interface ActionProps {
     launch()
 }
 
-
-
 export type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
     props: Props
 
     render() {
         const {
-            quizStats,title,
+            quizStats, title,
             launch
         } = this.props;
 
         let res = null
-        if (quizStats.state==0) {
-            res = "Quiz " + title + " : " 
-                + quizStats.choices[quizStats.correctAnswer-1].percentChosen + "%";
-        } else if (quizStats.state==1){
-            res = "Quiz launched";
+        if(quizStats.state == 0) {
+            res = title + ": " 
+                + quizStats.choices[quizStats.correctAnswer - 1].percentChosen + "%";
+        } else if(quizStats.state == 1) {
+            res = title + ": lancé";
         } else {
-            res = <button className="btn btn-lg btn-primary" onClick={launch}> {"Quiz " + title} </button>
+            res = <button className="btn btn-lg btn-primary" onClick={launch}> { title } </button>
         }
 
 

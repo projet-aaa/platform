@@ -40,15 +40,13 @@ export class View extends React.Component<Props, any> {
                     <FeedbackContainer/>
         // the quiz or the buttons are on the left and the scores are on the right
         return (
-            <div>
-                <div className="page-content">
-                    <div className="row">
-                        <div className="col-md-8">
-                            { left }
-                        </div>
-                        <div className="col-md-4">
-                            <ScoreContainer/>
-                        </div>
+            <div className="page-content">
+                <div className="row">
+                    <div className="col-md-8">
+                        { left }
+                    </div>
+                    <div className="col-md-4">
+                        <ScoreContainer/>
                     </div>
                 </div>
             </div>

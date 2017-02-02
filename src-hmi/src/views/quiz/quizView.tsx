@@ -1,5 +1,3 @@
-// represents a quiz
-
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router"
@@ -32,6 +30,11 @@ export class View extends React.Component<Props, any> {
             choose, validate
         } = this.props;
 
+        let inputFieldStyle = {
+            height:"50px",
+            fontSize:"30pt"
+        }
+
         // answers can have different type according to the type of quiz (MCQ, open question)
         let answers = null
         switch(quiz.type) {
@@ -49,6 +52,7 @@ export class View extends React.Component<Props, any> {
                 (<input id="quiz-text" 
                         type="text" 
                         value={ quiz.choice }
+                        style={ inputFieldStyle }
                         onChange={ () => choose(quiz.id, getText("quiz-text")) }> 
                 </input>)
             break

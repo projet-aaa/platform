@@ -6,6 +6,7 @@ function mapStateToProps(state: any): StateProps {
     return { 
         score: state.score.score,
         rank: state.score.rank,
+        population: state.score.population,
         highScore: state.score.highScore,
         average: state.score.average,
     }

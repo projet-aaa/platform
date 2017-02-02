@@ -8,6 +8,7 @@ import * as MediaQuery from "react-responsive"
 export interface StateProps {
    score: number // his score
    rank: number // his rank
+   population: number
    highScore: number // the high score
    average: number // the average
 }
@@ -20,7 +21,7 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
-            score, rank, highScore, average
+            score, rank, population, highScore, average
         } = this.props;
 
         var mediumSizeText = {
@@ -36,7 +37,7 @@ export class View extends React.Component<Props, any> {
                     <div className="panel-body pan white-background">
                         <div className="pal">
                             <h3>Score global : {score}</h3>
-                            <h3>Rang : {rank}</h3>
+                            <h3>Rang : {rank}/{population}</h3>
                             <h3>high score : {highScore}</h3>
                             <h3>moyenne : {average}</h3>
                         </div>
