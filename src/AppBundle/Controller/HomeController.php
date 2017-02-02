@@ -14,7 +14,7 @@ class HomeController extends Controller
      * Returns the home html page - an empty page to be filled with ReactJs
      *
      * @Route("/", name="homepage")
-     * @Security("has_role('ROLE_ELEVE')")
+     * @Security("has_role('ROLE_USER')")
      *
      * @return Response
      */

@@ -18,7 +18,7 @@ class UserAdmin extends AbstractAdmin
         ->add('lastname')
         ->add('token')
         ->add('role',ChoiceType::class,array(
-            'choices' => array('Admin' => 'ROLE_ADMIN','Prof' => 'ROLE_PROF', 'Eleve' => 'ROLE_ELEVE')
+            'choices' => array('Admin' => 'ROLE_ADMIN','Prof' => 'ROLE_PROF', 'Eleve' => 'ROLE_USER')
         ))
         ->add('part',TextType::class,array('label' => 'Groupe Eleve', 'required' => false));
     }

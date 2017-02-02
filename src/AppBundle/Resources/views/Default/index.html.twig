@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
-  </head>
-  <body>
-  <div id="content">
-        Loading ...
-    <form action="{{ path('api_login_check') }}" method="POST">
-      <input type="text" placeholder="username" name="_username" ><br>
-      <input type="text" placeholder="password" name="_password" ><br>
+</head>
+<body>
+<div id="content">
+    Loading ...
+    <br>
+    <br>
+    <div id="to_delete">
+        <i>Temporary form for JWT Token</i>
+        <form action="{{ path('api_login_check') }}" method="POST">
+            <input type="text" placeholder="username" name="_username"><br>
+            <input type="text" placeholder="password" name="_password"><br>
 
-      <button type="submit">Valider</button>
-    </form>
-  </div>
-  </body>
+            <button type="submit">Valider</button>
+        </form>
+    </div>
+</div>
+</body>
 </html>

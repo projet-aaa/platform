@@ -41,12 +41,8 @@ class User extends BaseUser
      */
     protected $username;
 
-    public function __construct()
-    {
-        parent::__construct();
-        // your own logic
-        $this->roles = array('ROLE_ELEVE');
-    }
+
+    /** Auto generated methods */
 
     /**
      * @return mixed
