@@ -1,13 +1,15 @@
+// represents the score of a user on the last quiz
+
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
 export interface StateProps {
-   score: number
-   rank: number
-   highScore: number
-   average: number
+   score: number // his score
+   rank: number // his rank
+   highScore: number // the high score
+   average: number // the average
 }
 
 export interface ActionProps {}
@@ -24,7 +26,7 @@ export class View extends React.Component<Props, any> {
         var mediumSizeText = {
             fontSize: 30
         }
-
+        // we show a panel containing all the values defined above
         return (
             <div>
                 <div className="panel panel-blue">

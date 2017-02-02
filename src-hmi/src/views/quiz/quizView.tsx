@@ -1,3 +1,5 @@
+// represents a quiz
+
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router"
@@ -8,13 +10,14 @@ import { View as AnswerView} from "./answerView"
 import { QuizType, Quiz } from "../../models/quiz"
 
 export interface StateProps {
-    quiz: Quiz
+    quiz: Quiz // the quiz
 }
 export interface ActionProps {
-    choose(quizId: number, choice: any)
-    validate(quizId: number)
+    choose(quizId: number, choice: any) // select an answer
+    validate(quizId: number) // validate the answer
 }
 
+// get the text of an element of the page with the id "id"
 function getText(id: string): string {
     return (document.getElementById(id) as any).value
 }
@@ -29,6 +32,7 @@ export class View extends React.Component<Props, any> {
             choose, validate
         } = this.props;
 
+        // answers can have different type according to the type of quiz (MCQ, open question)
         let answers = null
         switch(quiz.type) {
             case QuizType.MCQ: 
@@ -55,6 +59,7 @@ export class View extends React.Component<Props, any> {
         var mediumSizeText = {
             fontSize: 30
         }
+        // returns a panel containing the question and the answer defined above
         return (
             <div>
                 <div className="panel">
