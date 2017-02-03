@@ -6,7 +6,13 @@
    
     - [Architecture](https://github.com/projet-aaa/platform/blob/master/var/docs/back-end/architecture.md)
    
-    
+ - [Browser front-end](https://github.com/projet-aaa/platform/blob/master/var/docs/browser-front-end)    
+
+    - [React architecture](https://github.com/projet-aaa/platform/blob/master/var/docs/browser-front-end/react-architecture.md)
+
+    - [Build process](https://github.com/projet-aaa/platform/blob/master/var/docs/browser-front-end/build-process.md)
+
+ - [Mobile front-end](https://github.com/projet-aaa/platform/blob/master/var/docs/mobile-front-end)
 
 #Launch the project
 
