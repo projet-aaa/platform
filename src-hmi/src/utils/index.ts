@@ -3,6 +3,7 @@ import thunk from 'redux-thunk'
 import * as ReactDOM from 'react-dom'
 import * as React from 'react'
 import * as createLogger from 'redux-logger';
+import { apiMiddleware } from 'redux-api-middleware'
 
 import createSocketIoMiddleware from 'redux-socket.io'
 import * as io from 'socket.io-client'
@@ -27,8 +28,10 @@ export const storeFactory = (reducers: any[], url: string, log: boolean) => {
 
     let middlewares = [thunk]
 
+    middlewares.push(apiMiddleware)
     if(url) { middlewares.push(createSocketIoMiddleware(socket, 'SERVER/')) }
     if(log) { middlewares.push(createLogger()) }
+
     return createStore(
         reducer,
         applyMiddleware(...middlewares)

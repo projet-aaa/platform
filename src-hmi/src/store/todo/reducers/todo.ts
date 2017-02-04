@@ -1,5 +1,6 @@
 import { Action } from "../../../utils/index";
-import { ActionTypes, AddTodoAction, RemoveTodoAction, RequestTodoAction, ReceiveTodoAction, AskTodoAction } from "../actions/actionTypes";
+import { ActionTypes, AddTodoAction, RemoveTodoAction } from "../actionTypes";
+import { APIActionTypes } from "../apiActionTypes"
 import { handleActions } from "redux-actions";
 import { Todo } from "../../../models/models"
 
@@ -25,7 +26,7 @@ const reducer = handleActions({
             { id: action.payload.id, text: action.payload.text }
         ]
     },
-    [ActionTypes.RECEIVE_TODO]: function(state: Todo[] = [], action: Action<ReceiveTodoAction>): Todo[] {
+    [APIActionTypes.GET_TODO_SUCCESS]: function(state: Todo[] = [], action: any): Todo[] {
         return [
             ...state,
             { id: getRandomInt(0, 1000), text: action.payload.text }

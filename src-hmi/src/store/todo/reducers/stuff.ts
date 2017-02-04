@@ -1,5 +1,5 @@
 import { Action } from "../../../utils/";
-import { ActionTypes, AddTodoAction, RemoveTodoAction, GeneralAction } from "../actions/actionTypes";
+import { ActionTypes, AddTodoAction, RemoveTodoAction, GeneralAction } from "../actionTypes";
 import { handleActions } from "redux-actions";
 import { Todo } from "../../../models/models"
 
