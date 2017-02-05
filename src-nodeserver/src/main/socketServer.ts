@@ -1,7 +1,9 @@
-import ChatRoom from './chatServerRoom'
-import MainRoom from './mainServerRoom'
+import { IRoom, IMainRoom, SocketInfo } from '../rooms/iroom'
+import { MainRoom } from '../rooms/mainRoom'
+import { ChatRoom } from '../rooms/chatRoom'
+import { ClassRoom } from '../rooms/classRoom'
 
-export class Server {
+export class SocketServer {
 
     io
     sockets: SocketInfo[]
@@ -23,8 +25,10 @@ export class Server {
             }
             this.sockets.push(socketInfo)
             this.mainRoom.socketGeneralEnter(socketInfo)
+            this.mainRoom.socketEnter(socketInfo)
+            this.mainRoom.sockets.push(socketInfo)
 
-            socket.on('action', function(action) {
+            socket.on('action', (action) => {
                 let room: IRoom = socketInfo.room == -1 ? this.mainRoom : this.rooms[socketInfo.room] 
                 
                 if(action.type.substring(0, 7) == "SERVER/"){  
@@ -32,13 +36,15 @@ export class Server {
                 }
             })
 
-            socket.on('disconnect', function () {
+            socket.on('disconnect', () => {
                 let room: IRoom = socketInfo.room == -1 ? this.mainRoom : this.rooms[socketInfo.room] 
 
                 let i = room.sockets.indexOf(socketInfo)
                 if(i >= 0) { room.sockets.splice(i, 1) }
 
-                this.room.socketLeave(socketInfo)
+                this.sockets.splice(this.sockets.indexOf(socketInfo), 1)
+
+                room.socketLeave(socketInfo)
                 this.mainRoom.socketGeneralLeave(socketInfo)
             });
         })
@@ -48,7 +54,8 @@ export class Server {
         let id = this.nextId++,
             room = null
         switch(type) {
-            default: room = new ChatRoom(this, id); break;
+            case "CHAT": room = new ChatRoom(this, id); break;
+            case "QUIZ": room = new ClassRoom(this, id); break;
         }
         room.init(this)
         this.rooms[id] = room
@@ -85,36 +92,13 @@ export class Server {
     send(socketInfo: SocketInfo, type: string, msg) {
         socketInfo.socket.emit('action', { type: type, payload: msg })
     }
-}
 
-export interface SocketInfo {
-
-    socket
-    room: number
-}
-
-export abstract class IRoom {
-
-    id: number
-    server: Server
-    sockets: SocketInfo[]
-
-    get occupancy(): number { return this.sockets.length }
-
-    constructor(server: Server, id: number) {
-        this.id = id
-        this.server = server
-        this.sockets = []
+    getRooms(): any[] {
+        return this.rooms.map((room) => {
+            return { 
+                id: room.id,
+                type: room.type  
+            }
+        })
     }
-
-    abstract receive(socketInfo: SocketInfo, type: string, msg)
-
-    abstract socketEnter(socketInfo: SocketInfo)
-    abstract socketLeave(socketInfo: SocketInfo)
-}
-
-export abstract class IMainRoom extends IRoom {
-
-    abstract socketGeneralEnter(socketInfo: SocketInfo)
-    abstract socketGeneralLeave(socketInfo: SocketInfo)
 }

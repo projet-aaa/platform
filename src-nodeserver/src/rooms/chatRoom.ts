@@ -1,6 +1,8 @@
-import { IRoom, SocketInfo } from './server'
+import { IRoom, SocketInfo } from './iroom'
 
-export default class ChatRoom extends IRoom {
+export class ChatRoom extends IRoom {
+
+    type: string = "CHAT"
 
     receive(socket: SocketInfo, type: string, msg) {
         for(let socket of this.sockets) {
