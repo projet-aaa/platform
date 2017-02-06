@@ -42,3 +42,8 @@ export const storeFactory = (reducers: any[], url: string, log: boolean) => {
 export function viewTestFactory<T>(View: any, props: T) {
     ReactDOM.render(React.createElement(View, props), document.getElementById('main'))
 }
+
+// Get text from an element with a certain id
+export function getText(id: string): string {
+    return (document.getElementById(id) as any).value
+}

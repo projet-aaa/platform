@@ -8,7 +8,10 @@ import { View as AnswerView} from "./answerView"
 import { QuizType, Quiz } from "../../models/quiz"
 
 export interface StateProps {
-    quiz: Quiz // the quiz
+    // the quiz 
+    quiz: Quiz
+    // true if consultation mode, false if answer mode
+    consultation: boolean
 }
 export interface ActionProps {
     choose(quizId: number, choice: any) // select an answer
@@ -27,6 +30,7 @@ export class View extends React.Component<Props, any> {
     render() {
         const {
             quiz,
+            consultation,
             choose, validate
         } = this.props;
 
@@ -39,8 +43,12 @@ export class View extends React.Component<Props, any> {
         let answers = null
         switch(quiz.type) {
             case QuizType.MCQ: 
+                let createChooseAction = (i) => {
+                    return consultation ? () => {  }: () => { choose(quiz.id, i) }
+                } 
                 var answerItems = quiz.choices.map((item, i) => {
-                    return <AnswerView key={item} text={item} choose={ () => { choose(quiz.id, i) } } chosen={ quiz.choice == i }></AnswerView>;
+                    console.log(i)
+                    return <AnswerView key={item} ind={i} text={item} choose={ createChooseAction(i) } chosen={ quiz.choice == i } rightAnswer={i==quiz.answer} explanation={ quiz.explanations[i] } consultation={ consultation }></AnswerView>;
                 });
                 answers = 
                 (<ul>
@@ -57,13 +65,61 @@ export class View extends React.Component<Props, any> {
                 </input>)
             break
         }
+
         var bigSizeText = {
             fontSize: 50
         }
         var mediumSizeText = {
             fontSize: 30
         }
-        // returns a panel containing the question and the answer defined above
+
+        // a question with its answers
+        let questionRender = (
+            <div>
+                <h3 style={bigSizeText}>Enoncé : { quiz.question }</h3>
+                <br/><br/>
+                <ul>
+                    { answers }
+                </ul>
+            </div>
+        )
+        // if we are in answer mode, we have to display a vilidate button
+        // if we are in consultation mode, we have to display previous and next button
+        let validateButton = null;
+        let quizRender = null;
+        if (!consultation) {
+            validateButton = (
+                <div className="row">
+                    <div className="col-lg-offset-8 col-lg-4">
+                        <div className="btn btn-lg btn-success" onClick={ () => validate(quiz.id) }>
+                            Valider réponse
+                        </div>
+                    </div>
+                </div>
+            )
+            quizRender = (
+                <div className="row">
+                    <div className="col-lg-12">
+                        { questionRender }
+                    </div>
+                </div>
+            )
+        } else {
+            quizRender = (
+                <div className="row">
+                    <div className="col-lg-2">
+                        <button>Précédent</button>
+                    </div>
+                    <div className="col-lg-8">
+                        { questionRender }
+                    </div>
+                    <div className="col-lg-2">
+                        <button>Suivant</button>
+                    </div>
+                </div>
+            )
+        }
+        // returns a panel containing the question and the answers defined above
         return (
             <div>
                 <div className="panel">
@@ -72,18 +128,8 @@ export class View extends React.Component<Props, any> {
                     </div>
                     <div className="panel-body pan white-background">
                         <div className="pal">
-                            <h3 style={bigSizeText}>Enoncé : { quiz.question }</h3>
-                            <br/><br/>
-                            <ul>
-                                { answers }
-                            </ul>
-                            <div className="row">
-                                <div className="col-md-offset-8 col-md-4 col-xs-12">
-                                    <div className="btn btn-lg btn-success" onClick={ () => validate(quiz.id) }>
-                                        Valider réponse
-                                    </div>
-                                </div>
-                            </div>
+                            { quizRender }
+                            { validateButton }
                         </div>
                     </div>
                 </div>

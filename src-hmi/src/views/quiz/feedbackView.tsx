@@ -13,6 +13,10 @@ export interface ActionProps {
     signalFast() // select the "too fast" button
 }
 
+var buttonMargin = {
+    margin : 20
+}
+
 type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
     props: Props
@@ -26,19 +30,23 @@ export class View extends React.Component<Props, any> {
             <div>
                 <div className="row">
                     <div className="col-lg-12 text-center">
-                        <div className="btn btn-lg btn-danger" onClick={ signalPanic }>
+                        <div className="btn btn-lg btn-danger" style={buttonMargin} onClick={ signalPanic }>
                         Panique
                         </div>
                     </div>
                 </div>
+                <br/>
                 <div className="row">
-                    <div className="col-lg-6 text-center">
-                        <div className="btn btn-lg btn-warning" onClick={ signalFast }>
+                    <div className="col-lg-12 text-center">
+                        <div className="btn btn-lg btn-warning" style={buttonMargin} onClick={ signalFast }>
                         Trop Rapide
                         </div>
                     </div>
-                    <div className="col-lg-6 text-center">
-                        <div className="btn btn-lg btn-success" onClick={ signalSlow }>
+                </div>
+                <br/>
+                <div className="row">
+                    <div className="col-lg-12 text-center">
+                        <div className="btn btn-lg btn-success" style={buttonMargin} onClick={ signalSlow }>
                         Trop Lent
                         </div>
                     </div>

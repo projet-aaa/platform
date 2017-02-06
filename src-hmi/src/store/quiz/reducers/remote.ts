@@ -6,10 +6,12 @@ import { Quiz, QuizType } from "../../../models/quiz"
 
 interface QuizInfo {
     currentQuiz: number
+    consultation: boolean
 }
 
 let initialState: QuizInfo = {
-    currentQuiz: 0
+    currentQuiz: 0,
+    consultation: false
 }
 
 const name = "remote"

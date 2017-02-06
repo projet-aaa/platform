@@ -1,6 +1,6 @@
 import { viewTestFactory } from '../../utils'
 
-import { View, Props } from '../../views/quiz/quizView'
+import { View, Props } from '../../views/quiz/remoteView'
 
 import { QuizType } from '../../models/quiz'
 
@@ -16,6 +16,6 @@ viewTestFactory<Props>(View, {
         isValidated: false
     },
     consultation: true,
-    choose: (quizId, i) => console.log("Test : " + i),
-    validate: (quizId) => console.log("Je valide!"),
+    validateAnswer: (quizId) => console.log("Je valide!"),
+    sendComment: (comment) => console.log("Je commente")
 })

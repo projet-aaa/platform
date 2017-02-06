@@ -7,13 +7,17 @@ import { Quiz } from "../../models/quiz"
 import { StateProps, ActionProps, View } from "../../views/quiz/remoteView"
 
 function mapStateToProps(state: any): StateProps {
-    return { 
-        quiz: state.quiz.quiz[state.remote.currentQuiz]
+    return {
+        // update the quiz prop with the current quiz
+        quiz: state.quiz.quiz[state.remote.currentQuiz],
+        consultation: state.remote.consultation
     }
 }
 function mapDispatchToProps(dispatch): ActionProps {
     return {
-        validateAnswer: (quizId) => dispatch(validateAction(quizId))
+        // signals the store that an answer has been validated
+        validateAnswer: (quizId) => dispatch(validateAction(quizId)),
+        sendComment: (comment) => dispatch((comment) => console.log(comment))
     }
 }
 

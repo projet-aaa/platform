@@ -7,6 +7,10 @@ export interface Quiz {
     type: QuizType
     question: string
     choices: any
+    // the explanations associated to each answer choice
+    explanations: any
+    // answer
+    answer: any
 
     choice: any
     isValidated: boolean

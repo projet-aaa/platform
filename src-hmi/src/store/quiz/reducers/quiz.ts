@@ -14,6 +14,8 @@ let initialState: QuizInfo = {
         type: QuizType.MCQ,
         question: "Parmi les langages suivants, lequel est compilé?",
         choices: ["javascript", "C++", "python"],
+        explanations: ["ezrgeqrsg","dwrgerqg","drhdrh"],
+        answer: 1,
         choice: -1,
         isValidated: false
     }, {
@@ -21,6 +23,8 @@ let initialState: QuizInfo = {
         type: QuizType.TEXT,
         question: "Comment s'appelle le patron de conception permettant de séparer contrat et implémentation d'un module?",
         choices: null,
+        explanations: null,
+        answer: "Interface",
         choice: "",
         isValidated: false
     }]
