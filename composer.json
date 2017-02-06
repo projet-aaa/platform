@@ -39,7 +39,8 @@
         "nelmio/api-doc-bundle": "^2.13",
         "stoakes/sso-auth-bundle": "^1.0",
         "lexik/jwt-authentication-bundle": "^2.1",
-        "friendsofsymfony/user-bundle": "2.0.0-beta2"
+        "friendsofsymfony/user-bundle": "2.0.0-beta2",
+        "onurb/doctrine-yuml-bundle": "~1.0"
     },
     "require-dev": {
         "api-platform/schema-generator": "^1.2",
