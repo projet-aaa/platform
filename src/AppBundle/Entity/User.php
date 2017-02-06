@@ -41,6 +41,11 @@ class User extends BaseUser
      */
     protected $username;
 
+    /**
+     * @ORM\Column(type="string", length=31, nullable=true)
+     * @Groups({"user"})
+     */
+    private $part; //group is a reserved word in sql.
 
     /** Auto generated methods */
 
@@ -107,6 +112,23 @@ class User extends BaseUser
     {
         $this->username = $username;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPart()
+    {
+        return $this->part;
+    }
+
+    /**
+     * @param mixed $part
+     */
+    public function setPart($part)
+    {
+        $this->part = $part;
+    }
+
 
 
     public function isUser(UserInterface $user = null)

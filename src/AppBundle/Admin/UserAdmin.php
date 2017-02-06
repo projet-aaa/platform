@@ -13,29 +13,30 @@ class UserAdmin extends AbstractAdmin
 {
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper->add('login')
+        $formMapper->add('username')
         ->add('firstname')
         ->add('lastname')
-        ->add('token')
-        ->add('role',ChoiceType::class,array(
-            'choices' => array('Admin' => 'ROLE_ADMIN','Prof' => 'ROLE_PROF', 'Eleve' => 'ROLE_USER')
+        ->add('password')
+        ->add('roles',ChoiceType::class,array(
+            'choices' => array('Admin' => 'ROLE_ADMIN','Prof' => 'ROLE_PROF', 'Eleve' => 'ROLE_USER'),
+            'multiple' => true,
         ))
         ->add('part',TextType::class,array('label' => 'Groupe Eleve', 'required' => false));
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-        $datagridMapper->add('login')
+        $datagridMapper->add('username')
         ->add('lastname')
-        ->add('role');
+        ->add('roles');
     }
 
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper->addIdentifier('id')
-            ->add('login')
+            ->add('username')
             ->add('firstname')
             ->add('lastname')
-            ->add('role');
+            ->add('roles');
     }
 }
