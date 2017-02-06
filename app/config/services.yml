@@ -112,7 +112,7 @@ services:
     voter.text_answer:
         class: AppBundle\Security\TextAnswerVoter
         tags:
-            - { name: security.voter}
+            - { name: security.voter}
 
     voter.thread_message:
         class: AppBundle\Security\ThreadMessageVoter
