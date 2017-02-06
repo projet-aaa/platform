@@ -1,88 +1,161 @@
 import { IRoom, SocketInfo } from './iroom'
+import { 
+    ClassInMsg, ClassOutMsg ,
+    AnswerAction, CommentAction, SignalStateAction, 
+    FeedbackQuizAction, LaunchQuizAction, FinishQuizAction
+} from '../comm/actionTypes'
 
-const ClassRoot = "SERVER/CLASS/"
-const ClassInMsg = {
-    // STUDENT
-    ANSWER: ClassRoot + "ANSWER",
-    SIGNAL_STATE: ClassRoot + "SIGNAL_STATE",
-    COMMENT: ClassRoot + "COMMENT",
+import { 
+    AttentionEventType, QuizRoomChoices, ClassEvent, ClassState, QuizInstanceState
+} from '../../../src-hmi/src/models/class'
 
-    // TEACHER
-    LAUNCH_QUIZ: ClassRoot + "LAUNCH_QUIZ",
-    FEEDBACK_QUIZ: ClassRoot + "FEEDBACK_QUIZ",
-    FINISH_QUIZ: ClassRoot + "FINISH_QUIZ"
-}
-
-const ClassOutMsg = {
-    STATE: ClassRoot + "STATE"
-}
-
-enum QuizType {
-    MCQ, TEXT
-}
-
-interface Quiz {
-    id: number
-    type: QuizType
-    question: string
-    choices: any
-}
-
-interface QuizResult {
-    quiz: Quiz
-    answers: any
-}
-
-enum AttentionEventType {
-    PANICK_START,
-    PANICK_END, 
-    TOO_SLOW_START, 
-    TOO_SLOW_END,
-    TOO_FAST_START,
-    TOO_FAST_END
-}
-
-interface AttentionEvent {
-    type: AttentionEventType,
-    time: number
-}
-
-interface CommentEvent {
-    text: string
-    time: number
-}
-
-type ClassEvent = CommentEvent | AttentionEvent
-
-interface ClassState {
-    quizRan: QuizResult[]
-    currentQuiz: QuizResult
-    
-    timeline: ClassEvent[]
-}
+import { RoomType } from '../../../src-hmi/src/models/server'
 
 export class ClassRoom extends IRoom {
 
-    type: string = "QUIZ"
+    type: RoomType = RoomType.CLASS
 
     state: ClassState
 
+    trainers: SocketInfo[]
+    learners: SocketInfo[]
+
     receive(socket: SocketInfo, type: string, msg) {
         switch(type) {
-            case ClassInMsg.ANSWER:
+            case ClassInMsg.ANSWER: {
+                let m = <AnswerAction>msg,
+                    quiz = this.state.currentQuiz
+               
+                if(quiz.quizId == m.quizId) {
+                    if(!quiz.choices[socket.id]) {
+                        quiz.choices[socket.id] = m.choice
+                        for(let t of this.trainers) {
+                            this.server.send(
+                                t, 
+                                ClassOutMsg.ANSWER, 
+                                <AnswerAction>{ 
+                                    id: socket.id,
+                                    quizId: m.quizId,
+                                    choice: m.choice
+                                }
+                            )
+                        }
+                    }
+                }
+                break
+            }
+            case ClassInMsg.COMMENT: {
+                let m = <CommentAction>msg,
+                    comment = {
+                    time: Date.now(),
+                    text: m.text
+                }
+
+                this.state.timeline.push(comment)
+
+                for(let t of this.trainers) {
+                    this.server.send(
+                        t,
+                        ClassOutMsg.COMMENT,
+                        <CommentAction>{
+                            id: socket.id,
+                            time: comment.time,
+                            text: comment.text
+                        }
+                    )
+                }
+                break
+            }
+            case ClassInMsg.FEEDBACK_QUIZ: {
+                let m = <FeedbackQuizAction>msg
+
+                if(this.state.quizState == QuizInstanceState.HEADING) {
+                    this.state.quizState = QuizInstanceState.FEEDBACK
+
+                    for(let s of this.sockets) {
+                        this.server.send(
+                            s,
+                            ClassOutMsg.FEEDBACK_QUIZ,
+                            { id: socket.id }
+                        )
+                    }
+                }
+                break
+            }
+            case ClassInMsg.FINISH_QUIZ: {
+                let m = <FinishQuizAction>msg
+
+                if(this.state.quizState != QuizInstanceState.OFF) {
+                    this.state.quizState = QuizInstanceState.OFF
+
+                    for(let s of this.sockets) {
+                        this.server.send(
+                            s,
+                            ClassOutMsg.FINISH_QUIZ,
+                            { id: socket.id }
+                        )
+                    }
+                }
+                break
+            }
+            case ClassInMsg.LAUNCH_QUIZ: {
+                let m = <LaunchQuizAction>msg,
+                    quiz = this.state.currentQuiz,
+                    state = this.state.quizState
+
+                if((state == QuizInstanceState.FEEDBACK || state == QuizInstanceState.HEADING) && quiz.quizId != m.quizId) {
+                    this.state.quizRan.push(quiz)
+                    this.state.quizState = null
+                }
+
+                if(quiz.quizId != m.quizId) {
+                    this.state.currentQuiz = {
+                        quizId: m.quizId,
+                        choices: []
+                    }
+
+                    for(let s of this.sockets) {
+                        this.server.send(
+                            s,
+                            ClassOutMsg.FINISH_QUIZ,
+                            { id: socket.id }
+                        )
+
+                        this.server.send(
+                            s,
+                            ClassOutMsg.LAUNCH_QUIZ,
+                            <LaunchQuizAction>{
+                                id: socket.id,
+                                quizId: m.quizId
+                            }
+                        )
+                    }
+                }
 
                 break
-            case ClassInMsg.COMMENT:
+            }
+            case ClassInMsg.SIGNAL_STATE: {
+                let m = <SignalStateAction>msg,
+                    signal: ClassEvent = {
+                        time: Date.now(),
+                        state: m.state
+                    }
 
+                this.state.timeline.push(signal)
+
+                for(let t of this.trainers) {
+                    this.server.send(
+                        t,
+                        ClassOutMsg.COMMENT,
+                        <SignalStateAction>{
+                            id: socket.id,
+                            time: signal.time,
+                            state: signal.state
+                        }
+                    )
+                }
                 break
-            case ClassInMsg.FEEDBACK_QUIZ:
-                break
-            case ClassInMsg.FINISH_QUIZ:
-                break
-            case ClassInMsg.LAUNCH_QUIZ:
-                break
-            case ClassInMsg.SIGNAL_STATE:
-                break
+            }
         }
     }
 

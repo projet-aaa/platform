@@ -1,41 +1,91 @@
 import { IMainRoom, SocketInfo } from './iroom'
 
-let MainInMsg = {
-    GET_ROOMS: "SERVER/GET_ROOMS",
-    JOIN_ROOM: "SERVER/JOIN_ROOM",
-    LEAVE_ROOM: "SERVER/LEAVE_ROOM",
+import { 
+    MainInMsg, MainOutMsg,
+    GetRoomAction, JoinRoomAction, LeaveRoomAction, CreateRoomAction, CloseRoomAction, 
+    GetRoomResAction, NewRoomAction, OldRoomAction, AuthentifyAction
+} from '../comm/actionTypes'
 
-    CREATE_ROOM: "SERVER/CREATE_ROOM",
-    CLOSE_ROOM: "SERVER/CLOSE_ROOM"
-}
-
-let MainOutMsg = {
-    ROOMS: "SS/ROOMS",
-    NEW_ROOM: "SS/ROOM"
-}
+import {
+    RoomType
+} from '../../../src-hmi/src/models/server'
 
 export class MainRoom extends IMainRoom {
 
-    type: string = "MAIN"
+    type: RoomType = RoomType.MAIN
 
     receive(socket: SocketInfo, type: string, msg) {
         switch(type) {
-            case MainInMsg.GET_ROOMS:
-                this.server.send(socket, MainOutMsg.ROOMS, this.server.getRooms())
+            case MainInMsg.AUTHENTIFY: {
+                let m = <AuthentifyAction>msg
+
+                socket.id = m.id
+                
                 break;
-            case MainInMsg.JOIN_ROOM:
-                this.server.changeSocketRoom(socket, msg.room)
+            }
+            case MainInMsg.GET_ROOMS: {
+                let m = <GetRoomAction>msg
+
+                this.server.send(
+                    socket, 
+                    MainOutMsg.ROOMS, 
+                    <GetRoomResAction>{
+                        rooms: this.server.getRooms()
+                    }
+                )
                 break;
-            case MainInMsg.LEAVE_ROOM:
-                this.server.changeSocketRoom(socket, -1)
+            }
+            case MainInMsg.JOIN_ROOM: {
+                let m = <JoinRoomAction>msg
+                
+                this.server.changeSocketRoom(
+                    socket, 
+                    m.roomId
+                )
                 break;
-            case MainInMsg.CLOSE_ROOM:
-                this.server.closeRoom(msg.room)
+            }
+            case MainInMsg.LEAVE_ROOM: {
+                let m = <LeaveRoomAction>msg
+                
+                this.server.changeSocketRoom(
+                    socket, 
+                    -1
+                )
                 break;
-            case MainInMsg.CREATE_ROOM:
-                let id = this.server.createRoom(msg.roomType)
-                this.server.send(socket, MainOutMsg.NEW_ROOM, { room: id })
+            }
+            case MainInMsg.CLOSE_ROOM: {
+                let m = <CloseRoomAction>msg
+                
+                this.server.closeRoom(m.roomId)
+                for(let s of this.sockets) {
+                    this.server.send(
+                        s,
+                        MainOutMsg.OLD_ROOM,
+                        <OldRoomAction>{
+                            roomId: m.roomId
+                        }
+                    )
+                }
                 break;
+            }
+            case MainInMsg.CREATE_ROOM: {
+                let m = <CreateRoomAction>msg
+                
+                let id: number = this.server.createRoom(RoomType.CLASS)
+                for(let s of this.sockets) {
+                    this.server.send(
+                        s,
+                        MainOutMsg.NEW_ROOM,
+                        <NewRoomAction>{
+                            room: {
+                                id: id,
+                                type: RoomType.CLASS
+                            }
+                        }
+                    )
+                }
+                break;
+            }
         }
     }
 

@@ -3,6 +3,8 @@ import { MainRoom } from '../rooms/mainRoom'
 import { ChatRoom } from '../rooms/chatRoom'
 import { ClassRoom } from '../rooms/classRoom'
 
+import { RoomInfo, RoomType } from '../../../src-hmi/src/models/server'
+
 export class SocketServer {
 
     io
@@ -20,8 +22,9 @@ export class SocketServer {
 
         io.on('connection', socket => {
             let socketInfo = {
+                id: -1,
                 socket,
-                room: -1
+                roomId: -1
             }
             this.sockets.push(socketInfo)
             this.mainRoom.socketGeneralEnter(socketInfo)
@@ -29,7 +32,7 @@ export class SocketServer {
             this.mainRoom.sockets.push(socketInfo)
 
             socket.on('action', (action) => {
-                let room: IRoom = socketInfo.room == -1 ? this.mainRoom : this.rooms[socketInfo.room] 
+                let room: IRoom = socketInfo.roomId == -1 ? this.mainRoom : this.rooms[socketInfo.roomId] 
                 
                 if(action.type.substring(0, 7) == "SERVER/"){  
                     room.receive(socketInfo, action.type, action.payload)
@@ -37,7 +40,7 @@ export class SocketServer {
             })
 
             socket.on('disconnect', () => {
-                let room: IRoom = socketInfo.room == -1 ? this.mainRoom : this.rooms[socketInfo.room] 
+                let room: IRoom = socketInfo.roomId == -1 ? this.mainRoom : this.rooms[socketInfo.roomId] 
 
                 let i = room.sockets.indexOf(socketInfo)
                 if(i >= 0) { room.sockets.splice(i, 1) }
@@ -50,12 +53,12 @@ export class SocketServer {
         })
     }
 
-    createRoom(type: string): number {
+    createRoom(type: number): number {
         let id = this.nextId++,
             room = null
         switch(type) {
-            case "CHAT": room = new ChatRoom(this, id); break;
-            case "QUIZ": room = new ClassRoom(this, id); break;
+            case RoomType.CHAT: room = new ChatRoom(this, id); break;
+            case RoomType.CLASS: room = new ClassRoom(this, id); break;
         }
         room.init(this)
         this.rooms[id] = room
@@ -72,17 +75,17 @@ export class SocketServer {
         this.rooms[roomId] = null
     }
 
-    changeSocketRoom(socketInfo: SocketInfo, room: number) {
-        if(room != socketInfo.room) {
-            let oldRoom = room == -1 ? this.rooms[socketInfo.room] : this.mainRoom,
-                newRoom = room == -1 ? this.mainRoom : this.rooms[socketInfo.room],
-                i = oldRoom[socketInfo.room].sockets.indexOf(socketInfo)
+    changeSocketRoom(socketInfo: SocketInfo, roomId: number) {
+        if(roomId != socketInfo.roomId) {
+            let oldRoom = roomId == -1 ? this.rooms[socketInfo.roomId] : this.mainRoom,
+                newRoom = roomId == -1 ? this.mainRoom : this.rooms[socketInfo.roomId],
+                i = oldRoom[socketInfo.roomId].sockets.indexOf(socketInfo)
 
-            if(i >= 0) { oldRoom[socketInfo.room].sockets.splice(i, 1) }
+            if(i >= 0) { oldRoom[socketInfo.roomId].sockets.splice(i, 1) }
 
             newRoom.sockets.push(socketInfo)
 
-            socketInfo.room = room
+            socketInfo.roomId = roomId
             
             oldRoom.socketLeave(socketInfo)
             newRoom.socketEnter(socketInfo)
@@ -93,7 +96,7 @@ export class SocketServer {
         socketInfo.socket.emit('action', { type: type, payload: msg })
     }
 
-    getRooms(): any[] {
+    getRooms(): RoomInfo[] {
         return this.rooms.map((room) => {
             return { 
                 id: room.id,

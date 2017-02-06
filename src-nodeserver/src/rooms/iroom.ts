@@ -1,13 +1,16 @@
+import { RoomType } from '../../../src-hmi/src/models/server'
+
 export interface SocketInfo {
 
     socket
-    room: number
+    id: number
+    roomId: number
 }
 
 export abstract class IRoom {
 
     id: number
-    type: string
+    type: RoomType
     server: any
     sockets: SocketInfo[]
 

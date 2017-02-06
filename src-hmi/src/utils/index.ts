@@ -22,7 +22,7 @@ export const storeFactory = (reducers: any[], url: string, log: boolean) => {
         reducer = null
 
     for(let i = 0; i < len; i++) {
-        Object.assign(reducers2, reducers[i])
+        (<any>Object).assign(reducers2, reducers[i])
     }
 	reducer = combineReducers(reducers2)
 

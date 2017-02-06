@@ -2,7 +2,7 @@ import { handleActions } from "redux-actions"
 
 import { Action } from "../../../utils"
 import { ActionTypes, ChooseAction, ValidateAction} from "../actions/actionTypes"
-import { Quiz, QuizType } from "../../../models/quiz"
+import { Quiz, QuizType } from "../../../models/class"
 
 interface QuizInfo {
     currentQuiz: number
