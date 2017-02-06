@@ -1,7 +1,7 @@
 import { handleActions } from "redux-actions"
 
 import { Action } from "../../../utils"
-import { ClassInMsg, SignalStateAction } from '../../../../../src-nodeserver/src/comm/actionTypes'
+import { ActionTypes, SignalAction} from "../actions/actionTypes"
 
 interface FeedbackInfo {}
 
@@ -9,7 +9,7 @@ let initialState: FeedbackInfo = {}
 
 const name = "feedback"
 const reducer = handleActions({
-    [ClassInMsg.SIGNAL_STATE]: function(state: FeedbackInfo, action: Action<SignalStateAction>): FeedbackInfo {
+    [ActionTypes.SIGNAL]: function(state: FeedbackInfo, action: Action<SignalAction>): FeedbackInfo {
         return state
     },
 }, initialState);

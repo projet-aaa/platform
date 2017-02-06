@@ -2,28 +2,28 @@ import { handleActions } from "redux-actions"
 
 import { Action } from "../../../utils"
 import { ActionTypes, ChooseAction, ValidateAction} from "../actions/actionTypes"
-import { Quiz, QuizType, QuizLocalChoice } from "../../../models/class"
+import { Quiz, QuizType } from "../../../models/quiz"
 
 interface QuizInfo {
     quiz: Quiz[]
-    quizChoices: QuizLocalChoice[]
 }
 
 let initialState: QuizInfo = {
     quiz: [{
         id: 0,
         type: QuizType.MCQ,
-        title: "Langage",
         question: "Parmi les langages suivants, lequel est compilé?",
-        choices: ["javascript", "C++", "python"]
+        choices: ["javascript", "C++", "python"],
+        choice: -1,
+        isValidated: false
     }, {
         id: 1,
         type: QuizType.TEXT,
-        title: "Patron de conception",
         question: "Comment s'appelle le patron de conception permettant de séparer contrat et implémentation d'un module?",
         choices: null,
-    }],
-    quizChoices: []
+        choice: "",
+        isValidated: false
+    }]
 }
 
 const name = "quiz"
