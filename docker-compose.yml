@@ -23,3 +23,8 @@ redis:
     ports:
         - 6379:6379
 
+
+nodejs:
+    build: nodejs
+    volumes:
+        - ./nodejs:/app

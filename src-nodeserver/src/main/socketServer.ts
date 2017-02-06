@@ -1,7 +1,5 @@
-import { IRoom, IMainRoom, SocketInfo } from '../rooms/iroom'
+import { IRoom, IMainRoom, SocketInfo } from './iroom'  
 import { MainRoom } from '../rooms/mainRoom'
-import { ChatRoom } from '../rooms/chatRoom'
-import { ClassRoom } from '../rooms/classRoom'
 
 import { RoomInfo, RoomType } from '../../../src-hmi/src/models/server'
 
@@ -56,10 +54,7 @@ export class SocketServer {
     createRoom(type: number): number {
         let id = this.nextId++,
             room = null
-        switch(type) {
-            case RoomType.CHAT: room = new ChatRoom(this, id); break;
-            case RoomType.CLASS: room = new ClassRoom(this, id); break;
-        }
+            
         room.init(this)
         this.rooms[id] = room
 

@@ -1,7 +1,4 @@
-console.log("before http")
 import * as http from 'http'
-
-console.log("before express")
 import * as express from 'express'
 
 import * as socketio from 'socket.io'
@@ -13,7 +10,12 @@ let server = http.createServer(app);
 let io = socketio(server)
 
 let folderPath = process.argv[2]
-app.use('/static', express.static(folderPath))
+
+if(folderPath) {
+    app.get('/static', express.static(folderPath))
+} else {
+    app.get('/static', express.static('.'))
+}
 
 let ss = new SocketServer(io)
 
