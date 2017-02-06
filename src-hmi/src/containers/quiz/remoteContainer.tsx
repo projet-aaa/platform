@@ -17,7 +17,7 @@ function mapDispatchToProps(dispatch): ActionProps {
     return {
         // signals the store that an answer has been validated
         validateAnswer: (quizId) => dispatch(validateAction(quizId)),
-        sendComment: (comment) => dispatch((comment) => console.log(comment))
+        sendComment: (comment) => console.log(comment)
     }
 }
 

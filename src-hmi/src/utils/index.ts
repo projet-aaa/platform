@@ -8,6 +8,9 @@ import { apiMiddleware } from 'redux-api-middleware'
 import createSocketIoMiddleware from 'redux-socket.io'
 import * as io from 'socket.io-client'
 
+import authInfo from '../store/auth/reducers/auth'
+import { authenticate } from '../store/auth/actions/actions'
+
 // -- ACTION CREATOR HELPERS
 export interface Action<T>{
 	type: string
@@ -18,7 +21,7 @@ export interface Action<T>{
 // -- STORE CREATOR HELPER
 export const storeFactory = (reducers: any[], url: string, log: boolean) => {
     let socket = io.connect(url),
-        reducers2 = {}, len = reducers.length,
+        reducers2 = Object.assign({}, authInfo), len = reducers.length,
         reducer = null
 
     for(let i = 0; i < len; i++) {
@@ -32,10 +35,14 @@ export const storeFactory = (reducers: any[], url: string, log: boolean) => {
     if(url) { middlewares.push(createSocketIoMiddleware(socket, 'SERVER/')) }
     if(log) { middlewares.push(createLogger()) }
 
-    return createStore(
+    let store = createStore(
         reducer,
         applyMiddleware(...middlewares)
-    )
+    );
+
+    (store as any).dispatch(authenticate('abeyet', 'abab'))
+
+    return store
 }
 
 // -- TEST HELPER

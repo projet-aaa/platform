@@ -13,9 +13,9 @@ import App from '../../containers/quiz/remoteContainer'
 
 import { storeFactory } from '../../utils'
 
-// -- post localhost/api/login_check, retourne token 
-
-let store = storeFactory([quizInfo, remoteInfo, scoreInfo, feedbackInfo], "localhost:8000", true)
+let store = storeFactory([
+    quizInfo, remoteInfo, scoreInfo, feedbackInfo
+], "localhost:8000", true)
 
 let MainRouter =
 (<Provider store={store}>
