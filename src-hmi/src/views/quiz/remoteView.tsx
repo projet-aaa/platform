@@ -1,21 +1,26 @@
-// represents what sees a student during a live session (his remote)
+// REMOTE VIEW
+// Renders the student remote during a live lesson
 
+// EXTERAL IMPORTS
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
+// INTERNAL IMPORTS
 import QuizContainer from "../../containers/quiz/quizContainer"
 import ScoreContainer from "../../containers/quiz/scoreContainer"
 import FeedbackContainer from "../../containers/quiz/feedbackContainer"
-
 import { QuizType, Quiz } from "../../models/quiz"
 
 export interface StateProps {
-    quiz: Quiz // a quiz
+    // a quiz
+    quiz: Quiz
 }
+
 export interface ActionProps {
-    validateAnswer(quizId: number) // validate an answer
+    // Fires an action signaling that an answer has been validated
+    validateAnswer(quizId: number)
 }
 
 // get the text of an element of the page with the id "id"
@@ -34,7 +39,7 @@ export class View extends React.Component<Props, any> {
         } = this.props;
         
         // if there is a question we show the quiz, else we show the feedback buttons
-        let question = true,
+        let question = false,
             left = question ?  
                     <QuizContainer quiz={ quiz } validate={ validateAnswer }/> :
                     <FeedbackContainer/>

@@ -1,19 +1,31 @@
-// represents the score of a user on the last quiz
+// SCORE VIEW
+// Renders the score of a student during a live lesson
 
+// EXTERAL IMPORTS
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
 export interface StateProps {
-   score: number // his score
-   rank: number // his rank
-   population: number
-   highScore: number // the high score
-   average: number // the average
+    // his score
+    score: number
+    // his rank
+    rank: number
+    // the people number who answered the questions
+    population: number
+    // the high score
+    highScore: number
+    // the average
+    average: number
 }
 
 export interface ActionProps {}
+
+// Style for the text
+var mediumSizeText = {
+    fontSize: 30
+}
 
 type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
@@ -24,9 +36,6 @@ export class View extends React.Component<Props, any> {
             score, rank, population, highScore, average
         } = this.props;
 
-        var mediumSizeText = {
-            fontSize: 30
-        }
         // we show a panel containing all the values defined above
         return (
             <div>

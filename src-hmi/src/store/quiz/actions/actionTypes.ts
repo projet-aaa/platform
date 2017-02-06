@@ -1,6 +1,9 @@
 export const ActionTypes = {
-    CHOOSE: "QUIZ/CHOOSE",
+    // When an answer has been chosen (in a question where there is an answer to choose)
+    CHOOSE: "QUIZ/CHOOSE", 
+    // When the user has validated his own answer
     VALIDATE: "QUIZ/VALIDATE",
+    // When the user signals his state of attention
     SIGNAL: "QUIZ/SIGNAL"
 }
 

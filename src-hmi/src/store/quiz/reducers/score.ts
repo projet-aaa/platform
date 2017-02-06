@@ -1,5 +1,10 @@
+// Score REDUCER
+// Manages the state of a user scores
+
+// EXTERNAL IMPORTS
 import { handleActions } from "redux-actions"
 
+// INTERNAL IMPORTS
 import { Action } from "../../../utils"
 
 interface ScoreInfo {
@@ -20,7 +25,8 @@ let initialState: ScoreInfo = {
 
 const name = "score"
 const reducer = handleActions({
-    ["jamais"]: function(state: ScoreInfo, action: Action<any>): ScoreInfo {
+    // we have to put a fake action
+    ["never"]: function(state: ScoreInfo, action: Action<any>): ScoreInfo {
         return state
     }
 }, initialState);

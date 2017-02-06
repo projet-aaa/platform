@@ -1,18 +1,24 @@
+// QUIZ STAT VIEW
+// Renders a diagram with quiz statistics
+
+// EXTERAL IMPORTS
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
-
 import * as chartjs from "react-chartjs-2"
 
+// INTERNAL IMPORTS
 import { QuizStats, Choices } from "../../models/dashboard"
 
 export interface StateProps {
+    // the quiz staticstics
     quizStats: QuizStats
 }
 
 export interface ActionProps { }
 
+// The colors for the diagram
 const chartColors = [
     "#FF6384",
     "#36A2EB",

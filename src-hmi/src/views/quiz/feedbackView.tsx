@@ -1,5 +1,7 @@
-// represents the buttons that a student have to give feedback to the teacher
+// FEEDBACK VIEW
+// Renders the components allowing a student to signal his state of attention
 
+// EXTERNAL IMPORTS
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router"
@@ -7,10 +9,13 @@ import * as MediaQuery from "react-responsive"
 
 export interface StateProps {}
 
-export interface ActionProps { 
-    signalPanic() // select the "panic"" button
-    signalSlow() // select the "too slow" button
-    signalFast() // select the "too fast" button
+export interface ActionProps {
+    // Fires an action signaling that the user is panicking
+    signalPanic()
+    // Fires an action signaling that the lesson goes too slow
+    signalSlow()
+    // Fires an action signaling that the lesson goes too fast
+    signalFast()
 }
 
 type Props = StateProps & ActionProps;
@@ -21,7 +26,7 @@ export class View extends React.Component<Props, any> {
         const {
             signalPanic, signalSlow, signalFast
         } = this.props;
-        // these 3 buttons form a triangle
+        // each action is associated to a button, these 3 buttons form a triangle
         return (
             <div>
                 <div className="row">
