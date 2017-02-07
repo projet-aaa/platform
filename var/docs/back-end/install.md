@@ -2,9 +2,9 @@
 
 Before Jetpack installation, install
 
- - [Docker]()
+ - [Docker](https://docs.docker.com/engine/installation/)
  
- - [Docker-compose]()
+ - [Docker-compose](https://docs.docker.com/compose/install/) Beware, Ubuntu 16 repositories aren't suitable because their version is too old.
  
  Then follow that script :
  
@@ -17,7 +17,7 @@ Before Jetpack installation, install
 
 Once the build process is over, execute : 
 
-```
+```bash
     #create the database schema
     docker-compose exec web php bin/console doctrine:schema:create
     #load default data
