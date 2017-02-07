@@ -26,6 +26,18 @@ When a room is created (POST on /api/room/open/{id_of_related_session}), we emit
     ]
 ```
 
+**On session room closing**
+
+When a room is closed (POST on /api/room/close/{id_of_related_session}), we emit on `general` :
+
+```php
+    [
+    'type' => 'closeRoom',
+    'payload' => ['user' => '{user_serialization}', 
+                  'session' => '{session_serialization}']
+    ]
+```
+
 
 ## Object serialization
 

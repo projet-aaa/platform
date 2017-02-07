@@ -22,12 +22,11 @@ class RoomController extends Controller
 
 
     /**
-     * POST only route to open a salle
+     * POST-only route to close a room
      *
-     * @Route("/api/room/open/{id}", name="api_open_room", methods={"POST","GET"})
+     * @Route("/api/room/open/{id}", name="api_open_room", methods={"POST"})
      * @Security("has_role('ROLE_PROF')")
      *
-     * @param Request $request The http request. Used to get the current user.
      * @param Session $session the session we want to open a live for. This parameter is resolved through
      * ExtraFrameworkBundle::ParamConverter. Just pass a correct session id to the route.
      * @return Response
@@ -49,6 +48,45 @@ class RoomController extends Controller
             );
             $response = new Response();
             $response->setStatusCode(201);
+            return $response;
+        }
+        catch (\Exception $e)
+        {
+            $response = new JsonResponse();
+            $response->setStatusCode(500);
+            $response->setContent($e->getMessage());
+            return $response;
+        }
+
+    }
+
+    /**
+     * POST-only route to close a room
+     *
+     * @Route("/api/room/close/{id}", name="api_close_room", methods={"POST","GET"})
+     * @Security("has_role('ROLE_PROF')")
+     *
+     * @param Session $session the session we want to close a room for. This parameter is resolved through
+     * ExtraFrameworkBundle::ParamConverter. Just pass a correct session id to the route.
+     * @return Response
+     */
+    public function closeRoomAction(Session $session)
+    {
+        try{
+            $redis = $this->get('app.redis.client');
+            $redis->publish('general', json_encode(
+                    array(
+                        'type' => 'closeRoom',
+                        'payload' =>
+                            array(
+                                'user' => $this->get('security.token_storage')->getToken()->getUser(),
+                                'session' => $session,
+                            )
+                    )
+                )
+            );
+            $response = new Response();
+            $response->setStatusCode(204);
             return $response;
         }
         catch (\Exception $e)
