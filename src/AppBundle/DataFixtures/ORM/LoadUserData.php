@@ -37,6 +37,7 @@ class LoadUserData implements FixtureInterface
             $user->setFirstname('Prenom-'.$user_model['username']);
             $user->setLastname('Nom-'.$user_model['username']);
             $user->setPlainPassword($user_model['password']);
+            $user->setRoles($user_model['roles']);
             $manager->persist($user);
 
         }
