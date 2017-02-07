@@ -1,60 +1,95 @@
-import { IRoom, IMainRoom, SocketInfo } from './iroom'  
-import { MainRoom } from '../rooms/mainRoom'
+import { IMainRoom, IRoom } from './iroom'
+import { SocketInfo, RoomInfo, RoomType } from '../models/rooms'
 
-import { RoomInfo, RoomType } from '../main/iroom'
+import { MainRoom } from '../rooms/mainRoom'
 
 export class SocketServer {
 
     io
-    sockets: SocketInfo[]
+    redis
     rooms: IRoom[]
     mainRoom: IMainRoom
 
     nextId: number = 0
 
-    constructor(io) {
+    log: boolean
+
+    constructor(io, redis, log) {
         this.io = io
-        this.sockets = []
+        this.redis = redis
         this.rooms = []
         this.mainRoom = new MainRoom(this, this.nextId++)
 
+        this.log = log
+
         io.on('connection', socket => {
-            console.log("connection!!")
             let socketInfo = {
                 id: -1,
                 socket,
-                roomId: -1
+                roomId: -1,
+                username: null,
+                isTeacher: false
             }
-            this.sockets.push(socketInfo)
+
+            if(this.log)
+                console.log('[connection]')
+
             this.mainRoom.socketGeneralEnter(socketInfo)
             this.mainRoom.socketEnter(socketInfo)
             this.mainRoom.sockets.push(socketInfo)
 
             socket.on('action', (action) => {
-                let room: IRoom = socketInfo.roomId == -1 ? this.mainRoom : this.rooms[socketInfo.roomId] 
+                let room: IRoom = this.rooms[socketInfo.roomId] 
                 
-                if(action.type.substring(0, 7) == "SERVER/"){  
-                    room.receive(socketInfo, action.type, action.payload)
+                if(action.type.substring(0, 7) == "SERVER/"){
+                    if(this.log)
+                        console.log('[socket msg in] source=', socketInfo, ' msg=', action)
+
+                    if(action.type == "SERVER/AUTHENTIFY") {
+                        socketInfo.id = action.payload.id
+                        socketInfo.username = action.payload.username
+                        socketInfo.isTeacher = action.payload.isTeacher
+                    } else {
+                        if(room) {
+                            room.receiveSocketMsg(socketInfo, action.type, action.payload)
+                        }
+                        this.mainRoom.receiveSocketMsg(socketInfo, action.type, action.payload)
+                    }
                 }
             })
 
             socket.on('disconnect', () => {
-                let room: IRoom = socketInfo.roomId == -1 ? this.mainRoom : this.rooms[socketInfo.roomId] 
+                if(this.log)
+                    console.log('[disconnection] ', socketInfo)
 
-                let i = room.sockets.indexOf(socketInfo)
-                if(i >= 0) { room.sockets.splice(i, 1) }
+                let room: IRoom = this.rooms[socketInfo.roomId] 
 
-                this.sockets.splice(this.sockets.indexOf(socketInfo), 1)
+                if(room) {
+                    let i = room.sockets.indexOf(socketInfo)
+                    if(i >= 0) { room.sockets.splice(i, 1) }
 
-                room.socketLeave(socketInfo)
+                    room.socketLeave(socketInfo)
+                }
+
+                this.mainRoom.sockets.splice(this.mainRoom.sockets.indexOf(socketInfo), 1)
+                this.mainRoom.socketLeave(socketInfo)
                 this.mainRoom.socketGeneralLeave(socketInfo)
             });
+        })
+
+        redis.on('message', function(channel, data) {
+            if(this.log)
+                console.log('[redis msg] ', data)
+            // TODO parse data and send it to the right room
         })
     }
 
     createRoom(type: number): number {
         let id = this.nextId++,
             room = null
+
+        if(this.log)
+            console.log('[create room] type=', type, ' id=', id)
             
         room.init(this)
         this.rooms[id] = room
@@ -63,6 +98,9 @@ export class SocketServer {
     }
     closeRoom(roomId: number) {
         let room = this.rooms[roomId]
+
+        if(this.log)
+            console.log('[close room] type=', room.type, ' id=', room.id)
 
         for(let socket of room.sockets) {
             this.changeSocketRoom(socket, -1)
@@ -73,22 +111,34 @@ export class SocketServer {
 
     changeSocketRoom(socketInfo: SocketInfo, roomId: number) {
         if(roomId != socketInfo.roomId) {
-            let oldRoom = roomId == -1 ? this.rooms[socketInfo.roomId] : this.mainRoom,
-                newRoom = roomId == -1 ? this.mainRoom : this.rooms[socketInfo.roomId],
-                i = oldRoom[socketInfo.roomId].sockets.indexOf(socketInfo)
+            let oldRoom = this.rooms[socketInfo.roomId],
+                newRoom = this.rooms[roomId]
 
-            if(i >= 0) { oldRoom[socketInfo.roomId].sockets.splice(i, 1) }
+            if(this.log) {
+                console.log(
+                    '[room change] user=', socketInfo.username, 
+                    ' old room type=', oldRoom.type, ' id=', oldRoom.id, 
+                    ' new room type=', newRoom.type, ' id=', newRoom.id
+                )
+            }
 
-            newRoom.sockets.push(socketInfo)
+            if(oldRoom) {
+                let i = oldRoom.sockets.indexOf(socketInfo)
+                oldRoom.sockets.splice(i, 1)
+                oldRoom.socketLeave(socketInfo)
+            }
 
             socketInfo.roomId = roomId
-            
-            oldRoom.socketLeave(socketInfo)
+
+            newRoom.sockets.push(socketInfo)
             newRoom.socketEnter(socketInfo)
         }
     }
 
     send(socketInfo: SocketInfo, type: string, msg) {
+        if(this.log)
+            console.log('[socket msg out] dest=', socketInfo, ' type=', type + ' msg=', msg)
+            
         socketInfo.socket.emit('action', { type: type, payload: msg })
     }
 
@@ -96,7 +146,9 @@ export class SocketServer {
         return this.rooms.map((room) => {
             return { 
                 id: room.id,
-                type: room.type  
+                type: room.type,
+                popStudent: room.sockets.length,
+                popTeacher: room.sockets.length
             }
         })
     }

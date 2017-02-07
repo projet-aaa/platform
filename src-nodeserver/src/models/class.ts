@@ -1,0 +1,6 @@
+export const RedisMsg = {
+    ANSWER: "ANSWER",
+    SIGNAL_STATE: "SIGNAL_STATE",
+    LAUNCH_QUIZ: "LAUNCH_QUIZ",
+    FINISH_QUIZ: "FINISH_QUIZ"
+}

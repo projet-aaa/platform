@@ -1,7 +1,7 @@
 import { Action } from "../../../utils/";
 import { ActionTypes, AddTodoAction, RemoveTodoAction, GeneralAction } from "../actionTypes";
 import { handleActions } from "redux-actions";
-import { Todo } from "../../../models/models"
+import { Todo } from "../../../models/todo"
 
 const name = "stuff"
 const reducer = handleActions({

@@ -7,7 +7,6 @@ export interface LaunchAction {
     title: string
 }
 
-
 // 0: panic
 // 1: slow
 // 2: fast

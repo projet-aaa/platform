@@ -2,7 +2,7 @@ import { Action } from "../../../utils/index";
 import { ActionTypes, AddTodoAction, RemoveTodoAction } from "../actionTypes";
 import { APIActionTypes } from "../apiActionTypes"
 import { handleActions } from "redux-actions";
-import { Todo } from "../../../models/models"
+import { Todo } from "../../../models/todo"
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;

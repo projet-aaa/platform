@@ -1,24 +1,9 @@
-export const RoomType = {
-    CHAT: "CHAT", 
-    CLASS: "CLASS", 
-    MAIN: "MAIN"
-}
-
-export interface SocketInfo {
-    socket
-    id: number
-    roomId: number
-}
-
-export interface RoomInfo {
-    id: number
-    type: number
-}
+import { SocketInfo, RoomInfo, RoomType } from '../models/rooms'
 
 export abstract class IRoom {
 
     id: number
-    type: number
+    type: string
     server: any
     sockets: SocketInfo[]
 
@@ -30,7 +15,9 @@ export abstract class IRoom {
         this.sockets = []
     }
 
-    abstract receive(socketInfo: SocketInfo, type: string, msg)
+    abstract receiveSocketMsg(socketInfo: SocketInfo, type: string, msg)
+
+    abstract receiveRedisMsg(type: string, msg)
 
     abstract socketEnter(socketInfo: SocketInfo)
     abstract socketLeave(socketInfo: SocketInfo)

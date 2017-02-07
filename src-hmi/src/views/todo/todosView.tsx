@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
-import { Todo } from "../../models/models"
+import { Todo } from "../../models/todo"
 
 import TodoView from "../../views/todo/todo"
 

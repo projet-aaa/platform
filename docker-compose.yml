@@ -26,6 +26,8 @@ redis:
 
 nodejs:
     build: nodejs
+    links:
+        - redis
     volumes:
         - ./nodejs:/app
     ports:
