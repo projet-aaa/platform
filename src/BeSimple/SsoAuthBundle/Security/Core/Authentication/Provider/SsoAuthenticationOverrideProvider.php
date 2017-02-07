@@ -3,6 +3,8 @@
 namespace BeSimple\SsoAuthBundle\Security\Core\Authentication\Provider;
 
 
+use BeSimple\SsoAuthBundle\Security\Core\Authentication\Token\SsoToken;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -47,6 +49,7 @@ class SsoAuthenticationOverrideProvider extends SsoAuthenticationProvider
                 throw $notFound;
             }
         }
+
         return $user;
     }
 
@@ -97,5 +100,33 @@ class SsoAuthenticationOverrideProvider extends SsoAuthenticationProvider
         }
 
         return $user;
+    }
+
+    /**
+     * @{inheritdoc}
+     */
+    public function authenticate(TokenInterface $token)
+    {
+        if (!$this->supports($token)) {
+            return null;
+        }
+
+        $validation = $token->getManager()->validateCredentials($token->getCredentials());
+        if (!$validation->isSuccess()) {
+            throw new BadCredentialsException('Authentication has not been validated by SSO provider.');
+        }
+
+        $user = $this->provideUser($validation->getUsername(), $validation->getAttributes());
+
+        //remove post auth and pre-auth because we don't really implement useradvancedinterface
+        $authenticatedToken = new SsoToken($token->getManager(), $token->getCredentials(), $user, $user->getRoles(), $validation->getAttributes());
+        foreach ($token->getAttributes() as $name => $value) {
+            if ('sso:validation' == $name) {
+                continue;
+            }
+            $authenticatedToken->setAttribute($name, $value);
+        }
+
+        return $authenticatedToken;
     }
 }
