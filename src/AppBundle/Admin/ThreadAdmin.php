@@ -13,7 +13,7 @@ class ThreadAdmin extends AbstractAdmin
     {
         $formMapper->add('title')
         ->add('text')
-        ->add('commentaries')
+        ->add('threadMessages')
         ->add('session')
         ->add('author');
     }
