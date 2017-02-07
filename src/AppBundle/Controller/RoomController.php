@@ -41,7 +41,7 @@ class RoomController extends Controller
                 'type' => 'openRoom',
                 'payload' =>
                     array(
-                        'prof' => $this->get('security.token_storage')->getToken()->getUser(),
+                        'user' => $this->get('security.token_storage')->getToken()->getUser(),
                         'session' => $session,
                         )
                 )
