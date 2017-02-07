@@ -34,6 +34,7 @@ main() {
     # Not volumes, so need to be chowned
     chown -R "$owner:$group" /var/{lock,log,run}/apache*
     chown -R "$owner:$group" var
+    chown -R "$owner:$group" vendor
     exec /usr/sbin/apache2ctl "$@"
 }
 
