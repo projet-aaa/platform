@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity
  * @UniqueEntity("name")
  */
-class Session
+class Session implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -65,6 +65,24 @@ class Session
     {
         return 'Session '.$this->getName();
     }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'type' => $this->type,
+            'updatedAt' => $this->updatedAt,
+        ];
+    }
+
 
     /** auto generated methods */
 
