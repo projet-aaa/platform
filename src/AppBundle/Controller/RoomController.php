@@ -29,7 +29,7 @@ class RoomController extends Controller
      *
      * @param Session $session the session we want to open a live for. This parameter is resolved through
      * ExtraFrameworkBundle::ParamConverter. Just pass a correct session id to the route.
-     * @return Response
+     * @return Response. 201 Status code if everything works | 500 if an exception occurs
      */
     public function openRoomAction(Session $session)
     {
@@ -68,7 +68,7 @@ class RoomController extends Controller
      *
      * @param Session $session the session we want to close a room for. This parameter is resolved through
      * ExtraFrameworkBundle::ParamConverter. Just pass a correct session id to the route.
-     * @return Response
+     * @return Response. 204 Status code if everything works | 500 if an exception occurs
      */
     public function closeRoomAction(Session $session)
     {
