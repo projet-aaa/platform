@@ -28,3 +28,7 @@ nodejs:
     build: nodejs
     volumes:
         - ./nodejs:/app
+    ports:
+        - 8088:8088
+
+

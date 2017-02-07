@@ -1,7 +1,7 @@
 import { IRoom, IMainRoom, SocketInfo } from './iroom'  
 import { MainRoom } from '../rooms/mainRoom'
 
-import { RoomInfo, RoomType } from '../../../src-hmi/src/models/server'
+import { RoomInfo, RoomType } from '../main/iroom'
 
 export class SocketServer {
 
@@ -19,6 +19,7 @@ export class SocketServer {
         this.mainRoom = new MainRoom(this, this.nextId++)
 
         io.on('connection', socket => {
+            console.log("connection!!")
             let socketInfo = {
                 id: -1,
                 socket,

@@ -1,16 +1,24 @@
-import { RoomType } from '../../../src-hmi/src/models/server'
+export const RoomType = {
+    CHAT: "CHAT", 
+    CLASS: "CLASS", 
+    MAIN: "MAIN"
+}
 
 export interface SocketInfo {
-
     socket
     id: number
     roomId: number
 }
 
+export interface RoomInfo {
+    id: number
+    type: number
+}
+
 export abstract class IRoom {
 
     id: number
-    type: RoomType
+    type: number
     server: any
     sockets: SocketInfo[]
 

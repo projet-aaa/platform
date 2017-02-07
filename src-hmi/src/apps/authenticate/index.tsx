@@ -17,7 +17,7 @@ import { answerAction } from '../../store/quiz/actions/actions'
 
 let store = storeFactory([
     quizInfo, remoteInfo, scoreInfo, feedbackInfo
-], "localhost:8000", true)
+], "localhost:8088", true)
 
 let MainRouter =
 (<Provider store={store}>
