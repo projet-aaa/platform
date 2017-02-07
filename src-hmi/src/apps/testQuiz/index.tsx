@@ -15,7 +15,10 @@ viewTestFactory<Props>(View, {
         choice: -1,
         isValidated: false
     },
-    consultation: true,
+    answerConsultation: true, // to show explanations of answers
+    displayMode: true, // to only display the question and the choices (for the teacher)
     choose: (quizId, i) => console.log("Test : " + i),
     validate: (quizId) => console.log("Je valide!"),
+    nextQuiz: () => {}, // null => no button, everything else => button
+    prevQuiz: () => {} // idem
 })

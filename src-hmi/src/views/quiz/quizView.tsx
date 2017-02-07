@@ -4,23 +4,30 @@ import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
 import { View as AnswerView} from "./answerView"
-
 import { QuizType, Quiz } from "../../models/quiz"
+import { getText } from "../../utils/index"
 
 export interface StateProps {
     // the quiz 
     quiz: Quiz
-    // true if consultation mode, false if answer mode
-    consultation: boolean
+    // true if consultation mode, false else
+    answerConsultation: boolean
+    // true if it's display mode, false else
+    displayMode: boolean
 }
 export interface ActionProps {
     choose(quizId: number, choice: any) // select an answer
     validate(quizId: number) // validate the answer
+    nextQuiz() // go to the next question
+    prevQuiz() // go to the previous question
 }
 
-// get the text of an element of the page with the id "id"
-function getText(id: string): string {
-    return (document.getElementById(id) as any).value
+// style for the text
+var bigSizeText = {
+    fontSize: 50
+}
+var mediumSizeText = {
+    fontSize: 30
 }
 
 export type Props = StateProps & ActionProps;
@@ -30,8 +37,12 @@ export class View extends React.Component<Props, any> {
     render() {
         const {
             quiz,
-            consultation,
-            choose, validate
+            answerConsultation,
+            displayMode,
+            choose, 
+            validate,
+            nextQuiz,
+            prevQuiz
         } = this.props;
 
         let inputFieldStyle = {
@@ -44,16 +55,17 @@ export class View extends React.Component<Props, any> {
         switch(quiz.type) {
             case QuizType.MCQ: 
                 let createChooseAction = (i) => {
-                    return consultation ? () => {  }: () => { choose(quiz.id, i) }
+                    return displayMode ? () => {  }: () => { choose(quiz.id, i) }
                 } 
                 var answerItems = quiz.choices.map((item, i) => {
-                    console.log(i)
-                    return <AnswerView key={item} ind={i} text={item} choose={ createChooseAction(i) } chosen={ quiz.choice == i } rightAnswer={i==quiz.answer} explanation={ quiz.explanations[i] } consultation={ consultation }></AnswerView>;
+                    return <AnswerView key={item} ind={i} text={item} choose={ createChooseAction(i) } chosen={ quiz.choice == i } rightAnswer={i==quiz.answer} explanation={ quiz.explanations[i] } answerConsultation={ answerConsultation } displayMode={ displayMode }/>;
                 });
                 answers = 
-                (<ul>
-                    {answerItems}
-                </ul>)
+                (
+                    <ul>
+                        {answerItems}
+                    </ul>
+                )
             break
             case QuizType.TEXT:
                 answers =
@@ -66,28 +78,17 @@ export class View extends React.Component<Props, any> {
             break
         }
 
-        var bigSizeText = {
-            fontSize: 50
-        }
-        var mediumSizeText = {
-            fontSize: 30
-        }
-
         // a question with its answers
         let questionRender = (
             <div>
                 <h3 style={bigSizeText}>Enoncé : { quiz.question }</h3>
-                <br/><br/>
-                <ul>
-                    { answers }
-                </ul>
+                <br/>
+                { answers }
             </div>
         )
         // if we are in answer mode, we have to display a vilidate button
-        // if we are in consultation mode, we have to display previous and next button
         let validateButton = null;
-        let quizRender = null;
-        if (!consultation) {
+        if (!(displayMode || answerConsultation)) {
             validateButton = (
                 <div className="row">
                     <div className="col-lg-offset-8 col-lg-4">
@@ -97,6 +98,10 @@ export class View extends React.Component<Props, any> {
                     </div>
                 </div>
             )
+        }
+        // if they are associated to an action, we have to display previous and next button
+        let quizRender = null;
+        if (nextQuiz == null && prevQuiz == null) {
             quizRender = (
                 <div className="row">
                     <div className="col-lg-12">
@@ -104,17 +109,39 @@ export class View extends React.Component<Props, any> {
                     </div>
                 </div>
             )
+        } else if (nextQuiz == null) {
+            quizRender = (
+                <div className="row">
+                    <div className="col-lg-2">
+                        <button className="btn btn-primary">Précédent</button>
+                    </div>
+                    <div className="col-lg-8">
+                        { questionRender }
+                    </div>
+                </div>
+            )
+        } else if (prevQuiz == null) {
+            quizRender = (
+                <div className="row">
+                    <div className="col-lg-8 col-lg-offset-2">
+                        { questionRender }
+                    </div>
+                    <div className="col-lg-2">
+                        <button className="btn btn-primary">Suivant</button>
+                    </div>
+                </div>
+            )
         } else {
             quizRender = (
                 <div className="row">
                     <div className="col-lg-2">
-                        <button>Précédent</button>
+                        <button className="btn btn-primary">Précédent</button>
                     </div>
                     <div className="col-lg-8">
                         { questionRender }
                     </div>
                     <div className="col-lg-2">
-                        <button>Suivant</button>
+                        <button className="btn btn-primary">Suivant</button>
                     </div>
                 </div>
             )
@@ -123,15 +150,8 @@ export class View extends React.Component<Props, any> {
         return (
             <div>
                 <div className="panel">
-                    <div className="panel-heading" style={mediumSizeText}>
-                        Quiz
-                    </div>
-                    <div className="panel-body pan white-background">
-                        <div className="pal">
-                            { quizRender }
-                            { validateButton }
-                        </div>
-                    </div>
+                    { quizRender }
+                    { validateButton }
                 </div>
             </div>
         );

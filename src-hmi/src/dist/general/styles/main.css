@@ -7048,6 +7048,18 @@ ul.chats li.out .message {
     margin-left:1em
 }
 
+.bigTab {
+    margin-left:5em
+}
+
+.no-resize {
+  resize: none;
+}
+
+.covering-size {
+  width: 100%
+}
+
 
 /**************************************************************************/
 
@@ -7064,6 +7076,4 @@ ul.chats li.out .message {
 	background-color: red !important;
 }
 
-.no-resize {
-  resize: none;
-}
+/*******************************************************************************************/

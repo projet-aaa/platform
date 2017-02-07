@@ -15,17 +15,27 @@ export interface StateProps {
     // true if it's the right answer
     rightAnswer: boolean
     // true if we are in consultation mode, false if in answer mode
-    consultation: boolean
+    answerConsultation: boolean
     // the explanation associated to the answer
     explanation: string
+    // true if display mode, false else
+    displayMode: boolean
 }
 
 export interface ActionProps {
-    choose() // select an answer
+    // select an answer
+    choose()
 }
 
+// styles
 var heightExplanation = {
     height: "0px"
+}
+var sizeText = {
+    fontSize: 22
+}
+var mediumSizeText = {
+    fontSize: 30
 }
 
 type Props = StateProps & ActionProps;
@@ -34,28 +44,34 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
-            ind, chosen, choose, text, rightAnswer, consultation, explanation
+            ind,
+            chosen,
+            choose,
+            text,
+            rightAnswer,
+            answerConsultation,
+            explanation,
+            displayMode
         } = this.props;
-
-        var mediumSizeText = {
-            fontSize: 30
-        }
         
         let colorAnswerStyle = null
-
-        if(rightAnswer) {
-            colorAnswerStyle = {
-                color: "green"
-            }
+        if (displayMode) {
+            colorAnswerStyle = {}
         } else {
-            colorAnswerStyle = {
-                color: "red"
+            if(rightAnswer) {
+                colorAnswerStyle = {
+                    color: "green"
+                }
+            } else {
+                colorAnswerStyle = {
+                    color: "red"
+                }
             }
         }
+        
         let indRef = "ind" + ind
-        console.log(indRef)
         let res = null
-        if (consultation) {
+        if (answerConsultation) {
             res = (
                 <li className="without-bullet">
                     <div className="faq-item">
@@ -66,15 +82,25 @@ export class View extends React.Component<Props, any> {
                                 </a>
                             </div>
                         </div>
-                        <br/>
                         <div className="row">
                             <div className="col-lg-12">
                                 <div id={indRef} className="panel-collapse collapse" aria-expanded="false" style={heightExplanation}>
-                                    { explanation }
+                                    <div className="bigTab" style={sizeText}>
+                                        { explanation }
+                                    </div>
+                                    <br/>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </li>
+            )
+        } else if (displayMode) {
+            res = (
+                <li className="without-bullet" onClick={ choose }>
+                    <a>
+                        <label className="tab" style={ mediumSizeText }>{ text }</label>
+                    </a>
                 </li>
             )
         } else {
