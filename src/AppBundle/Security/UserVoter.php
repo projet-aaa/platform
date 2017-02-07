@@ -83,7 +83,7 @@ class UserVoter extends BaseVoter
      */
     private function canCreate(User $oUser, User $user)
     {
-       return $user->getRole() === 'ROLE_ADMIN';
+       return in_array('ROLE_ADMIN',$user->getRoles());
     }
 
     /**
@@ -95,7 +95,7 @@ class UserVoter extends BaseVoter
      */
     private function canRead(User $oUser, User $user)
     {
-        return $user === $oUser || $user->getRole() === 'ROLE_ADMIN';
+        return $user === $oUser || in_array('ROLE_ADMIN',$user->getRoles());
     }
 
     /**
@@ -107,7 +107,7 @@ class UserVoter extends BaseVoter
      */
     private function canUpdate(User $oUser, User $user)
     {
-        return $user === $oUser || $user->getRole() === 'ROLE_ADMIN';
+        return $user === $oUser || in_array('ROLE_ADMIN',$user->getRoles());
     }
 
     /**
@@ -119,6 +119,6 @@ class UserVoter extends BaseVoter
      */
     private function canDelete(User $oUser, User $user)
     {
-        return $user === $oUser || $user->getRole() === 'ROLE_ADMIN';
+        return $user === $oUser || in_array('ROLE_ADMIN',$user->getRoles());
     }
 }

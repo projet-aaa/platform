@@ -84,7 +84,7 @@ class DisciplineVoter extends BaseVoter
      */
     private function canCreate(Discipline $discipline, User $user)
     {
-        return $user->getRole() === 'ROLE_ADMIN';
+        return in_array('ROLE_ADMIN',$user->getRoles());
     }
 
     /**
@@ -108,7 +108,7 @@ class DisciplineVoter extends BaseVoter
      */
     private function canUpdate(Discipline $discipline, User $user)
     {
-        return $user->getRole() === 'ROLE_ADMIN';
+        return in_array('ROLE_ADMIN',$user->getRoles());
     }
 
     /**
@@ -120,6 +120,6 @@ class DisciplineVoter extends BaseVoter
      */
     private function canDelete(Discipline $discipline, User $user)
     {
-        return $user->getRole() === 'ROLE_ADMIN';
+        return in_array('ROLE_ADMIN',$user->getRoles());
     }
 }
