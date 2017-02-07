@@ -14,6 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     "normalization_context"={"groups"={"user", "user-read"}},
  *     "denormalization_context"={"groups"={"user", "user-write"}}
  * })
+ * @ORM\HasLifecycleCallbacks
  */
 class User extends BaseUser
 {
@@ -46,6 +47,16 @@ class User extends BaseUser
      * @Groups({"user"})
      */
     private $part; //group is a reserved word in sql.
+
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function setUserEmail(){
+        if(empty($this->email)){
+            $this->email = $this->username.'@etu.enseeiht.fr';
+        }
+    }
 
     /** Auto generated methods */
 
