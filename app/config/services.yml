@@ -5,7 +5,7 @@ parameters:
 imports:
     - { resource: 'services_admin.yml' }
     - { resource: 'services_event_listener.yml' }
-    - { resource: 'services_voters.yml' }
+    - { resource: 'services_voter.yml' }
 
 services:
 #    service_name:
@@ -23,3 +23,7 @@ services:
         arguments: ["@security.authorization_checker"]
         tags:
             - { name: kernel.event_listener, event: kernel.request, priority: 3}
+
+    app.redis.client:
+        class: Predis\Client
+        arguments: ['tcp://redis:6379']
