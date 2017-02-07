@@ -1,7 +1,7 @@
 import { IRoom } from '../main/iroom'
 import { SocketInfo, RoomInfo, RoomType } from '../models/rooms'
 
-import { RedisMsg } from '../models/class'
+import { RedisMsg, SocketOutMsg } from '../models/class'
 
 export class ClassRoom extends IRoom {
 
@@ -23,11 +23,11 @@ export class ClassRoom extends IRoom {
                 break;
             }
             // TEACHER
-            case RedisMsg.LAUNCH_QUIZ: {
+            case RedisMsg.START_QUIZ: {
 
                 break;
             }
-            case RedisMsg.FINISH_QUIZ: {
+            case RedisMsg.STOP_QUIZ: {
 
                 break;
             }

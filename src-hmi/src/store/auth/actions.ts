@@ -1,12 +1,20 @@
 import { CALL_API } from 'redux-api-middleware';
 
-export const AuthActionTypes = {
-    POST_AUTH: "AUTH/POST_AUTH",
-    POST_AUTH_SUCCESS: "AUTH/POST_AUTH_SUCCESS",
-    POST_AUTH_FAILURE: "AUTH/POST_AUTH_FAILURE"
+export const APIActionTypes = {
+    AUTH: "AUTH/POST_AUTH",
+    AUTH_SUCCESS: "AUTH/POST_AUTH_SUCCESS",
+    AUTH_FAILURE: "AUTH/POST_AUTH_FAILURE"
 }
 
-export function authenticate(user: string, password: string) {
+export const WSOutActionTypes = {
+    AUTH: "SERVER/AUTHENTIFY"
+}
+
+export const WSInActionTypes = {
+    
+}
+
+export function auth(user: string, password: string) {
     return {
         [CALL_API]: {
             endpoint: 'http://localhost/app_dev.php/api/login_check',
@@ -24,10 +32,17 @@ export function authenticate(user: string, password: string) {
                     + password + '\n'
                     + '-----------------------------20169935266378666911226117058--\n',
             types: [
-                AuthActionTypes.POST_AUTH, 
-                AuthActionTypes.POST_AUTH_SUCCESS, 
-                AuthActionTypes.POST_AUTH_FAILURE
+                APIActionTypes.AUTH, 
+                APIActionTypes.AUTH_SUCCESS, 
+                APIActionTypes.AUTH_FAILURE
             ]
         }
+    }
+}
+
+export function authWS(id: number, username: string, isTeacher: boolean) {
+    return {
+        type: WSOutActionTypes.AUTH,
+        payload: { id, username, isTeacher }
     }
 }

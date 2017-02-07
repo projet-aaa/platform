@@ -42,19 +42,14 @@ export class SocketServer {
                 let room: IRoom = this.rooms[socketInfo.roomId] 
                 
                 if(action.type.substring(0, 7) == "SERVER/"){
-                    if(this.log)
+                    if(this.log) {
                         console.log('[socket msg in] source=', socketInfo, ' msg=', action)
-
-                    if(action.type == "SERVER/AUTHENTIFY") {
-                        socketInfo.id = action.payload.id
-                        socketInfo.username = action.payload.username
-                        socketInfo.isTeacher = action.payload.isTeacher
-                    } else {
-                        if(room) {
-                            room.receiveSocketMsg(socketInfo, action.type, action.payload)
-                        }
-                        this.mainRoom.receiveSocketMsg(socketInfo, action.type, action.payload)
                     }
+
+                    if(room) {
+                        room.receiveSocketMsg(socketInfo, action.type, action.payload)
+                    }
+                    this.mainRoom.receiveSocketMsg(socketInfo, action.type, action.payload)
                 }
             })
 

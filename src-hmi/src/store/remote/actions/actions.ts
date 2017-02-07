@@ -1,10 +1,18 @@
 import * as fetch from 'isomorphic-fetch'
 
-import { Action, createAPIActionCreator } from '../../../utils'
-import { ActionTypes, APIActionTypes, AnswerAction, ChooseAction, SignalAction} from './actionTypes'
+import { createAPIActionCreator } from '../../../utils'
+import { ActionTypes, APIActionTypes } from './actionTypes'
 
-export function chooseAction(id: number, choice: any): Action<ChooseAction> {
-    return { type: ActionTypes.CHOOSE, payload: { id, choice } }
+export function chooseAction(choice: any) {
+    return { type: ActionTypes.CHOOSE, payload: { choice } }
+}
+
+export function prevQuizAction() {
+    return { type: ActionTypes.PREV_CONSUL_QUIZ, payload: {} }
+}
+
+export function nextQuizAction() {
+    return { type: ActionTypes.NEXT_CONSUL_QUIZ, payload: {} }
 }
 
 export const answerAction: (endpointInfo: any, payload: { id: number, choice: any}) => any

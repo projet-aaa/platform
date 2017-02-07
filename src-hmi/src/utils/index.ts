@@ -6,12 +6,11 @@ import * as createLogger from 'redux-logger';
 import { apiMiddleware } from 'redux-api-middleware'
 import { CALL_API } from 'redux-api-middleware';
 
-
 import createSocketIoMiddleware from 'redux-socket.io'
 import * as io from 'socket.io-client'
     
 import authInfo from '../store/auth/reducer'
-import { authenticate } from '../store/auth/actions'
+import { auth, authWS } from '../store/auth/actions'
 
 // -- ACTION CREATOR HELPERS
 export interface Action<T>{
@@ -42,7 +41,14 @@ export const storeFactory = (reducers: any[], url: string, log: boolean) => {
         applyMiddleware(...middlewares)
     );
 
-    (store as any).dispatch(authenticate('abeyet', 'abab'))
+    (store as any).dispatch(auth('abeyet', 'abab'))
+
+    let i = setInterval(() => {
+        if(isAuthentified()) {
+            (store as any).dispatch(authWS(0, 'abeyet', false))
+            clearInterval(i)
+        }
+    }, 500)
 
     return store
 }
