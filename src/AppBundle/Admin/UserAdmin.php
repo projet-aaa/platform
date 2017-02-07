@@ -21,7 +21,8 @@ class UserAdmin extends AbstractAdmin
             'choices' => array('Admin' => 'ROLE_ADMIN','Prof' => 'ROLE_PROF', 'Eleve' => 'ROLE_USER'),
             'multiple' => true,
         ))
-        ->add('part',TextType::class,array('label' => 'Groupe Eleve', 'required' => false));
+        ->add('part',TextType::class,array('label' => 'Groupe Eleve', 'required' => false))
+        ->add('email');
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
