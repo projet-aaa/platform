@@ -24,7 +24,8 @@ class DisciplineAdmin extends AbstractAdmin
 
     protected function configureListFields(ListMapper $listMapper)
     {
-        $listMapper->addIdentifier('name')
+        $listMapper->addIdentifier('id')
+            ->add('name')
             ->add('gitUrl')
             ->add('sessions');
     }
