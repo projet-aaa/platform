@@ -9,7 +9,7 @@ let initialState: FeedbackInfo = {}
 
 const name = "feedback"
 const reducer = handleActions({
-    [ActionTypes.SIGNAL]: function(state: FeedbackInfo, action: Action<SignalAction>): FeedbackInfo {
+    ["jamais"]: function(state: FeedbackInfo, action: Action<SignalAction>): FeedbackInfo {
         return state
     },
 }, initialState);

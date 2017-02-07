@@ -5,4 +5,5 @@ export enum RoomType {
 export interface RoomInfo {
     id: number
     type: RoomType
+    population: number
 }

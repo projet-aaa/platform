@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 
-import { validateAction } from "../../store/quiz/actions/actions"
+let validateAction = (id) => console.log("[feedbackView] validateAction not implemented: " + id)
 
 import { Quiz } from "../../models/quiz"
 

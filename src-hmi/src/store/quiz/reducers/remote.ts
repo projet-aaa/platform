@@ -1,7 +1,7 @@
 import { handleActions } from "redux-actions"
 
 import { Action } from "../../../utils"
-import { ActionTypes, ChooseAction, ValidateAction} from "../actions/actionTypes"
+import { ActionTypes, ChooseAction } from "../actions/actionTypes"
 import { Quiz, QuizType } from "../../../models/quiz"
 
 interface QuizInfo {
@@ -16,7 +16,7 @@ let initialState: QuizInfo = {
 
 const name = "remote"
 const reducer = handleActions({
-    [ActionTypes.VALIDATE]: function(state: QuizInfo, action: Action<ValidateAction>): QuizInfo {
+    ["jamais"]: function(state: QuizInfo, action: Action<{}>): QuizInfo {
         return Object.assign({}, state, {
             currentQuiz: state.currentQuiz + 1
         })

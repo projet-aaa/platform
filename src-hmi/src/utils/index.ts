@@ -4,12 +4,14 @@ import * as ReactDOM from 'react-dom'
 import * as React from 'react'
 import * as createLogger from 'redux-logger';
 import { apiMiddleware } from 'redux-api-middleware'
+import { CALL_API } from 'redux-api-middleware';
+
 
 import createSocketIoMiddleware from 'redux-socket.io'
 import * as io from 'socket.io-client'
-
-import authInfo from '../store/auth/reducers/auth'
-import { authenticate } from '../store/auth/actions/actions'
+    
+import authInfo from '../store/auth/reducer'
+import { authenticate } from '../store/auth/actions'
 
 // -- ACTION CREATOR HELPERS
 export interface Action<T>{
@@ -53,4 +55,37 @@ export function viewTestFactory<T>(View: any, props: T) {
 // Get text from an element with a certain id
 export function getText(id: string): string {
     return (document.getElementById(id) as any).value
+}
+
+// -- API ACTION CREATOR FACTORY
+export function createAPIActionCreator(
+    endpointFactory:(obj: any) => string, method: string, action: string, success: string, failure: string) {
+    return (endpointInfo, body) => {
+        let actionObj = {
+            [CALL_API]: {
+                endpoint: endpointFactory(endpointInfo),
+                method: method,
+                types: [
+                    action, 
+                    success, 
+                    failure
+                ]
+            }
+        }
+
+        if(body) { 
+            (actionObj as any)[CALL_API].body = JSON.stringify(body) 
+        }
+        if((document as any).token) { 
+            (actionObj as any)[CALL_API].headers = {
+                'Authorization': 'Bearer ' + (document as any).token
+            }
+        }
+
+        return actionObj
+    }
+}
+
+export function isAuthentified(): boolean { 
+    return (document as any).token != null
 }

@@ -11,7 +11,9 @@ import scoreInfo from '../../store/quiz/reducers/score'
 import feedbackInfo from '../../store/quiz/reducers/feedback'
 import App from '../../containers/quiz/remoteContainer'
 
-import { storeFactory } from '../../utils'
+import { storeFactory, createAPIActionCreator, isAuthentified } from '../../utils'
+
+import { answerAction } from '../../store/quiz/actions/actions'
 
 let store = storeFactory([
     quizInfo, remoteInfo, scoreInfo, feedbackInfo

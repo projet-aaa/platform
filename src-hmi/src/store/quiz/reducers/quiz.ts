@@ -1,7 +1,7 @@
 import { handleActions } from "redux-actions"
 
 import { Action } from "../../../utils"
-import { ActionTypes, ChooseAction, ValidateAction} from "../actions/actionTypes"
+import { ActionTypes, ChooseAction } from "../actions/actionTypes"
 import { Quiz, QuizType } from "../../../models/quiz"
 
 interface QuizInfo {
@@ -44,7 +44,7 @@ const reducer = handleActions({
             })
         })
     },
-    [ActionTypes.VALIDATE]: function(state: QuizInfo, action: Action<ValidateAction>): QuizInfo {
+    ["jamais"]: function(state: QuizInfo, action: Action<{ id: number }>): QuizInfo {
         return Object.assign({}, state, {
             quiz: state.quiz.map((q, index) => {
                 if(q.id == action.payload.id) {

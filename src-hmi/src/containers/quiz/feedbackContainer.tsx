@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 
 import { StateProps, ActionProps, View } from "../../views/quiz/feedbackView"
 
-import { signalAction } from "../../store/quiz/actions/actions"
+let signalAction = (i) => console.log("[feedbackView] signalAction not implemented: " + i)
 
 function mapStateToProps(state: any): StateProps {
     return {}
