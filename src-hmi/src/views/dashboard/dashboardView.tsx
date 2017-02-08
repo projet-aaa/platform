@@ -3,11 +3,11 @@ import { connect } from "react-redux";
 import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
-import { View as QuizLauncherView, StateProps as QuizLauncherModel } from "./quizLauncherView"
+import { View as QuizLauncherView} from "./quizLauncherView"
 import { View as QuizStatView } from "./quizStatView"
 import { View as StudentFeedbackView } from "./studentFeedbackView"
 
-import { Quiz } from '../../models/class/class'
+import { Quiz, QuizLauncher } from '../../models/class/class'
 
 export interface StateProps {
     tooFast: number
@@ -15,7 +15,7 @@ export interface StateProps {
     panic: number
     currentQuiz: Quiz
     quizStats: any // choice for the current quiz => percentage who chose
-    quizz: QuizLauncherModel[]
+    quizLaunchers: QuizLauncher[]
 }
 
 export interface ActionProps {
@@ -33,18 +33,19 @@ export class View extends React.Component<Props, any> {
             panic, 
             currentQuiz,
             quizStats,
-            quizz,
+            quizLaunchers,
             launchQuiz
         } = this.props;
 
-        var quizInfoItem = quizz.map((item) => {
+        var quizInfoItem = quizLaunchers.map((item) => {
             return <QuizLauncherView 
                 key={ item.title } 
-                id={ item.id } 
+                quizId={ item.quizId } 
                 title={ item.title }
                 state={ item.state }
                 successRate={ item.successRate }
-                launch= { () => launchQuiz(item.id) } > </QuizLauncherView>;
+                launch= { () => launchQuiz(item.quizId) } > 
+            </QuizLauncherView>;
         });
 
         var quizInfos = 
@@ -56,7 +57,9 @@ export class View extends React.Component<Props, any> {
             <div className="page-content" >
                 <div className="row ">
                     <div className="col-md-8">
-                        <QuizStatView quizStats={ quizStats } correctChoice={ currentQuiz.answer }> </QuizStatView>
+                        { currentQuiz != null &&  
+                            <QuizStatView quizStats={ quizStats } correctChoice={ currentQuiz.answer }> </QuizStatView>
+                        }
                     </div>
 
                     <div className="col-md-4">
@@ -66,7 +69,7 @@ export class View extends React.Component<Props, any> {
                             </div>
                             <div className="panel-body pan white-background">
                                 <div className="pal">
-                                    {quizInfos}
+                                    { quizInfos }
                                 </div>
                             </div>
                         </div>
@@ -74,9 +77,11 @@ export class View extends React.Component<Props, any> {
                 </div>
                 <div className="row">
                     <div className="col-md-12">
-                        <StudentFeedbackView panicAlert={ panic > 0 } 
-                                    slowerAlert={ tooSlow > 0 }
-                                    quickerAlert={ tooFast > 0 }> </StudentFeedbackView>
+                        <StudentFeedbackView 
+                            panicAlert={ panic > 0 } 
+                            slowerAlert={ tooSlow > 0 }
+                            quickerAlert={ tooFast > 0 }> 
+                        </StudentFeedbackView>
                     </div>
                 </div>
             </div>

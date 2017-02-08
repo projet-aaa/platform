@@ -6,21 +6,29 @@ let signalAction = (signal) => console.log("[remoteContainer] chooseAction not i
 
 import { Quiz } from "../../models/class/class"
 
-import { StateProps, ActionProps, View } from "../../views/quiz/remoteView"
+import { StateProps, ActionProps, View } from "../../views/quiz/remoteViewDesktop"
+
+import { RemoteState } from "../../store/remote/reducers/reducer"
+
+import { QuizInstanceState } from "../../models/class/class"
 
 function mapStateToProps(state: any): StateProps {
+    let remote: RemoteState = state.remote
     return {
         // update the quiz prop with the current quiz
-        quiz: state.quiz.quiz[state.remote.currentQuiz],
-        answerConsultation: state.remote.consultation,
-        displayMode: state.remote.displayMode,
-        score: state.remote.score,
-        rank: state.remote.rank,
-        population: state.remote.population,
-        highScore: state.remote.highScore,
-        average: state.remote.average
+        quiz: remote.quiz[state.remote.currentQuiz],
+        quizChoice: remote.choice,
+        showCorrection: remote.currQuizState != QuizInstanceState.HEADING,
+        question: remote.currQuizState != QuizInstanceState.OFF,
+        forceUnfold: false,
+        score: remote.score,
+        rank: remote.rank,
+        population: remote.studentPop,
+        highscore: remote.highscore,
+        average: remote.average
     }
 }
+
 function mapDispatchToProps(dispatch): ActionProps {
     return {
         // signals the store that an answer has been validated
@@ -36,7 +44,7 @@ function mapDispatchToProps(dispatch): ActionProps {
         signalFast: () => dispatch(signalAction(2))
     }
 }
-
+console.log(View)
 export default connect<StateProps, ActionProps, any>(
     mapStateToProps, 
     mapDispatchToProps

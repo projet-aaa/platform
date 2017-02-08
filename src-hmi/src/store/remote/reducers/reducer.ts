@@ -4,7 +4,7 @@ import { ActionTypes, APIActionTypes, WSInActionTypes } from '../actions/actionT
 
 import { QuizInstanceState, Quiz } from '../../../models/class/class'
 
-interface RemoteState {
+export interface RemoteState {
     quiz: Quiz[]
 
     quizHistory: number[]

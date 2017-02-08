@@ -6,7 +6,7 @@ import { Router, Route, hashHistory } from 'react-router'
 import { Provider } from 'react-redux';
 
 import remoteInfo from '../../store/remote/reducers/reducer'
-import remoteApp from '../../containers/remote/remoteContainer'
+import { View as RemoteAppView } from '../../views/quiz/remoteView'
 
 import { storeFactory, createAPIActionCreator, isAuthentified } from '../../utils'
 
@@ -17,7 +17,7 @@ let store = storeFactory([
 let MainRouter =
 (<Provider store={store}>
     <Router history={hashHistory}>
-        <Route path="/" component={ remoteApp }>
+        <Route path="/" component={ RemoteAppView }>
         </Route> 
     </Router>
 </Provider>)

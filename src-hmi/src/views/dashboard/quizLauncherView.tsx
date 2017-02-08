@@ -4,7 +4,7 @@ import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
 export interface StateProps {
-    id: number
+    quizId: number
     title: string
     state: number // 0: not done; 1: being run; 2: already ran 
     successRate: number
@@ -20,7 +20,7 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
-            id,
+            quizId,
             title,
             state,
             successRate,

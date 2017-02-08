@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
-import {View as QuizView} from "../../views/quiz/quizView"
+import { View as QuizView } from "../../views/quiz/quizView"
 import { QuizType, Quiz } from "../../models/class/class"
 
 export interface StateProps {
@@ -14,9 +14,7 @@ export interface StateProps {
     // statistics
     stats: any
 }
-export interface ActionProps {
-
-}
+export interface ActionProps { }
 
 export type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
@@ -30,13 +28,13 @@ export class View extends React.Component<Props, any> {
 
         let quizRender = (<QuizView 
             quiz={ quiz } 
-            quizLocalChoice={ null } 
-            answerConsultation={ false } 
-            displayMode={ true } 
-            choose={ null }
-            validate={ null }
+            quizChoice={ null }
+            showCorrection={ true } 
+            forceUnfold={ true } 
             nextQuiz={ null } 
             prevQuiz={ null }
+            choose={ null }
+            validate={ null }
         />)
 
         // if there are stats we put them on the right

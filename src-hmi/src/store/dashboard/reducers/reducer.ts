@@ -1,10 +1,11 @@
 import { handleActions } from "redux-actions"
 
 import { ActionTypes, APIActionTypes, WSInActionTypes } from "../actions/actionTypes"
-import { Quiz, QuizInstanceState, AttentionEventType } from "../../../models/class/class"
+import { Quiz, QuizInstanceState, QuizLauncher, AttentionEventType } from "../../../models/class/class"
 
-interface ClassState {
+export interface DashboardState {
     quiz: Quiz[]
+    quizLauncher: QuizLauncher[]
 
     quizHistory: number[]
     quizState: any[]
@@ -21,13 +22,14 @@ interface ClassState {
     maxscore: number
     average: number
 
-    panick: number
-    tooSlow: number
     tooFast: number
+    tooSlow: number
+    panic: number
 }
 
-let initialState: ClassState = {
+let initialState: DashboardState = {
     quiz: [],
+    quizLauncher: [],
 
     quizHistory: [],
     quizState: [],
@@ -44,14 +46,14 @@ let initialState: ClassState = {
     maxscore: 0,
     average: 0,
 
-    panick: 0,
+    panic: 0,
     tooSlow: 0,
     tooFast: 0
 }
 
 const name = "dashboard"
 const reducer = handleActions({
-    [ActionTypes.SHOW_FEEDBACK]: function(state: ClassState, action: any): ClassState {
+    [ActionTypes.SHOW_FEEDBACK]: function(state: DashboardState, action: any): DashboardState {
         if(state.currQuizState == QuizInstanceState.HEADING) {
             return Object.assign({}, state, {
                 currQuizState: QuizInstanceState.FEEDBACK
@@ -60,16 +62,16 @@ const reducer = handleActions({
             return state
         }
     },
-    [WSInActionTypes.ANSWER]: function(state: ClassState, action: any): ClassState {
+    [WSInActionTypes.ANSWER]: function(state: DashboardState, action: any): DashboardState {
         return Object.assign({}, state, {
             currQuizStat: Object.assign({}, state, {
                 [action.payload.choice]: state.currQuizStat[action.payload.choice] + 1
             })
         })
     },
-    [WSInActionTypes.SIGNAL_STATE]: function(state: ClassState, action: any): ClassState {
+    [WSInActionTypes.SIGNAL_STATE]: function(state: DashboardState, action: any): DashboardState {
         return Object.assign({}, state, {
-            panick: state.panick 
+            panick: state.panic 
                 + (action.payload.attentionType == AttentionEventType.PANICK_START ? 1 : 0)
                 + (action.payload.attentionType == AttentionEventType.PANICK_END ? -1 : 0),
             tooSlow: state.tooSlow 

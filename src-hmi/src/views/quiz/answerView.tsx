@@ -14,12 +14,12 @@ export interface StateProps {
     chosen: boolean
     // true if it's the right answer
     rightAnswer: boolean
-    // true if we are in consultation mode, false if in answer mode
-    answerConsultation: boolean
+    // true => show the correction
+    showCorrection: boolean
     // the explanation associated to the answer
     explanation: string
-    // true if display mode, false else
-    displayMode: boolean
+    // true => answer explanations whill be shown automatically, else we have to click on the answers
+    forceUnfold: boolean
 }
 
 export interface ActionProps {
@@ -49,35 +49,39 @@ export class View extends React.Component<Props, any> {
             choose,
             text,
             rightAnswer,
-            answerConsultation,
+            showCorrection,
             explanation,
-            displayMode
+            forceUnfold
         } = this.props;
         
         let colorAnswerStyle = null
-        if (displayMode) {
+        if (!showCorrection) {
             colorAnswerStyle = {}
         } else {
             if(rightAnswer) {
                 colorAnswerStyle = {
                     color: "green"
                 }
-            } else {
+            } else if (chosen) {
                 colorAnswerStyle = {
                     color: "red"
+                }
+            } else {
+                colorAnswerStyle = {
+                    
                 }
             }
         }
         
         let indRef = "ind" + ind
         let res = null
-        if (answerConsultation) {
+        if (showCorrection) {
             res = (
                 <li className="without-bullet">
                     <div className="faq-item">
                         <div className="row">
                             <div className="col-lg-12">
-                                <a data-toggle="collapse" href={"#" + indRef} className="faq-question collapsed" aria-expanded="false" style={ colorAnswerStyle }>
+                                <a data-toggle="collapse" href={"#" + indRef} className="faq-question collapsed" aria-expanded={ forceUnfold ? "true" : "false" } style={ colorAnswerStyle }>
                                         <label className="tab" style={ mediumSizeText }>{ text }</label>
                                 </a>
                             </div>
@@ -93,14 +97,6 @@ export class View extends React.Component<Props, any> {
                             </div>
                         </div>
                     </div>
-                </li>
-            )
-        } else if (displayMode) {
-            res = (
-                <li className="without-bullet" onClick={ choose }>
-                    <a>
-                        <label className="tab" style={ mediumSizeText }>{ text }</label>
-                    </a>
                 </li>
             )
         } else {

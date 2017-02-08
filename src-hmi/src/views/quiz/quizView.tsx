@@ -10,18 +10,22 @@ import { getText } from "../../utils/index"
 export interface StateProps {
     // the quiz 
     quiz: Quiz
-    // the quiz choices
-    quizLocalChoice: QuizLocalChoice
-    // true if consultation mode, false else
-    answerConsultation: boolean
-    // true if it's display mode, false else
-    displayMode: boolean
+    // the quiz choice
+    quizChoice: QuizLocalChoice
+    // true => show the correction
+    showCorrection: boolean
+    // true => answer explanations will be shown automatically, else we have to click on the answers
+    forceUnfold: boolean
 }
 export interface ActionProps {
-    choose(quizId: number, choice: any) // select an answer
-    validate(quizId: number) // validate the answer
-    nextQuiz() // go to the next question
-    prevQuiz() // go to the previous question
+    // select an answer (if null, there will be no validate button and no answer will be able to be selected)
+    choose(quizId: number, choice: any)
+    // validate the answer
+    validate(quizId: number)
+    // go to the next question
+    nextQuiz()
+    // go to the previous question
+    prevQuiz()
 }
 
 // style for the text
@@ -39,9 +43,10 @@ export class View extends React.Component<Props, any> {
     render() {
         const {
             quiz,
-            quizLocalChoice,
-            answerConsultation,
-            displayMode,
+            quizChoice,
+            showCorrection,
+            forceUnfold,
+
             choose, 
             validate,
             nextQuiz,
@@ -58,10 +63,21 @@ export class View extends React.Component<Props, any> {
         switch(quiz.type) {
             case QuizType.MCQ: 
                 let createChooseAction = (i) => {
-                    return displayMode ? () => {  }: () => { choose(quiz.id, i) }
+                    return (choose==null) ? () => {  }: () => { choose(quiz.id, i) }
                 } 
                 var answerItems = quiz.choices.map((item, i) => {
-                    return <AnswerView key={item} ind={i} text={item} choose={ createChooseAction(i) } chosen={ quizLocalChoice.choice == i } rightAnswer={i==quiz.answer} explanation={ quiz.explanations[i] } answerConsultation={ answerConsultation } displayMode={ displayMode }/>;
+                    return <AnswerView
+                        key={item}
+                        ind={i} 
+                        text={item} 
+                        chosen={ quizChoice.choice == i } 
+                        rightAnswer={ i == quiz.answer }
+                        explanation={ quiz.explanations[i] } 
+                        showCorrection={ showCorrection }
+                        forceUnfold={ forceUnfold }
+
+                        choose={ createChooseAction(i) } 
+                    />;
                 });
                 answers = 
                 (
@@ -74,7 +90,7 @@ export class View extends React.Component<Props, any> {
                 answers =
                 (<input id="quiz-text" 
                         type="text" 
-                        value={ quizLocalChoice.choice }
+                        value={ quizChoice.choice }
                         style={ inputFieldStyle }
                         onChange={ () => choose(quiz.id, getText("quiz-text")) }> 
                 </input>)
@@ -91,7 +107,7 @@ export class View extends React.Component<Props, any> {
         )
         // if we are in answer mode, we have to display a vilidate button
         let validateButton = null;
-        if (!(displayMode || answerConsultation)) {
+        if (!(choose==null)) {
             validateButton = (
                 <div className="row">
                     <div className="col-lg-offset-8 col-lg-4">
@@ -116,7 +132,7 @@ export class View extends React.Component<Props, any> {
             quizRender = (
                 <div className="row">
                     <div className="col-lg-2">
-                        <button className="btn btn-primary">Précédent</button>
+                        <button className="btn btn-primary covering-size">Précédent</button>
                     </div>
                     <div className="col-lg-8">
                         { questionRender }
@@ -130,7 +146,7 @@ export class View extends React.Component<Props, any> {
                         { questionRender }
                     </div>
                     <div className="col-lg-2">
-                        <button className="btn btn-primary">Suivant</button>
+                        <button className="btn btn-primary covering-size">Suivant</button>
                     </div>
                 </div>
             )
@@ -138,13 +154,13 @@ export class View extends React.Component<Props, any> {
             quizRender = (
                 <div className="row">
                     <div className="col-lg-2">
-                        <button className="btn btn-primary">Précédent</button>
+                        <button className="btn btn-primary covering-size">Précédent</button>
                     </div>
                     <div className="col-lg-8">
                         { questionRender }
                     </div>
                     <div className="col-lg-2">
-                        <button className="btn btn-primary">Suivant</button>
+                        <button className="btn btn-primary covering-size">Suivant</button>
                     </div>
                 </div>
             )
@@ -153,8 +169,10 @@ export class View extends React.Component<Props, any> {
         return (
             <div>
                 <div className="panel">
-                    { quizRender }
-                    { validateButton }
+                    <div className="pal">
+                        { quizRender }
+                        { validateButton }
+                    </div>
                 </div>
             </div>
         );

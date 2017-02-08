@@ -11,7 +11,7 @@ export interface StateProps {
     // the quiz 
     quiz: Quiz
     // the choice the player has done
-    quizLocalChoice: QuizLocalChoice
+    quizChoice: QuizLocalChoice
 }
 export interface ActionProps {
     choose(quizId: number, choice: any) // select an answer
@@ -39,7 +39,7 @@ export class View extends React.Component<Props, any> {
     render() {
         const {
             quiz,
-            quizLocalChoice,
+            quizChoice,
             choose, 
             validate
         } = this.props;
@@ -54,7 +54,7 @@ export class View extends React.Component<Props, any> {
         switch(quiz.type) {
             case QuizType.MCQ: 
                 var answerItems = quiz.choices.map((item, i) => {
-                    return <AnswerViewMobile key={item} ind={i} text={item} choose={ choose(quiz.id, i) } chosen={ quizLocalChoice.choice == i }/>;
+                    return <AnswerViewMobile key={item} ind={i} text={item} choose={ choose(quiz.id, i) } chosen={ quizChoice.choice == i }/>;
                 });
                 answers = 
                 (
@@ -67,7 +67,7 @@ export class View extends React.Component<Props, any> {
                 answers =
                 (<input id="quiz-text" 
                         type="text" 
-                        value={ quizLocalChoice.choice }
+                        value={ quizChoice.choice }
                         style={ inputFieldStyle }
                         onChange={ () => choose(quiz.id, getText("quiz-text")) }> 
                 </input>)

@@ -60,3 +60,10 @@ export const QuizInstanceState = {
     HEADING: 'HEADING',
     FEEDBACK: 'FEEDBACK'
 }
+
+export interface QuizLauncher {
+    quizId: number
+    title: string
+    state: number // 0: not done; 1: being run; 2: already ran 
+    successRate: number
+}
