@@ -54,7 +54,7 @@ class McqChoice
 
     public function __toString()
     {
-        return 'McqChoice '.$this->getId();
+        return 'McqChoice '.$this->getText().' '.substr($this->getId(),0,5);
     }
 
 
