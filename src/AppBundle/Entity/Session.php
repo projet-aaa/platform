@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ApiResource
  * @ORM\Entity
  * @UniqueEntity("name")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Session implements \JsonSerializable
 {
@@ -83,6 +84,13 @@ class Session implements \JsonSerializable
         ];
     }
 
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function prePersist(){
+        $this->updatedAt = new \DateTime('now');
+    }
 
     /** auto generated methods */
 

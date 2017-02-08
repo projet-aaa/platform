@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class QuestionAdmin extends AbstractAdmin
 {
@@ -13,9 +14,12 @@ class QuestionAdmin extends AbstractAdmin
     {
         $formMapper->add('text')
             ->add('explication')
-            ->add('typeAnswer')
+            ->add('typeAnswer',ChoiceType::class, array(
+                'choices' => array('text','unique','multiple'),
+                'choice_label' => function($val){ return $val; },
+                ))
             ->add('mcqChoice')
-            ->add('textAnswer')
+            ->add('textAnswers')
             ->add('test');
     }
 
