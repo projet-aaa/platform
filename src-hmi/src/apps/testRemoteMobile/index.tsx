@@ -1,6 +1,6 @@
 import { viewTestFactory } from '../../utils'
 
-import { View, Props } from '../../views/quiz/quizView'
+import { View, Props } from '../../views/quiz/remoteViewMobile'
 
 import { QuizType } from '../../models/quiz'
 
@@ -15,10 +15,12 @@ viewTestFactory<Props>(View, {
         choice: -1,
         isValidated: false
     },
-    showCorrection: true, // to show explanations of answers
-    forceUnfold: true, // to only display the question and the choices (for the teacher)
+    question: false,
+    score: 40,
     choose: (quizId, i) => console.log("Test : " + i),
-    validate: (quizId) => console.log("Je valide!"),
-    nextQuiz: () => {}, // null => no button, everything else => button
-    prevQuiz: () => {} // idem
+    validateAnswer: (quizId) => console.log("Je valide!"),
+    sendComment: (comment) => console.log(comment),
+    signalPanic: () => {}, // bullshit
+    signalSlow: () => {}, // idem
+    signalFast: () => {} // idem
 })
