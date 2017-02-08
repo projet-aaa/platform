@@ -66,6 +66,8 @@ class Question
     /**
      * @var Test the owner of the question
      *
+     * @Assert\NotNull()
+     *
      * @ORM\ManyToOne(targetEntity="Test", inversedBy="questions")
      * @ORM\JoinColumn(name="test_id", referencedColumnName="id")
      */
