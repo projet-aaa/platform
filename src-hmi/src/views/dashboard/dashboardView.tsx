@@ -22,6 +22,11 @@ export interface ActionProps {
     launchQuiz(quizId: number)
 }
 
+// style for ul tag
+var paddingUl = {
+    padding: 0
+}
+
 export type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
     props: Props
@@ -35,7 +40,7 @@ export class View extends React.Component<Props, any> {
             quizStats,
             quizLaunchers,
             launchQuiz
-        } = this.props;
+        } = this.props
 
         var quizInfoItem = quizLaunchers.map((item) => {
             return <QuizLauncherView 
@@ -44,44 +49,39 @@ export class View extends React.Component<Props, any> {
                 title={ item.title }
                 state={ item.state }
                 successRate={ item.successRate }
-                launch= { () => launchQuiz(item.quizId) } > 
-            </QuizLauncherView>;
-        });
+                launch= { () => launchQuiz(item.quizId) }
+            />
+        })
 
         var quizInfos = 
-        (<ul>
+        (<ul style={ paddingUl }>
             {quizInfoItem}
         </ul>)
 
         return (
             <div className="page-content" >
-                <div className="row ">
-                    <div className="col-md-8">
+                <div className="col-lg-8">
+                    <div className="row">
                         { currentQuiz != null &&  
-                            <QuizStatView quizStats={ quizStats } correctChoice={ currentQuiz.answer }> </QuizStatView>
+                            <QuizStatView quizStats={ quizStats } correctChoice={ currentQuiz.choices[currentQuiz.answer] }/>
                         }
                     </div>
-
-                    <div className="col-md-4">
-                        <div className="panel">
-                            <div className="panel-heading">
-                                Statistiques de quizz
-                            </div>
-                            <div className="panel-body pan white-background">
-                                <div className="pal">
-                                    { quizInfos }
-                                </div>
-                            </div>
-                        </div>
+                    <div className="row">
+                        <StudentFeedbackView panicRate={panic} 
+                                    slowRate={tooSlow}
+                                    quickRate={tooFast}/>
                     </div>
                 </div>
-                <div className="row">
-                    <div className="col-md-12">
-                        <StudentFeedbackView 
-                            panicAlert={ panic > 0 } 
-                            slowerAlert={ tooSlow > 0 }
-                            quickerAlert={ tooFast > 0 }> 
-                        </StudentFeedbackView>
+                <div className="col-lg-4">
+                    <div className="panel">
+                        <div className="panel-heading">
+                            Statistiques de quizz
+                        </div>
+                        <div className="panel-body pan white-background">
+                            <div className="pal">
+                                { quizInfos }
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

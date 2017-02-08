@@ -111,6 +111,9 @@ const reducer = handleActions({
             maxscore: action.payload.maxscore,
             average: action.payload.average
         })
+    },
+    [APIActionTypes.ANSWER_SUCCESS]: function(state: RemoteState, action: any): RemoteState {
+        return state
     }
 }, initialstate);
 

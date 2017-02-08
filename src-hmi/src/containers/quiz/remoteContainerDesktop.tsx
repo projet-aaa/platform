@@ -4,6 +4,8 @@ let validateAction = (id) => console.log("[remoteContainer] validateAction not i
 let chooseAction = (id, choice) => console.log("[remoteContainer] chooseAction not implemented")
 let signalAction = (signal) => console.log("[remoteContainer] chooseAction not implemented")
 
+import { answerAction } from "../../store/remote/actions/actions"
+
 import { Quiz } from "../../models/class/class"
 
 import { StateProps, ActionProps, View } from "../../views/quiz/remoteViewDesktop"
@@ -29,10 +31,10 @@ function mapStateToProps(state: any): StateProps {
     }
 }
 
-function mapDispatchToProps(dispatch): ActionProps {
+function mapDispatchToProps(dispatch, state): ActionProps {
     return {
         // signals the store that an answer has been validated
-        validateAnswer: (quizId) => dispatch(validateAction(quizId)),
+        validateAnswer: (quizId) => dispatch(answerAction(null, { id: quizId, choice: state.remote.choice })),
         // signals the store that a comment has been sent
         sendComment: (comment) => console.log(comment),
         // signals the store that an answer has been chosen
