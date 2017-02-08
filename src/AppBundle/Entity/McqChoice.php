@@ -46,7 +46,7 @@ class McqChoice
     /**
      * @var McqAnswer The list of McqAnswer that chose that answer
      *
-     * @ORM\OneToMany(targetEntity="McqAnswer", inversedBy="mcqChoice")
+     * @ORM\OneToMany(targetEntity="McqAnswer", mappedBy="mcqChoice")
      */
     private $mcqAnswer;
 
