@@ -19,7 +19,7 @@ class QuestionAdmin extends AbstractAdmin
                 'choice_label' => function($val){ return $val; },
                 ))
             ->add('mcqChoice')
-            ->add('textAnswer')
+            ->add('textAnswers')
             ->add('test');
     }
 
