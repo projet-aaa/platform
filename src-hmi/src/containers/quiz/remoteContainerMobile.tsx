@@ -4,9 +4,9 @@ let validateAction = (id) => console.log("[remoteContainer] validateAction not i
 let chooseAction = (id, choice) => console.log("[remoteContainer] chooseAction not implemented")
 let signalAction = (signal) => console.log("[remoteContainer] chooseAction not implemented")
 
-import { Quiz } from "../../models/class/class"
-
 import { StateProps, ActionProps, View } from "../../views/quiz/remoteViewMobile"
+
+import { Quiz, AttentionStateType } from "../../models/class/class"
 
 function mapStateToProps(state: any): StateProps {
     return {
@@ -25,9 +25,9 @@ function mapDispatchToProps(dispatch): ActionProps {
         sendComment: (comment) => console.log(comment),
         // signals the store that an answer has been chosen
         choose: (id, choice) => dispatch(chooseAction(id, choice)),
-        signalPanic: () => dispatch(signalAction(0)),
-        signalSlow: () => dispatch(signalAction(1)),
-        signalFast: () => dispatch(signalAction(2))
+        signalPanic: () => dispatch(signalAction(AttentionStateType.PANIC)),
+        signalSlow: () => dispatch(signalAction(AttentionStateType.TOO_SLOW)),
+        signalFast: () => dispatch(signalAction(AttentionStateType.TOO_FAST))
     }
 }
 
