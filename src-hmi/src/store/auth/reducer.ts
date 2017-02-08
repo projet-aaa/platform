@@ -1,7 +1,7 @@
 import { handleActions } from "redux-actions"
 
 import { Action } from "../../utils"
-import { AuthActionTypes, authenticate } from "./actions"
+import { APIActionTypes, auth } from "./actions"
 
 interface AuthInfo {
     user: string
@@ -21,13 +21,13 @@ let initialState: AuthInfo = {
 
 const name = "auth"
 const reducer = handleActions({
-    [AuthActionTypes.POST_AUTH]: function(state: AuthInfo, action: any): AuthInfo {
+    [APIActionTypes.AUTH]: function(state: AuthInfo, action: any): AuthInfo {
         return Object.assign({}, state, {
             authentifying: true,
             authentified: false
         })
     },
-    [AuthActionTypes.POST_AUTH_SUCCESS]: function(state: AuthInfo, action: any): AuthInfo {
+    [APIActionTypes.AUTH_SUCCESS]: function(state: AuthInfo, action: any): AuthInfo {
         (document as any).token = action.payload.token
         return Object.assign({}, state, {
             token: action.payload.token,
@@ -35,7 +35,7 @@ const reducer = handleActions({
             authentified: true
         })
     },
-    [AuthActionTypes.POST_AUTH_FAILURE]: function(state: AuthInfo, action: any): AuthInfo {
+    [APIActionTypes.AUTH_FAILURE]: function(state: AuthInfo, action: any): AuthInfo {
         return Object.assign({}, state, {
             token: action.payload.token,
             authentifying: false,

@@ -9,23 +9,25 @@ export class MainRoom extends IMainRoom {
 
     receiveSocketMsg(socket: SocketInfo, type: string, msg) {
         switch(type) {
+            case "SERVER/AUTHENTIFY": {
+                socket.id = msg.id
+                socket.username = msg.username
+                socket.isTeacher = msg.isTeacher
+                break
+            }
             case SocketInMsgType.GET_ROOMS: {
                 this.server.send(socket, SocketOutMsgType.GET_ROOMS_RES, {
                     rooms: this.server.getRooms()
                 })
-                break;
+                break
             }
             case SocketInMsgType.JOIN_ROOM: {
                 this.server.changeSocketRoom(socket, msg.roomId)
-                break;
+                break
             }
             case SocketInMsgType.LEAVE_ROOM: {
                 this.server.changeSocketRoom(socket, -1)
-                break;
-            }
-            default: {
-                console.log('[ERROR] unhandled socket msg in main: type=', type, ' msg=', msg)
-                break;
+                break
             }
         }
     }

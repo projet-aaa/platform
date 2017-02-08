@@ -11,7 +11,7 @@ interface WSRoomInfo {
 }
 
 let initialState: WSRoomInfo = {
-    rooms: null,
+    rooms: [],
     currentRoom: null
 }
 

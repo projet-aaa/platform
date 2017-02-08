@@ -2,8 +2,6 @@ import { connect } from "react-redux";
 
 import { launchAction } from "../../store/dashboard/actions/actions"
 
-//import {  } from "../../models/dashboard"
-
 import { StateProps, ActionProps, View } from "../../views/dashboard/dashboardView"
 
 function mapStateToProps(state: any): any {

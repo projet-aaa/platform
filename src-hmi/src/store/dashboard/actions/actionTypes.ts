@@ -1,16 +1,18 @@
 export const ActionTypes = {
-    LAUNCH: "DASHBOARD/LAUNCH",
-    UPDATEFEEDBACK: "DASHBOARD/UPDATEFEEDBACK"
+    SHOW_FEEDBACK: "QUIZ/SHOW_FEEDBACK"
 }
 
-export interface LaunchAction {
-    title: string
+export const APIActionTypes = {
+    START_QUIZ: "QUIZ/START_QUIZ",
+    START_QUIZ_SUCCESS: "QUIZ/START_QUIZ_SUCESS",
+    START_QUIZ_FAILURE: "QUIZ/START_QUIZ_FAILURE",
+
+    END_QUIZ: "QUIZ/END_QUIZ",
+    END_QUIZ_SUCCESS: "QUIZ/END_QUIZ_SUCCESS",
+    END_QUIZ_FAILURE: "QUIZ/END_QUIZ_FAILURE"
 }
 
-// 0: panic
-// 1: slow
-// 2: fast
-export interface UpdateFeedbackAction {
-    type: number
-    alertOn: boolean
+export const WSInActionTypes = {
+    ANSWER: "TEACHER/CLASS/ANSWER",
+    SIGNAL_STATE: "TEACHER/CLASS/SIGNAL_STATE"
 }
