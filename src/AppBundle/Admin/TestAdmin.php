@@ -12,6 +12,7 @@ class TestAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper->add('title')
+        ->add('live')
         ->add('gitPath')
         ->add('questions')
         ->add('session');
@@ -20,12 +21,14 @@ class TestAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper->add('title')
+            ->add('live')
         ->add('session');
     }
 
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper->addIdentifier('id')
+            ->add('live')
             ->add('title')
             ->add('gitPath')
             ->add('session');
