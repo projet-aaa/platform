@@ -2,18 +2,21 @@ import { viewTestFactory } from '../../utils'
 
 import { View, Props } from '../../views/quiz/quizView'
 
-import { QuizType } from '../../models/quiz'
+import { QuizType } from '../../models/class/class'
 
 viewTestFactory<Props>(View, {
     quiz: {
         id: 0,
         type: QuizType.MCQ,
+        title: "La question à mille rouble",
         question: "Est ce que je ok?",
         choices: ["peut être", "mr l'arbitre", "oui", "D"],
         explanations: ["peut-être que c'est faux", "aux chiottes l'arbitre", "NON !!!!!!!!!", "Voilà !"],
-        answer: 3,
-        choice: -1,
-        isValidated: false
+        answer: 3
+    },
+    quizLocalChoice: {
+        quizId: 0,
+        choice: 0
     },
     answerConsultation: true, // to show explanations of answers
     displayMode: true, // to only display the question and the choices (for the teacher)

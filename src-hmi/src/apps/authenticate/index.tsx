@@ -5,24 +5,19 @@ import * as React from 'react'
 import { Router, Route, hashHistory } from 'react-router'
 import { Provider } from 'react-redux';
 
-import quizInfo from '../../store/quiz/reducers/quiz'
-import remoteInfo from '../../store/quiz/reducers/remote'
-import scoreInfo from '../../store/quiz/reducers/score'
-import feedbackInfo from '../../store/quiz/reducers/feedback'
-import App from '../../containers/quiz/remoteContainer'
+import remoteInfo from '../../store/remote/reducers/reducer'
+import remoteApp from '../../containers/remote/remoteContainer'
 
 import { storeFactory, createAPIActionCreator, isAuthentified } from '../../utils'
 
-import { answerAction } from '../../store/quiz/actions/actions'
-
 let store = storeFactory([
-    quizInfo, remoteInfo, scoreInfo, feedbackInfo
-], "localhost:8088", true)
+    remoteInfo
+], true, true)
 
 let MainRouter =
 (<Provider store={store}>
     <Router history={hashHistory}>
-        <Route path="/" component={ App }>
+        <Route path="/" component={ remoteApp }>
         </Route> 
     </Router>
 </Provider>)

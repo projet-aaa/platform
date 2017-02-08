@@ -4,12 +4,14 @@ import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
 import { View as AnswerViewMobile} from "./answerViewMobile"
-import { QuizType, Quiz } from "../../models/quiz"
+import { QuizType, Quiz, QuizLocalChoice } from "../../models/class/class"
 import { getText } from "../../utils/index"
 
 export interface StateProps {
     // the quiz 
     quiz: Quiz
+    // the choice the player has done
+    quizLocalChoice: QuizLocalChoice
 }
 export interface ActionProps {
     choose(quizId: number, choice: any) // select an answer
@@ -37,6 +39,7 @@ export class View extends React.Component<Props, any> {
     render() {
         const {
             quiz,
+            quizLocalChoice,
             choose, 
             validate
         } = this.props;
@@ -51,7 +54,7 @@ export class View extends React.Component<Props, any> {
         switch(quiz.type) {
             case QuizType.MCQ: 
                 var answerItems = quiz.choices.map((item, i) => {
-                    return <AnswerViewMobile key={item} ind={i} text={item} choose={ choose(quiz.id, i) } chosen={ quiz.choice == i }/>;
+                    return <AnswerViewMobile key={item} ind={i} text={item} choose={ choose(quiz.id, i) } chosen={ quizLocalChoice.choice == i }/>;
                 });
                 answers = 
                 (
@@ -64,7 +67,7 @@ export class View extends React.Component<Props, any> {
                 answers =
                 (<input id="quiz-text" 
                         type="text" 
-                        value={ quiz.choice }
+                        value={ quizLocalChoice.choice }
                         style={ inputFieldStyle }
                         onChange={ () => choose(quiz.id, getText("quiz-text")) }> 
                 </input>)

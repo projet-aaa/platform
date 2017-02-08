@@ -3,11 +3,11 @@ import { connect } from "react-redux";
 import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
-import { QuizStats, Choices } from "../../models/dashboard"
-
 export interface StateProps {
-    quizStats: QuizStats
+    id: number
     title: string
+    state: number // 0: not done; 1: being run; 2: already ran 
+    successRate: number
 }
 
 export interface ActionProps { 
@@ -20,23 +20,24 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
-            quizStats, title,
+            id,
+            title,
+            state,
+            successRate,
             launch
         } = this.props;
 
         let res = null
-        if(quizStats.state == 0) {
-            res = title + ": " 
-                + quizStats.choices[quizStats.correctAnswer - 1].percentChosen + "%";
-        } else if(quizStats.state == 1) {
+        if(state == 2) { // the quiz is done
+            res = title + ": " + successRate + "%";
+        } else if(state == 1) {
             res = title + ": lancé";
         } else {
-            res = <button className="btn btn-lg btn-primary" onClick={launch}> { title } </button>
+            res = <button className="btn btn-lg btn-primary" onClick={ launch }> { title } </button>
         }
 
-
         return (
-            <li><h3> {res} </h3></li>
+            <li><h3> { res } </h3></li>
         );
     }
 }

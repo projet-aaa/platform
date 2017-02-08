@@ -6,7 +6,7 @@ import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
 import {View as QuizView} from "../../views/quiz/quizView"
-import { QuizType, Quiz } from "../../models/quiz"
+import { QuizType, Quiz } from "../../models/class/class"
 
 export interface StateProps {
     // a quiz
@@ -15,6 +15,7 @@ export interface StateProps {
     stats: any
 }
 export interface ActionProps {
+
 }
 
 export type Props = StateProps & ActionProps;
@@ -27,14 +28,23 @@ export class View extends React.Component<Props, any> {
             stats
         } = this.props;
 
-        let quizRender = (<QuizView quiz={ quiz } validate={ null } choose={null} answerConsultation={ true } displayMode={ true } nextQuiz={ null } prevQuiz={ null }/>)
+        let quizRender = (<QuizView 
+            quiz={ quiz } 
+            quizLocalChoice={ null } 
+            answerConsultation={ false } 
+            displayMode={ true } 
+            choose={ null }
+            validate={ null }
+            nextQuiz={ null } 
+            prevQuiz={ null }
+        />)
 
         // if there are stats we put them on the right
         let res = null
         if (stats == null) {
             res = (
                 <div className="page-content">
-                    <QuizView quiz={ quiz } validate={ null } choose={null} answerConsultation={ true } displayMode={ true } nextQuiz={ null } prevQuiz={ null }/>
+                    { quizRender }
                 </div>
             )
         } else {
@@ -42,7 +52,7 @@ export class View extends React.Component<Props, any> {
                 <div className="page-content">
                     <div className="row">
                         <div className="col-lg-7">
-                            <QuizView quiz={ quiz } validate={ null } choose={null} answerConsultation={ true } displayMode={ true } nextQuiz={ null } prevQuiz={ null }/>
+                            { quizRender }
                         </div>
                         <div className="col-lg-5">
                             

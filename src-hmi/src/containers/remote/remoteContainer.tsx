@@ -4,7 +4,7 @@ let validateAction = (id) => console.log("[remoteContainer] validateAction not i
 let chooseAction = (id, choice) => console.log("[remoteContainer] chooseAction not implemented")
 let signalAction = (signal) => console.log("[remoteContainer] chooseAction not implemented")
 
-import { Quiz } from "../../models/quiz"
+import { Quiz } from "../../models/class/class"
 
 import { StateProps, ActionProps, View } from "../../views/quiz/remoteView"
 

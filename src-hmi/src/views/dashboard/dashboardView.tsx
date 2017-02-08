@@ -3,30 +3,23 @@ import { connect } from "react-redux";
 import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
-import { View as QuizLauncherView } from "./quizLauncherView"
+import { View as QuizLauncherView, StateProps as QuizLauncherModel } from "./quizLauncherView"
 import { View as QuizStatView } from "./quizStatView"
 import { View as StudentFeedbackView } from "./studentFeedbackView"
 
-import { StudentFeedback, QuizStats } from "../../models/dashboard"
+import { Quiz } from '../../models/class/class'
 
 export interface StateProps {
-    studentFeedback : StudentFeedback
-    quizStatsArray : QuizStats[]
+    tooFast: number
+    tooSlow: number
+    panic: number
+    currentQuiz: Quiz
+    quizStats: any // choice for the current quiz => percentage who chose
+    quizz: QuizLauncherModel[]
 }
 
 export interface ActionProps {
-    launchQuiz(quizTitle: string)
-}
-
-
-function getLastCompleted(quizStatsArray: QuizStats[]) 
-{
-    var i = quizStatsArray.length - 1;
-    while (quizStatsArray[i].state!=0)
-    {
-        i--;
-    }
-    return quizStatsArray[i]; 
+    launchQuiz(quizId: number)
 }
 
 export type Props = StateProps & ActionProps;
@@ -35,12 +28,23 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
-            studentFeedback, quizStatsArray,
+            tooFast,
+            tooSlow,
+            panic, 
+            currentQuiz,
+            quizStats,
+            quizz,
             launchQuiz
         } = this.props;
 
-        var quizInfoItem = quizStatsArray.map((item) => {
-            return <QuizLauncherView quizStats={item} key={item.title} title={item.title} launch={() => launchQuiz(item.title)}> </QuizLauncherView>;
+        var quizInfoItem = quizz.map((item) => {
+            return <QuizLauncherView 
+                key={ item.title } 
+                id={ item.id } 
+                title={ item.title }
+                state={ item.state }
+                successRate={ item.successRate }
+                launch= { () => launchQuiz(item.id) } > </QuizLauncherView>;
         });
 
         var quizInfos = 
@@ -48,13 +52,11 @@ export class View extends React.Component<Props, any> {
             {quizInfoItem}
         </ul>)
 
-
-
         return (
             <div className="page-content" >
                 <div className="row ">
                     <div className="col-md-8">
-                        <QuizStatView quizStats={getLastCompleted(quizStatsArray)}> </QuizStatView>
+                        <QuizStatView quizStats={ quizStats } correctChoice={ currentQuiz.answer }> </QuizStatView>
                     </div>
 
                     <div className="col-md-4">
@@ -72,9 +74,9 @@ export class View extends React.Component<Props, any> {
                 </div>
                 <div className="row">
                     <div className="col-md-12">
-                        <StudentFeedbackView panicAlert={studentFeedback.panicAlert} 
-                                    slowerAlert={studentFeedback.slowerAlert}
-                                    quickerAlert={studentFeedback.quickerAlert}> </StudentFeedbackView>
+                        <StudentFeedbackView panicAlert={ panic > 0 } 
+                                    slowerAlert={ tooSlow > 0 }
+                                    quickerAlert={ tooFast > 0 }> </StudentFeedbackView>
                     </div>
                 </div>
             </div>

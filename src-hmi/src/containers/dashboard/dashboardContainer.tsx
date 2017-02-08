@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 
-import { launchAction } from "../../store/dashboard/actions/actions"
+let launchAction = (title) => console.log('[dashboardContainer] launchAction is not implemented')
 
 import { StateProps, ActionProps, View } from "../../views/dashboard/dashboardView"
 

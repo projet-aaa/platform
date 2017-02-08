@@ -12,6 +12,11 @@ import * as io from 'socket.io-client'
 import authInfo from '../store/auth/reducer'
 import { auth, authWS } from '../store/auth/actions'
 
+const urlWS = "localhost"
+const portWS = "8088"
+
+const url = urlWS + ":" + portWS
+
 // -- ACTION CREATOR HELPERS
 export interface Action<T>{
 	type: string
@@ -20,20 +25,22 @@ export interface Action<T>{
 }
 
 // -- STORE CREATOR HELPER
-export const storeFactory = (reducers: any[], url: string, log: boolean) => {
-    let socket = io.connect(url),
+export const storeFactory = (reducers: any[], connectWS: boolean, log: boolean) => {
+    let socket = connectWS ? io.connect(url) : null,
         reducers2 = Object.assign({}, authInfo), len = reducers.length,
-        reducer = null
+        reducer
 
+    // CREATING MAIN REDUCER
     for(let i = 0; i < len; i++) {
         Object.assign(reducers2, reducers[i])
     }
 	reducer = combineReducers(reducers2)
 
+    // GENERATING
     let middlewares = [thunk]
 
     middlewares.push(apiMiddleware)
-    if(url) { middlewares.push(createSocketIoMiddleware(socket, 'SERVER/')) }
+    if(socket) { middlewares.push(createSocketIoMiddleware(socket, 'SERVER/')) }
     if(log) { middlewares.push(createLogger()) }
 
     let store = createStore(

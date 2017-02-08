@@ -12,7 +12,9 @@ import Stuff from '../../views/todo/stuff'
 
 import { storeFactory } from '../../utils'
 
-let store = storeFactory([todoInfo, stuffInfo], "localhost:8000", true)
+let store = storeFactory([
+    todoInfo, stuffInfo
+], true, true)
 
 let MainRouter =
 (<Provider store={store}>
