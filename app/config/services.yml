@@ -19,7 +19,7 @@ services:
         arguments: [~, "@security.user_checker", ~, ~, "%security.authentication.hide_user_not_found%"]
 
     listener.voter:
-        class: AppBundle\Security\AccessListener
+        class: AppBundle\EventSubscriber\AccessListener
         arguments: ["@security.authorization_checker"]
         tags:
             - { name: kernel.event_listener, event: kernel.request, priority: 3}
