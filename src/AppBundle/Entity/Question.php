@@ -32,7 +32,8 @@ class Question
 
     /**
      * @Assert\NotBlank()
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @Assert\Choice({"text", "unique", "multiple"})
+     * @ORM\Column(type="string", length=16, nullable=false)
      */
     private $typeAnswer;
 
