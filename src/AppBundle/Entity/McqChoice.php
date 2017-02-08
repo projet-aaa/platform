@@ -21,14 +21,6 @@ class McqChoice
     private $id;
 
     /**
-     * @var string A text that describes the answer in a MCQ
-     *
-     * @Assert\NotBlank()
-     * @ORM\Column(type="string", length=255, nullable=false)
-     */
-    private $answer;
-
-    /**
      * @var string The option displayed text
      *
      * @ORM\Column(type="string", length=255, nullable=true)

@@ -11,7 +11,7 @@ class McqChoiceAdmin extends AbstractAdmin
 {
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper->add('answer')
+        $formMapper
             ->add('text')
             ->add('correct')
             ->add('mcqAnswer')
