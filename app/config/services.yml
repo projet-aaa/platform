@@ -6,6 +6,7 @@ imports:
     - { resource: 'services_admin.yml' }
     - { resource: 'services_event_listener.yml' }
     - { resource: 'services_voter.yml' }
+    - { resource: 'services_filter.yml' }
 
 services:
 #    service_name:
