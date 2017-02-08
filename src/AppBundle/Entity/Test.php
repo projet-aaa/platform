@@ -58,6 +58,14 @@ class Test
         $this->questions = new ArrayCollection();
     }
 
+    /**
+     * @Assert\IsTrue(message="A live test can't have more than one question")
+     * @return bool
+     */
+    public function isLiveConsistent(){
+        return ($this->live && $this->getQuestions()->count() <=1) || !$this->live;
+    }
+
     /** Auto generated methods*/
 
     /**
@@ -121,9 +129,10 @@ class Test
      *
      * @param Question $question
      */
-    public function addMission(Question $question)
+    public function addQuestion(Question $question)
     {
         $this->questions[] = $question;
+        $question->setTest($this);
     }
 
     /**
@@ -131,9 +140,10 @@ class Test
      *
      * @param Question $question
      */
-    public function removeMission(Question $question)
+    public function removeQuestion(Question $question)
     {
         $this->questions->removeElement($question);
+        $question->setTest(null);
     }
 
     /**
