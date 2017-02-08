@@ -6,6 +6,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 /**
+ * An option to answer a multiple choice question.
+ *
  * @ApiResource
  * @ORM\Entity
  */
@@ -19,7 +21,7 @@ class McqChoice
     private $id;
 
     /**
-     * A text that describes the answer in a MCQ
+     * @var string A text that describes the answer in a MCQ
      *
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -27,26 +29,36 @@ class McqChoice
     private $answer;
 
     /**
+     * @var string The option displayed text
+     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $text;
 
     /**
+     * @var boolean is it the correct (or one of the correct answer) ?
+     *
      * @Assert\NotNull()
      * @ORM\Column(type="boolean", nullable=false)
      */
     private $correct;
 
     /**
-     * @ORM\OneToOne(targetEntity="McqAnswer", mappedBy="mcqChoice")
+     * @var McqAnswer The list of McqAnswer that chose that answer
+     *
+     * @ORM\OneToMany(targetEntity="McqAnswer", inversedBy="mcqChoice")
      */
     private $mcqAnswer;
 
     /**
+     * @var Question the question which that object is a choice of
+     *
+     * @Assert\NotNull()
      * @ORM\ManyToOne(targetEntity="Question", inversedBy="mcqChoice")
      * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
      */
     private $question;
+
 
     public function __toString()
     {
@@ -137,7 +149,7 @@ class McqChoice
     }
 
     /**
-     * @return mixed
+     * @return Question
      */
     public function getQuestion()
     {
@@ -145,9 +157,9 @@ class McqChoice
     }
 
     /**
-     * @param mixed $question
+     * @param Question $question
      */
-    public function setQuestion($question)
+    public function setQuestion(Question $question)
     {
         $this->question = $question;
     }
