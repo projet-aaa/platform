@@ -12,7 +12,7 @@ import { StateProps, ActionProps, View } from "../../views/quiz/remoteViewDeskto
 
 import { RemoteState } from "../../store/remote/reducers/reducer"
 
-import { QuizInstanceState } from "../../models/class/class"
+import { QuizInstanceState, AttentionStateType } from "../../models/class/class"
 
 function mapStateToProps(state: any): StateProps {
     let remote: RemoteState = state.remote
@@ -41,9 +41,9 @@ function mapDispatchToProps(dispatch, state): ActionProps {
         choose: (id, choice) => dispatch(chooseAction(id, choice)),
         nextQuiz: null,
         prevQuiz: null,
-        signalPanic: () => dispatch(signalAction(0)),
-        signalSlow: () => dispatch(signalAction(1)),
-        signalFast: () => dispatch(signalAction(2))
+        signalPanic: () => dispatch(signalAction(AttentionStateType.PANIC)),
+        signalSlow: () => dispatch(signalAction(AttentionStateType.TOO_SLOW)),
+        signalFast: () => dispatch(signalAction(AttentionStateType.TOO_FAST))
     }
 }
 console.log(View)

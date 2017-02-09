@@ -72,8 +72,8 @@ const reducer = handleActions({
     [WSInActionTypes.SIGNAL_STATE]: function(state: DashboardState, action: any): DashboardState {
         return Object.assign({}, state, {
             panick: state.panic 
-                + (action.payload.attentionType == AttentionEventType.PANICK_START ? 1 : 0)
-                + (action.payload.attentionType == AttentionEventType.PANICK_END ? -1 : 0),
+                + (action.payload.attentionType == AttentionEventType.PANIC_START ? 1 : 0)
+                + (action.payload.attentionType == AttentionEventType.PANIC_END ? -1 : 0),
             tooSlow: state.tooSlow 
                 + (action.payload.attentionType == AttentionEventType.TOO_SLOW_START ? 1 : 0)
                 + (action.payload.attentionType == AttentionEventType.TOO_SLOW_END ? -1 : 0),

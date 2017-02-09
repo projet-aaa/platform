@@ -43,7 +43,7 @@ export class SocketServer {
                 
                 if(action.type.substring(0, 7) == "SERVER/"){
                     if(this.log) {
-                        console.log('[socket msg in] source=', socketInfo, ' msg=', action)
+                        console.log('[socket msg in] source=', socketInfo.username, '[', socketInfo.id, '] msg=', action)
                     }
 
                     if(room) {
@@ -132,7 +132,7 @@ export class SocketServer {
 
     send(socketInfo: SocketInfo, type: string, msg) {
         if(this.log)
-            console.log('[socket msg out] dest=', socketInfo, ' type=', type + ' msg=', msg)
+            console.log('[socket msg out] dest=', socketInfo.username, '[', socketInfo.id, '] type=', type + ' msg=', msg)
             
         socketInfo.socket.emit('action', { type: type, payload: msg })
     }

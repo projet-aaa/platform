@@ -35,12 +35,18 @@ export interface QuizRoomChoices {
 // -- STUDENT ATTENTION
 // ------------------------------
 export const AttentionEventType = {
-    PANICK_START: "PANICK_START",
-    PANICK_END: "PANICK_END", 
+    PANIC_START: "PANICK_START",
+    PANIC_END: "PANICK_END", 
     TOO_SLOW_START: "TOO_SLOW_START", 
     TOO_SLOW_END: "TOO_SLOW_END",
     TOO_FAST_START: "TOO_FAST_START",
     TOO_FAST_END: "TOO_FAST_END"
+}
+
+export const AttentionStateType = {
+    PANIC: "PANIC",
+    TOO_SLOW: "TOO_SLOW",
+    TOO_FAST: "TOO_FAST"
 }
 
 export interface AttentionEvent {
