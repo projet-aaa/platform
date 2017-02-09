@@ -11,7 +11,9 @@ import App from '../../containers/faq/faqContainer'
 
 import { storeFactory } from '../../utils'
 
-let store = storeFactory([threadContentInfo], "localhost:8000", true)
+let store = storeFactory([
+    threadContentInfo
+], true, true)
 
 
 let MainRouter =
