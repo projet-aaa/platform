@@ -8,6 +8,12 @@ services:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
 
+    admin.alert:
+        class: AppBundle\Admin\AlertAdmin
+        arguments: [~, AppBundle\Entity\Alert, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Alert }
+
     admin.discipline:
         class: AppBundle\Admin\DisciplineAdmin
         arguments: [~, AppBundle\Entity\Discipline, ~]
@@ -19,6 +25,12 @@ services:
         arguments: [~, AppBundle\Entity\Commentary, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Commentary }
+
+    admin.feedback:
+        class: AppBundle\Admin\FeedbackAdmin
+        arguments: [~, AppBundle\Entity\Feedback, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Feedback }
 
     admin.mcq_answer:
         class: AppBundle\Admin\McqAnswerAdmin
