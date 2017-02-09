@@ -6,6 +6,7 @@ export interface StateProps {
     author: string
     date: Date
     votes: number
+    id: number
 }
 export interface ActionProps {}
 
@@ -18,6 +19,7 @@ function ddmmyyyy(date: Date): string {
             date.getFullYear()
 };
 
+
 export type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
     props: Props
@@ -27,29 +29,29 @@ export class View extends React.Component<Props, any> {
             text,
             author,
             date,
+            id,
             votes
         } = this.props;
         var dateString = ddmmyyyy(date)
         return (
             <div>
                 <div className="well">
-                    <div className="pull-right">
-                        <div className="row">
-                            <div>
-                                <button type="submit" className="btn btn-primary"><b>+</b></button>
-                                <button type="submit" className="btn btn-primary"><b>-</b></button>
+                            <div className="pull-right">
+                                <div>
+                                    <button className="btn btn-primary"><b>+</b></button>
+                                    <button className="btn btn-primary"><b>-</b></button>
+                                </div>
+                                <span className="small font-bold">Votes </span>
+                                <br/>
+                                {votes}
                             </div>
-                            <span className="small font-bold">Votes </span>
-                            <br/>
-                            {votes}
-                        </div>
-                    </div>
-                    <p>
-                        <b>Réponse de {author}</b> ajouté le {dateString}
-                    </p>
-                    <p>
-                        {text}
-                    </p>
+                            <h5>
+                                <b>Réponse de {author}</b> ajouté le {dateString}
+                            </h5>
+                            <div dangerouslySetInnerHTML={{__html:text}}>
+                                
+                            </div>
+
                 </div>
             </div>
         );
