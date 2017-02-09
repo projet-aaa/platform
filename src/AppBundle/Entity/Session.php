@@ -115,7 +115,7 @@ class Session
     /** auto generated methods */
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
@@ -123,15 +123,7 @@ class Session
     }
 
     /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -139,7 +131,7 @@ class Session
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
     public function setName($name)
     {
@@ -147,7 +139,7 @@ class Session
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getType()
     {
@@ -155,7 +147,7 @@ class Session
     }
 
     /**
-     * @param mixed $type
+     * @param string $type
      */
     public function setType($type)
     {
@@ -163,7 +155,7 @@ class Session
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getUpdatedAt()
     {
@@ -171,7 +163,7 @@ class Session
     }
 
     /**
-     * @param mixed $updatedAt
+     * @param \DateTime $updatedAt
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -187,7 +179,7 @@ class Session
     }
 
     /**
-     * @param mixed $subject
+     * @param mixed $subjects
      */
     public function setSubjects($subjects)
     {
@@ -195,7 +187,7 @@ class Session
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection
      */
     public function getThreads()
     {
@@ -211,7 +203,7 @@ class Session
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection
      */
     public function getTests()
     {
@@ -227,7 +219,7 @@ class Session
     }
 
     /**
-     * @return mixed
+     * @return Discipline
      */
     public function getDiscipline()
     {
@@ -235,9 +227,9 @@ class Session
     }
 
     /**
-     * @param mixed $discipline
+     * @param Discipline $discipline
      */
-    public function setDiscipline($discipline)
+    public function setDiscipline(Discipline $discipline)
     {
         $this->discipline = $discipline;
     }
