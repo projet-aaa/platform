@@ -57,11 +57,6 @@ gulp.task('build', ['through-index', 'through-all', 'compile'], function () {
 })
 
 gulp.task('deploy', ['build'], function() {
-  gulp.src('dist/**/*')
-    .pipe(gulp.dest('../src/AppBundle/Resources/views'))
-
-  gulp.src('dist/')
-
   return gulp.src('dist/**/*')
     .pipe(gulp.dest('../web/webassets'))
 })

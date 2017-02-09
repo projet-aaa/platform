@@ -8,12 +8,9 @@ import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 import * as chartjs from "react-chartjs-2"
 
-// INTERNAL IMPORTS
-import { QuizStats, Choices } from "../../models/dashboard"
-
 export interface StateProps {
-    // the quiz staticstics
-    quizStats: QuizStats
+    quizStats: any // map from choice to count
+    correctChoice: string
 }
 
 export interface ActionProps { }
@@ -36,18 +33,27 @@ export type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
     props: Props
 
-    filledDataset(quizStats: QuizStats) {
+    filledDataset(quizStats: any) {
+        console.log(quizStats)
+        let choices = [],
+            percentages = []
+        for(var k in quizStats) {
+            choices.push(k)
+            percentages.push(quizStats[k])
+        }
+
+        console.log("choices: ", choices)
+        console.log("percentages: ", percentages)
+
+        let len = choices.length
+
         let data = {
-            labels: quizStats.choices.map(i => {
-                return i.text
-            }),
+            labels: choices,
             datasets: [
                 {
-                    data: quizStats.choices.map(i => {
-                        return i.percentChosen
-                    }),
-                    backgroundColor: chartColors.slice(0, quizStats.choices.length),
-                    hoverBackgroundColor: chartColors.slice(0, quizStats.choices.length)
+                    data: percentages,
+                    backgroundColor: chartColors.slice(0, len),
+                    hoverBackgroundColor: chartColors.slice(0, len)
                 }
             ]
         }
@@ -56,7 +62,8 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
-            quizStats      
+            quizStats,
+            correctChoice   
         } = this.props;
 
         let options = {
@@ -75,16 +82,8 @@ export class View extends React.Component<Props, any> {
             }
         }
 
-        //Build list of answer's information
-        let ret = "";
-        for(let i = 0; i < quizStats.choices.length; i++) {
-            ret = ret + quizStats.choices[i].text + " : "  + quizStats.choices[i].percentChosen.toString() + " %  || ";
-        }
-        ret = ret + " Réponse correcte : " + quizStats.correctAnswer;
-
         let data = this.filledDataset(quizStats)
 
-        console.log(data)
         return (
             <div className="panel">
                 <div className="panel-heading">
@@ -93,7 +92,7 @@ export class View extends React.Component<Props, any> {
                 <div className="panel-body pan white-background"> 
                     <div className="pal">
                         <chartjs.Pie data={ data } height={ 105 }/>                    
-                        { ret }
+                        { "Réponse correcte : " + correctChoice }
                     </div>
                 </div>
             </div>

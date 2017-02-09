@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -12,7 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity
  * @UniqueEntity("name")
  */
-class Session implements \JsonSerializable
+class Session
 {
     /**
      * @ORM\Id
@@ -22,40 +23,55 @@ class Session implements \JsonSerializable
     private $id;
 
     /**
+     * @var string The name of the session
+     *
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $name;
 
     /**
+     * @var string the type off the session
+     *
+     * @Assert\Choice({"CM", "TD", "TP"})
      * @Assert\NotBlank()
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=15, nullable=false)
      */
     private $type;
 
     /**
+     * @var \DateTime the last time the object was updated.
+     * Auto-updated with preUpdate and prePersist callback
+     *
+     * @Assert\NotBlank()
      * @ORM\Column(type="datetime", nullable=false)
      */
     private $updatedAt;
 
     /**
-     * Documents linked to that session
+     * @var ArrayCollection[Subject] Documents linked to that session
      *
      * @ORM\OneToMany(targetEntity="Subject", mappedBy="session")
      */
     private $subjects;
 
     /**
+     * @var ArrayCollection[Thread]  All the threads related to that session.
+     *
      * @ORM\OneToMany(targetEntity="Thread", mappedBy="session")
      */
     private $threads;
 
     /**
+     * @var ArrayCollection[Test] All the tests related to that session
+     *
      * @ORM\OneToMany(targetEntity="Test", mappedBy="session")
      */
     private $tests;
 
     /**
+     * @var Discipline The discipline owning sessions.
+     * @Assert\NotNull()
      * @ORM\ManyToOne(targetEntity="Discipline", inversedBy="sessions")
      * @ORM\JoinColumn(name="discipline_id", referencedColumnName="id")
      */
@@ -66,12 +82,17 @@ class Session implements \JsonSerializable
         return 'Session '.$this->getName();
     }
 
+    public function __construct()
+    {
+        $this->subjects = new ArrayCollection();
+        $this->tests = new ArrayCollection();
+        $this->threads = new ArrayCollection();
+    }
+
     /**
      * Specify data which should be serialized to JSON
-     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
      * @return mixed data which can be serialized by <b>json_encode</b>,
      * which is a value of any type other than a resource.
-     * @since 5.4.0
      */
     function jsonSerialize()
     {
@@ -83,11 +104,18 @@ class Session implements \JsonSerializable
         ];
     }
 
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function prePersist(){
+        $this->updatedAt = new \DateTime('now');
+    }
 
     /** auto generated methods */
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
@@ -95,15 +123,7 @@ class Session implements \JsonSerializable
     }
 
     /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -111,7 +131,7 @@ class Session implements \JsonSerializable
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
     public function setName($name)
     {
@@ -119,7 +139,7 @@ class Session implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getType()
     {
@@ -127,7 +147,7 @@ class Session implements \JsonSerializable
     }
 
     /**
-     * @param mixed $type
+     * @param string $type
      */
     public function setType($type)
     {
@@ -135,7 +155,7 @@ class Session implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getUpdatedAt()
     {
@@ -143,7 +163,7 @@ class Session implements \JsonSerializable
     }
 
     /**
-     * @param mixed $updatedAt
+     * @param \DateTime $updatedAt
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -159,7 +179,7 @@ class Session implements \JsonSerializable
     }
 
     /**
-     * @param mixed $subject
+     * @param mixed $subjects
      */
     public function setSubjects($subjects)
     {
@@ -167,7 +187,7 @@ class Session implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection
      */
     public function getThreads()
     {
@@ -183,7 +203,7 @@ class Session implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection
      */
     public function getTests()
     {
@@ -199,7 +219,7 @@ class Session implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return Discipline
      */
     public function getDiscipline()
     {
@@ -207,9 +227,9 @@ class Session implements \JsonSerializable
     }
 
     /**
-     * @param mixed $discipline
+     * @param Discipline $discipline
      */
-    public function setDiscipline($discipline)
+    public function setDiscipline(Discipline $discipline)
     {
         $this->discipline = $discipline;
     }

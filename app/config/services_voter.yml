@@ -8,9 +8,18 @@ services:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
 
+    voter.alert:
+        class: AppBundle\Security\AlertVoter
+        tags:
+            - { name: security.voter }
 
     voter.dicipline:
         class: AppBundle\Security\DisciplineVoter
+        tags:
+            - { name: security.voter }
+
+    voter.feedback:
+        class: AppBundle\Security\FeedbackVoter
         tags:
             - { name: security.voter }
 

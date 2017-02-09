@@ -5,12 +5,23 @@ import * as MediaQuery from "react-responsive"
 
 
 export interface StateProps {
-    panicAlert: boolean
-    slowerAlert: boolean
-    quickerAlert: boolean
+    // percent of panicking people
+    panicRate: number
+    // percent of people who think lesson goes too slow
+    slowRate: number
+    // percent of people who think lesson goes too fast
+    quickRate: number
 }
 
 export interface ActionProps { }
+
+// padding style
+var palNew = {
+    paddingTop: 0,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 0
+}
 
 export type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
@@ -18,8 +29,24 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
-            panicAlert, slowerAlert, quickerAlert        
+            panicRate,
+            slowRate,
+            quickRate        
         } = this.props;
+
+        // widths of the progress bars
+        var panicStyle = {
+            width: panicRate + "%",
+            backgroundColor: "#d9534f" // danger color
+        }
+        var slowStyle = {
+            width: slowRate + "%",
+            backgroundColor: "#5cb85c" // success color
+        }
+        var fastStyle = {
+            width: quickRate + "%",
+            backgroundColor: "#f0ad4e" // warning color
+        }
 
         return (
                 <div className="panel">
@@ -27,31 +54,26 @@ export class View extends React.Component<Props, any> {
                         Retours des élèves
                     </div>
                     <div className="panel-body">
-                        <div className="pal">
+                        <div style={ palNew }>
                             <div className="row">
-                                <div className="col-md-4 text-center">
-                                    <div className="row">
-                                        { panicAlert ? (<div className="indic-light warn-triggered center-block"></div>) : (<div className="indic-light center-block"></div>)}
-                                    </div>
-                                    <div className="row">
-                                        Incompréhénsion
-                                    </div>
+                                Incompréhension
+                                <div className="progress progress-sm mbn">
+                                    <div role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"
+                                        style={ panicStyle } className="progress-bar covering-size"/>
                                 </div>
-                                <div className="col-md-4 text-center">
-                                    <div className="row">    
-                                        { slowerAlert ? (<div className="indic-light warn-triggered center-block"></div>) : (<div className="indic-light center-block"></div>)}
-                                    </div>
-                                    <div className="row">
-                                        Rythme lent
-                                    </div>
+                            </div>
+                            <div className="row">
+                                Trop lent
+                                <div className="progress progress-sm mbn">
+                                    <div role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"
+                                        style={ slowStyle } className="progress-bar covering-size"/>
                                 </div>
-                                <div className="col-md-4 text-center">
-                                    <div className="row">
-                                        { quickerAlert ? (<div className="indic-light warn-triggered center-block"></div>) : (<div className="indic-light center-block"></div>)}
-                                    </div>
-                                    <div className="row">
-                                        Rythme rapide
-                                    </div>
+                            </div>
+                            <div className="row">
+                                Trop rapide
+                                <div className="progress progress-sm mbn">
+                                    <div role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"
+                                        style={ fastStyle } className="progress-bar covering-size"/>
                                 </div>
                             </div>
                         </div>

@@ -20,12 +20,6 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, label: Discipline }
 
-    admin.commentary:
-        class: AppBundle\Admin\CommentaryAdmin
-        arguments: [~, AppBundle\Entity\Commentary, ~]
-        tags:
-            - { name: sonata.admin, manager_type: orm, label: Commentary }
-
     admin.feedback:
         class: AppBundle\Admin\FeedbackAdmin
         arguments: [~, AppBundle\Entity\Feedback, ~]
@@ -79,6 +73,12 @@ services:
         arguments: [~, AppBundle\Entity\Thread, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Thread }
+
+    admin.thread_message:
+            class: AppBundle\Admin\ThreadMessageAdmin
+            arguments: [~, AppBundle\Entity\ThreadMessage, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, label: Thread Message }
 
     admin.user:
         class: AppBundle\Admin\UserAdmin
