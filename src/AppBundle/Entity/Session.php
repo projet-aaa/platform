@@ -71,7 +71,7 @@ class Session
 
     /**
      * @var Discipline The discipline owning sessions.
-     *
+     * @Assert\NotNull()
      * @ORM\ManyToOne(targetEntity="Discipline", inversedBy="sessions")
      * @ORM\JoinColumn(name="discipline_id", referencedColumnName="id")
      */
