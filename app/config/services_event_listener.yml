@@ -12,6 +12,11 @@ services:
         class: AppBundle\EventSubscriber\McqAnswerSubscriber
         arguments: ['@app.redis.client']
 
+
     listener.alert:
         class: AppBundle\EventSubscriber\AlertSubscriber
+        arguments: ['@app.redis.client']
+
+    listener.feedback:
+        class: AppBundle\EventSubscriber\FeedbackSubscriber
         arguments: ['@app.redis.client']
