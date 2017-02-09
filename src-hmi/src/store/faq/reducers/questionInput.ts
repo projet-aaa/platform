@@ -12,7 +12,7 @@ let initialState: QuestionInput = {
     questionInputVal: ''
 }
 
-const name = "threadContent"
+const name = "questionInput"
 const reducer = handleActions({
     [ActionTypes.CHANGEQUESTIONVALUE]: function(state: QuestionInput, action: Action<ChangeQuestionValueAction>): QuestionInput {
             return {...state, qestionInputVal: action.payload.questionValue};
