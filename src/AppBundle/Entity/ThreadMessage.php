@@ -66,6 +66,9 @@ class ThreadMessage
      */
     private $downVoters;
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return 'ThreadMessage '.$this->getId().''.substr($this->getText(),0,100);
@@ -74,19 +77,11 @@ class ThreadMessage
     /** auto generated methods */
 
     /**
-     * @return integer
+     * @return string
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param integer $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**
@@ -170,7 +165,7 @@ class ThreadMessage
     }
 
     /**
-     * @return mixed
+     * @return Collection
      */
     public function getDownVoters()
     {
@@ -178,7 +173,7 @@ class ThreadMessage
     }
 
     /**
-     * @param mixed $downVoters
+     * @param Collection $downVoters
      */
     public function setDownVoters($downVoters)
     {

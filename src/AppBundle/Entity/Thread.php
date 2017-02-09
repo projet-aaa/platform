@@ -55,23 +55,16 @@ class Thread
     /** Auto generated methods*/
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getTitle()
     {
@@ -79,7 +72,7 @@ class Thread
     }
 
     /**
-     * @param mixed $title
+     * @param string $title
      */
     public function setTitle($title)
     {
@@ -87,7 +80,7 @@ class Thread
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getText()
     {
@@ -95,7 +88,7 @@ class Thread
     }
 
     /**
-     * @param mixed $text
+     * @param stirng $text
      */
     public function setText($text)
     {
@@ -103,7 +96,7 @@ class Thread
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection
      */
     public function getThreadMessages()
     {
@@ -111,7 +104,7 @@ class Thread
     }
 
     /**
-     * @param mixed $commentaries
+     * @param ArrayCollection $threadMessages
      */
     public function setThreadMessages($threadMessages)
     {
@@ -119,7 +112,7 @@ class Thread
     }
 
     /**
-     * @return mixed
+     * @return Session
      */
     public function getSession()
     {
@@ -127,15 +120,15 @@ class Thread
     }
 
     /**
-     * @param mixed $session
+     * @param Session $session
      */
-    public function setSession($session)
+    public function setSession(Session $session)
     {
         $this->session = $session;
     }
 
     /**
-     * @return mixed
+     * @return User
      */
     public function getAuthor()
     {
@@ -143,9 +136,9 @@ class Thread
     }
 
     /**
-     * @param mixed $author
+     * @param User $author
      */
-    public function setAuthor($author)
+    public function setAuthor(User $author)
     {
         $this->author = $author;
     }

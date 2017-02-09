@@ -171,7 +171,7 @@ class Session
     }
 
     /**
-     * @return mixed
+     * @return Subject
      */
     public function getSubjects()
     {
@@ -179,9 +179,9 @@ class Session
     }
 
     /**
-     * @param mixed $subjects
+     * @param Subject $subjects
      */
-    public function setSubjects($subjects)
+    public function setSubjects(Subject$subjects)
     {
         $this->subjects = $subjects;
     }

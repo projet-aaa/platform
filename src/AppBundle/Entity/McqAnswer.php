@@ -61,6 +61,9 @@ class McqAnswer implements \JsonSerializable
         ];
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return 'McqAnswer '.$this->getId();
@@ -77,7 +80,7 @@ class McqAnswer implements \JsonSerializable
     /** auto generated methods */
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
@@ -85,15 +88,7 @@ class McqAnswer implements \JsonSerializable
     }
 
     /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
+     * @return McqChoice
      */
     public function getMcqChoice()
     {
@@ -101,9 +96,9 @@ class McqAnswer implements \JsonSerializable
     }
 
     /**
-     * @param mixed $mcqChoice
+     * @param McqChoice $mcqChoice
      */
-    public function setMcqChoice($mcqChoice)
+    public function setMcqChoice(McqChoice $mcqChoice)
     {
         $this->mcqChoice = $mcqChoice;
     }

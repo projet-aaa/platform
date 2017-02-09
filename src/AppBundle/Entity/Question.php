@@ -73,11 +73,17 @@ class Question
      */
     private $test;
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return 'Q '.$this->getText();
     }
 
+    /**
+     * Question constructor.
+     */
     public function __construct()
     {
         $this->mcqChoice = new ArrayCollection();
@@ -96,7 +102,7 @@ class Question
     /** auto generated methods */
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
@@ -104,15 +110,7 @@ class Question
     }
 
     /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getText()
     {
@@ -120,7 +118,7 @@ class Question
     }
 
     /**
-     * @param mixed $text
+     * @param string $text
      */
     public function setText($text)
     {
@@ -128,7 +126,7 @@ class Question
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getExplication()
     {
@@ -136,7 +134,7 @@ class Question
     }
 
     /**
-     * @param mixed $explication
+     * @param string $explication
      */
     public function setExplication($explication)
     {
@@ -144,7 +142,7 @@ class Question
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getTypeAnswer()
     {
@@ -152,7 +150,7 @@ class Question
     }
 
     /**
-     * @param mixed $typeAnswer
+     * @param string $typeAnswer
      */
     public function setTypeAnswer($typeAnswer)
     {
@@ -190,7 +188,7 @@ class Question
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getTextAnswers()
     {
@@ -198,7 +196,7 @@ class Question
     }
 
     /**
-     * @param mixed $textAnswers
+     * @param string $textAnswers
      */
     public function setTextAnswers($textAnswers)
     {
@@ -220,7 +218,7 @@ class Question
     }
 
     /**
-     * @return mixed
+     * @return Test
      */
     public function getTest()
     {
@@ -228,9 +226,9 @@ class Question
     }
 
     /**
-     * @param mixed $test
+     * @param Test $test
      */
-    public function setTest($test)
+    public function setTest(Test $test)
     {
         $this->test = $test;
     }

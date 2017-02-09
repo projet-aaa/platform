@@ -59,7 +59,9 @@ class Feedback implements \JsonSerializable
         ];
     }
 
-
+    /**
+     * @return string
+     */
     public function __toString()
     {
       return $this->getName().' '.substr($this->getId(),0,5);
@@ -68,7 +70,7 @@ class Feedback implements \JsonSerializable
     /** Auto generated methods*/
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
@@ -76,15 +78,7 @@ class Feedback implements \JsonSerializable
     }
 
     /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
+     * @return User
      */
     public function getAuthor()
     {
@@ -92,15 +86,15 @@ class Feedback implements \JsonSerializable
     }
 
     /**
-     * @param mixed $author
+     * @param User $author
      */
-    public function setAuthor($author)
+    public function setAuthor(User $author)
     {
         $this->author = $author;
     }
 
     /**
-     * @return mixed
+     * @return Session
      */
     public function getSession()
     {
@@ -108,9 +102,9 @@ class Feedback implements \JsonSerializable
     }
 
     /**
-     * @param mixed $session
+     * @param Session $session
      */
-    public function setSession($session)
+    public function setSession(Session $session)
     {
         $this->session = $session;
     }
@@ -132,7 +126,7 @@ class Feedback implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getText()
     {
@@ -140,7 +134,7 @@ class Feedback implements \JsonSerializable
     }
 
     /**
-     * @param mixed $text
+     * @param string $text
      */
     public function setText($text)
     {

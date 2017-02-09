@@ -47,7 +47,7 @@ class Discipline
     /** Auto generated methods*/
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
@@ -55,15 +55,7 @@ class Discipline
     }
 
     /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -71,7 +63,7 @@ class Discipline
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
     public function setName($name)
     {
@@ -79,7 +71,7 @@ class Discipline
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getGitUrl()
     {
@@ -87,7 +79,7 @@ class Discipline
     }
 
     /**
-     * @param mixed $gitUrl
+     * @param string $gitUrl
      */
     public function setGitUrl($gitUrl)
     {
@@ -95,7 +87,7 @@ class Discipline
     }
 
     /**
-     * @return mixed
+     * @return strign
      */
     public function getGitKey()
     {
@@ -103,7 +95,7 @@ class Discipline
     }
 
     /**
-     * @param mixed $gitKey
+     * @param string $gitKey
      */
     public function setGitKey($gitKey)
     {
@@ -111,7 +103,7 @@ class Discipline
     }
 
     /**
-     * @return mixed
+     * @return Session
      */
     public function getSessions()
     {
@@ -119,9 +111,9 @@ class Discipline
     }
 
     /**
-     * @param mixed $sessions
+     * @param Session $sessions
      */
-    public function setSessions($sessions)
+    public function setSessions(Session $sessions)
     {
         $this->sessions = $sessions;
     }

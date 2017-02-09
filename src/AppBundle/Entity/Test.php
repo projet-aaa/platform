@@ -48,6 +48,9 @@ class Test
      */
     private $session;
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return 'Test '.$this->getTitle().' '.substr($this->getId(),0,5);
@@ -69,7 +72,7 @@ class Test
     /** Auto generated methods*/
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
@@ -77,15 +80,7 @@ class Test
     }
 
     /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getTitle()
     {
@@ -93,7 +88,7 @@ class Test
     }
 
     /**
-     * @param mixed $title
+     * @param string $title
      */
     public function setTitle($title)
     {
@@ -101,7 +96,7 @@ class Test
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getGitPath()
     {
@@ -109,7 +104,7 @@ class Test
     }
 
     /**
-     * @param mixed $gitPath
+     * @param string $gitPath
      */
     public function setGitPath($gitPath)
     {
@@ -117,7 +112,7 @@ class Test
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection
      */
     public function getQuestions()
     {
@@ -136,7 +131,7 @@ class Test
     }
 
     /**
-     * Remove a.
+     * Remove a question.
      *
      * @param Question $question
      */
@@ -147,7 +142,7 @@ class Test
     }
 
     /**
-     * @return mixed
+     * @return Session
      */
     public function getSession()
     {
@@ -155,15 +150,15 @@ class Test
     }
 
     /**
-     * @param mixed $session
+     * @param Session $session
      */
-    public function setSession($session)
+    public function setSession(Session $session)
     {
         $this->session = $session;
     }
 
     /**
-     * @return mixed
+     * @return boolean
      */
     public function getLive()
     {
@@ -171,7 +166,7 @@ class Test
     }
 
     /**
-     * @param mixed $live
+     * @param boolean $live
      */
     public function setLive($live)
     {

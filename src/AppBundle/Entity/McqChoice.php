@@ -51,7 +51,9 @@ class McqChoice
      */
     private $question;
 
-
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return 'McqChoice '.$this->getText().' '.substr($this->getId(),0,5);
@@ -61,7 +63,7 @@ class McqChoice
     /** auto generated methods */
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
@@ -69,31 +71,7 @@ class McqChoice
     }
 
     /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAnswer()
-    {
-        return $this->answer;
-    }
-
-    /**
-     * @param mixed $answer
-     */
-    public function setAnswer($answer)
-    {
-        $this->answer = $answer;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getText()
     {
@@ -101,7 +79,7 @@ class McqChoice
     }
 
     /**
-     * @param mixed $text
+     * @param string $text
      */
     public function setText($text)
     {
@@ -109,7 +87,7 @@ class McqChoice
     }
 
     /**
-     * @return mixed
+     * @return boolean
      */
     public function getCorrect()
     {
@@ -117,7 +95,7 @@ class McqChoice
     }
 
     /**
-     * @param mixed $correct
+     * @param boolean $correct
      */
     public function setCorrect($correct)
     {
@@ -125,7 +103,7 @@ class McqChoice
     }
 
     /**
-     * @return mixed
+     * @return McqAnswer
      */
     public function getMcqAnswer()
     {
@@ -133,7 +111,7 @@ class McqChoice
     }
 
     /**
-     * @param mixed $mcqAnswer
+     * @param McqAnswer $mcqAnswer
      */
     public function setMcqAnswer($mcqAnswer)
     {
