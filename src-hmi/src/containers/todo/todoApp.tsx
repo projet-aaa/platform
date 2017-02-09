@@ -1,9 +1,9 @@
 import { connect } from "react-redux";
 
 import { addTodo, removeTodo, close, open, requestTodo } from "../../store/todo/actions/actions";
-import { sendText } from "../../server/actions"
+let sendText = (t) => console.log("send text!")
 
-import { Todo } from "../../models/models"
+import { Todo } from "../../models/todo"
 
 import { StateProps, ActionProps, View } from "../../views/todo/todosView"
 
