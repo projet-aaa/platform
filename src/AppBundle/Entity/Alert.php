@@ -57,6 +57,8 @@ class Alert implements \JsonSerializable
     {
         return [
             'id' => $this->id,
+            'author' => $this->getAuthor(),
+            'session' => $this->getSession(),
             'createdAd' => $this->createdAt,
             'text' => $this->text,
             'alertType' => $this->alertType,

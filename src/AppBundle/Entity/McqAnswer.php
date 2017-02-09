@@ -39,7 +39,11 @@ class McqAnswer implements \JsonSerializable
      */
     function jsonSerialize()
     {
-        return ['id' => $this->id];
+        return [
+            'id' => $this->id,
+            'mcqChoice' => $this->getMcqChoice()->getId(),
+            'author' => $this->getAuthor(),
+        ];
     }
 
     public function __toString()
