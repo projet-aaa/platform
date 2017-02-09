@@ -14,6 +14,11 @@ export interface ActionProps {
     launch()
 }
 
+// style
+var topMargin = {
+    marginTop: 0
+}
+
 export type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
     props: Props
@@ -33,11 +38,15 @@ export class View extends React.Component<Props, any> {
         } else if(state == 1) {
             res = title + ": lancé";
         } else {
-            res = <button className="btn btn-lg btn-primary" onClick={ launch }> { title } </button>
+            res = <a className="link-text" href="#" onClick={ launch }>{ title }</a>
         }
 
         return (
-            <li><h3> { res } </h3></li>
+            <li className="without-bullet">
+                <h3 style={ topMargin }>
+                    { res }
+                </h3>
+            </li>
         );
     }
 }

@@ -1151,8 +1151,8 @@ background: #303030; /* Old browsers */
 }
 /* End Left Sidebar Collapsed */
 .page-content {
-  padding: 20px 20px 50px 20px;
-  min-height: 700px;
+  padding: 20px 20px 50px 20px; 
+  /*min-height: 700px;*/
 }
 #footer {
   position: fixed;
@@ -7058,6 +7058,14 @@ ul.chats li.out .message {
 
 .covering-size {
   width: 100%
+}
+
+.link-text {
+  color: blue
+}
+
+.link-text:hover {
+  text-decoration: underline
 }
 
 

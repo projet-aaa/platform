@@ -30,12 +30,16 @@ export class View extends React.Component<Props, any> {
     props: Props
 
     filledDataset(quizStats: any) {
+        console.log(quizStats)
         let choices = [],
             percentages = []
         for(var k in quizStats) {
             choices.push(k)
-            percentages.push(choices[k])
+            percentages.push(quizStats[k])
         }
+
+        console.log("choices: ", choices)
+        console.log("percentages: ", percentages)
 
         let len = choices.length
 
