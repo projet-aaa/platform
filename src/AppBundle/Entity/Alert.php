@@ -41,8 +41,9 @@ class Alert implements \JsonSerializable
     private $text;
 
     /**
+     * @Assert\Choice({"tooFast", "tooSlow", "good"})
      * @Assert\NotBlank()
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=15, nullable=false)
      */
     private $alertType;
 
@@ -70,7 +71,7 @@ class Alert implements \JsonSerializable
      */
     public function __toString()
     {
-      return $this->getName().' '.substr($this->getId(),0,5);
+      return $this->getAlertType().' '.substr($this->getId(),0,5);
     }
 
     /** Auto generated methods*/
