@@ -62,7 +62,7 @@ class Feedback implements \JsonSerializable
 
     public function __toString()
     {
-      return $this->getName().' '.substr($this->getId(),0,5);
+      return substr($this->getText(), 0, 40).' '.substr($this->getId(),0,5);
     }
 
     /** Auto generated methods*/
