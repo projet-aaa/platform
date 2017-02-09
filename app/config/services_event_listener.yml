@@ -8,4 +8,15 @@ services:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
 
- 
+    listener.mcq_answer:
+        class: AppBundle\EventSubscriber\McqAnswerSubscriber
+        arguments: ['@app.redis.client']
+
+
+    listener.alert:
+        class: AppBundle\EventSubscriber\AlertSubscriber
+        arguments: ['@app.redis.client']
+
+    listener.feedback:
+        class: AppBundle\EventSubscriber\FeedbackSubscriber
+        arguments: ['@app.redis.client']

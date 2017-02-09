@@ -6,8 +6,9 @@
  * Time: 16:53
  */
 
-namespace AppBundle\Security;
+namespace AppBundle\EventSubscriber;
 
+use AppBundle\Security\BaseVoter;
 use AppBundle\Entity\Discipline;
 use AppBundle\Entity\McqAnswer;
 use AppBundle\Entity\McqChoice;
