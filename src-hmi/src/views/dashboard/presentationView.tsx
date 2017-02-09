@@ -13,6 +13,8 @@ export interface StateProps {
     quiz: Quiz
     // statistics
     stats: any
+    // true => we show the right answer
+    showCorrection: boolean
 }
 export interface ActionProps { }
 
@@ -23,13 +25,19 @@ export class View extends React.Component<Props, any> {
     render() {
         const {
             quiz,
-            stats
+            stats,
+            showCorrection
         } = this.props;
 
         let quizRender = (<QuizView 
             quiz={ quiz } 
-            quizChoice={ null }
-            showCorrection={ true } 
+            quizChoice={
+                {
+                    quizId: quiz.id,
+                    choice: -1 
+                }
+            }
+            showCorrection={ showCorrection } 
             forceUnfold={ true } 
             nextQuiz={ null } 
             prevQuiz={ null }

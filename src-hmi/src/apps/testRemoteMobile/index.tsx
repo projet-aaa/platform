@@ -8,16 +8,14 @@ viewTestFactory<Props>(View, {
     quiz: {
         id: 0,
         type: QuizType.MCQ,
-        title: "Ceci est une question",
-        question: "Est ce que je ok?",
-        choices: ["peut être", "mr l'arbitre", "oui", "D"],
-        explanations: ["peut-être que c'est faux", "aux chiottes l'arbitre", "NON !!!!!!!!!", "Voilà !"],
-        answer: 3,
-        choice: -1,
-        isValidated: false
+        title: "Question compilation",
+        question: "Parmi les langages suivants, lequel est compilé ?",
+        choices: ["javascript", "C++", "python"],
+        explanations: ["langage transformé en bytecode", "en effet", "interprété"],
+        answer: 1 // index of the right answer (begins at 0)
     },
-    quizChoice: { quizId: 0, choice: 0 },
-    question: false,
+    quizChoice: { quizId: 0, choice: -1 },
+    question: true,
     score: 40,
     choose: (quizId, i) => console.log("Test : " + i),
     validateAnswer: (quizId) => console.log("Je valide!"),

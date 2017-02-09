@@ -11,21 +11,21 @@ viewTestFactory<Props>(Dashboardview, {
     currentQuiz: {
         id: 0,
         type: QuizType.MCQ,
-        title: 'Une question à la con',
-        question: 'Pouvez vous répondre à cette question?',
-        choices: ['Oui', 'Non', 'Peut-être'],
-        answer: 1,
-        explanations: ["C'est évident!","de même", "mais non"]
+        title: "Question compilation",
+        question: "Parmi les langages suivants, lequel est compilé ?",
+        choices: ["javascript", "C++", "python"],
+        explanations: ["langage transformé en bytecode", "en effet", "interprété"],
+        answer: 1 // index of the right answer (begins at 0)
     },
     quizStats: {
-        Oui: 36,
-        Non: 64,
-        'Peut-être': 0
+        "javascript": 14,
+        "C++": 58,
+        "python": 28
     },
     quizLaunchers: [
         {
                 quizId: 1,
-                title: "mon premier quiz",
+                title: "Question compilation",
                 state: 2, // 0: not done; 1: being run; 2: already ran 
                 successRate: 36
         },

@@ -8,11 +8,11 @@ viewTestFactory<Props>(View, {
     quiz: {
         id: 0,
         type: QuizType.MCQ,
-        title: "La question pourri",
-        question: "Est ce que je ok?",
-        choices: ["peut être", "mr l'arbitre", "oui", "D"],
-        explanations: ["peut-être que c'est faux", "aux chiottes l'arbitre", "NON !!!!!!!!!", "Voilà !"],
-        answer: 3
+        title: "Question compilation",
+        question: "Parmi les langages suivants, lequel est compilé",
+        choices: ["javascript", "C++", "python"],
+        explanations: ["langage transformé en bytecode", "en effet", "interprété"],
+        answer: 1 // index of the right answer (begins at 0)
     },
     answerConsultation: false, // to show explanations of answers
     displayMode: false, // to only display the question and the choices (for the teacher)
