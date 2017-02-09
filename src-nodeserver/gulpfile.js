@@ -3,14 +3,15 @@
 var gulp        = require('gulp'),
     typescript  = require('typescript'),
     ts          = require('gulp-typescript'),
-    del         = require('del')
+    del         = require('del'),
+    source      = require('vinyl-source-stream')
 
 var project = ts.createProject('src/tsconfig.json', { typescript: typescript });
 
-gulp.task('build', function () {
-  var result = gulp.src('src/**/*ts')
-    .pipe(project())
-  return result.js.pipe(gulp.dest('dist'))
+gulp.task('build', function() { 
+    var result = gulp.src('src/**/*ts')
+        .pipe(project())
+    return result.js.pipe(gulp.dest('dist/'))
 })
 
 gulp.task('deploy', ['build'], function() {
@@ -23,4 +24,5 @@ gulp.task('deploy', ['build'], function() {
 
 gulp.task('clean', function(done) {
     del(['dist'], done.bind(this))
+    del(['.tmp'], done.bind(this))
 })

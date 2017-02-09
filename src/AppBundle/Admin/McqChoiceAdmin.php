@@ -9,16 +9,17 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 class McqChoiceAdmin extends AbstractAdmin
 {
+    // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper->add('answer')
+        $formMapper
             ->add('text')
             ->add('correct')
             ->add('mcqAnswer')
             ->add('question');
     }
 
-
+    // Fields that will be displayed in list view
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper->addIdentifier('id')

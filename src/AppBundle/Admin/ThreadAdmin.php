@@ -9,21 +9,24 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 class ThreadAdmin extends AbstractAdmin
 {
+    // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper->add('title')
         ->add('text')
-        ->add('commentaries')
+        ->add('threadMessages')
         ->add('session')
         ->add('author');
     }
 
+    // Fields on which entities can be filtered.
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper->add('session')
         ->add('author');
     }
 
+    // Fields that will be displayed in list view
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper->addIdentifier('id')

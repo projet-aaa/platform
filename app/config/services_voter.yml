@@ -1,0 +1,74 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+#    service_name:
+#        class: AppBundle\Directory\ClassName
+#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+
+    voter.alert:
+        class: AppBundle\Security\AlertVoter
+        tags:
+            - { name: security.voter }
+
+    voter.dicipline:
+        class: AppBundle\Security\DisciplineVoter
+        tags:
+            - { name: security.voter }
+
+    voter.feedback:
+        class: AppBundle\Security\FeedbackVoter
+        tags:
+            - { name: security.voter }
+
+    voter.mcq_answer:
+        class: AppBundle\Security\McqAnswerVoter
+        tags:
+            - { name: security.voter }
+
+    voter.mcq_choice:
+        class: AppBundle\Security\McqChoiceVoter
+        tags:
+            - { name: security.voter}
+
+    voter.question:
+        class: AppBundle\Security\QuestionVoter
+        tags:
+            - { name: security.voter}
+
+    voter.session:
+        class: AppBundle\Security\SessionVoter
+        tags:
+            - { name: security.voter}
+
+    voter.subject:
+        class: AppBundle\Security\SubjectVoter
+        tags:
+            - { name: security.voter}
+
+    voter.test:
+        class: AppBundle\Security\TestVoter
+        tags:
+            - { name: security.voter}
+
+    voter.text_answer:
+        class: AppBundle\Security\TextAnswerVoter
+        tags:
+            - { name: security.voter}
+
+    voter.thread_message:
+        class: AppBundle\Security\ThreadMessageVoter
+        tags:
+            - { name: security.voter}
+
+    voter.thread:
+        class: AppBundle\Security\ThreadVoter
+        tags:
+            - { name: security.voter}
+
+    voter.user:
+        class: AppBundle\Security\UserVoter
+        tags:
+            - { name: security.voter}

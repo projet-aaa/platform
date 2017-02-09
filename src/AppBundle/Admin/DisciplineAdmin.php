@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 class DisciplineAdmin extends AbstractAdmin
 {
+    // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper->add('name', 'text')
@@ -17,14 +18,17 @@ class DisciplineAdmin extends AbstractAdmin
             ->add('sessions');
     }
 
+    // Fields on which entities can be filtered.
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper->add('name');
     }
 
+    // Fields that will be displayed in list view
     protected function configureListFields(ListMapper $listMapper)
     {
-        $listMapper->addIdentifier('name')
+        $listMapper->addIdentifier('id')
+            ->add('name')
             ->add('gitUrl')
             ->add('sessions');
     }

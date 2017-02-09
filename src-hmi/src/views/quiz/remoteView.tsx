@@ -1,27 +1,21 @@
-// represents what sees a student during a live session (his remote)
+// REMOTE VIEW
+// Renders the student remote during a live lesson
 
+// EXTERAL IMPORTS
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
-import QuizContainer from "../../containers/quiz/quizContainer"
-import ScoreContainer from "../../containers/quiz/scoreContainer"
-import FeedbackContainer from "../../containers/quiz/feedbackContainer"
+import RemoteContainerDesktop from "../../containers/quiz/remoteContainerDesktop"
+import RemoteContainerMobile from "../../containers/quiz/remoteContainerMobile"
+import { QuizType, Quiz } from "../../models/class/class"
 
-import { QuizType, Quiz } from "../../models/quiz"
+import { getText } from '../../utils'
 
-export interface StateProps {
-    quiz: Quiz // a quiz
-}
-export interface ActionProps {
-    validateAnswer(quizId: number) // validate an answer
-}
+export interface StateProps { }
 
-// get the text of an element of the page with the id "id"
-function getText(id: string): string {
-    return (document.getElementById(id) as any).value
-}
+export interface ActionProps { }
 
 export type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
@@ -29,26 +23,17 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
-            quiz,
-            validateAnswer
+
         } = this.props;
         
-        // if there is a question we show the quiz, else we show the feedback buttons
-        let question = true,
-            left = question ?  
-                    <QuizContainer quiz={ quiz } validate={ validateAnswer }/> :
-                    <FeedbackContainer/>
-        // the quiz or the buttons are on the left and the scores are on the right
         return (
-            <div className="page-content">
-                <div className="row">
-                    <div className="col-md-8">
-                        { left }
-                    </div>
-                    <div className="col-md-4">
-                        <ScoreContainer/>
-                    </div>
-                </div>
+            <div>
+                <MediaQuery query='(min-width: 1224px)'>
+                    <RemoteContainerDesktop/>
+                </MediaQuery>
+                <MediaQuery query='(max-width: 1224px)'>
+                    <RemoteContainerMobile/>
+                </MediaQuery>
             </div>
         );
     }

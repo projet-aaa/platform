@@ -1,17 +1,27 @@
+// QUIZ LAUNCHER VIEW
+// Renders a quiz name which can be clicked in order to launch it
+
+// EXTERAL IMPORTS
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
-import { QuizStats, Choices } from "../../models/dashboard"
-
 export interface StateProps {
-    quizStats: QuizStats
+    quizId: number
     title: string
+    state: number // 0: not done; 1: being run; 2: already ran 
+    successRate: number
 }
 
-export interface ActionProps { 
+export interface ActionProps {
+    // Fires an action signaling that a quiz has been launched
     launch()
+}
+
+// style
+var topMargin = {
+    marginTop: 0
 }
 
 export type Props = StateProps & ActionProps;
@@ -20,23 +30,28 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
-            quizStats, title,
+            quizId,
+            title,
+            state,
+            successRate,
             launch
         } = this.props;
-
+        // render is different if the quiz is not launched, is launched or is completed
         let res = null
-        if(quizStats.state == 0) {
-            res = title + ": " 
-                + quizStats.choices[quizStats.correctAnswer - 1].percentChosen + "%";
-        } else if(quizStats.state == 1) {
+        if(state == 2) { // the quiz is done
+            res = title + ": " + successRate + "%";
+        } else if(state == 1) {
             res = title + ": lancé";
         } else {
-            res = <button className="btn btn-lg btn-primary" onClick={launch}> { title } </button>
+            res = <a className="link-text" href="#" onClick={ launch }>{ title }</a>
         }
 
-
         return (
-            <li><h3> {res} </h3></li>
+            <li className="without-bullet">
+                <h3 style={ topMargin }>
+                    { res }
+                </h3>
+            </li>
         );
     }
 }

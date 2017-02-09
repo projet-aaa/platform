@@ -1,0 +1,87 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+#    service_name:
+#        class: AppBundle\Directory\ClassName
+#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+
+    admin.alert:
+        class: AppBundle\Admin\AlertAdmin
+        arguments: [~, AppBundle\Entity\Alert, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Alert }
+
+    admin.discipline:
+        class: AppBundle\Admin\DisciplineAdmin
+        arguments: [~, AppBundle\Entity\Discipline, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Discipline }
+
+    admin.feedback:
+        class: AppBundle\Admin\FeedbackAdmin
+        arguments: [~, AppBundle\Entity\Feedback, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Feedback }
+
+    admin.mcq_answer:
+        class: AppBundle\Admin\McqAnswerAdmin
+        arguments: [~, AppBundle\Entity\McqAnswer, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: MCQ Answer }
+
+    admin.mcq_choice:
+        class: AppBundle\Admin\McqChoiceAdmin
+        arguments: [~, AppBundle\Entity\McqChoice, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: MCQ Choice }
+
+    admin.question:
+        class: AppBundle\Admin\QuestionAdmin
+        arguments: [~, AppBundle\Entity\Question, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Question }
+
+    admin.session:
+        class: AppBundle\Admin\SessionAdmin
+        arguments: [~, AppBundle\Entity\Session, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Session }
+
+    admin.subject:
+        class: AppBundle\Admin\SubjectAdmin
+        arguments: [~, AppBundle\Entity\Subject, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Subject }
+
+    admin.test:
+        class: AppBundle\Admin\TestAdmin
+        arguments: [~, AppBundle\Entity\Test, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Test }
+
+    admin.text_answer:
+        class: AppBundle\Admin\TextAnswerAdmin
+        arguments: [~, AppBundle\Entity\TextAnswer, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Text Answer }
+
+    admin.thread:
+        class: AppBundle\Admin\ThreadAdmin
+        arguments: [~, AppBundle\Entity\Thread, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Thread }
+
+    admin.thread_message:
+            class: AppBundle\Admin\ThreadMessageAdmin
+            arguments: [~, AppBundle\Entity\ThreadMessage, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, label: Thread Message }
+
+    admin.user:
+        class: AppBundle\Admin\UserAdmin
+        arguments: [~, AppBundle\Entity\User, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: User }

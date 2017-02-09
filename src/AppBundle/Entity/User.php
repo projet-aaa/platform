@@ -14,8 +14,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     "normalization_context"={"groups"={"user", "user-read"}},
  *     "denormalization_context"={"groups"={"user", "user-write"}}
  * })
+ * @ORM\HasLifecycleCallbacks
  */
-class User extends BaseUser
+class User extends BaseUser implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -40,6 +41,40 @@ class User extends BaseUser
      * @Groups({"user"})
      */
     protected $username;
+
+    /**
+     * @ORM\Column(type="string", length=31, nullable=true)
+     * @Groups({"user"})
+     */
+    private $part; //group is a reserved word in sql.
+
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function setUserEmail(){
+        if(empty($this->email)){
+            $this->email = $this->username.'@etu.enseeiht.fr';
+        }
+    }
+
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    function jsonSerialize()
+    {
+        return [
+          'id' => $this->id,
+            'username' => $this->username,
+            'firstname' => $this->firstname,
+            'lastname' => $this->lastname,
+        ];
+    }
 
 
     /** Auto generated methods */
@@ -107,6 +142,23 @@ class User extends BaseUser
     {
         $this->username = $username;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPart()
+    {
+        return $this->part;
+    }
+
+    /**
+     * @param mixed $part
+     */
+    public function setPart($part)
+    {
+        $this->part = $part;
+    }
+
 
 
     public function isUser(UserInterface $user = null)
