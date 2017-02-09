@@ -20,7 +20,7 @@ final class McqAnswerSubscriber implements EventSubscriberInterface
 {
 
     /**
-     * @var redis message queue
+     * @var Client message queue
      */
     private $redis;
 
@@ -41,16 +41,16 @@ final class McqAnswerSubscriber implements EventSubscriberInterface
     {
         return [
             KernelEvents::VIEW => [
-                ['createMcqAnswer', EventPriorities::PRE_WRITE],
-                ['readMcqAnswer', EventPriorities::PRE_READ],
-                ['updateMcqAnswer', EventPriorities::PRE_WRITE],
-                ['deleteMcqAnswer', EventPriorities::PRE_WRITE]
+                ['createMcqAnswer', EventPriorities::POST_WRITE],
+                ['readMcqAnswer', EventPriorities::POST_READ],
+                ['updateMcqAnswer', EventPriorities::POST_WRITE],
+                ['deleteMcqAnswer', EventPriorities::POST_WRITE]
             ]
         ];
     }
 
 
-    /** Send a message to tell that a McqAnswer was created
+    /** Send a redis message to tell that a McqAnswer was created
      * @param GetResponseForControllerResultEvent $event
      */
     public function createMcqAnswer(GetResponseForControllerResultEvent $event)
@@ -68,7 +68,7 @@ final class McqAnswerSubscriber implements EventSubscriberInterface
                 'payload' => array('mcqAnswer' => $mcqAnswer))));
     }
 
-    /** Send a message to tell that a McqAnswer was read
+    /** Send a redis message to tell that a McqAnswer was read
      * @param GetResponseForControllerResultEvent $event
      */
     public function readMcqAnswer(GetResponseForControllerResultEvent $event)
@@ -76,17 +76,17 @@ final class McqAnswerSubscriber implements EventSubscriberInterface
         $mcqAnswer = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
-        if (!$mcqAnswer instanceof McqAnswer || Request::METHOD_GET !== $method) {
+        if (!$mcqAnswer instanceof McqAnswer || (Request::METHOD_GET !== $method)) {
             return;
         }
 
         $this->redis->publish('general', json_encode(
             array(
                 'type' => 'readMcqAnswer',
-                'payload' => array($mcqAnswer))));
+                'payload' => array('alert' => $mcqAnswer))));
     }
 
-    /** Send a message to tell that a McqAnswer was updated
+    /** Send a redis message to tell that a McqAnswer was updated
      * @param GetResponseForControllerResultEvent $event
      */
     public function updateMcqAnswer(GetResponseForControllerResultEvent $event)
@@ -94,17 +94,17 @@ final class McqAnswerSubscriber implements EventSubscriberInterface
         $mcqAnswer = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
-        if (!$mcqAnswer instanceof McqAnswer || Request::METHOD_PUT !== $method || Request::METHOD_PATCH !== $method) {
+        if (!$mcqAnswer instanceof McqAnswer || Request::METHOD_PUT !== $method) {
             return;
         }
 
         $this->redis->publish('general', json_encode(
             array(
                 'type' => 'updateMcqAnswer',
-                'payload' => array($mcqAnswer))));
+                'payload' => array('alert' => $mcqAnswer))));
     }
 
-    /** Send a message to tell that a McqAnswer was deleted
+    /** Send a redis message to tell that a McqAnswer was deleted
      * @param GetResponseForControllerResultEvent $event
      */
     public function deleteMcqAnswer(GetResponseForControllerResultEvent $event)
@@ -119,6 +119,6 @@ final class McqAnswerSubscriber implements EventSubscriberInterface
         $this->redis->publish('general', json_encode(
             array(
                 'type' => 'deleteMcqAnswer',
-                'payload' => array($mcqAnswer))));
+                'payload' => array('alert' => $mcqAnswer))));
     }
 }

@@ -41,16 +41,16 @@ final class AlertSubscriber implements EventSubscriberInterface
     {
         return [
             KernelEvents::VIEW => [
-                ['createAlert', EventPriorities::PRE_WRITE],
-                ['readAlert', EventPriorities::PRE_READ],
-                ['updateAlert', EventPriorities::PRE_WRITE],
-                ['deleteAlert', EventPriorities::PRE_WRITE]
+                ['createAlert', EventPriorities::POST_WRITE],
+                ['readAlert', EventPriorities::POST_READ],
+                ['updateAlert', EventPriorities::POST_WRITE],
+                ['deleteAlert', EventPriorities::POST_WRITE]
             ]
         ];
     }
 
 
-    /** Send a message to tell that an AlertSubscriber was created
+    /** Send a redis message to tell that an Alert was created
      * @param GetResponseForControllerResultEvent $event
      */
     public function createAlert(GetResponseForControllerResultEvent $event)
@@ -68,7 +68,7 @@ final class AlertSubscriber implements EventSubscriberInterface
                 'payload' => array('alert' => $alert))));
     }
 
-    /** Send a message to tell that an AlertSubscriber was read
+    /** Send a redis message to tell that an Alert was read
      * @param GetResponseForControllerResultEvent $event
      */
     public function readAlert(GetResponseForControllerResultEvent $event)
@@ -83,10 +83,10 @@ final class AlertSubscriber implements EventSubscriberInterface
         $this->redis->publish('general', json_encode(
             array(
                 'type' => 'readAlert',
-                'payload' => array($alert))));
+                'payload' => array('alert' => $alert))));
     }
 
-    /** Send a message to tell that an AlertSubscriber was updated
+    /** Send a redis message to tell that an Alert was updated
      * @param GetResponseForControllerResultEvent $event
      */
     public function updateAlert(GetResponseForControllerResultEvent $event)
@@ -94,17 +94,17 @@ final class AlertSubscriber implements EventSubscriberInterface
         $alert = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
-        if (!$alert instanceof Alert || Request::METHOD_PUT !== $method || Request::METHOD_PATCH !== $method) {
+        if (!$alert instanceof Alert || Request::METHOD_PUT !== $method) {
             return;
         }
 
         $this->redis->publish('general', json_encode(
             array(
                 'type' => 'updateAlert',
-                'payload' => array($alert))));
+                'payload' => array('alert' => $alert))));
     }
 
-    /** Send a message to tell that an AlertSubscriber was deleted
+    /** Send a redis message to tell that an Alert was deleted
      * @param GetResponseForControllerResultEvent $event
      */
     public function deleteAlert(GetResponseForControllerResultEvent $event)
@@ -119,6 +119,6 @@ final class AlertSubscriber implements EventSubscriberInterface
         $this->redis->publish('general', json_encode(
             array(
                 'type' => 'deleteAlert',
-                'payload' => array($alert))));
+                'payload' => array('alert' => $alert))));
     }
 }
