@@ -65,6 +65,19 @@ export function viewTestFactory<T>(View: any, props: T) {
     ReactDOM.render(React.createElement(View, props), document.getElementById('main'))
 }
 
+export function apiTestFactory<T>(actionCreator, endpointInfo, body) {
+    let store = storeFactory([ 
+        authInfo
+    ], true, true)
+
+    let i = setInterval(() => {
+        if(isAuthentified()) {
+            store.dispatch(actionCreator(endpointInfo, body))
+            clearInterval(i)
+        }
+    }, 100)
+}
+
 // Get text from an element with a certain id
 export function getText(id: string): string {
     return (document.getElementById(id) as any).value

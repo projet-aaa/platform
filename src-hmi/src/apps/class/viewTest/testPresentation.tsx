@@ -1,8 +1,8 @@
-import { viewTestFactory } from '../../utils'
+import { viewTestFactory } from '../../../utils'
 
-import { View, Props } from '../../views/dashboard/presentationView'
+import { View, Props } from '../../../views/dashboard/presentationView'
 
-import { QuizType } from '../../models/class/class'
+import { QuizType } from '../../../models/class/class'
 
 viewTestFactory<Props>(View, {
     quiz: {

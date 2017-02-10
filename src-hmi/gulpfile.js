@@ -11,26 +11,60 @@ var gulp        = require('gulp'),
 
 var project = ts.createProject('src/tsconfig.json', { typescript: typescript });
 
-function getApp() {
-  if(process.argv.length > 3) {
-      return [process.argv[3].substring(2)]
-  } else {
-      return getFolders('src/apps')
-  }
-}
 function getFolders(dir) {
   return fs.readdirSync(dir)
     .filter(function(file) {
       return fs.statSync(path.join(dir, file)).isDirectory();
     });
 }
+function getAllFiles_aux(dir) {
+  var files = fs.readdirSync(dir),
+      len = files.length,
+      res = []
+
+    // console.log(files)
+    for(var i = 0; i < len; i++) {
+      var p = path.join(dir, files[i])
+      
+      if(p != null) {
+        if(fs.statSync(p).isDirectory()) {
+          res.push.apply(res, getAllFiles_aux(p))
+        } else {
+          res.push(p)
+        }
+      }
+    }
+
+    return res
+}
+function getAllFiles(dir) {
+  var files = getAllFiles_aux(dir)
+  return files.map((file) => { 
+    var s = file.split(path.sep)
+    s = s.slice(2)
+    return s.join(path.sep)
+  })
+}
+
+function getApps() {
+  if(process.argv.length > 3) {
+      return [process.argv[3].substring(2) + '.tsx']
+  } else {
+      return getAllFiles('src/apps')
+  }
+}
+
+gulp.task('test', function() {
+  console.log(getAllFiles('src/apps'))
+})
 
 gulp.task('through-index', function () {
-  var apps = getApp()
+  var apps = getApps()
 
   return apps.map(function(app) {
+    var name = path.basename(app, '.tsx')
     return gulp.src(['src/dist/index.html'])
-      .pipe(gulp.dest('dist/' + app + '/') )
+      .pipe(gulp.dest('dist/' + name + '/') )
   })
 });
 
@@ -46,13 +80,14 @@ gulp.task('compile', function () {
 });
 
 gulp.task('build', ['through-index', 'through-all', 'compile'], function () {
-  var apps = getApp()
+  var apps = getApps()
   
   return apps.map(function(app) {
-    var b = browserify('.tmp/apps/' + app + '/index.js')
+    var name = path.basename(app, '.tsx')
+    var b = browserify('.tmp/apps/' + app.split('.')[0] + '.js')
     return b.bundle()
       .pipe(source('bundle.js'))
-      .pipe(gulp.dest('dist/' + app))
+      .pipe(gulp.dest('dist/' + name))
   })
 })
 

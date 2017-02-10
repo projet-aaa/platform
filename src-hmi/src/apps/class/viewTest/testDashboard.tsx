@@ -1,8 +1,8 @@
-import { viewTestFactory } from '../../utils'
+import { viewTestFactory } from '../../../utils'
 
-import {View as Dashboardview, Props} from '../../views/dashboard/dashboardView'
+import {View as Dashboardview, Props} from '../../../views/dashboard/dashboardView'
 
-import { QuizType } from '../../models/class/class'
+import { QuizType } from '../../../models/class/class'
 
 viewTestFactory<Props>(Dashboardview, {
     tooFast: 50,

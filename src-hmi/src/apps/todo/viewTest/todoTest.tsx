@@ -1,6 +1,6 @@
-import { viewTestFactory } from '../../utils'
+import { viewTestFactory } from '../../../utils'
 
-import TodoView, { Props } from '../../views/todo/todo'
+import TodoView, { Props } from '../../../views/todo/todo'
 
 viewTestFactory<Props>(TodoView, {
     removeTodo() {
