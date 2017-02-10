@@ -42,12 +42,9 @@ export class View extends React.Component<Props, any> {
             percentages.push(quizStats[k])
         }
 
-        console.log("choices: ", choices)
-        console.log("percentages: ", percentages)
-
         let len = choices.length
 
-        let data = {
+        return {
             labels: choices,
             datasets: [
                 {
@@ -57,7 +54,6 @@ export class View extends React.Component<Props, any> {
                 }
             ]
         }
-        return data;
     }
 
     render() {

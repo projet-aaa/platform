@@ -15,8 +15,8 @@ viewTestFactory<Props>(View, {
         answer: 1 // index of the right answer (begins at 0)
     },
     quizChoice: { quizId: 0, choice: -1 },
-    showCorrection: false, // to show explanations of answers
-    forceUnfold: false, // to only display the question and the choices (for the teacher)
+    showCorrection: true, // to show explanations of answers
+    forceUnfold: true, // to only display the question and the choices (for the teacher)
     question: true,
     score: 40,
     rank: 10,
