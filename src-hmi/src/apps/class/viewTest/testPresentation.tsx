@@ -19,5 +19,5 @@ viewTestFactory<Props>(View, {
         "C++": 58,
         "python": 28
     },
-    showCorrection: false
+    showCorrection: true
 })

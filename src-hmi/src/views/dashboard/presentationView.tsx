@@ -60,10 +60,10 @@ export class View extends React.Component<Props, any> {
             res = (
                 <div className="page-content">
                     <div className="row">
-                        <div className="col-lg-7">
+                        <div className="col-lg-5">
                             { quizRender }
                         </div>
-                        <div className="col-lg-5"> 
+                        <div className="col-lg-7"> 
                             <QuizStatView quizStats={ quizStats } correctChoice={ quiz.choices[quiz.answer] }/>
                         </div>
                     </div>
