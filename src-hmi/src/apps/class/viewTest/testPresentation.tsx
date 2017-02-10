@@ -14,6 +14,10 @@ viewTestFactory<Props>(View, {
         explanations: ["langage transformé en bytecode", "en effet", "interprété"],
         answer: 1 // index of the right answer (begins at 0)
     },
-    stats: 1, // something not null
-    showCorrection: true
+    quizStats: {
+        "javascript": 14,
+        "C++": 58,
+        "python": 28
+    },
+    showCorrection: false
 })

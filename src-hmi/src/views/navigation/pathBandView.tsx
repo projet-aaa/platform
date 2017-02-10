@@ -1,9 +1,13 @@
+// Reprents the band at the top of the page content which contains 
+// the actual page name and the path from home page
+
+// EXTERNAL IMPORTS
 import * as React from "react";
 import { Link } from "react-router"
 
 export interface StateProps {
+    // the path from home page
     path: string[]
-    discipline: string
 }
 export interface ActionProps {}
 
@@ -14,8 +18,9 @@ export class View extends React.Component<Props, any> {
     render() {
         const {
             path,
-            discipline
         } = this.props;
+
+        // this var is the render off the path (home > page 1 > page 1.1)
         var pathRender = [];
         if (path.length == 0) {
             pathRender.push(
@@ -36,11 +41,13 @@ export class View extends React.Component<Props, any> {
                 <Link to="/">{path[path.length-1]}</Link></li>
             )
         }
+
+        // shows a band with the actual location on the left and the path on the right
         return (
             <div id="title-breadcrumb-option-demo" className="page-title-breadcrumb">
                 <div className="page-header pull-left">
                     <div className="page-title">
-                        {discipline}
+                        { path[path.length - 1] }
                     </div>
                 </div>
                 <ol className="breadcrumb page-breadcrumb pull-right">

@@ -90,7 +90,7 @@ export class View extends React.Component<Props, any> {
                         </div>
                         <div className="row">
                             <div className="col-lg-12">
-                                <div id={indRef} className="panel-collapse collapse" aria-expanded="false" style={heightExplanation}>
+                                <div id={indRef} className="panel-collapse collapse" aria-expanded={ forceUnfold ? "true" : "false" } style={heightExplanation}>
                                     <div className="bigTab" style={sizeText}>
                                         { explanation }
                                     </div>
