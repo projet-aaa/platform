@@ -55,7 +55,7 @@ export class SocketServer {
 
             socket.on('disconnect', () => {
                 if(this.log)
-                    console.log('[disconnection] ', socketInfo)
+                    console.log('[disconnection] username=', socketInfo.username)
 
                 let room: IRoom = this.rooms[socketInfo.roomId] 
 
@@ -111,7 +111,7 @@ export class SocketServer {
 
             if(this.log) {
                 console.log(
-                    '[room change] user=', socketInfo.username, 
+                    '[room change] username=', socketInfo.username, 
                     ' old room type=', oldRoom.type, ' id=', oldRoom.id, 
                     ' new room type=', newRoom.type, ' id=', newRoom.id
                 )
