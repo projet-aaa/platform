@@ -1,18 +1,29 @@
+// FAQ VIEW
+// Renders a list of question and its answers, related to a chapter
+
+// EXTERAL IMPORTS
 import * as React from "react"
 import { Link } from "react-router"
 
+//INTERNAL IMPORTS
 import { Thread } from "../../models/faq"
 import  FaqQuestionContainer from "../../containers/faq/faqQuestionContainer"
 
 export type StateProps = {
+    //The list of question for this FAQ
     threadList:  Thread[]
+    //The id of the chapter this FAQ is related to
     sessionId: number
+    //The content of the input used to ask a new question
     questionValue: string
 }
 
 export interface ActionProps {
+    //Get all threads from this chapter
     retrieveThreadInfos(sessionId: number)
+    //Publish a new question
     publishQuestion(sessionId:number, question:string)
+    //Update the store with the new content of the new question input
     changeQuestionInput(sessionId:number, changeEvent: string)
  }
 
@@ -31,7 +42,7 @@ export class View extends React.Component<Props, any> {
             publishQuestion, changeQuestionInput
         } = this.props;
 
-
+        //Render each thread of this chapter
         if (threadList) {
             var threadItem = threadList.map((item,i) => {
             return <FaqQuestionContainer 
