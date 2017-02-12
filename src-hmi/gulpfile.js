@@ -54,10 +54,6 @@ function getApps() {
   }
 }
 
-gulp.task('test', function() {
-  console.log(getAllFiles('src/apps'))
-})
-
 gulp.task('through-index', function () {
   var apps = getApps()
 
