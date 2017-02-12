@@ -11,3 +11,5 @@ export const chartColors = [
     "#ff0000",
     "#00e64d"
 ]
+
+export const appName = "AAA"

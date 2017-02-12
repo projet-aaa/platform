@@ -69,7 +69,7 @@ export class View extends React.Component<Props, any> {
         </ul>)
 
         return (
-            <div className="page-content" >
+            <div>
                 <div className="col-lg-8">
                     <div className="row">
                         { currentQuiz != null &&  

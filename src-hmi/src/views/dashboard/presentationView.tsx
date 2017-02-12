@@ -47,9 +47,9 @@ export class View extends React.Component<Props, any> {
             labels: choices,
             datasets: [
                 {
+                    label: "Choix",
                     data: count,
-                    backgroundColor: chartColors.slice(0, len),
-                    hoverBackgroundColor: chartColors.slice(0, len)
+                    backgroundColor: chartColors[1]
                 }
             ]
         }

@@ -21,13 +21,14 @@ export class View extends React.Component<Props, any> {
         const {
             disciplines,
             discipline
-        } = this.props;
-        var disciplinesRender = [];
-        for(var i=0;i<disciplines.length;i++) {
+        } = this.props
+
+        let disciplinesRender = [];
+        for(let i = 0; i < disciplines.length; i++) {
             if (disciplines[i] == discipline) {
                 disciplinesRender.push(
                     <li className="active">
-                        <Link to="/">
+                        <Link to="/" onClick={e => e.preventDefault()}>
                             <div className="icon-bg bg-orange"/>
                             <span className="menu-title">{disciplines[i]}</span>
                         </Link>
@@ -36,7 +37,7 @@ export class View extends React.Component<Props, any> {
             } else {
                 disciplinesRender.push(
                     <li>
-                        <Link to="/">
+                        <Link to={ "/" + disciplines[i] } >
                             <div className="icon-bg bg-orange"/>
                             <span className="menu-title">{disciplines[i]}</span>
                         </Link>

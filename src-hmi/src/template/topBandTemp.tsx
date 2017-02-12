@@ -5,35 +5,28 @@ import * as React from "react";
 import { Link } from "react-router"
 
 // INTERNAL IMPORTS
-import {View as TopBandView} from "../../views/navigation/topBandView"
+import TopBandContainer from "../containers/navigation/topBandContainer"
 
-export interface StateProps {
-    // the name of the app
-    appName: string
-    // the user full name
-    userFullName: string
-
+export interface IntrinsicProps {
+    children: any
 }
 
-export interface ActionProps {}
-
-export type Props = StateProps & ActionProps;
+export type Props = IntrinsicProps;
 export class View extends React.Component<Props, any> {
     props: Props
 
     render() {
         const {
-            appName,
-            userFullName
+            children
         } = this.props;
 
         // show the top band, the left menu and the path band
         // the content must be put into the div "page-wrapper" after the path band
         return (
             <div>
-                <TopBandView appName={ appName } userFullName={ userFullName }/>
+                <TopBandContainer/>
                 <div className="page-content">
-
+                    { children }
                 </div>
             </div>
         );
