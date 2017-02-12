@@ -10,6 +10,7 @@ function mapStateToProps(state: any): any {
 
 function mapDispatchToProps(dispatch): any {
     return {
+        //Send the answer content to the server
         sendAnswer: (content,threadId,userId) => {
             if (content) {
                 dispatch(postThreadMessageAction(content,threadId,userId))

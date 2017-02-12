@@ -13,6 +13,7 @@ function mapStateToProps(state: any): StateProps {
 }
 function mapDispatchToProps(dispatch): ActionProps {
     return {
+        //Retrieve all thread information from server, and update store
         retrieveThreadInfos : (threadId) => {
             // console.log("thread id :" +  threadId)
             //Fetch call
@@ -21,10 +22,13 @@ function mapDispatchToProps(dispatch): ActionProps {
             //Receive call result
             // dispatch(receivedThreadInfosAction(threadId))
         },
+        //Publish a question to the server
         publishQuestion : (sessionId, question) => {
             dispatch(publishQuestionAction(sessionId,question));
             dispatch(retrieveThreadInfosAction(sessionId))
         },
+
+        //Update store with the content of the new question input
         changeQuestionInput : (sessionId, questionValue) => {
             dispatch(changeQuestionValueAction(sessionId,questionValue))
         }
