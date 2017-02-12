@@ -90,7 +90,7 @@ export class View extends React.Component<Props, any> {
             res = (
                 <div className="page-content">
                     <div className="row">
-                        <div className="col-lg-5">
+                        <div className="col-lg-7">
                             { quizRender }
                         </div>
                         { showCorrection && 
