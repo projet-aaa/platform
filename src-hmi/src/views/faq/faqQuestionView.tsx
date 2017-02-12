@@ -1,8 +1,12 @@
+// FAQ QUESTION VIEW
+// Renders a question and its answers for a FAQ
+
+// EXTERNAL IMPORTS
 import * as React from "react"
 import { Link } from "react-router"
-
 import * as PagedownEditor from "pagedown-editor"
 
+//INTERNAL IMPORTS
 import { ThreadMessage, Thread } from "../../models/faq"
 import { View as ThreadMessageView} from "./faqAnswerView"
 
@@ -10,9 +14,12 @@ import { View as ThreadMessageView} from "./faqAnswerView"
 export type StateProps = Thread
 
 export interface ActionProps {
+    //Send the answer to the server
     sendAnswer(answerContent: string, threadId: number, userId: number )
 }
 
+
+//Convert a Date format to string
 function ddmmyyyy(date: Date): string {
   var mm = date.getMonth() + 1; // getMonth() is zero-based
   var dd = date.getDate();
@@ -22,10 +29,12 @@ function ddmmyyyy(date: Date): string {
             date.getFullYear()
 };
 
+//Important for pagedown editor initialisation
 function getPagedownEditor() {
     return PagedownEditor.getPagedownEditor();
 }
 
+//Pick the html code from the answer preview to send it to server
 function getAnswerContentAsHtml() {
     return document.getElementById("wmd-preview").innerHTML;
 }
@@ -35,6 +44,7 @@ export type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
     props: Props
 
+    //Initialize pagedown editor
     componentDidMount() {
         getPagedownEditor().run();
     }
