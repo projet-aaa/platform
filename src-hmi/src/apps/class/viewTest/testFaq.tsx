@@ -1,6 +1,6 @@
-import { viewTestFactory } from '../../utils'
+import { viewTestFactory } from '../../../utils'
 
-import { View, Props } from '../../views/faq/faqQuestionView'
+import { View, Props } from '../../../views/faq/faqQuestionView'
 
 viewTestFactory<Props>(View, {
     text: "Quel est le sens de la vie ?",

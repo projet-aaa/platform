@@ -4,6 +4,7 @@
 // EXTERNAL IMPORTS
 import * as React from "react"
 import { Link } from "react-router"
+import * as Pagedown from "pagedown"
 import * as PagedownEditor from "pagedown-editor"
 
 //INTERNAL IMPORTS
@@ -30,14 +31,18 @@ function ddmmyyyy(date: Date): string {
 };
 
 //Important for pagedown editor initialisation
-function getPagedownEditor() {
-    return PagedownEditor.getPagedownEditor();
-}
+// function getPagedownEditor(id: string) {
+//     // console.log("aaaa");
+
+//     // console.log(editor);
+//     return editor;
+// }
 
 //Pick the html code from the answer preview to send it to server
 function getAnswerContentAsHtml() {
     return document.getElementById("wmd-preview").innerHTML;
 }
+
 
 
 export type Props = StateProps & ActionProps;
@@ -46,7 +51,14 @@ export class View extends React.Component<Props, any> {
 
     //Initialize pagedown editor
     componentDidMount() {
-        getPagedownEditor().run();
+            let converter = Pagedown.getSanitizingConverter();
+    // console.log(converter);
+    window["Markdown"] = Pagedown;
+    console.log(PagedownEditor.Editor);
+    console.log(window["Markdown"].Editor);
+    let editor = new window["Markdown"].Editor(converter, this.props.id);
+        editor.run();
+        // getPagedownEditor("-" + this.props.id).run();
     }
 
     render() {
@@ -72,9 +84,9 @@ export class View extends React.Component<Props, any> {
         }
 
         //Give name according to id for editor to make them unique 
-        // let editorBarName = "wmd-button-bar-" + id;
-        // let editorName = "wmd-input-" + id;
-        // let editorPreview = "wmd-preview" + id;
+        let editorBarName = "wmd-button-bar-" + id;
+        let editorName = "wmd-input-" + id;
+        let editorPreviewName = "wmd-preview-" + id;
 
         //Give unique id to question tab
         let questionId = "faq-" + id;
@@ -99,11 +111,11 @@ export class View extends React.Component<Props, any> {
                                         <div className="col-lg-12">
                                             <h5> Ajouter une réponse </h5>
                                             <div>
-                                                <div id="wmd-button-bar"></div>
+                                                <div id={editorBarName}></div>
 
-                                                <textarea id="wmd-input" className="wmd-input"></textarea>
+                                                <textarea id={editorName} className="wmd-input"></textarea>
 
-                                                <div id="wmd-preview" className="wmd-panel wmd-preview"></div>
+                                                <div id={editorPreviewName} className="wmd-panel wmd-preview"></div>
                                             </div>
                                         </div>
                                     </div>
