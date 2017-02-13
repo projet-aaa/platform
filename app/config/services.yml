@@ -28,3 +28,6 @@ services:
     app.redis.client:
         class: Predis\Client
         arguments: ['tcp://redis:6379']
+
+    app.git.client:
+        class: AppBundle\Service\Git
