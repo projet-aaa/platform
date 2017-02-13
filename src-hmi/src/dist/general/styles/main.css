@@ -4092,7 +4092,7 @@ h6 {
 }
 .badge-default,
 .label-default {
-  background-color: #999 !important;
+  background-color: #999;
 }
 .badge-primary,
 .label-primary {
@@ -7058,6 +7058,10 @@ ul.chats li.out .message {
 
 .covering-size {
   width: 100%
+}
+
+.height-covering {
+  height: 100%
 }
 
 .link-text {
