@@ -1,3 +1,7 @@
+// FAQ ANSWER View
+// Renders an answer for a FAQ question
+
+//EXTERNAL IMPORTS
 import * as React from "react";
 import { Link } from "react-router"
 
@@ -5,11 +9,13 @@ export interface StateProps {
     text: string
     author: string
     date: Date
+    //Number of upvotes for this question
     votes: number
     id: number
 }
 export interface ActionProps {}
 
+// Function converting Date format to a string
 function ddmmyyyy(date: Date): string {
   var mm = date.getMonth() + 1; // getMonth() is zero-based
   var dd = date.getDate();

@@ -12,10 +12,7 @@ import * as io from 'socket.io-client'
 import authInfo from '../store/auth/reducer'
 import { auth, authWS } from '../store/auth/actions'
 
-const urlWS = "localhost"
-const portWS = "8088"
-
-const url = urlWS + ":" + portWS
+import { urlWS, chartColors } from '../models/consts'
 
 // -- ACTION CREATOR HELPERS
 export interface Action<T>{
@@ -26,7 +23,7 @@ export interface Action<T>{
 
 // -- STORE CREATOR HELPER
 export const storeFactory = (reducers: any[], connectWS: boolean, log: boolean) => {
-    let socket = connectWS ? io.connect(url) : null,
+    let socket = connectWS ? io.connect(urlWS) : null,
         reducers2 = Object.assign({}, authInfo), len = reducers.length,
         reducer
 
@@ -114,4 +111,27 @@ export function createAPIActionCreator(
 
 export function isAuthentified(): boolean { 
     return (document as any).token != null
+}
+
+// -- CALCUL DE DONNEES DE GRAPHE (POUR CHART.JS)
+export function calculateQuizData(stats: any) {
+    let choices = [],
+        percentages = []
+    for(var k in stats) {
+        choices.push(k)
+        percentages.push(stats[k])
+    }
+
+    let len = choices.length
+
+    return {
+        labels: choices,
+        datasets: [
+            {
+                data: percentages,
+                backgroundColor: chartColors.slice(0, len),
+                hoverBackgroundColor: chartColors.slice(0, len)
+            }
+        ]
+    }
 }
