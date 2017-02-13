@@ -103,10 +103,3 @@ let MainRouter =
 </Provider>)
 
 ReactDOM.render(MainRouter, document.getElementById('main'))
-
-// <Route path=":course/statistique" component={ (props, ctx) => 
-//                 <CourseContainer 
-//                     name="Statistique"
-//                     course={ props.params.course } UE={ props.params.UE }
-//                 /> }
-//             />

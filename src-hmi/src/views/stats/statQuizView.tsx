@@ -42,7 +42,6 @@ export class View extends React.Component<Props, any> {
 
         return (
             <div className="page-content">
-
                 <div className="row">
                     <div className="col-lg-12">
                         <button type="button" className="btn btn-primary" onClick={ gotoFeedback }>
@@ -71,13 +70,15 @@ export class View extends React.Component<Props, any> {
                             Quiz
                         </div>
                         <div className="panel-body pan white-background"> 
-                            { quiz.map((q) => {
-                                return <a 
-                                    className="list-group-item" 
-                                    onClick={ () => chooseQuiz(q.id) }>
-                                    { q.title }
-                                </a>
-                            })}
+                            <div className="page-content">
+                                { quiz.map((q) => {
+                                    return <a 
+                                        className="list-group-item" 
+                                        onClick={ () => chooseQuiz(q.id) }>
+                                        { q.title }
+                                    </a>
+                                })}
+                            </div>
                         </div>
                     </div>
                 </div>

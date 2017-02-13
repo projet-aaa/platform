@@ -13,7 +13,6 @@ export interface ActionProps {
     choose(profId: string)
  }
 
-
 export type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
     props: Props
@@ -25,7 +24,7 @@ export class View extends React.Component<Props, any> {
         } = this.props
 
         return (
-            <div className="container">
+            <div className="page-content">
                 <h2>Session en cours: </h2>
                 <SessionItemsView sessions={ sessions } choose={ choose }/>
             </div>
