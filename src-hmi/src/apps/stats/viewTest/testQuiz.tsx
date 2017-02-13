@@ -31,5 +31,7 @@ viewTestFactory<Props>(View, {
         }
     ],
     currentQuizId: 0,
-    chooseQuiz: (id) => console.log("pick: " + id)
+    chooseQuiz: (id) => console.log("pick: " + id),
+    gotoFeedback: () => console.log("feedback"),
+    gotoSession: () => console.log("go to session")
 })

@@ -100,7 +100,7 @@ export class View extends React.Component<Props, any> {
                 <div className="col-lg-8">
                     { left }
                 </div>
-                <div className="col-lg-4">
+                <div className="col-lg-4">>>>>>>> develop
                     <div className="row">
                         <ScoreView score={ score } rank={ rank } population={ population } highScore={ highscore } average={ average }/>
                     </div>

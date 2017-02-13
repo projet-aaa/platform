@@ -17,6 +17,8 @@ export interface StateProps {
 
 export interface ActionProps { 
     chooseQuiz(quizId: number)
+    gotoFeedback()
+    gotoSession()
 }
 
 export type Props = StateProps & ActionProps;
@@ -30,7 +32,9 @@ export class View extends React.Component<Props, any> {
 
             currentQuizId,
 
-            chooseQuiz
+            chooseQuiz,
+            gotoFeedback,
+            gotoSession
         } = this.props
 
         let data = calculateQuizData(quizChoices[currentQuizId]),
@@ -38,6 +42,18 @@ export class View extends React.Component<Props, any> {
 
         return (
             <div className="page-content">
+
+                <div className="row">
+                    <div className="col-lg-12">
+                        <button type="button" className="btn btn-primary" onClick={ gotoFeedback }>
+                            Voir les retours des élèves
+                        </button>
+                        <button type="button" className="btn btn-primary" onClick={ gotoSession }>
+                            Retourner aux sessions
+                        </button>
+                    </div>
+                </div>
+
                 <div className="col-lg-7">
                     <div className="panel">
                         <div className="panel-heading">

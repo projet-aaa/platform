@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 // REDUCERS
 import remoteInfo from '../store/remote/reducers/reducer'
 import dashboardInfo from '../store/dashboard/reducers/reducer'
+import statInfo from '../store/stats/reducer'
 
 // TEMPLATES
 import { View as TopBandLeftMenuTemp } from '../template/topBandLeftMenuTemp'
@@ -30,7 +31,8 @@ import { storeFactory } from '../utils'
 
 let store = storeFactory([
     remoteInfo,
-    dashboardInfo
+    dashboardInfo,
+    statInfo
 ], true, true)
 
 let MainRouter =
@@ -45,30 +47,49 @@ let MainRouter =
 
         <Route path="/:UE" component={ TopBandLeftMenuTemp }>
             <IndexRoute component={ DisciplineContainer }/>
-            <Route path=":course" component={ (props, ctx) => 
-                <CourseContainer 
-                    name="Cours"
-                    course={ props.params.course } UE={ props.params.UE }
-                /> }
-            />
-            <Route path=":course/faq" component={ (props, ctx) => 
-                <CourseContainer 
-                    name="FAQ"
-                    course={ props.params.course } UE={ props.params.UE }
-                /> }
-            />
-            <Route path=":course/statistique" component={ (props, ctx) => 
-                <CourseContainer 
-                    name="Statistique"
-                    course={ props.params.course } UE={ props.params.UE }
-                /> }
-            />
-            <Route path=":course/direct" component={ (props, ctx) => 
-                <CourseContainer 
-                    name="Direct"
-                    course={ props.params.course } UE={ props.params.UE }
-                /> }
-            />
+            <Route path=":course">
+                <IndexRoute component={ (props, ctx) => 
+                    <CourseContainer 
+                        name="Cours"
+                        course={ props.params.course } UE={ props.params.UE }
+                    /> }
+                />
+                <Route path="faq" component={ (props, ctx) => 
+                    <CourseContainer 
+                        name="FAQ"
+                        course={ props.params.course } UE={ props.params.UE }
+                    /> }
+                />
+                <Route path="statistique">
+                    <IndexRoute component={ (props, ctx) => 
+                        <CourseContainer 
+                            name="Statistique"
+                            course={ props.params.course } UE={ props.params.UE }
+                            statType={ "SESSION" }
+                        /> }
+                    />
+                    <Route path=":sessionId/quiz" component={ (props, ctx) => 
+                        <CourseContainer 
+                            name="Statistique"
+                            course={ props.params.course } UE={ props.params.UE }
+                            statType={ "QUIZ" }
+                        /> }
+                    />
+                    <Route path=":sessionId/attention" component={ (props, ctx) => 
+                        <CourseContainer 
+                            name="Statistique"
+                            course={ props.params.course } UE={ props.params.UE }
+                            statType={ "ATTENTION" }
+                        /> }
+                    />
+                </Route>
+                <Route path="direct" component={ (props, ctx) => 
+                    <CourseContainer 
+                        name="Direct"
+                        course={ props.params.course } UE={ props.params.UE }
+                    /> }
+                />
+            </Route>
         </Route>
 
         <Route path="/:UE/:course/:profName/tele" component={ TopBandTemp }>
@@ -82,3 +103,10 @@ let MainRouter =
 </Provider>)
 
 ReactDOM.render(MainRouter, document.getElementById('main'))
+
+// <Route path=":course/statistique" component={ (props, ctx) => 
+//                 <CourseContainer 
+//                     name="Statistique"
+//                     course={ props.params.course } UE={ props.params.UE }
+//                 /> }
+//             />

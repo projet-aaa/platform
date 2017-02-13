@@ -24,7 +24,7 @@ let initialState: AuthState = {
     firstName: "Somin",
     lastName: "Maurel",
     password: null,
-    isTeacher: false,
+    isTeacher: true,
     
     disciplines: ["TOB", "PIM", "PF"],
     discipline: "TOB",
