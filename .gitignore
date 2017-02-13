@@ -2,6 +2,7 @@
 /build/
 /phpunit.xml
 /nodejs/node_modules
+/nodejs/npm-debug.log
 /src/AppBundle/Entity/*.php~
 /src-hmi/src/*.log
 /var/*

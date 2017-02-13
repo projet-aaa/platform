@@ -8,6 +8,8 @@ import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 import * as chartjs from "react-chartjs-2"
 
+import { chartColors } from "../../models/consts"
+
 export interface StateProps {
     quizStats: any // map from choice to count
     correctChoice: string
@@ -15,28 +17,14 @@ export interface StateProps {
 
 export interface ActionProps { }
 
-// The colors for the diagram
-const chartColors = [
-    "#FF6384",
-    "#36A2EB",
-    "#ffff00",
-    "#ff0000",
-    "#00e64d",
-    "#FF6384",// repeat (lazy)
-    "#36A2EB",
-    "#ffff00",
-    "#ff0000",
-    "#00e64d"
-]
-
 export type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
     props: Props
 
     filledDataset(quizStats: any) {
-        console.log(quizStats)
         let choices = [],
             percentages = []
+
         for(var k in quizStats) {
             choices.push(k)
             percentages.push(quizStats[k])
@@ -99,5 +87,3 @@ export class View extends React.Component<Props, any> {
         );
     }
 }
-
- //options={ options } width="150" height="150" />  

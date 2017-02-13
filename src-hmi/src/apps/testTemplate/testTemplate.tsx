@@ -5,8 +5,8 @@ import * as React from 'react'
 import { Router, Route, IndexRoute, hashHistory } from 'react-router'
 import { Provider } from 'react-redux';
 
-import { View as TemplateView } from '../../template/templateTemp'
-import { View as ContentView } from '../../template/templateContentView'
+import { View as TemplateView } from '../../template/test/templateTemp'
+import { View as ContentView } from '../../template/test/templateContentView'
 
 import { storeFactory } from '../../utils'
 

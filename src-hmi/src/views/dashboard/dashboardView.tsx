@@ -14,11 +14,17 @@ import { View as StudentFeedbackView } from "./studentFeedbackView"
 import { Quiz, QuizLauncher } from '../../models/class/class'
 
 export interface StateProps {
+    // number of people who signaled lesson goes too fast
     tooFast: number
+    // number of people who signaled lesson goes too slow
     tooSlow: number
+    // number of people who signaled the are panicking
     panic: number
+    // the current quiz
     currentQuiz: Quiz
-    quizStats: any // choice for the current quiz => percentage who chose
+    // choice for the current quiz => percentage who chose
+    quizStats: any
+    // the list of quiz to launch
     quizLaunchers: QuizLauncher[]
 }
 
@@ -63,7 +69,7 @@ export class View extends React.Component<Props, any> {
         </ul>)
 
         return (
-            <div className="page-content" >
+            <div>
                 <div className="col-lg-8">
                     <div className="row">
                         { currentQuiz != null &&  
