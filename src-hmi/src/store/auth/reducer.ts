@@ -8,9 +8,14 @@ export interface AuthState {
     firstName: string
     lastName: string
     password: string
+    email: string
+
     isTeacher: boolean
     
     disciplines: string[]
+    groups: string[]
+    group: string
+
     discipline: string
 
     token: string
@@ -24,9 +29,13 @@ let initialState: AuthState = {
     firstName: "Somin",
     lastName: "Maurel",
     password: null,
-    isTeacher: false,
+    email: "somin.maurel@gmail.fr",
+    isTeacher: true,
     
     disciplines: ["TOB", "PIM", "PF"],
+    groups: ["3INB"],
+    group: "3IN",
+
     discipline: "TOB",
     
     token: null,

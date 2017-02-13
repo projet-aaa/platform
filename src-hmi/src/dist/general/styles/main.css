@@ -4092,7 +4092,7 @@ h6 {
 }
 .badge-default,
 .label-default {
-  background-color: #999 !important;
+  background-color: #999;
 }
 .badge-primary,
 .label-primary {

@@ -24,10 +24,8 @@ export class View extends React.Component<Props, any> {
             isTeacher
         } = this.props;
 
-        let content = isTeacher ? 
-                    <StudentProfilContainer/> : 
-                    <TeacherProfilContainer/>
-                    
+        let content = isTeacher ? <TeacherProfilContainer/> : <StudentProfilContainer/>
+         
         return (
             <div>
                 { content }
