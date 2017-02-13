@@ -84,7 +84,7 @@ class TestVoter extends BaseVoter
      */
     private function canCreate(Test $test, User $user)
     {
-        return ($user->getRole() !== 'ROLE_ELEVE');
+        return ! in_array('ROLE_ELEVE',$user->getRoles());
     }
 
     /**
@@ -108,7 +108,7 @@ class TestVoter extends BaseVoter
      */
     private function canUpdate(Test $test, User $user)
     {
-        return ($user->getRole() !== 'ROLE_ELEVE');
+        return ! in_array('ROLE_ELEVE',$user->getRoles());
     }
 
     /**
@@ -120,6 +120,6 @@ class TestVoter extends BaseVoter
      */
     private function canDelete(Test $test, User $user)
     {
-        return ($user->getRole() !== 'ROLE_ELEVE');
+        return ! in_array('ROLE_ELEVE',$user->getRoles());
     }
 }

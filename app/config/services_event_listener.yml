@@ -20,3 +20,7 @@ services:
     listener.feedback:
         class: AppBundle\EventSubscriber\FeedbackSubscriber
         arguments: ['@app.redis.client']
+
+    listener.test:
+        class: AppBundle\EventSubscriber\TestSubscriber
+        arguments: ['@app.redis.client']

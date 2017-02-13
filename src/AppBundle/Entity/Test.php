@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource
  * @ORM\Entity
  */
-class Test
+class Test implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -39,6 +39,23 @@ class Test
      * @ORM\JoinColumn(name="session_id", referencedColumnName="id")
      */
     private $session;
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->getTitle(),
+            'gitPath' => $this->getGitPath(),
+            'session' => $this->getSession(),
+        ];
+    }
 
     public function __toString()
     {
