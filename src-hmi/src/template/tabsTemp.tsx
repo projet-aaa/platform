@@ -18,15 +18,16 @@ export interface ActionProps {
 
 export type Props = StateProps & ActionProps;
 export class View extends React.Component<any, any> {
-    props: any
+    props: Props
 
     render() {
         const {
             names,
             urls,
-            actualTabName,
-            children
+            actualTabName
         } = this.props
+
+        let children = (this.props as any).children
 
         let tabs = []
         for (var i=0; i < names.length; i++) {
@@ -52,27 +53,29 @@ export class View extends React.Component<any, any> {
             if (names[i] == actualTabName) {
                 tabViews.push(
                     <div id={ names[i] } className="tab-pane fade in active">
-                        { children[i] }
+                        <div className="row">
+                            { children[i] }
+                        </div>
                     </div>
                 )
             } else {
                 tabViews.push(
                     <div id={ names[i] } className="tab-pane fade">
-                        { children[i] }
+                        <div className="row">
+                            { children[i] }
+                        </div>
                     </div>
                 )
             }
         }
 
         return (
-            <div className="page-content">
-                <div id="tab-general">
-                    <ul id="generalTab" className="nav nav-tabs responsive">
-                        { tabs }
-                    </ul>
-                    <div id="generalTabContent" className="tab-content responsive">
-                        { tabViews }
-                    </div>
+            <div id="tab-general">
+                <ul id="generalTab" className="nav nav-tabs responsive">
+                    { tabs }
+                </ul>
+                <div id="generalTabContent" className="tab-content responsive">
+                    { tabViews }
                 </div>
             </div>
         );

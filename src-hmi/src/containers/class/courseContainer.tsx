@@ -6,7 +6,9 @@ import { View as TabsTemp } from '../../template/tabsTemp'
 import CourseMainContainer from '../../containers/class/mainContainer'
 import FAQContainer from '../../containers/class/faqContainer'
 import LiveContainer from '../../containers/class/liveContainer'
-import StatContainer from '../../containers/class/statContainer'
+import StatSessionContainer from '../../containers/class/statSessionContainer'
+import StatQuizContainer from '../../containers/class/statQuizContainer'
+import StatFeedbackContainer from '../../containers/class/statFeedbackContainer'
 
 import { AuthState } from "../../store/auth/reducer"
 
@@ -44,7 +46,13 @@ export default connect<StateProps, ActionProps, any>(
                 <FAQContainer courseId={ props.courseId }/> 
                 : <div>Shouldn't show</div> }
             { props.name == "Statistique" ? 
-                <StatContainer courseId={ props.courseId }/> 
+                (props.statType == "QUIZ" ?
+                    <StatQuizContainer courseId={ props.courseId } /> :
+                    (props.statType == "SESSION" ?
+                        <StatSessionContainer courseId={ props.courseId } /> :
+                        <StatFeedbackContainer courseId={ props.courseId } />
+                    )
+                )
                 : <div>Shouldn't show</div> }
             { props.name == "Direct" ?
                 <LiveContainer courseId={ props.courseId }/> 

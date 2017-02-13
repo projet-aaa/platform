@@ -30,6 +30,7 @@ let initialState: AuthState = {
     lastName: "Maurel",
     password: null,
     email: "somin.maurel@gmail.fr",
+    
     isTeacher: true,
     
     disciplines: ["TOB", "PIM", "PF"],
