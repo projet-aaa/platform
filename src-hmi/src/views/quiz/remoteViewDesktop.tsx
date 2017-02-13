@@ -96,18 +96,16 @@ export class View extends React.Component<Props, any> {
         
         // the quiz or the buttons are on the left and the scores are on the right
         return (
-            <div className="page-content">
-                <div className="row">
-                    <div className="col-lg-8">
-                        { left }
+            <div className="row">
+                <div className="col-lg-8">
+                    { left }
+                </div>
+                <div className="col-lg-4">
+                    <div className="row">
+                        <ScoreView score={ score } rank={ rank } population={ population } highScore={ highscore } average={ average }/>
                     </div>
-                    <div className="col-lg-4">
-                        <div className="row">
-                            <ScoreView score={ score } rank={ rank } population={ population } highScore={ highscore } average={ average }/>
-                        </div>
-                        <div className="row">
-                            <CommentBoxView send={ sendComment }/>
-                        </div>
+                    <div className="row">
+                        <CommentBoxView send={ sendComment }/>
                     </div>
                 </div>
             </div>

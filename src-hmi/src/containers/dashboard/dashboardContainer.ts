@@ -7,7 +7,6 @@ import { DashboardState } from "../../store/dashboard/reducers/reducer"
 
 import { Quiz } from "../../models/class/class"
 
-
 function mapStateToProps(state: any): StateProps {
     let dash: DashboardState = state.dashboard
     return { 

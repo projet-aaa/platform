@@ -10,6 +10,8 @@ import * as chartjs from "react-chartjs-2"
 
 import { calculateQuizData } from "../../utils"
 
+import { chartColors } from "../../models/consts"
+
 export interface StateProps {
     quizStats: any // map from choice to count
     correctChoice: string
@@ -20,7 +22,7 @@ export interface ActionProps { }
 export type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
     props: Props
-
+    
     render() {
         const {
             quizStats,

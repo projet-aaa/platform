@@ -1,0 +1,71 @@
+import { connect } from "react-redux"
+import * as React from "react"
+
+import { View as TabsTemp } from '../../template/tabsTemp'
+
+import CourseMainContainer from '../../containers/class/mainContainer'
+import FAQContainer from '../../containers/class/faqContainer'
+import LiveContainer from '../../containers/class/liveContainer'
+import StatContainer from '../../containers/class/statContainer'
+
+import { AuthState } from "../../store/auth/reducer"
+
+function mapStateToProps(state: any, ownProps: any): any {
+    console.log(ownProps)
+    let authState: AuthState = state.auth
+    return { 
+        isTeacher: authState.isTeacher
+    }
+}
+function mapDispatchToProps(dispatch, ownProps): any {
+    return {
+        
+    }
+}
+
+export default connect<StateProps, ActionProps, any>(
+    mapStateToProps, 
+    mapDispatchToProps
+)((props, ctx) => {
+    let prePath = "/" + props.UE + "/" + props.course
+
+    if(props.isTeacher) {
+        return <TabsTemp 
+        actualTabName={ props.name } 
+        names={ ["Cours", "FAQ", "Statistique", "Direct"] }
+        urls={ [prePath,
+                prePath + "/faq",
+                prePath + "/statistique",
+                prePath + "/direct"] }>
+            { props.name == "Cours" ? 
+                <CourseMainContainer courseId={ props.courseId }/> 
+                : <div>Shouldn't show</div> }
+            { props.name == "FAQ" ? 
+                <FAQContainer courseId={ props.courseId }/> 
+                : <div>Shouldn't show</div> }
+            { props.name == "Statistique" ? 
+                <StatContainer courseId={ props.courseId }/> 
+                : <div>Shouldn't show</div> }
+            { props.name == "Direct" ?
+                <LiveContainer courseId={ props.courseId }/> 
+                : <div>Shouldn't show</div> }
+        </TabsTemp> 
+    } else {
+        return <TabsTemp 
+        actualTabName={ props.name } 
+        names={ ["Cours", "FAQ", "Direct"] }
+        urls={ [prePath,
+                prePath + "/faq",
+                prePath + "/direct"] }>
+            { props.name == "Cours" ? 
+                <CourseMainContainer courseId={ props.courseId }/> 
+                : <div>Shouldn't show</div> }
+            { props.name == "FAQ" ? 
+                <FAQContainer courseId={ props.courseId }/> 
+                : <div>Shouldn't show</div> }
+            { props.name == "Direct" ? 
+                <LiveContainer courseId={ props.courseId }/> 
+                : <div>Shouldn't show</div> }
+        </TabsTemp> 
+    }
+})

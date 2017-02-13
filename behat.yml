@@ -4,7 +4,12 @@ default:
   suites:
     default:
       contexts:
-        - FeatureContext: { doctrine: "@doctrine" }
+        - FeatureContext: { doctrine: "@doctrine", kernel: "@kernel" }
+        - ApiContext:
+              doctrine:       "@doctrine"
+              jwtManager:     "@lexik_jwt_authentication.jwt_manager"
+              userManager:    "@fos_user.user_manager"
+              encoderFactory: "@security.encoder_factory"
         - Behat\MinkExtension\Context\MinkContext
         - Sanpi\Behatch\Context\RestContext
         - Sanpi\Behatch\Context\JsonContext

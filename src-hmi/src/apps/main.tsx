@@ -2,23 +2,82 @@ import 'babel-polyfill'
 
 import * as ReactDOM from 'react-dom'
 import * as React from 'react'
-import { Router, Route, hashHistory } from 'react-router'
+import { Router, Route, IndexRoute, hashHistory } from 'react-router'
 import { Provider } from 'react-redux';
 
+// REDUCERS
 import remoteInfo from '../store/remote/reducers/reducer'
+import dashboardInfo from '../store/dashboard/reducers/reducer'
+
+// TEMPLATES
+import { View as TopBandLeftMenuTemp } from '../template/topBandLeftMenuTemp'
+import { View as TopBandTemp } from '../template/topBandTemp'
+import { View as TabsTemp } from '../template/tabsTemp'
+
+// VIEWS AND CONTAINERS
+import MainContainer from '../containers/main/mainContainer'
+import ProfileContainer from '../containers/profile/profileContainer'
+
 import { View as RemoteAppView } from '../views/quiz/remoteView'
+import DashboardContainer from '../containers/dashboard/dashboardContainer'
+import PresentationContainer from '../containers/dashboard/presentationContainer'
+
+import CourseContainer from '../containers/class/courseContainer'
+
+import DisciplineContainer from '../containers/discipline/disciplineContainer'
 
 import { storeFactory } from '../utils'
 
 let store = storeFactory([
-    remoteInfo
+    remoteInfo,
+    dashboardInfo
 ], true, true)
 
 let MainRouter =
 (<Provider store={store}>
     <Router history={hashHistory}>
-        <Route path="/" component={ RemoteAppView }>
-        </Route> 
+        <Route path="/" component={ TopBandLeftMenuTemp }>
+            <IndexRoute component={ MainContainer }/>
+        </Route>
+        <Route path="/profil" component={ TopBandLeftMenuTemp }>
+            <IndexRoute component={ ProfileContainer }/>
+        </Route>
+
+        <Route path="/:UE" component={ TopBandLeftMenuTemp }>
+            <IndexRoute component={ DisciplineContainer }/>
+            <Route path=":course" component={ (props, ctx) => 
+                <CourseContainer 
+                    name="Cours"
+                    course={ props.params.course } UE={ props.params.UE }
+                /> }
+            />
+            <Route path=":course/faq" component={ (props, ctx) => 
+                <CourseContainer 
+                    name="FAQ"
+                    course={ props.params.course } UE={ props.params.UE }
+                /> }
+            />
+            <Route path=":course/statistique" component={ (props, ctx) => 
+                <CourseContainer 
+                    name="Statistique"
+                    course={ props.params.course } UE={ props.params.UE }
+                /> }
+            />
+            <Route path=":course/direct" component={ (props, ctx) => 
+                <CourseContainer 
+                    name="Direct"
+                    course={ props.params.course } UE={ props.params.UE }
+                /> }
+            />
+        </Route>
+
+        <Route path="/:UE/:course/:profName/tele" component={ TopBandTemp }>
+            <IndexRoute component={ RemoteAppView }/>
+        </Route>
+        <Route path="/:UE/:course/:profName/tb" component={ TopBandTemp }>
+            <IndexRoute component={ DashboardContainer }/>
+        </Route>
+        <Route path="/:UE/:course/:profName/presentation" component={ PresentationContainer }/>
     </Router>
 </Provider>)
 

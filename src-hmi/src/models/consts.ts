@@ -16,3 +16,5 @@ const domainWS = "localhost"
 const portWS = "8088"
 
 export const urlWS = domainWS + ":" + portWS
+
+export const appName = "AAA"
