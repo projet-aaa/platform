@@ -8,13 +8,12 @@ export interface DashboardState {
     quizLauncher: QuizLauncher[]
 
     quizHistory: number[]
-    quizState: any[]
+    quizStat: any[]
     currConsulQuizInd: number
 
     currQuizId: number
     currQuizState: string
     currQuizStat: any
-    choice: any
 
     studentPop: number
     teacherPop: number
@@ -32,13 +31,12 @@ let initialState: DashboardState = {
     quizLauncher: [],
 
     quizHistory: [],
-    quizState: [],
+    quizStat: [],
     currConsulQuizInd: -1,
 
     currQuizId: -1,
     currQuizState: QuizInstanceState.OFF,
     currQuizStat: null,
-    choice: null,
 
     studentPop: 0,
     teacherPop: 0,

@@ -46,7 +46,7 @@ function mapDispatchToProps(dispatch, state): ActionProps {
         signalFast: () => dispatch(signalAction(AttentionStateType.TOO_FAST))
     }
 }
-console.log(View)
+
 export default connect<StateProps, ActionProps, any>(
     mapStateToProps, 
     mapDispatchToProps
