@@ -19,7 +19,7 @@ export class View extends React.Component<Props, any> {
     render() {
         const {
             children
-        } = this.props;
+        } = this.props
 
         // show the top band, the left menu and the path band
         // the content must be put into the div "page-wrapper" after the path band
@@ -29,7 +29,7 @@ export class View extends React.Component<Props, any> {
                 <div id="wrapper">
                     <LeftMenuContainer discipline={ (this.props as any).params.UE }/>
                     <div id="page-wrapper">
-                        <PathBandView path={ ["TOB", "Le patron des visiteurs"] }/>
+                        <PathBandView fullpath={ (this.props as any).location.pathname }/>
                         <div className="page-content">
                             { children }
                         </div>

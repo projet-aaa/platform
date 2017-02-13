@@ -7,7 +7,7 @@ import { Link } from "react-router"
 
 export interface StateProps {
     // the path from home page
-    path: string[]
+    fullpath: string
 }
 export interface ActionProps {}
 
@@ -17,30 +17,35 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
-            path,
-        } = this.props;
+            fullpath,
+        } = this.props
+
+        let path = ["TOB"]
 
         // this var is the render off the path (home > page 1 > page 1.1)
         var pathRender = [];
-        if (path.length == 0) {
-            pathRender.push(
-                <li className="active"><i className="fa fa-home"></i>&nbsp;<Link to="/">Accueil</Link></li>
-            )
-        } else {
-            pathRender.push(
-                <li><i className="fa fa-home"></i>&nbsp;<Link to="/">Accueil</Link></li>
-            )
-            for(var i=0;i<path.length-1;i++) {
-                pathRender.push(
-                    <li>&nbsp;&nbsp;<i className="fa fa-angle-right"></i>&nbsp;&nbsp;
-                    <Link to="/">{path[i]}</Link></li>
-                )
-            }
-            pathRender.push(
-                <li className="active">&nbsp;&nbsp;<i className="fa fa-angle-right"></i>&nbsp;&nbsp;
-                <Link to="/">{path[path.length-1]}</Link></li>
-            )
-        }
+        pathRender.push(
+            <li className="active"><i className="fa fa-home"></i>&nbsp;<Link to="/">Accueil</Link></li>
+        )
+        // if (path.length == 0) {
+        //     pathRender.push(
+        //         <li className="active"><i className="fa fa-home"></i>&nbsp;<Link to="/">Accueil</Link></li>
+        //     )
+        // } else {
+        //     pathRender.push(
+        //         <li><i className="fa fa-home"></i>&nbsp;<Link to="/">Accueil</Link></li>
+        //     )
+        //     for(var i=0;i<path.length-1;i++) {
+        //         pathRender.push(
+        //             <li>&nbsp;&nbsp;<i className="fa fa-angle-right"></i>&nbsp;&nbsp;
+        //             <Link to="/">{path[i]}</Link></li>
+        //         )
+        //     }
+        //     pathRender.push(
+        //         <li className="active">&nbsp;&nbsp;<i className="fa fa-angle-right"></i>&nbsp;&nbsp;
+        //         <Link to="/">{path[path.length-1]}</Link></li>
+        //     )
+        // }
 
         // shows a band with the actual location on the left and the path on the right
         return (
