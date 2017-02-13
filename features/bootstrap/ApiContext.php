@@ -10,6 +10,7 @@
  */
 
 use AppBundle\Entity\User;
+use PHPUnit_Framework_Assert as PHPUnit;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\MinkExtension\Context\RawMinkContext;
