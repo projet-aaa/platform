@@ -12,9 +12,9 @@ import { chartColors } from "../../models/consts"
 export interface StateProps {
     lastName: string
     firstName: string
-    mail: string
+    email: string
     // name of lessons a teacher teach
-    lessons: string[]
+    disciplines: string[]
     // the groups a teacher have
     groups: string[]
 }
@@ -33,8 +33,8 @@ export class View extends React.Component<Props, any> {
         const {
             lastName,
             firstName,
-            mail,
-            lessons,
+            email,
+            disciplines,
             groups
         } = this.props;
         
@@ -42,7 +42,7 @@ export class View extends React.Component<Props, any> {
         let lessonRender = []
         // the render of groups
         let groupRender = []
-        for (var i=0 ; i<lessons.length ; i++) {
+        for (var i=0 ; i<disciplines.length ; i++) {
             // index of colors
             let j = i % chartColors.length
             let k = (chartColors.length - i - 1) % chartColors.length
@@ -54,8 +54,8 @@ export class View extends React.Component<Props, any> {
             }
             lessonRender.push(
                 <span>
-                    <span className="label label-defaut" style={ colorStyleLesson } key={ lessons[i] }>
-                        { lessons[i] }
+                    <span className="label label-defaut" style={ colorStyleLesson } key={ disciplines[i] }>
+                        { disciplines[i] }
                     </span>
                     &nbsp;
                 </span>
@@ -102,7 +102,7 @@ export class View extends React.Component<Props, any> {
                             <div className="col-sm-9 controls">
                                 <div className="row">
                                     <div className="col-xs-9">
-                                        <input type="text" value={ mail } contentEditable={ false } className="form-control" readOnly/>
+                                        <input type="text" value={ email } contentEditable={ false } className="form-control" readOnly/>
                                     </div>
                                 </div>
                             </div>

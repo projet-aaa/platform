@@ -12,10 +12,10 @@ import { chartColors } from "../../models/consts"
 export interface StateProps {
     lastName: string
     firstName: string
-    mail: string
+    email: string
     group: string
     // name of lessons a student take
-    lessons: string[]
+    disciplines: string[]
 }
 export interface ActionProps { }
 
@@ -32,22 +32,22 @@ export class View extends React.Component<Props, any> {
         const {
             lastName,
             firstName,
-            mail,
+            email,
             group,
-            lessons
+            disciplines
         } = this.props;
         
         // the render of taken lessons
         let lessonRender = []
-        for (var i=0 ; i<lessons.length ; i++) {
+        for (var i=0 ; i<disciplines.length ; i++) {
             let j = i % chartColors.length
             let colorStyle = {
                 backgroundColor: chartColors[j]
             }
             lessonRender.push(
                 <span>
-                    <span className="label label-defaut" style={ colorStyle } key={ lessons[i] }>
-                        { lessons[i] }
+                    <span className="label label-defaut" style={ colorStyle } key={ disciplines[i] }>
+                        { disciplines[i] }
                     </span>
                     &nbsp;
                 </span>
@@ -86,7 +86,7 @@ export class View extends React.Component<Props, any> {
                             <div className="col-sm-9 controls">
                                 <div className="row">
                                     <div className="col-xs-9">
-                                        <input type="text" value={ mail } contentEditable={ false } className="form-control" readOnly/>
+                                        <input type="text" value={ email } contentEditable={ false } className="form-control" readOnly/>
                                     </div>
                                 </div>
                             </div>

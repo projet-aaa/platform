@@ -35,9 +35,9 @@ export class View extends React.Component<Props, any> {
                 <div className="topbar-main">
                     <ul className="nav navbar navbar-top-links navbar-right mbn">
                         <li className="dropdown topbar-user"><a data-hover="dropdown" href="#" className="dropdown-toggle" data-toggle="dropdown">&nbsp;
-                            <span className="hidden-xs">Somin Maurel</span>&nbsp;<span className="caret"></span></a>
+                            <span className="hidden-xs">{ userFullName }</span>&nbsp;<span className="caret"></span></a>
                             <ul className="dropdown-menu dropdown-user pull-right">
-                                <li><Link to="/"><i className="fa fa-user"></i>Mon Profil</Link></li>
+                                <li><Link to="/profil"><i className="fa fa-user"></i>Mon Profil</Link></li>
                                 <li><Link to="/"><i className="fa fa-key"></i>Déconnection</Link></li>
                             </ul>
                         </li>

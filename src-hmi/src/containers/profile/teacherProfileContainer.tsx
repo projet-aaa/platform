@@ -2,15 +2,16 @@ import { connect } from "react-redux";
 
 import { View, StateProps, ActionProps } from "../../views/profile/teacherProfileView"
 
+import { AuthState } from "../../store/auth/reducer"
+
 function mapStateToProps(state: any): StateProps {
+    let auth: AuthState = state.auth
     return { 
-        lastName: "Mauran",
-        firstName: "Philippe",
-        mail: "mauran@etu.fr",
-        // name of lessons a teacher teach
-        lessons: ["PIM", "TOB", "PF"],
-        // the groups a teacher have
-        groups: ["3IN", "2IN"]
+        lastName: auth.lastName,
+        firstName: auth.firstName,
+        email: auth.email,
+        groups: auth.groups,
+        disciplines: auth.disciplines
     }
 }
 function mapDispatchToProps(dispatch): ActionProps {
