@@ -1,13 +1,17 @@
 import { connect } from "react-redux";
 
-import { View } from "../../views/profile/studentProfileView"
+import { View, StateProps, ActionProps } from "../../views/profile/studentProfileView"
 
-function mapStateToProps(state: any): any {
+function mapStateToProps(state: any): StateProps {
     return { 
-        
+        lastName: "Gibson",
+        firstName: "Emerick",
+        mail: "emerick.gibson@hotmail.fr",
+        group: "3INB",
+        lessons: ["TOB", "PIM", "PF"]
     }
 }
-function mapDispatchToProps(dispatch): any {
+function mapDispatchToProps(dispatch): ActionProps {
     return {
         
     }
