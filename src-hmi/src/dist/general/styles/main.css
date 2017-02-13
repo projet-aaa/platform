@@ -7060,6 +7060,10 @@ ul.chats li.out .message {
   width: 100%
 }
 
+.height-covering {
+  height: 100%
+}
+
 .link-text {
   color: blue
 }

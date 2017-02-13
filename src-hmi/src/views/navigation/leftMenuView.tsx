@@ -13,6 +13,12 @@ export interface StateProps {
 
 export interface ActionProps {  }
 
+// style
+var navbarPosition = {
+    top: 0,
+    bottom: 0
+}
+
 export type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
     props: Props
@@ -48,7 +54,7 @@ export class View extends React.Component<Props, any> {
         return (
             <div>
                 <nav id="sidebar" role="navigation" data-step="2" data-intro="Template has &lt;b&gt;many navigation styles&lt;/b&gt;"
-                        data-position="right" className="navbar-default navbar-static-side">
+                        data-position="right" className="navbar-default navbar-static-side" style={ navbarPosition }>
                     <div className="sidebar-collapse menu-scroll">
                         <ul id="side-menu" className="nav">
                             <div className="clearfix"></div>
