@@ -72,7 +72,7 @@ export class SocketServer {
             });
         })
 
-        redis.on('message', function(channel, data) {
+        redis.on('message', (channel, data) => {
             if(this.log)
                 console.log('[redis msg] ', data)
             // TODO parse data and send it to the right room

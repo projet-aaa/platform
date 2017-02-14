@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ApiResource
  * @ORM\Entity
  * @UniqueEntity("name")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Session
 {
