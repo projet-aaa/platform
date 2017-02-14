@@ -26,9 +26,9 @@ export class View extends React.Component<Props, any> {
             sessions
         } = this.props;
 
-        var CMRender = [<h2 className="tab">CMs</h2>]
-        var TDRender = [<h2 className="tab">TDs</h2>]
-        var TPRender = [<h2 className="tab">TPs</h2>]
+        var CMRender = []
+        var TDRender = []
+        var TPRender = []
         for (var i=0 ; i<sessions.length ; i++) {
             if (sessions[i].sessionType == SessionType.CM) {
                 CMRender.push(
@@ -57,12 +57,15 @@ export class View extends React.Component<Props, any> {
         return (
             <div>
                 <div>
+                    <h2 className="tab">CMs</h2>
                     { CMRender }
                 </div>
                 <div>
+                    <h2 className="tab">TDs</h2>
                     { TDRender }
                 </div>
                 <div>
+                    <h2 className="tab">TPs</h2>
                     { TPRender }
                 </div>
             </div>

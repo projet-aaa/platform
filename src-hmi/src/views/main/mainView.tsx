@@ -27,9 +27,7 @@ export class View extends React.Component<Props, any> {
         const {
             sessions,
             disciplines
-        } = this.props;
-
-        console.log("main view: ", sessions)
+        } = this.props
 
         var sessionsRender = []
         for (var i=0 ; i<sessions.length ; i++) {
