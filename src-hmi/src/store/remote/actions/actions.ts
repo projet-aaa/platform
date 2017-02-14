@@ -1,5 +1,3 @@
-import * as fetch from 'isomorphic-fetch'
-
 import { createAPIActionCreator } from '../../../utils'
 import { ActionTypes, APIActionTypes } from './actionTypes'
 
@@ -15,29 +13,49 @@ export function nextQuizAction() {
     return { type: ActionTypes.NEXT_CONSUL_QUIZ, payload: {} }
 }
 
-export const answerAction: (endpointInfo: any, payload: { id: number, choice: any}) => any
+export const answerAction: (endpointInfo: any, bodyInfo: { id: number, choice: any}) => any
 = createAPIActionCreator( 
-    ((endpointInfo) => 'http://localhost/app_dev.php/api/mcq_answers'), 
+    ((endpointInfo) => '/mcq_answers'), 
+    null,
     'GET',
     APIActionTypes.ANSWER,
     APIActionTypes.ANSWER_SUCCESS,
     APIActionTypes.ANSWER_FAILURE
 )
 
-export const signalStateAction: (endpointInfo: any, payload: { state: number }) => any
+export const signalStateAction: (endpointInfo: any, bodyInfo: {
+    state: string
+    sessionId: string
+    authorId: string
+}) => any
 = createAPIActionCreator( 
-    ((endpointInfo) => 'localhost/signalState'), 
+    (ei) => '/alerts', 
+    (bi) => { return { 
+        author: bi.authorId,
+        session: bi.sessionId,
+        text: "null",
+        alertType: bi.state
+    }},
     'POST',
     APIActionTypes.SIGNAL_STATE,
     APIActionTypes.SIGNAL_STATE_SUCCESS,
     APIActionTypes.SIGNAL_STATE_FAILURE
 )
 
-export const commentAction: (endpointInfo: any, payload: { text: string }) => any
+export const commentAction: (endpointInfo: any, payload: { 
+    text: string
+    sessionId: string
+    authorId: string
+}) => any
 = createAPIActionCreator( 
-    ((endpointInfo) => 'localhost/comment'), 
+    ((ei) => '/feedbacks'), 
+    ((bi) => { return {
+        authorId: bi.authorId,
+        sessionId: bi.sessionId,
+        text: bi.text
+    }}),
     'POST',
-    APIActionTypes.SIGNAL_STATE,
-    APIActionTypes.SIGNAL_STATE_SUCCESS,
-    APIActionTypes.SIGNAL_STATE_FAILURE
+    APIActionTypes.COMMENT,
+    APIActionTypes.COMMENT_SUCCESS,
+    APIActionTypes.COMMENT_FAILURE
 )

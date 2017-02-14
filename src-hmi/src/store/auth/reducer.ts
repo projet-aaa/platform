@@ -7,6 +7,7 @@ export interface AuthState {
     login: string
     firstName: string
     lastName: string
+    id: string
     password: string
     email: string
 
@@ -28,6 +29,7 @@ let initialState: AuthState = {
     login: null,
     firstName: "Somin",
     lastName: "Maurel",
+    id: "/app_dev.php/api/users/2",
     password: null,
     email: "somin.maurel@gmail.fr",
     

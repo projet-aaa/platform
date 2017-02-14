@@ -19,3 +19,5 @@ const portWS = "8088"
 export const urlWS = domainWS + ":" + portWS
 
 export const appName = "AAA"
+
+export const apiRootURL = "localhost/app_dev.php/api"
