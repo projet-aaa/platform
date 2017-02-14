@@ -4,6 +4,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Tools\SchemaTool;
+use PHPUnit_Framework_Assert as PHPUnit;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -84,5 +85,18 @@ class FeatureContext implements Context, SnippetAcceptingContext
     public function dropDatabase()
     {
         $this->schemaTool->dropSchema($this->classes);
+    }
+
+
+    /**
+     * Checks that the folder with id (in the context
+     * @Then the git-folder associated with discipline :name should exist
+     */
+    public function theAssociatedDisciplineFolderShouldExist($name)
+    {
+        $discipline = $this->manager->getRepository('AppBundle:Discipline')->findOneByName($name);
+
+        PHPUnit::assertTrue(is_dir($this->kernel->getRootDir().'/../var/git/'.$discipline->getId()));
+
     }
 }
