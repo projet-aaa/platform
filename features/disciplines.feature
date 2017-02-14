@@ -44,6 +44,30 @@ Feature: Manage disciplines
       | violations[0]->message      | This value is already used.           |        |
 
   Scenario: A discipline can't be created by a prof
+    Given I authenticate myself as prof
+    When I add "Content-Type" header equal to "application/ld+json"
+    And I add "Accept" header equal to "application/ld+json"
+    And I send a "POST" request to "/api/disciplines" with body:
+    """
+    {
+      "name": "Cloud et Big data"
+    }
+    """
+    Then the response status code should be 403
+    And the response should be in JSON
+    And the header "Content-Type" should be equal to "application/ld+json; charset=utf-8"
 
   @dropSchema
   Scenario: A discipline can't be created by a student
+    Given I authenticate myself as eleve
+    When I add "Content-Type" header equal to "application/ld+json"
+    And I add "Accept" header equal to "application/ld+json"
+    And I send a "POST" request to "/api/disciplines" with body:
+    """
+    {
+      "name": "Cloud et Big data"
+    }
+    """
+    Then the response status code should be 403
+    And the response should be in JSON
+    And the header "Content-Type" should be equal to "application/ld+json; charset=utf-8"
