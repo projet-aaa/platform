@@ -7,7 +7,7 @@ import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
 // INTERNAL IMPORTS
-import { Session, SessionType } from "../../models/class/class"
+import { Session, SessionType } from "../../models/session"
 import { ddmmyyyy } from "../../utils/index"
 
 export interface StateProps {

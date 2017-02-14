@@ -2,9 +2,14 @@ import { connect } from "react-redux";
 
 import { StateProps, ActionProps, View } from "../../views/stats/statSessionView"
 
+import { StatState } from "../../store/stats/reducer"
+import { SessionState } from "../../store/sessions/reducer"
+
 function mapStateToProps(state: any, ownProps: any): StateProps {
+    let stat: StatState = state.stat,
+        sessions: SessionState = state.sessions
     return { 
-        sessions: state.stat.sessions
+        sessions: stat.sessionIds.map(id => sessions.sessions[id])
     }
 }
 function mapDispatchToProps(dispatch, ownProps): ActionProps {

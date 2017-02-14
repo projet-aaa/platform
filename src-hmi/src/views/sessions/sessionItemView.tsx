@@ -24,7 +24,7 @@ export class View extends React.Component<Props, any> {
 
         return (
             <a href="#" className="list-group-item">
-                { session.profName } : { session.sessionName } { session.live ? ": live!" : "" }
+                { session.teacherName } : { session.sessionName } { session.live ? ": live!" : "" }
             </a>
         );
     }

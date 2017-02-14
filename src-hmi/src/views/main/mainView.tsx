@@ -7,7 +7,7 @@ import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
 // INTERNAL IMPORTS
-import { Session, SessionType } from "../../models/class/class"
+import { Session, SessionType } from "../../models/session"
 import { ddmmyyyy } from "../../utils/index"
 
 export interface StateProps {
@@ -29,6 +29,8 @@ export class View extends React.Component<Props, any> {
             disciplines
         } = this.props;
 
+        console.log("main view: ", sessions)
+
         var sessionsRender = []
         for (var i=0 ; i<sessions.length ; i++) {
             sessionsRender.push(
@@ -38,7 +40,7 @@ export class View extends React.Component<Props, any> {
             )
         }
         var filtersRender = []
-        for (var i=0 ; i<disciplines.length ; i++) {
+        for (var i=0; i < disciplines.length; i++) {
             filtersRender.push(
                 <li className="without-bullet">
                     <label className="checkbox-inline">

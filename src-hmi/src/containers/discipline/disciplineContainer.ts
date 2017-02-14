@@ -4,7 +4,7 @@ import { StateProps, ActionProps, View } from "../../views/discipline/discipline
 
 function mapStateToProps(state: any, ownProps: any): StateProps {
     return { 
-        sessions: state.discipline.sessions
+        sessions: state.sessions.sessions
     }
 }
 function mapDispatchToProps(dispatch, ownProps): ActionProps {

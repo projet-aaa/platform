@@ -1,11 +1,16 @@
-import { viewTestFactory } from '../../utils'
+import { Action } from "../../utils/";
+import { ActionTypes, APIActionTypes } from "./actions";
+import { handleActions } from "redux-actions";
 
-import { View, Props } from '../../views/main/mainView'
-import { Session, SessionType } from '../../models/session'
+import { Session, SessionType } from "../../models/session"
 
-viewTestFactory<Props>(View, {
-    sessions: [
-        {
+export interface SessionState {
+    sessions: {}
+}
+
+let initialState: SessionState = {
+    sessions: {
+        [0]: {
             id: 0,
             sessionName: "CM2",
             teacherName: "PANTEL",
@@ -14,8 +19,8 @@ viewTestFactory<Props>(View, {
             discipline: "TOB",
             live: false
         },
-        {
-            id: 0,
+        [1]: {
+            id: 1,
             sessionName: "CM3",
             teacherName: "PANTEL",
             sessionType: SessionType.CM,
@@ -23,8 +28,8 @@ viewTestFactory<Props>(View, {
             discipline: "TOB",
             live: true
         },
-        {
-            id: 0,
+        [2]: {
+            id: 2,
             sessionName: "CM1",
             teacherName: "PANTEL",
             sessionType: SessionType.CM,
@@ -32,8 +37,8 @@ viewTestFactory<Props>(View, {
             discipline: "TOB",
             live: false
         },
-        {
-            id: 0,
+        [3]: {
+            id: 3,
             sessionName: "TD1",
             teacherName: "PANTEL",
             sessionType: SessionType.TD,
@@ -41,8 +46,8 @@ viewTestFactory<Props>(View, {
             discipline: "TOB",
             live: false
         },
-        {
-            id: 0,
+        [4]: {
+            id: 4,
             sessionName: "TD2",
             teacherName: "PANTEL",
             sessionType: SessionType.TD,
@@ -50,8 +55,8 @@ viewTestFactory<Props>(View, {
             discipline: "TOB",
             live: false
         },
-        {
-            id: 0,
+        [5]: {
+            id: 5,
             sessionName: "TD3",
             teacherName: "PANTEL",
             sessionType: SessionType.TD,
@@ -59,8 +64,8 @@ viewTestFactory<Props>(View, {
             discipline: "TOB",
             live: false
         },
-        {
-            id: 0,
+        [6]: {
+            id: 6,
             sessionName: "TP3",
             teacherName: "PANTEL",
             sessionType: SessionType.TP,
@@ -68,8 +73,8 @@ viewTestFactory<Props>(View, {
             discipline: "TOB",
             live: false
         },
-        {
-            id: 0,
+        [7]: {
+            id: 7,
             sessionName: "TP2",
             teacherName: "PANTEL",
             sessionType: SessionType.TP,
@@ -77,8 +82,8 @@ viewTestFactory<Props>(View, {
             discipline: "TOB",
             live: true
         },
-        {
-            id: 0,
+        [8]: {
+            id: 8,
             sessionName: "TP1",
             teacherName: "PANTEL",
             sessionType: SessionType.TP,
@@ -86,6 +91,14 @@ viewTestFactory<Props>(View, {
             discipline: "TOB",
             live: false
         }
-    ],
-    disciplines: ["TOB", "PF", "PIM", "A", "B", "C", "D", "AZERTYUIOPQSDFGHJKLMWXCVBN"]
-})
+    }
+}
+
+const name = "sessions"
+const reducer = handleActions({
+    ["jamais"]: function(state: SessionState, action: any) {
+        return state
+    }
+}, initialState)
+
+export default { [name]: reducer }

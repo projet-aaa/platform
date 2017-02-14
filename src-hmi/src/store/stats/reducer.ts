@@ -23,7 +23,7 @@ export interface StatState {
 
     currentQuizId: number
 
-    sessions: Session[]
+    sessionIds: number[]
 }
 
 let initialState: StatState = {
@@ -71,17 +71,9 @@ let initialState: StatState = {
     ],
     currentQuizId: 0,
 
-    sessions: [{
-        profName: "Somin Maurel",
-        sessionName: "Etre un saumon",
-        profId: "lqjdsmf",
-        live: true
-    }, {
-        profName: "Somon Maquereau",
-        sessionName: "J'y suis presque",
-        profId: "lqjdsmf",
-        live: true
-    }]
+    sessionIds: [
+        0, 1
+    ]
 }
 
 const name = "stat"

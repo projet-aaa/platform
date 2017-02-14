@@ -1,11 +1,12 @@
 import { connect } from "react-redux";
+import * as _ from "underscore"
 
 import { StateProps, ActionProps, View } from "../../views/main/mainView"
 
 function mapStateToProps(state: any): StateProps {
     return { 
-        sessions: state.main.sessions,
-        disciplines: state.main.disciplines
+        sessions: _.values(state.sessions.sessions),
+        disciplines: state.auth.disciplines
     }
 }
 function mapDispatchToProps(dispatch): ActionProps {

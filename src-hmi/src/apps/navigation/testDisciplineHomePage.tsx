@@ -1,11 +1,12 @@
 import { viewTestFactory } from '../../utils'
 
 import { View, Props } from '../../views/discipline/disciplineView'
-import { Session, SessionType } from '../../models/class/class'
+import { Session, SessionType } from '../../models/session'
 
 viewTestFactory<Props>(View, {
     sessions: [
         {
+            id: 0,
             sessionName: "CM2",
             teacherName: "PANTEL",
             sessionType: SessionType.CM,
@@ -14,6 +15,7 @@ viewTestFactory<Props>(View, {
             live: false
         },
         {
+            id: 0,
             sessionName: "CM3",
             teacherName: "PANTEL",
             sessionType: SessionType.CM,
@@ -22,6 +24,7 @@ viewTestFactory<Props>(View, {
             live: true
         },
         {
+            id: 0,
             sessionName: "CM1",
             teacherName: "PANTEL",
             sessionType: SessionType.CM,
@@ -30,6 +33,7 @@ viewTestFactory<Props>(View, {
             live: false
         },
         {
+            id: 0,
             sessionName: "TD1",
             teacherName: "PANTEL",
             sessionType: SessionType.TD,
@@ -38,6 +42,7 @@ viewTestFactory<Props>(View, {
             live: false
         },
         {
+            id: 0,
             sessionName: "TD2",
             teacherName: "PANTEL",
             sessionType: SessionType.TD,
@@ -46,6 +51,7 @@ viewTestFactory<Props>(View, {
             live: false
         },
         {
+            id: 0,
             sessionName: "TD3",
             teacherName: "PANTEL",
             sessionType: SessionType.TD,
@@ -54,6 +60,7 @@ viewTestFactory<Props>(View, {
             live: false
         },
         {
+            id: 0,
             sessionName: "TP3",
             teacherName: "PANTEL",
             sessionType: SessionType.TP,
@@ -62,6 +69,7 @@ viewTestFactory<Props>(View, {
             live: false
         },
         {
+            id: 0,
             sessionName: "TP2",
             teacherName: "PANTEL",
             sessionType: SessionType.TP,
@@ -70,12 +78,13 @@ viewTestFactory<Props>(View, {
             live: true
         },
         {
+            id: 0,
             sessionName: "TP1",
             teacherName: "PANTEL",
             sessionType: SessionType.TP,
             date: new Date(2017,0,1),
             discipline: "TOB",
             live: false
-        },
+        }
     ]
 })

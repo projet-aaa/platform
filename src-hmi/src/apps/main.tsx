@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import remoteInfo from '../store/remote/reducers/reducer'
 import dashboardInfo from '../store/dashboard/reducers/reducer'
 import statInfo from '../store/stats/reducer'
+import sessionsInfo from '../store/sessions/reducer'
 
 // TEMPLATES
 import { View as TopBandLeftMenuTemp } from '../template/topBandLeftMenuTemp'
@@ -32,7 +33,8 @@ import { storeFactory } from '../utils'
 let store = storeFactory([
     remoteInfo,
     dashboardInfo,
-    statInfo
+    statInfo,
+    sessionsInfo
 ], true, true)
 
 let MainRouter =
