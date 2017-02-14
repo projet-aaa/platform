@@ -32,21 +32,21 @@ export class View extends React.Component<Props, any> {
         for (var i=0 ; i<sessions.length ; i++) {
             if (sessions[i].sessionType == SessionType.CM) {
                 CMRender.push(
-                    <a href="#" className="list-group-item">
+                    <a key={i} href="#" className="list-group-item">
                         { ddmmyyyy(sessions[i].date) } | { sessions[i].sessionName } : { sessions[i].teacherName } { sessions[i].live ? ": live!" : "" }
                     </a>
                 )
             }
             if (sessions[i].sessionType == SessionType.TD) {
                 TDRender.push(
-                    <a href="#" className="list-group-item">
+                    <a key={i} href="#" className="list-group-item">
                         { ddmmyyyy(sessions[i].date) } | { sessions[i].sessionName } : { sessions[i].teacherName } { sessions[i].live ? ": live!" : "" }
                     </a>
                 )
             }
             if (sessions[i].sessionType == SessionType.TP) {
                 TPRender.push(
-                    <a href="#" className="list-group-item">
+                    <a key={i} href="#" className="list-group-item">
                         { ddmmyyyy(sessions[i].date) } | { sessions[i].sessionName } : { sessions[i].teacherName } { sessions[i].live ? ": live!" : "" }
                     </a>
                 )

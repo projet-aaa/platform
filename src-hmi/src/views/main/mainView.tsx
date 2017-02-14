@@ -34,7 +34,7 @@ export class View extends React.Component<Props, any> {
         var sessionsRender = []
         for (var i=0 ; i<sessions.length ; i++) {
             sessionsRender.push(
-                <a href="#" className="list-group-item">
+                <a key={i} href="#" className="list-group-item">
                     { ddmmyyyy(sessions[i].date) } | { sessions[i].discipline } | { sessions[i].sessionName } : { sessions[i].teacherName } { sessions[i].live ? ": live!" : "" }
                 </a>
             )
@@ -42,7 +42,7 @@ export class View extends React.Component<Props, any> {
         var filtersRender = []
         for (var i=0; i < disciplines.length; i++) {
             filtersRender.push(
-                <li className="without-bullet">
+                <li key={i} className="without-bullet">
                     <label className="checkbox-inline">
                         <input id="optionsVisa" type="checkbox" name="optionsRadios" value="Visa" />
                         &nbsp; { disciplines[i] }

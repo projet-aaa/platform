@@ -52,11 +52,9 @@ export class View extends React.Component<Props, any> {
     
         // An answer is a button
         return (
-            <div>
-                <li className="without-bullet" style={ bottomPadding }>
-                    <button className="btn btn-sm btn-primary covering-size" onClick={ choose } style={ colorAnswerButton }>{ text }</button>
-                </li>
-            </div>
-        );
+            <li className="without-bullet" style={ bottomPadding }>
+                <button className="btn btn-sm btn-primary covering-size" onClick={ choose } style={ colorAnswerButton }>{ text }</button>
+            </li>
+        )
     }
 }

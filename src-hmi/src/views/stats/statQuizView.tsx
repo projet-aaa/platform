@@ -73,6 +73,7 @@ export class View extends React.Component<Props, any> {
                             <div className="page-content">
                                 { quiz.map((q) => {
                                     return <a 
+                                        key={q.id} 
                                         className="list-group-item" 
                                         onClick={ () => chooseQuiz(q.id) }>
                                         { q.title }

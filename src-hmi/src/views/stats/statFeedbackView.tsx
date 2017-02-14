@@ -106,7 +106,7 @@ export class View extends React.Component<Props, any> {
                     </div>
                     <div className="panel-body pan white-background"> 
                         { comments.map((comment) => {
-                        return <li className="list-group-item">
+                        return <li key={comment.comment} className="list-group-item">
                             { '[' + comment.date + ']' + comment.commenter }: { comment.comment }
                         </li>
                         })}

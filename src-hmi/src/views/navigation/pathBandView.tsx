@@ -25,7 +25,7 @@ export class View extends React.Component<Props, any> {
         // this var is the render off the path (home > page 1 > page 1.1)
         var pathRender = [];
         pathRender.push(
-            <li className="active"><i className="fa fa-home"></i>&nbsp;<Link to="/">Accueil</Link></li>
+            <li key={0} className="active"><i className="fa fa-home"></i>&nbsp;<Link to="/">Accueil</Link></li>
         )
         // if (path.length == 0) {
         //     pathRender.push(
