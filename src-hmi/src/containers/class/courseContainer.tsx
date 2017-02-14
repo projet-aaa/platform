@@ -4,7 +4,7 @@ import * as React from "react"
 import { View as TabsTemp } from '../../template/tabsTemp'
 
 import CourseMainContainer from '../../containers/class/mainContainer'
-import FAQContainer from '../../containers/class/faqContainer'
+import FAQContainer from '../../containers/faq/faqContainer'
 import LiveContainer from '../../containers/class/liveContainer'
 import StatSessionContainer from '../../containers/class/statSessionContainer'
 import StatQuizContainer from '../../containers/class/statQuizContainer'

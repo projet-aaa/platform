@@ -10,6 +10,9 @@ import remoteInfo from '../store/remote/reducers/reducer'
 import dashboardInfo from '../store/dashboard/reducers/reducer'
 import statInfo from '../store/stats/reducer'
 import sessionsInfo from '../store/sessions/reducer'
+import threadMessageInputInfo from '../store/faq/reducers/answerInput'
+import threadContentInfo from '../store/faq/reducers/threadContent'
+import questionInputInfo from '../store/faq/reducers/questionInput'
 
 // TEMPLATES
 import { View as TopBandLeftMenuTemp } from '../template/topBandLeftMenuTemp'
@@ -34,7 +37,10 @@ let store = storeFactory([
     remoteInfo,
     dashboardInfo,
     statInfo,
-    sessionsInfo
+    sessionsInfo,
+    threadMessageInputInfo,
+    threadContentInfo,
+    questionInputInfo
 ], true, true)
 
 let MainRouter =
