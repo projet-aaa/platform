@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ae33699ca38214b34fe048a58d8c368e",
+    "content-hash": "7aa38490b4cc35ed565f737c7b6b0262",
     "packages": [
         {
             "name": "api-platform/core",
@@ -4288,16 +4288,16 @@
         },
         {
             "name": "behatch/contexts",
-            "version": "2.5",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behatch/contexts.git",
-                "reference": "1b6d9c99e4ecdf94b8b8382036f7f1d8cd071a89"
+                "reference": "40eed99dd8cfc07d58c1078d3a4b0f3ad127556f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behatch/contexts/zipball/1b6d9c99e4ecdf94b8b8382036f7f1d8cd071a89",
-                "reference": "1b6d9c99e4ecdf94b8b8382036f7f1d8cd071a89",
+                "url": "https://api.github.com/repos/Behatch/contexts/zipball/40eed99dd8cfc07d58c1078d3a4b0f3ad127556f",
+                "reference": "40eed99dd8cfc07d58c1078d3a4b0f3ad127556f",
                 "shasum": ""
             },
             "require": {
@@ -4305,6 +4305,7 @@
                 "behat/mink-extension": "~2.0",
                 "justinrainbow/json-schema": "~1.4",
                 "php": ">=5.4",
+                "symfony/http-foundation": "~2.3|~3.0",
                 "symfony/property-access": "~2.3|~3.0"
             },
             "replace": {
@@ -4333,7 +4334,7 @@
                 "Context",
                 "Symfony2"
             ],
-            "time": "2016-02-19T18:29:26+00:00"
+            "time": "2016-10-12T11:30:32+00:00"
         },
         {
             "name": "container-interop/container-interop",
@@ -5730,7 +5731,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "friendsofsymfony/user-bundle": 10
+        "friendsofsymfony/user-bundle": 10,
+        "behatch/contexts": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

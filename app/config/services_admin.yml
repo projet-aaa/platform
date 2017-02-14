@@ -16,7 +16,7 @@ services:
 
     admin.discipline:
         class: AppBundle\Admin\DisciplineAdmin
-        arguments: [~, AppBundle\Entity\Discipline, ~]
+        arguments: [~, AppBundle\Entity\Discipline, ~, '@kernel']
         tags:
             - { name: sonata.admin, manager_type: orm, label: Discipline }
 

@@ -3,11 +3,15 @@
 namespace AppBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 /**
  * @ApiResource
  * @ORM\Entity
+ * @UniqueEntity("name")
  */
 class Discipline
 {
@@ -42,6 +46,11 @@ class Discipline
     public function __toString()
     {
       return $this->getName().' '.substr($this->getId(),0,5);
+    }
+
+    public function __construct()
+    {
+        $this->sessions = new ArrayCollection();
     }
 
     /** Auto generated methods*/
@@ -87,7 +96,7 @@ class Discipline
     }
 
     /**
-     * @return strign
+     * @return string
      */
     public function getGitKey()
     {
@@ -103,7 +112,7 @@ class Discipline
     }
 
     /**
-     * @return Session
+     * @return ArrayCollection[Session]
      */
     public function getSessions()
     {
@@ -111,9 +120,9 @@ class Discipline
     }
 
     /**
-     * @param Session $sessions
+     * @param ArrayCollection $sessions
      */
-    public function setSessions(Session $sessions)
+    public function setSessions($sessions)
     {
         $this->sessions = $sessions;
     }
