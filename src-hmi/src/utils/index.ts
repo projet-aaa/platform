@@ -86,10 +86,10 @@ export function createAPIActionCreator(
     bodyFactory: (obj: any) => any, 
     method: string, 
     action: string, success: string, failure: string) {
-    return (endpointInfo, bodyInfo) => {
+    return (info) => {
         let actionObj = {
             [CALL_API]: {
-                endpoint: apiRootURL + endpointFactory(endpointInfo),
+                endpoint: apiRootURL + endpointFactory(info),
                 method: method,
                 types: [
                     action, 
@@ -100,7 +100,7 @@ export function createAPIActionCreator(
         }
 
         if(bodyFactory) { 
-            (actionObj as any)[CALL_API].body = JSON.stringify(bodyFactory(bodyInfo)) 
+            (actionObj as any)[CALL_API].body = JSON.stringify(bodyFactory(info)) 
         }
 
         if((document as any).token) { 

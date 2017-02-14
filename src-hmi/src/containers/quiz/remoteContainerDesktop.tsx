@@ -34,7 +34,7 @@ function mapStateToProps(state: any): StateProps {
 function mapDispatchToProps(dispatch, state): ActionProps {
     return {
         // signals the store that an answer has been validated
-        validateAnswer: (quizId) => dispatch(answerAction(null, { id: quizId, choice: state.remote.choice })),
+        validateAnswer: (quizId) => console.log("TODO: send answer when the validate button is pushed"),
         // signals the store that a comment has been sent
         sendComment: (comment) => console.log(comment),
         // signals the store that an answer has been chosen

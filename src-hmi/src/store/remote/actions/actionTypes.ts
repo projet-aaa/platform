@@ -1,7 +1,6 @@
 export const ActionTypes = {
     CHOOSE: "QUIZ/CHOOSE",
 
-    // to move between old quiz
     NEXT_CONSUL_QUIZ: "QUIZ/NEXT_QUIZ",
     PREV_CONSUL_QUIZ: "QUIZ/PREVIOUS_QUIZ"
 }
@@ -23,5 +22,6 @@ export const APIActionTypes = {
 export const WSInActionTypes = {
     STATE_UPDATE: "STUDENT/CLASS/STATE_UPDATE",
     START_QUIZ: "STUDENT/CLASS/START_QUIZ",
+    CORRECTION_QUIZ: "STUDENT/CLASS/CORRECTION_QUIZ",
     STOP_QUIZ: "STUDENT/CLASS/STOP_QUIZ"
 }

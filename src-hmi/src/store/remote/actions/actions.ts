@@ -1,6 +1,8 @@
 import { createAPIActionCreator } from '../../../utils'
 import { ActionTypes, APIActionTypes } from './actionTypes'
 
+import { QuizType } from '../../../models/class/class'
+
 export function chooseAction(choice: any) {
     return { type: ActionTypes.CHOOSE, payload: { choice } }
 }
@@ -13,17 +15,34 @@ export function nextQuizAction() {
     return { type: ActionTypes.NEXT_CONSUL_QUIZ, payload: {} }
 }
 
-export const answerAction: (endpointInfo: any, bodyInfo: { id: number, choice: any}) => any
+export const answerAction: (info: { 
+    type: string
+    choiceId: string,
+    questionId: string
+}) => any
 = createAPIActionCreator( 
-    ((endpointInfo) => '/mcq_answers'), 
-    null,
-    'GET',
+    ((info) => {
+        switch(info.type) {
+            case QuizType.MCQ: return '/mcq_answers'
+            case QuizType.TEXT: return null
+        }
+    }), 
+    ((info) => { 
+        switch(info.type) {
+            case QuizType.MCQ: return {
+                mcqChoice: info.choiceId,
+                question: info.questionId
+            }
+            case QuizType.TEXT: return null
+        }
+    }),
+    'POST',
     APIActionTypes.ANSWER,
     APIActionTypes.ANSWER_SUCCESS,
     APIActionTypes.ANSWER_FAILURE
 )
 
-export const signalStateAction: (endpointInfo: any, bodyInfo: {
+export const signalStateAction: (info: {
     state: string
     sessionId: string
     authorId: string

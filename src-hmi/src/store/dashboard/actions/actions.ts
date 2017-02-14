@@ -1,11 +1,11 @@
 import { createAPIActionCreator } from '../../../utils'
 
 import { Action } from '../../../utils'
-import { ActionTypes, APIActionTypes } from './actionTypes'
+import { APIActionTypes, WSOutActionTypes } from './actionTypes'
 
 export function showFeedbackAction() {
     return {
-        type: ActionTypes.SHOW_FEEDBACK,
+        type: WSOutActionTypes.SHOW_FEEDBACK,
         payload: { }
     }
 }

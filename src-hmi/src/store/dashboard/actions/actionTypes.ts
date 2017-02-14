@@ -1,7 +1,3 @@
-export const ActionTypes = {
-    SHOW_FEEDBACK: "QUIZ/SHOW_FEEDBACK"
-}
-
 export const APIActionTypes = {
     OPEN_ROOM: "REMOTE/OPEN_ROOM",
     OPEN_ROOM_SUCCESS: "REMOTE/OPEN_ROOM_SUCCESS",
@@ -18,6 +14,10 @@ export const APIActionTypes = {
     END_QUIZ: "CLASS/END_QUIZ",
     END_QUIZ_SUCCESS: "CLASS/END_QUIZ_SUCCESS",
     END_QUIZ_FAILURE: "CLASS/END_QUIZ_FAILURE"
+}
+
+export const WSOutActionTypes = {
+    SHOW_FEEDBACK: "SERVER/CLASS/SHOW_FEEDBACK"
 }
 
 export const WSInActionTypes = {

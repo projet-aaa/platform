@@ -1,6 +1,6 @@
 import { handleActions } from "redux-actions"
 
-import { ActionTypes, APIActionTypes, WSInActionTypes } from "../actions/actionTypes"
+import { WSOutActionTypes, APIActionTypes, WSInActionTypes } from "../actions/actionTypes"
 import { Quiz, QuizInstanceState, QuizLauncher, AttentionEventType } from "../../../models/class/class"
 
 export interface DashboardState {
@@ -51,7 +51,8 @@ let initialState: DashboardState = {
 
 const name = "dashboard"
 const reducer = handleActions({
-    [ActionTypes.SHOW_FEEDBACK]: function(state: DashboardState, action: any): DashboardState {
+    // LOCAL ACTIONS
+    [WSOutActionTypes.SHOW_FEEDBACK]: function(state: DashboardState, action: any): DashboardState {
         if(state.currQuizState == QuizInstanceState.HEADING) {
             return Object.assign({}, state, {
                 currQuizState: QuizInstanceState.FEEDBACK
@@ -60,6 +61,7 @@ const reducer = handleActions({
             return state
         }
     },
+    // WEBSOCKET
     [WSInActionTypes.ANSWER]: function(state: DashboardState, action: any): DashboardState {
         return Object.assign({}, state, {
             currQuizStat: Object.assign({}, state, {
@@ -69,7 +71,7 @@ const reducer = handleActions({
     },
     [WSInActionTypes.SIGNAL_STATE]: function(state: DashboardState, action: any): DashboardState {
         return Object.assign({}, state, {
-            panick: state.panic 
+            panic: state.panic 
                 + (action.payload.attentionType == AttentionEventType.PANIC_START ? 1 : 0)
                 + (action.payload.attentionType == AttentionEventType.PANIC_END ? -1 : 0),
             tooSlow: state.tooSlow 
