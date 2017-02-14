@@ -1,8 +1,7 @@
 # features/books.feature
-Feature: Manage books and their reviews
-  In order to manage books and their reviews
-  As a client software developer
-  I need to be able to retrieve, create, update and delete them trough the API.
+Feature: API Login
+  As a user I am able to login on the API and retrieve a token
+
 
   # the "@createSchema" annotation provided by API Platform creates a temporary SQLite database for testing the API
   @createSchema
@@ -15,8 +14,6 @@ Feature: Manage books and their reviews
     And the response should be in JSON
     And the JSON node "token" should exist
 
-  # The "@dropSchema" annotation must be added on the last scenario of the feature file to drop the temporary SQLite database
-  @dropSchema
   Scenario Outline: Access to the API with JWT token should be accepted.
     Given I authenticate myself as <user>
     When I send a "GET" request to "/api/disciplines"
@@ -25,3 +22,10 @@ Feature: Manage books and their reviews
     Examples:
       | user  |
       | admin |
+      | prof  |
+      | eleve |
+
+    # The "@dropSchema" annotation must be added on the last scenario of the feature file to drop the temporary SQLite database
+    @dropSchema
+    Scenario: void
+      A null scenario only to be decorated by dropSchema annotation
