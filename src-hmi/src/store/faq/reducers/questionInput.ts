@@ -15,7 +15,7 @@ let initialState: QuestionInput = {
 const name = "questionInput"
 const reducer = handleActions({
     [ActionTypes.CHANGEQUESTIONVALUE]: function(state: QuestionInput, action: Action<ChangeQuestionValueAction>): QuestionInput {
-            return {...state, qestionInputVal: action.payload.questionValue};
+            return {...state, questionInputVal: action.payload.questionValue};
     },
     [ActionTypes.PUBLISHQUESTION]: function(state: QuestionInput, action: Action<PublishQuestionAction>): QuestionInput {
             return state;

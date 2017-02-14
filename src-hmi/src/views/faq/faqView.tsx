@@ -7,7 +7,7 @@ import { Link } from "react-router"
 
 //INTERNAL IMPORTS
 import { Thread } from "../../models/faq"
-import  FaqQuestionContainer from "../../containers/faq/faqQuestionContainer"
+import { View as FaqQuestionView } from "../../views/faq/faqQuestionView"
 
 export type StateProps = {
     //The list of question for this FAQ
@@ -16,6 +16,8 @@ export type StateProps = {
     sessionId: number
     //The content of the input used to ask a new question
     questionValue: string
+    //The content of each answer editor indexed by thread id
+    editorContents: string[]
 }
 
 export interface ActionProps {
@@ -25,6 +27,11 @@ export interface ActionProps {
     publishQuestion(sessionId:number, question:string)
     //Update the store with the new content of the new question input
     changeQuestionInput(sessionId:number, changeEvent: string)
+    //
+    sendAnswer(content: string, threadId: number)
+    //
+    changeAnswerInput(threadId:number, content:string)
+
  }
 
 
@@ -38,21 +45,19 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
-            threadList, sessionId, questionValue,
-            publishQuestion, changeQuestionInput
+            threadList, sessionId, questionValue, editorContents,
+            publishQuestion, changeQuestionInput, sendAnswer, changeAnswerInput
         } = this.props;
 
         //Render each thread of this chapter
         if (threadList) {
             var threadItem = threadList.map((item,i) => {
-            return <FaqQuestionContainer 
+            return <FaqQuestionView 
                         key={item.id}
-                        id={item.id}
-                        text={item.text}
-                        author={item.author}
-                        date={item.date}
-                        answers={item.answers} />
-
+                        thread={item}
+                        editorContent={editorContents[item.id]}
+                        sendAnswer={(editorContent) => sendAnswer(editorContent, item.id)}
+                        changeAnswerInput={(editorContent) => changeAnswerInput(item.id, editorContent)} />
             });    
         }
         

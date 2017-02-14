@@ -7,7 +7,9 @@ import { ActionTypes,
      CreateThreadAction, 
      RetrieveThreadInfosAction, 
      PostThreadMessageAction,
-     ChangeQuestionValueAction } from './actionTypes'
+     ChangeQuestionValueAction,
+     ChangeAnswerValueAction     
+  } from './actionTypes'
 
 
 
@@ -23,13 +25,12 @@ export function createThreadAction(text:string, author: string, sessionId: numbe
 }
 
 
-export function postThreadMessageAction(text: string, threadId: number, user: string) {
+export function postThreadMessageAction(text: string, threadId: number) {
     return {
         type: ActionTypes.POSTTHREADMESSAGE,
         payload: {
             text,
-            threadId,
-            user
+            threadId
         }
     }
 }
@@ -70,6 +71,17 @@ export function changeQuestionValueAction (sessionId: number, questionValue: str
         payload: {
             sessionId,
             questionValue
+        }
+    }
+}
+
+
+export function changeAnswerValueAction (threadId: number, answerValue: string){
+    return  {
+        type: ActionTypes.CHANGEANSWERVALUE,
+        payload: {
+            threadId,
+            answerValue
         }
     }
 }

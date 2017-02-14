@@ -7,13 +7,14 @@ import { Provider } from 'react-redux';
 
 import threadContentInfo from '../../store/faq/reducers/threadContent'
 import questionInputInfo from '../../store/faq/reducers/questionInput'
+import threadMessageInputInfo from '../../store/faq/reducers/answerInput'
 
 import App from '../../containers/faq/faqContainer'
 
 import { storeFactory } from '../../utils'
 
 let store = storeFactory([
-    threadContentInfo, questionInputInfo
+    threadContentInfo, questionInputInfo, threadMessageInputInfo
 ], true, true)
 
 

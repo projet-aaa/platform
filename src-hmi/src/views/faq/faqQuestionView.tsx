@@ -4,19 +4,24 @@
 // EXTERNAL IMPORTS
 import * as React from "react"
 import { Link } from "react-router"
-import * as Pagedown from "pagedown"
-import * as PagedownEditor from "pagedown-editor"
+import { MarkdownEditor } from "react-markdown-editor"
+import { markdown } from "markdown"
 
 //INTERNAL IMPORTS
 import { ThreadMessage, Thread } from "../../models/faq"
-import { View as ThreadMessageView} from "./faqAnswerView"
+import { View as ThreadMessageView } from "./faqAnswerView"
 
 
-export type StateProps = Thread
+export interface StateProps {
+    thread: Thread
+    editorContent: string
+}
 
 export interface ActionProps {
     //Send the answer to the server
-    sendAnswer(answerContent: string, threadId: number, userId: number )
+    sendAnswer(editorContent: string)
+    //Update the content of this question's answer in the store
+    changeAnswerInput(editorContent: string )
 }
 
 
@@ -30,75 +35,43 @@ function ddmmyyyy(date: Date): string {
             date.getFullYear()
 };
 
-//Important for pagedown editor initialisation
-// function getPagedownEditor(id: string) {
-//     // console.log("aaaa");
-
-//     // console.log(editor);
-//     return editor;
-// }
-
-//Pick the html code from the answer preview to send it to server
-function getAnswerContentAsHtml() {
-    return document.getElementById("wmd-preview").innerHTML;
-}
-
-
 
 export type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
     props: Props
 
-    //Initialize pagedown editor
-    componentDidMount() {
-            let converter = Pagedown.getSanitizingConverter();
-    // console.log(converter);
-    window["Markdown"] = Pagedown;
-    console.log(PagedownEditor.Editor);
-    console.log(window["Markdown"].Editor);
-    let editor = new window["Markdown"].Editor(converter, this.props.id);
-        editor.run();
-        // getPagedownEditor("-" + this.props.id).run();
-    }
-
     render() {
         const {
-            text, author, date, answers, id,
-            sendAnswer
+            thread, editorContent,
+            sendAnswer, changeAnswerInput
         } = this.props;
-        var dateString = ddmmyyyy(date)
+        var dateString = ddmmyyyy(thread.date)
         var heightAnswer = {
             height: "0px"
         }
         var answerRender = [];
-        for(var i=0;i<answers.length;i++) {
+        for(var i=0;i<thread.answers.length;i++) {
             answerRender.push(
                 <ThreadMessageView 
-                        text={answers[i].text}
-                        key={answers[i].id} 
-                        author={answers[i].author} 
-                        date={answers[i].date} 
-                        id={answers[i].id}
-                        votes={answers[i].votes}/>
+                        text={thread.answers[i].text}
+                        key={thread.answers[i].id} 
+                        author={thread.answers[i].author} 
+                        date={thread.answers[i].date} 
+                        id={thread.answers[i].id}
+                        votes={thread.answers[i].votes}/>
             )
         }
 
-        //Give name according to id for editor to make them unique 
-        let editorBarName = "wmd-button-bar-" + id;
-        let editorName = "wmd-input-" + id;
-        let editorPreviewName = "wmd-preview-" + id;
-
         //Give unique id to question tab
-        let questionId = "faq-" + id;
-
+        let questionId = "faq-" + thread.id;
 
         return (
             <div>
                 <div className="faq-item">
                     <div className="row">
                         <div className="col-md-9">
-                            <a data-toggle="collapse" href={"#" + questionId} className="faq-question collapsed" aria-expanded="false">{text}</a>
-                            <small>Ajouté par <strong>{author}</strong> <i className="fa fa-clock-o"></i> {ddmmyyyy(date)} </small>
+                            <a data-toggle="collapse" href={"#" + questionId} className="faq-question collapsed" aria-expanded="false">{thread.text}</a>
+                            <small>Ajouté par <strong>{thread.author}</strong> <i className="fa fa-clock-o"></i> {ddmmyyyy(thread.date)} </small>
                         </div>
                     </div>
                     <br/>
@@ -111,18 +84,18 @@ export class View extends React.Component<Props, any> {
                                         <div className="col-lg-12">
                                             <h5> Ajouter une réponse </h5>
                                             <div>
-                                                <div id={editorBarName}></div>
-
-                                                <textarea id={editorName} className="wmd-input"></textarea>
-
-                                                <div id={editorPreviewName} className="wmd-panel wmd-preview"></div>
+                                                <MarkdownEditor 
+                                                    initialContent="" 
+                                                    iconsSet="font-awesome" 
+                                                    onContentChange={ (content) => changeAnswerInput(content)}
+                                                    />      
                                             </div>
                                         </div>
                                     </div>
                                     <div className="row">
                                         <div className="col-lg-12">
                                             <button className="btn btn-lg btn-primary pull-right" 
-                                                onClick={() => sendAnswer(getAnswerContentAsHtml(),id, 0 )}>Envoyer la réponse</button>
+                                                onClick={() =>  sendAnswer(markdown.toHTML(editorContent)) }>Envoyer la réponse</button>
                                         </div>
                                     </div>
                                 </div>
