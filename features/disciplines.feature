@@ -7,33 +7,37 @@ Feature: Manage disciplines
   @createSchema
   Scenario: A discipline can be created by an admin
     Given I authenticate myself as admin
-    When I add "Content-Type" header equal to "application/json"
-    When I send a POST request to "/api/disciplines" with body:
-      """
-      {"name": "Technologie Objet"}
-      """
+    When I add "Content-Type" header equal to "application/ld+json"
+    And I add "Accept" header equal to "application/ld+json"
+    And I send a "POST" request to "/api/disciplines" with body:
+    """
+    {
+      "name": "PF"
+    }
+    """
     Then the response status code should be 201
-    And the git-folder associated with discipline "Technologie Objet" should exist
+    And the response should be in JSON
+    And the header "Content-Type" should be equal to "application/ld+json; charset=utf-8"
 
 
   Scenario: Discipline data should be validated. name is unique among Discipline
     Given I authenticate myself as admin
-    When I add "content-type" header equal to "application/ld+json; charset=utf-8"
+    When I add "Content-Type" header equal to "application/ld+json"
+    And I add "Accept" header equal to "application/ld+json"
     When I send a "POST" request to "/api/disciplines" with body:
     """
-    {"name": "Technologie Objet"}
+    {"name": "PF"}
     """
-    And print last response headers
-    And print the corresponding curl command
     Then the response status code should be 400
-    And the response should be in JSON-LD
+    And the response should be in JSON
+    And the header "Content-Type" should be equal to "application/ld+json; charset=utf-8"
     And the JSON node "violations" should have 1 element
     And the JSON response should have the following nodes:
       | node                        | value                                 | type   |
       | @context                    | /api/contexts/ConstraintViolationList |        |
       | @type                       | ConstraintViolationList               |        |
       | hydra:title                 |                                       |        |
-      | hydra:description           |                                       | array  |
+      | hydra:description           |                                       |        |
       | violations                  |                                       | array  |
       | violations[0]               |                                       | object |
       | violations[0]->propertyPath | name                                  |        |
