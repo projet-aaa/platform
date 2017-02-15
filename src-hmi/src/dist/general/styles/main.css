@@ -7030,10 +7030,19 @@ ul.chats li.out .message {
 }
 
 .faq-question {
-    font-size: 18px;
-    font-weight: 600;
-    color: #1ab394;
+    font-size: 20px;
+    font-weight: 400;
+    color: #23527c;
     display: block;
+    text-decoration: none;
+}
+
+.faq-question:focus {
+    color: #23527c;
+}
+
+.faq-question:hover {
+    color: #dc6767;
 }
 
 .white-background {
@@ -7071,21 +7080,3 @@ ul.chats li.out .message {
 .link-text:hover {
   text-decoration: underline
 }
-
-
-/**************************************************************************/
-
-/*Indicator*/
-
-.indic-light {
-	height: 40px;
-	width: 40px;
-	border-radius: 20px;
-	background-color: grey;
-}
-
-.warn-triggered {
-	background-color: red !important;
-}
-
-/*******************************************************************************************/

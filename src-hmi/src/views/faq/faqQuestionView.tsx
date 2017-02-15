@@ -71,7 +71,7 @@ export class View extends React.Component<Props, any> {
                     <div className="row">
                         <div className="col-md-9">
                             <a data-toggle="collapse" href={"#" + questionId} className="faq-question collapsed" aria-expanded="false">{thread.text}</a>
-                            <small>Ajouté par <strong>{thread.author}</strong> <i className="fa fa-clock-o"></i> {ddmmyyyy(thread.date)} </small>
+                            Ajouté par <strong>{thread.author}</strong> le {ddmmyyyy(thread.date)}
                         </div>
                     </div>
                     <br/>
