@@ -67,7 +67,7 @@ export class View extends React.Component<Props, any> {
 
         return (
             <div>
-                <div className="faq-item">
+                <div className="list-group-item">
                     <div className="row">
                         <div className="col-md-9">
                             <a data-toggle="collapse" href={"#" + questionId} className="faq-question collapsed" aria-expanded="false">{thread.text}</a>
@@ -82,7 +82,7 @@ export class View extends React.Component<Props, any> {
                                 <div className="well">
                                     <div className="row">
                                         <div className="col-lg-12">
-                                            <h5> Ajouter une réponse </h5>
+                                            <h4><b> Ajouter une réponse : </b></h4>
                                             <div>
                                                 <MarkdownEditor 
                                                     initialContent="" 
@@ -93,9 +93,11 @@ export class View extends React.Component<Props, any> {
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <div className="col-lg-12">
+                                        <div className="col-lg-12" style={{paddingTop: '20px'}}>
                                             <button className="btn btn-lg btn-primary pull-right" 
-                                                onClick={() =>  sendAnswer(markdown.toHTML(editorContent)) }>Envoyer la réponse</button>
+                                                onClick={() =>  sendAnswer(markdown.toHTML(editorContent)) }>
+                                                    Envoyer la réponse
+                                            </button>
                                         </div>
                                     </div>
                                 </div>

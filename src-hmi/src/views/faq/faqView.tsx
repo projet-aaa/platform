@@ -27,9 +27,9 @@ export interface ActionProps {
     publishQuestion(sessionId:number, question:string)
     //Update the store with the new content of the new question input
     changeQuestionInput(sessionId:number, changeEvent: string)
-    //
+    //Send the answer to the server
     sendAnswer(content: string, threadId: number)
-    //
+    //Update the store with the new content of the answer input
     changeAnswerInput(threadId:number, content:string)
 
  }
@@ -61,20 +61,30 @@ export class View extends React.Component<Props, any> {
             });    
         }
         
+        //Div displayed if the session has no thread yet
+        let noThreadDiv = <div className="list-group-item">Il n'y a pas de question pour ce chapitre</div>
 
         return (
             <div className="col-lg-12"> 
                 <div className="row">
                     <div className="col-lg-12">
-                        {threadItem ? threadItem : "Il n'y a pas de question pour ce chapitre"}
+                        <h2> Sujets ouverts sur ce chapitre : </h2>
+                        <div className="list-group">
+                            {threadItem && threadItem.length != 0 ? threadItem : noThreadDiv}
+                        </div>
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-lg-8">
-                        <input style={{width: '100%'}}  onChange={(event) => changeQuestionInput(sessionId, event.target.value)} />
+                    <div className="col-lg-12">
+                        <h2> Poser une question : </h2>
+                        <input style={{width: '100%'}} className="form-control" placeholder="Votre question"  onChange={(event) => changeQuestionInput(sessionId, event.target.value)} />
                     </div>
-                    <div className="col-lg-4 text-center">
-                        <button className="btn btn-lg btn-primary" onClick={() => publishQuestion(sessionId,questionValue)}>Publier la question</button>
+                </div>
+                <div className="row">
+                    <div className="col-lg-12">
+                        <div className="text-right" style={{paddingTop: '20px'}}>   
+                            <button className="btn btn-lg btn-primary" onClick={() => publishQuestion(sessionId,questionValue)}>Publier la question</button>
+                        </div>
                     </div>
                 </div>
             </div>

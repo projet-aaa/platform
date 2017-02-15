@@ -51,9 +51,9 @@ export class View extends React.Component<Props, any> {
                                 <br/>
                                 {votes}
                             </div>
-                            <h5>
+                            <h4>
                                 <b>Réponse de {author}</b> ajouté le {dateString}
-                            </h5>
+                            </h4>
                             <div dangerouslySetInnerHTML={{__html:text}}>
                                 
                             </div>
