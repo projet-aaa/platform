@@ -8,7 +8,7 @@ import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
 export interface StateProps {
-    quizId: number
+    quizId: string
     title: string
     state: number // 0: not done; 1: being run; 2: already ran 
     successRate: number
@@ -43,7 +43,7 @@ export class View extends React.Component<Props, any> {
         } else if(state == 1) {
             res = title + ": lancé";
         } else {
-            res = <a className="link-text" href="#" onClick={ launch }>{ title }</a>
+            res = <a className="link-text" onClick={ launch }>{ title }</a>
         }
 
         return (

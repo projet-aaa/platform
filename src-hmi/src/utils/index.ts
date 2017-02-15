@@ -45,14 +45,15 @@ export const storeFactory = (reducers: any[], connectWS: boolean, log: boolean) 
         applyMiddleware(...middlewares)
     );
 
-    (store as any).dispatch(auth('abeyet', 'abeyet'))
+    // MANUAL AUTHENTIFICATION
+    // (store as any).dispatch(auth('abeyet', 'abeyet'))
 
-    let i = setInterval(() => {
-        if(isAuthentified()) {
-            (store as any).dispatch(authWS(0, 'abeyet', false))
-            clearInterval(i)
-        }
-    }, 500)
+    // let i = setInterval(() => {
+    //     if(isAuthentified()) {
+    //         (store as any).dispatch(authWS(0, 'abeyet', false))
+    //         clearInterval(i)
+    //     }
+    // }, 500)
 
     return store
 }
@@ -85,7 +86,7 @@ export function createAPIActionCreator(
     endpointFactory:(obj: any) => string, 
     bodyFactory: (obj: any) => any, 
     method: string, 
-    action: string, success: string, failure: string) {
+    action: string, success: string, failure: string): (obj: any) => any {
     return (info) => {
         let actionObj = {
             [CALL_API]: {

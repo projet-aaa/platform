@@ -20,11 +20,11 @@ function mapStateToProps(state: any): StateProps {
 function mapDispatchToProps(dispatch): ActionProps {
     return {
         // signals the store that an answer has been validated
-        validateAnswer: (quizId) => dispatch(validateAction(quizId)),
+        validateAnswer: () => dispatch(validateAction("bullshit")),
         // signals the store that a comment has been sent
         sendComment: (comment) => console.log(comment),
         // signals the store that an answer has been chosen
-        choose: (id, choice) => dispatch(chooseAction(id, choice)),
+        choose: (choice) => dispatch(chooseAction("lksdjfk", choice)),
         signalPanic: () => dispatch(signalAction(AttentionStateType.PANIC)),
         signalSlow: () => dispatch(signalAction(AttentionStateType.TOO_SLOW)),
         signalFast: () => dispatch(signalAction(AttentionStateType.TOO_FAST))

@@ -1,16 +1,19 @@
-export const SocketInMsgType = {
+export const SocketInMsg = {
+    AUTHENTIFY: "SERVER/AUTHENTIFY",
+
     GET_ROOMS: "SERVER/GET_ROOMS",
     JOIN_ROOM: "SERVER/JOIN_ROOM",
-    LEAVE_ROOM: "SERVER/LEAVE_ROOM"
+    LEAVE_ROOM: "SERVER/LEAVE_ROOM",
+
+    OPEN_ROOM: "SERVER/OPEN_ROOM",
+    CLOSE_ROOM: "SERVER/CLOSE_ROOM"
 }
 
-export const SocketOutMsgType = {
+export const SocketOutMsg = {
     GET_ROOMS_RES: "CLIENT/GET_ROOMS_RES",
     JOIN_ROOM_RES: "CLIENT/JOIN_ROOM_RES",
-    LEAVE_ROOM_RES: "CLIENT/LEAVE_ROOM_RES"
-}
+    LEAVE_ROOM_RES: "CLIENT/LEAVE_ROOM_RES",
 
-export const RedisMsgType = {
-    CREATE_ROOM: "1",
-    CLOSE_ROOM: "2"
+    ROOM_OPENED: "CLIENT/ROOM_OPENED",
+    ROOM_CLOSED: "CLIENT/ROOM_CLOSED"
 }

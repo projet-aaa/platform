@@ -1,5 +1,5 @@
 import { createAPIActionCreator } from '../../../utils'
-import { ActionTypes, APIActionTypes } from './actionTypes'
+import { ActionTypes, APIActionTypes, WSOutActionTypes } from './actionTypes'
 
 import { QuizType } from '../../../models/class/class'
 
@@ -15,7 +15,36 @@ export function nextQuizAction() {
     return { type: ActionTypes.NEXT_CONSUL_QUIZ, payload: {} }
 }
 
-export const answerAction: (info: { 
+export function answerAction(info: {
+    type: string
+    choiceId: string,
+    choice: string,
+    questionId: string
+}) {
+    return (dispatch) => {
+        dispatch(answerAPIAction(info))
+        dispatch({
+            type: WSOutActionTypes.ANSWER,
+            payload: info
+        })
+    }
+}
+
+export function signalStateAction(info: {
+    state: string
+    sessionId: string
+    authorId: string
+}) {
+    return (dispatch) => {
+        dispatch(signalStateAPIAction(info))
+        dispatch({
+            type: WSOutActionTypes.SIGNAL_STATE,
+            payload: info
+        })
+    }
+}
+
+export const answerAPIAction: (info: { 
     type: string
     choiceId: string,
     questionId: string
@@ -42,7 +71,7 @@ export const answerAction: (info: {
     APIActionTypes.ANSWER_FAILURE
 )
 
-export const signalStateAction: (info: {
+export const signalStateAPIAction: (info: {
     state: string
     sessionId: string
     authorId: string
@@ -61,7 +90,7 @@ export const signalStateAction: (info: {
     APIActionTypes.SIGNAL_STATE_FAILURE
 )
 
-export const commentAction: (endpointInfo: any, payload: { 
+export const commentAction: (payload: { 
     text: string
     sessionId: string
     authorId: string

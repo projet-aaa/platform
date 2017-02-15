@@ -29,7 +29,7 @@ export interface StateProps {
 }
 
 export interface ActionProps {
-    launchQuiz(quizId: number)
+    launchQuiz(quizId: string)
 }
 
 // style for ul tag

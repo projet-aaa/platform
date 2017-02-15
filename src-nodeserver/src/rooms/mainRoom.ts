@@ -1,7 +1,7 @@
 import { IMainRoom } from '../main/iroom'
 import { SocketInfo, RoomInfo, RoomType } from '../models/rooms'
 
-import { SocketInMsgType, SocketOutMsgType, RedisMsgType } from '../models/main'
+import { SocketInMsg, SocketOutMsg } from '../models/main'
 
 export class MainRoom extends IMainRoom {
 
@@ -9,44 +9,47 @@ export class MainRoom extends IMainRoom {
 
     receiveSocketMsg(socket: SocketInfo, type: string, msg) {
         switch(type) {
-            case "SERVER/AUTHENTIFY": {
+            case SocketInMsg.AUTHENTIFY: {
                 socket.id = msg.id
                 socket.username = msg.username
                 socket.isTeacher = msg.isTeacher
                 break
             }
-            case SocketInMsgType.GET_ROOMS: {
-                this.server.send(socket, SocketOutMsgType.GET_ROOMS_RES, {
-                    rooms: this.server.getRooms()
+            case SocketInMsg.GET_ROOMS: {
+                this.server.send(socket, SocketOutMsg.GET_ROOMS_RES, {
+                    rooms: this.server.getRooms().slice(1)
                 })
                 break
             }
-            case SocketInMsgType.JOIN_ROOM: {
+            case SocketInMsg.JOIN_ROOM: {
                 this.server.changeSocketRoom(socket, msg.roomId)
+                this.server.send(socket, SocketOutMsg.JOIN_ROOM_RES, { roomId: msg.roomId })
                 break
             }
-            case SocketInMsgType.LEAVE_ROOM: {
+            case SocketInMsg.LEAVE_ROOM: {
                 this.server.changeSocketRoom(socket, -1)
+                this.server.send(socket, SocketOutMsg.LEAVE_ROOM_RES, { roomId: msg.roomId })
+                break
+            }
+            case SocketInMsg.OPEN_ROOM: {
+                let room = this.server.getRoomInfo(this.server.rooms[this.server.createRoom(msg.type)])
+                for(let socket of this.sockets) {
+                    this.server.send(socket, SocketOutMsg.ROOM_OPENED, { room: room })
+                }
+                break
+            }
+            case SocketInMsg.CLOSE_ROOM: {
+                this.server.closeRoom(msg.roomId)
+                for(let socket of this.sockets) {
+                    this.server.send(socket, SocketOutMsg.ROOM_CLOSED, { roomId: msg.roomId })
+                }
                 break
             }
         }
     }
 
     receiveRedisMsg(type: string, msg) {
-        switch(type) {
-            case RedisMsgType.CREATE_ROOM: {
-                this.server.createRoom(msg.type)
-                break
-            }
-            case RedisMsgType.CLOSE_ROOM: {
-                this.server.closeRoom(msg.roomId)
-                break
-            }
-            default: {
-                console.log('[ERROR] unhandled redis msg in main: type=', type, ' msg=', msg)
-                break
-            }
-        }
+        
     }
 
     socketEnter(socket: SocketInfo) {

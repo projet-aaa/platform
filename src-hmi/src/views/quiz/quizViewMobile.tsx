@@ -14,8 +14,8 @@ export interface StateProps {
     quizChoice: QuizLocalChoice
 }
 export interface ActionProps {
-    choose(quizId: number, choice: any) // select an answer
-    validate(quizId: number) // validate the answer
+    choose(choice: any) // select an answer
+    validate() // validate the answer
 }
 
 // style for the text
@@ -54,7 +54,7 @@ export class View extends React.Component<Props, any> {
         switch(quiz.type) {
             case QuizType.MCQ: 
                 var answerItems = quiz.choices.map((item, i) => {
-                    return <AnswerViewMobile key={item} ind={i} text={item} choose={ choose(quiz.id, i) } chosen={ quizChoice.choice == i }/>;
+                    return <AnswerViewMobile key={item} ind={i} text={item} choose={ choose(i) } chosen={ quizChoice.choice == i }/>;
                 });
                 answers = 
                 (
@@ -69,7 +69,7 @@ export class View extends React.Component<Props, any> {
                         type="text" 
                         value={ quizChoice.choice }
                         style={ inputFieldStyle }
-                        onChange={ () => choose(quiz.id, getText("quiz-text")) }> 
+                        onChange={ () => choose(getText("quiz-text")) }> 
                 </input>)
             break
         }
@@ -93,7 +93,7 @@ export class View extends React.Component<Props, any> {
         let validateButton = (
                 <div className="row">
                     <div className="pull-right">
-                        <div className="btn btn-success" onClick={ () => validate(quiz.id) }>
+                        <div className="btn btn-success" onClick={ () => validate() }>
                             Valider réponse
                         </div>
                     </div>

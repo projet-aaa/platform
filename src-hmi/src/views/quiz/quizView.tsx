@@ -24,9 +24,9 @@ export interface StateProps {
 }
 export interface ActionProps {
     // select an answer (if null, there will be no validate button and no answer will be able to be selected)
-    choose(quizId: number, choice: any)
+    choose(choice: any)
     // validate the answer
-    validate(quizId: number)
+    validate()
     // go to the next question
     nextQuiz()
     // go to the previous question
@@ -78,7 +78,7 @@ export class View extends React.Component<Props, any> {
             // the render is a list of AnswerView (radio button and answer text)
             case QuizType.MCQ: 
                 let createChooseAction = (i) => {
-                    return (choose==null) ? () => {  }: () => { choose(quiz.id, i) }
+                    return (choose==null) ? () => {  }: () => { choose(i) }
                 } 
                 var answerItems = quiz.choices.map((item, i) => {
                     return <AnswerView
@@ -108,7 +108,7 @@ export class View extends React.Component<Props, any> {
                         type="text" 
                         value={ quizChoice.choice }
                         style={ inputFieldStyle }
-                        onChange={ () => choose(quiz.id, getText("quiz-text")) }> 
+                        onChange={ () => choose(getText("quiz-text")) }> 
                 </input>)
             break
         }
@@ -127,7 +127,7 @@ export class View extends React.Component<Props, any> {
             validateButton = (
                 <div className="row">
                     <div className="col-lg-offset-8 col-lg-4">
-                        <div className="btn btn-lg btn-success" onClick={ () => validate(quiz.id) }>
+                        <div className="btn btn-lg btn-success" onClick={ () => validate() }>
                             Valider réponse
                         </div>
                     </div>

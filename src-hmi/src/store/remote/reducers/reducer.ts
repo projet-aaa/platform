@@ -5,14 +5,16 @@ import { ActionTypes, APIActionTypes, WSInActionTypes } from '../actions/actionT
 import { QuizInstanceState, Quiz } from '../../../models/class/class'
 
 export interface RemoteState {
+    sessionId: string
     quiz: Quiz[]
 
-    quizHistory: number[]
+    quizHistory: string[]
     currConsulQuizInd: number
 
-    currQuizId: number
+    currQuizId: string
     currQuizState: string
     choice: any
+    choiceId: string
 
     score: number
     rank: number
@@ -23,14 +25,16 @@ export interface RemoteState {
 }
 
 let initialstate: RemoteState = {
+    sessionId: null,
     quiz: [],
 
     quizHistory: [],
     currConsulQuizInd: -1,
 
-    currQuizId: -1,
+    currQuizId: null,
     currQuizState: QuizInstanceState.OFF,
     choice: null,
+    choiceId: null,
 
     score: 0,
     rank: 0,
@@ -68,36 +72,39 @@ const reducer = handleActions({
         }
     },
     [WSInActionTypes.START_QUIZ]: function(state: RemoteState, action: any): RemoteState {
-        let res = Object.assign({}, state)
-
-        if(state.currQuizId != -1) {
-            res.quizHistory.push(state.currQuizId)
-            res.currQuizId = -1
-            res.currQuizState = QuizInstanceState.OFF
-            res.choice = null
-
-            res.currConsulQuizInd = state.quizHistory.length - 1
-        }   
-
-        res.currQuizId = action.payload.quiz.id
-        res.currQuizState = QuizInstanceState.HEADING
-
-        res.quiz[action.payload.quiz.id] = action.payload.quiz
-
-        return res
+        if(state.currQuizId != null) {
+            return Object.assign({}, state, {
+                quiz: Object.assign({}, state.quiz, {
+                    [action.payload.quiz.id]: action.payload.quiz
+                }),
+                quizHistory: [...state.quizHistory, state.currQuizId],
+                currQuizId: action.payload.quiz.id,
+                currQuizState: QuizInstanceState.HEADING,
+                choice: null,
+                choiceId: null,
+                currConsulQuizInd: state.quizHistory.length - 1
+            })
+        } else {
+            return Object.assign({}, state, {
+                quiz: Object.assign({}, state.quiz, {
+                    [action.payload.quiz.id]: action.payload.quiz
+                }),
+                currQuizId: action.payload.quiz.id,
+                currQuizState: QuizInstanceState.HEADING,
+                choice: null,
+                choiceId: null
+            })
+        }
     },
     [WSInActionTypes.STOP_QUIZ]: function(state: RemoteState, action: any): RemoteState {
-        if(state.currQuizId != -1) {
-            let res = Object.assign({}, state)
-
-            res.quizHistory.push(state.currQuizId)
-            res.currQuizId = -1
-            res.currQuizState = QuizInstanceState.OFF
-            res.choice = null
-
-            res.currConsulQuizInd = state.quizHistory.length - 1
-
-            return res
+        if(state.currQuizId != null) {        
+            return Object.assign({}, state, {
+                quizHistory: [...state.quizHistory, state.currQuizId],
+                currQuizId: null,
+                currQuizState: QuizInstanceState.OFF,
+                choice: null,
+                currConsulQuizInd: state.quizHistory.length - 1
+            })
         } else {
             return state
         }
@@ -108,6 +115,27 @@ const reducer = handleActions({
             rank: action.payload.rank,
             studentPop: action.payload.studentPop,
             highscore: action.payload.highscore,
+            maxscore: action.payload.maxscore,
+            average: action.payload.average
+        })
+    },
+    [WSInActionTypes.CLASS_JOINED]: function(state: RemoteState, action: any): RemoteState {
+        return Object.assign({}, state, {
+            sessionId: action.payload.sessionId,
+            quiz: action.payload.quiz,
+
+            quizHistory: action.payload.quizHistory,
+            currConsulQuizInd: action.payload.quizHistory.length - 1,
+
+            currQuizId: action.payload.currQuizId,
+            currQuizState: action.payload.currQuizState,
+            choice: null,
+            choiceId: null,
+
+            score: 0,
+            rank: 0,
+            studentPop: action.payload.studentPop,
+            highscore: action.payload.highScore,
             maxscore: action.payload.maxscore,
             average: action.payload.average
         })

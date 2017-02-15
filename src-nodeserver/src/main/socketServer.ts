@@ -2,6 +2,7 @@ import { IMainRoom, IRoom } from './iroom'
 import { SocketInfo, RoomInfo, RoomType } from '../models/rooms'
 
 import { MainRoom } from '../rooms/mainRoom'
+import { ClassRoom } from '../rooms/classRoom'
 
 export class SocketServer {
 
@@ -15,6 +16,7 @@ export class SocketServer {
     log: boolean
 
     constructor(io, redis, log) {
+        console.log("v1")
         this.io = io
         this.redis = redis
         this.rooms = []
@@ -76,17 +78,22 @@ export class SocketServer {
             if(this.log)
                 console.log('[redis msg] ', data)
             // TODO parse data and send it to the right room
+            
         })
     }
 
-    createRoom(type: number): number {
+    createRoom(type: string): number {
         let id = this.nextId++,
-            room = null
+            room: IRoom = null
 
         if(this.log)
             console.log('[create room] type=', type, ' id=', id)
-            
-        room.init(this)
+
+        switch(type) {
+            case RoomType.CLASS: room = new ClassRoom(this, id); break
+            default: room = new ClassRoom(this, id); break
+        }
+
         this.rooms[id] = room
 
         return id
@@ -112,8 +119,7 @@ export class SocketServer {
             if(this.log) {
                 console.log(
                     '[room change] username=', socketInfo.username, 
-                    ' old room type=', oldRoom.type, ' id=', oldRoom.id, 
-                    ' new room type=', newRoom.type, ' id=', newRoom.id
+                    'new room type=', newRoom.type, 'id=', newRoom.id
                 )
             }
 
@@ -139,12 +145,15 @@ export class SocketServer {
 
     getRooms(): RoomInfo[] {
         return this.rooms.map((room) => {
-            return { 
-                id: room.id,
-                type: room.type,
-                popStudent: room.sockets.length,
-                popTeacher: room.sockets.length
-            }
+            return this.getRoomInfo(room)
         })
+    }
+    getRoomInfo(room: IRoom): RoomInfo {
+        return { 
+            id: room.id,
+            type: room.type,
+            popStudent: room.sockets.length,
+            popTeacher: room.sockets.length
+        }
     }
 }

@@ -1,28 +1,36 @@
-import { connect } from "react-redux";
+import { connect } from "react-redux"
 
-let validateAction = (id) => console.log("[remoteContainer] validateAction not implemented: " + id)
-let chooseAction = (id, choice) => console.log("[remoteContainer] chooseAction not implemented")
-let signalAction = (signal) => console.log("[remoteContainer] chooseAction not implemented")
-
-import { answerAction } from "../../store/remote/actions/actions"
-
-import { Quiz } from "../../models/class/class"
-
-import { StateProps, ActionProps, View } from "../../views/quiz/remoteViewDesktop"
+import { StateProps, ActionProps, Props, View } from "../../views/quiz/remoteViewDesktop"
 
 import { RemoteState } from "../../store/remote/reducers/reducer"
+import { AuthState } from "../../store/auth/reducer"
 
-import { QuizInstanceState, AttentionStateType } from "../../models/class/class"
+import { 
+    answerAction, commentAction, signalStateAction, 
+    nextQuizAction, prevQuizAction, chooseAction 
+} from "../../store/remote/actions/actions"
 
-function mapStateToProps(state: any): StateProps {
-    let remote: RemoteState = state.remote
+import { Quiz, QuizType, QuizInstanceState, AttentionStateType } from "../../models/class/class"
+
+function mapStateToProps(state: any): any {
+    let remote: RemoteState = state.remote,
+        auth: AuthState = state.auth,
+        quiz = remote.quiz[state.remote.currentQuiz]
+
     return {
-        // update the quiz prop with the current quiz
-        quiz: remote.quiz[state.remote.currentQuiz],
+        sessionId: remote.sessionId,
+        quiz: quiz,
+        authorId: auth.id,
+
+        questionId: remote.currQuizId,
+
         quizChoice: remote.choice,
+        choiceId: quiz && quiz.type == QuizType.MCQ ? quiz.choiceIds[remote.choice] : null,
+
         showCorrection: remote.currQuizState != QuizInstanceState.HEADING,
-        question: remote.currQuizState != QuizInstanceState.OFF,
         forceUnfold: false,
+        question: remote.currQuizState != QuizInstanceState.OFF,
+
         score: remote.score,
         rank: remote.rank,
         population: remote.studentPop,
@@ -31,20 +39,46 @@ function mapStateToProps(state: any): StateProps {
     }
 }
 
-function mapDispatchToProps(dispatch, state): ActionProps {
+function mapDispatchToProps(dispatch, state): any {
     return {
-        // signals the store that an answer has been validated
-        validateAnswer: (quizId) => console.log("TODO: send answer when the validate button is pushed"),
-        // signals the store that a comment has been sent
-        sendComment: (comment) => console.log(comment),
-        // signals the store that an answer has been chosen
-        choose: (id, choice) => dispatch(chooseAction(id, choice)),
-        nextQuiz: null,
-        prevQuiz: null,
-        signalPanic: () => dispatch(signalAction(AttentionStateType.PANIC)),
-        signalSlow: () => dispatch(signalAction(AttentionStateType.TOO_SLOW)),
-        signalFast: () => dispatch(signalAction(AttentionStateType.TOO_FAST))
+        choose: (choice) => dispatch(chooseAction(choice)),
+        nextQuiz: () => dispatch(nextQuizAction()),
+        prevQuiz: () => dispatch(prevQuizAction()),
+
+        validateAnswer: (type, choice, choiceId, questionId) => dispatch(answerAction({ type, choice, choiceId, questionId })),
+        sendComment: (text, sessionId, authorId) => dispatch(commentAction({ text, sessionId, authorId })),
+
+        signalPanic: (sessionId, authorId) => dispatch(signalStateAction({ 
+            state: AttentionStateType.PANIC,
+            sessionId, authorId
+        })),
+        signalSlow: (sessionId, authorId) => dispatch(signalStateAction({ 
+            state: AttentionStateType.TOO_SLOW,
+            sessionId, authorId
+        })),
+        signalFast: (sessionId, authorId) => dispatch(signalStateAction({ 
+            state: AttentionStateType.TOO_FAST,
+            sessionId, authorId
+        }))
     }
+}
+
+function mergeProps(stateProps, dispatchProps, ownProps): Props {
+    return Object.assign({}, stateProps, dispatchProps, ownProps, {
+        validateAnswer: () => dispatchProps.validateAnswer(
+            stateProps.quiz.type, 
+            stateProps.quizChoice, 
+            stateProps.choiceId,
+            stateProps.questionId
+        ),
+        sendComment: (text) => dispatchProps.sendComment(
+            text, stateProps.sessionId, stateProps.authorId
+        ),
+
+        signalPanic: () => dispatchProps.signalPanic(stateProps.sessionId, stateProps.actionId),
+        signalSlow: () => dispatchProps.signalSlow(stateProps.sessionId, stateProps.actionId),
+        signalFast: () => dispatchProps.signalFast(stateProps.sessionId, stateProps.actionId),
+    })
 }
 
 export default connect<StateProps, ActionProps, any>(

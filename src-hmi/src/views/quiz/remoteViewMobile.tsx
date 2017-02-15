@@ -25,9 +25,9 @@ export interface StateProps {
 }
 export interface ActionProps {
     // Fires an action signaling that an answer has been chosen
-    choose(id: number, choice: any)
+    choose(choice: any)
     // Fires an action signaling that an answer has been validated
-    validateAnswer(quizId: number)
+    validateAnswer()
     // Fires an action signaling a comment has been sent
     sendComment(comment: string)
     // signal panic

@@ -62,28 +62,29 @@ export class View extends React.Component<Props, any> {
             showCorrection
         } = this.props;
 
-        let quizRender = (<QuizView 
-            quiz={ quiz } 
-            quizChoice={
-                {
+        let quizRender 
+        if(quiz) {
+            quizRender = (<QuizView 
+                quiz={ quiz } 
+                quizChoice={{
                     quizId: quiz.id,
                     choice: -1 
-                }
-            }
-            showCorrection={ showCorrection } 
-            forceUnfold={ true } 
-            nextQuiz={ null } 
-            prevQuiz={ null }
-            choose={ null }
-            validate={ null }
-        />)
+                }}
+                showCorrection={ showCorrection } 
+                forceUnfold={ true } 
+                nextQuiz={ null } 
+                prevQuiz={ null }
+                choose={ null }
+                validate={ null }
+            />)
+        }
 
         // if there are stats we put them on the right
         let res = null
         if (!showCorrection) {
             res = (
                 <div className="page-content">
-                    { quizRender }
+                    { quizRender ? quizRender : "En attente d'un quiz" }
                 </div>
             )
         } else {
