@@ -16,6 +16,8 @@ export interface ActionProps {
     signalSlow()
     // Fires an action signaling that the lesson goes too fast
     signalFast()
+    // Fires and action signaling that the user is ok
+    signalOk()
 }
 
 var buttonMargin = {
@@ -28,7 +30,7 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
-            signalPanic, signalSlow, signalFast
+            signalPanic, signalSlow, signalFast, signalOk
         } = this.props;
         // each action is associated to a button, these 3 buttons form a triangle
         return (
@@ -53,6 +55,14 @@ export class View extends React.Component<Props, any> {
                     <div className="col-lg-12 text-center">
                         <div className="btn btn-lg btn-success" style={buttonMargin} onClick={ signalSlow }>
                         Trop Lent
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div className="row">
+                    <div className="col-lg-12 text-center">
+                        <div className="btn btn-lg btn-primary" style={buttonMargin} onClick={ signalOk }>
+                        Tout va bien
                         </div>
                     </div>
                 </div>

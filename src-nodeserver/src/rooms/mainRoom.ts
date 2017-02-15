@@ -34,15 +34,32 @@ export class MainRoom extends IMainRoom {
             case SocketInMsg.OPEN_ROOM: {
                 let room = this.server.getRoomInfo(this.server.rooms[this.server.createRoom(msg.type)])
                 for(let socket of this.sockets) {
-                    this.server.send(socket, SocketOutMsg.ROOM_OPENED, { room: room })
+                    if(socket.subscribed) {
+                        this.server.send(socket, SocketOutMsg.ROOM_OPENED, { room: room })
+                    }
                 }
                 break
             }
             case SocketInMsg.CLOSE_ROOM: {
                 this.server.closeRoom(msg.roomId)
                 for(let socket of this.sockets) {
-                    this.server.send(socket, SocketOutMsg.ROOM_CLOSED, { roomId: msg.roomId })
+                    if(socket.subscribed) {
+                        this.server.send(socket, SocketOutMsg.ROOM_CLOSED, { roomId: msg.roomId })
+                    }
                 }
+                break
+            }
+            case SocketInMsg.ROOM_SUBSCRIBE: {
+                socket.subscribed = true
+                if(msg.fetch) {
+                    this.server.send(socket, SocketOutMsg.GET_ROOMS_RES, {
+                        rooms: this.server.getRooms().slice(1)
+                    })
+                }
+                break
+            }
+            case SocketInMsg.ROOM_UNSUBSCRIBE: {
+                socket.subscribed = false
                 break
             }
         }

@@ -36,6 +36,7 @@ export interface ActionProps {
     signalSlow()
     // signal fast
     signalFast()
+    signalOk()
 }
 
 // style
@@ -62,13 +63,14 @@ export class View extends React.Component<Props, any> {
             sendComment,
             signalPanic,
             signalSlow,
-            signalFast
+            signalFast,
+            signalOk
         } = this.props;
         
         // if there is a question we show the quiz, else we show the feedback buttons
         let mainComponent = question ?
                     <QuizViewMobile quiz={ quiz } quizChoice={ quizChoice } choose={ choose } validate={ validateAnswer }/> :
-                    <FeedbackViewMobile signalPanic={ signalPanic } signalSlow={ signalSlow } signalFast={ signalFast }/>
+                    <FeedbackViewMobile signalPanic={ signalPanic } signalSlow={ signalSlow } signalFast={ signalFast } signalOk={ signalOk }/>
         // the score is on the top, next there is the quiz or feddback and last the comment box
         return (
             <div style={ palNew }>

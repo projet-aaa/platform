@@ -43,29 +43,27 @@ let initialState: DashboardState = {
 
 const name = "dashboard"
 const reducer = handleActions({
-    // LOCAL ACTIONS
-    [WSOutActionTypes.SHOW_FEEDBACK]: function(state: DashboardState, action: any): DashboardState {
-        if(state.currQuizState == QuizInstanceState.HEADING) {
-            return Object.assign({}, state, {
-                currQuizState: QuizInstanceState.FEEDBACK
-            }) 
-        } else {
-            return state
-        }
-    },
     // WEBSOCKET
     [WSInActionTypes.ANSWER]: function(state: DashboardState, action: any): DashboardState {
         return Object.assign({}, state, {
-            currQuizStat: Object.assign({}, state, {
-                [action.payload.choice]: state.currQuizStat[action.payload.choice] + 1
+            currQuizStat: Object.assign({}, state.currQuizStat, {
+                [action.payload.choice]: state.currQuizStat[action.payload.choice] 
+                    ? state.currQuizStat[action.payload.choice] + 1 
+                    : 1
             })
         })
     },
     [WSInActionTypes.SIGNAL_STATE]: function(state: DashboardState, action: any): DashboardState {
         return Object.assign({}, state, {
-            panic: state.panic + (action.payload.state == AttentionStateType.PANIC? 1 : 0),
-            tooSlow: state.panic + (action.payload.state == AttentionStateType.TOO_SLOW? 1 : 0),
-            tooFast: state.panic + (action.payload.state == AttentionStateType.TOO_FAST? 1 : 0),
+            panic: state.panic 
+                + (action.payload.state == AttentionStateType.PANIC ? 1 : 0
+                - (action.payload.oldState == AttentionStateType.PANIC ? 1 : 0)),
+            tooSlow: state.tooSlow 
+                + (action.payload.state == AttentionStateType.TOO_SLOW ? 1 : 0
+                - (action.payload.oldState == AttentionStateType.TOO_SLOW ? 1 : 0)),
+            tooFast: state.tooFast 
+                + (action.payload.state == AttentionStateType.TOO_FAST ? 1 : 0
+                - (action.payload.oldState == AttentionStateType.TOO_FAST ? 1 : 0)),
         })
     },
     [WSInActionTypes.CLASS_JOINED]: function(state: DashboardState, action: any): DashboardState {
@@ -101,13 +99,21 @@ const reducer = handleActions({
     },
     [WSInActionTypes.START_QUIZ]: function(state: DashboardState, action: any): DashboardState {
         return Object.assign({}, state, {
-            quizLauncher: state.quizLauncher.map((launcher: QuizLauncher):QuizLauncher => {
+            quizLauncher: state.quizLauncher.map((launcher: QuizLauncher): QuizLauncher => {
                 if(launcher.quizId == action.payload.quiz.id) {
                     return {
                         quizId: launcher.quizId,
                         title: launcher.title,
                         state: 1,
                         successRate: 0
+                    }
+                } else if(launcher.quizId == state.currQuizId) {
+                    let answerCount = state.currQuizStat[(state.quiz[state.currQuizId] as Quiz).answer]
+                    return {
+                        quizId: launcher.quizId,
+                        title: launcher.title,
+                        state: 2,
+                        successRate: state.studentPop ? answerCount / state.studentPop : 0
                     }
                 } else {
                     return launcher
@@ -117,6 +123,51 @@ const reducer = handleActions({
             currQuizId: action.payload.quiz.id,
             currQuizState: QuizInstanceState.HEADING,
             currQuizStat: {}
+        })
+    },
+    [WSInActionTypes.SHOW_FEEDBACK]: function(state: DashboardState, action: any): DashboardState {
+        if(state.currQuizState == QuizInstanceState.HEADING) {
+            return Object.assign({}, state, {
+                quizLauncher: state.quizLauncher.map(launcher => {
+                    if(launcher.quizId == state.currQuizId) {
+                        return Object.assign({}, launcher, {
+                            state: 3  
+                        })
+                    } else {
+                        return launcher
+                    }
+                }),
+
+                currQuizState: QuizInstanceState.FEEDBACK
+            }) 
+        } else {
+            return state
+        }
+    },
+    [WSInActionTypes.STOP_QUIZ]: function(state: DashboardState, action: any): DashboardState {
+        if(state.currQuizState == QuizInstanceState.HEADING 
+        || state.currQuizState == QuizInstanceState.FEEDBACK) {
+            return Object.assign({}, state, {
+                quizLauncher: state.quizLauncher.map(launcher => {
+                    if(launcher.quizId == state.currQuizId) {
+                        return Object.assign({}, launcher, {
+                            state: 2 
+                        })
+                    } else {
+                        return launcher
+                    }
+                }),
+
+                currQuizId: null,
+                currQuizState: QuizInstanceState.OFF,
+            })
+        } else {
+            return state
+        }
+    },
+    [WSInActionTypes.STUDENT_COUNT]: function(state: DashboardState, action: any): DashboardState {
+        return Object.assign({}, state, {
+            studentPop: action.payload.studentPop
         })
     }
 }, initialState);

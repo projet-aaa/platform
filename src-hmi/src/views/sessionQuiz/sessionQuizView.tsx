@@ -10,6 +10,7 @@ import RemoteContainer from "../../containers/quiz/remoteContainerDesktop"
 export interface StateProps { 
     rooms: number[]
     isTeacher: boolean
+    room: number
 }
 
 export interface ActionProps { 
@@ -27,6 +28,7 @@ export class View extends React.Component<Props, any> {
         const {
             rooms,
             isTeacher,
+            room,
 
             updateRooms,
             joinRoom,
@@ -43,7 +45,9 @@ export class View extends React.Component<Props, any> {
                 <div>
                     <button onClick={ updateRooms }>Update rooms</button>
                     <button onClick={ leaveRoom }>Leave room</button>
-                    { isTeacher && <button onClick={ openRoom }>Open room</button> }<br/>
+                    { isTeacher && <button onClick={ openRoom }>Open room</button> }
+                    Current room: { room != -1 ? room : "none" }
+                    <br/>
                     { rooms.map(room => {
                         return <button key={room} onClick={ () => joinRoom(room)}>Join Room { room }</button>
                     })}

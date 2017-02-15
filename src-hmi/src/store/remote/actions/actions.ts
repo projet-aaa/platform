@@ -22,15 +22,23 @@ export function answerAction(info: {
     questionId: string
 }) {
     return (dispatch) => {
-        dispatch(answerAPIAction(info))
-        dispatch({
+        let answer = {
             type: WSOutActionTypes.ANSWER,
-            payload: info
-        })
+            payload: {
+                type: info.type,
+                choiceId: info.choiceId,
+                choice: info.choice,
+                questionId: info.questionId
+            }
+        }
+        console.log(answer)
+        dispatch(answerAPIAction(info))
+        dispatch(answer)
     }
 }
 
 export function signalStateAction(info: {
+    oldState: string
     state: string
     sessionId: string
     authorId: string
@@ -39,7 +47,12 @@ export function signalStateAction(info: {
         dispatch(signalStateAPIAction(info))
         dispatch({
             type: WSOutActionTypes.SIGNAL_STATE,
-            payload: info
+            payload: {
+                oldState: info.oldState,
+                state: info.state,
+                sessionId: info.sessionId,
+                authorId: info.authorId
+            }
         })
     }
 }

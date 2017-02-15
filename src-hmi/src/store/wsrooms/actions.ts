@@ -6,7 +6,10 @@ export const OutMsgType = {
     LEAVE_ROOM: "SERVER/LEAVE_ROOM",
 
     OPEN_ROOM: "SERVER/OPEN_ROOM",
-    CLOSE_ROOM: "SERVER/CLOSE_ROOM"
+    CLOSE_ROOM: "SERVER/CLOSE_ROOM",
+
+    ROOM_SUBSCRIBE: "SERVER/ROOM_SUBSCRIBE",
+    ROOM_UNSUBSCRIBE: "SERVER/ROOM_UNSUBSCRIBE"
 }
 
 export const InMsgType = {
@@ -21,6 +24,18 @@ export const InMsgType = {
 export function getRooms(): Action<{}> {
     return {
         type: OutMsgType.GET_ROOMS,
+        payload: {}
+    }
+}
+export function subscribe(fetch: boolean) {
+    return {
+        type: OutMsgType.ROOM_SUBSCRIBE,
+        payload: { fetch }
+    }
+}
+export function unsubscribe() {
+    return {
+        type: OutMsgType.ROOM_UNSUBSCRIBE,
         payload: {}
     }
 }

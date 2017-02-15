@@ -52,6 +52,7 @@ export interface ActionProps {
     signalSlow()
     // signal fast
     signalFast()
+    signalOk()
 }
 
 // style
@@ -87,6 +88,7 @@ export class View extends React.Component<Props, any> {
             signalPanic,
             signalSlow,
             signalFast,
+            signalOk
         } = this.props;
         
         // if there is a question we show the quiz, else we show the feedback buttons
@@ -94,7 +96,7 @@ export class View extends React.Component<Props, any> {
             <QuizView quiz={ quiz } quizChoice={ quizChoice } choose={ choose } validate={ validateAnswer } 
                     showCorrection={ showCorrection } forceUnfold={ forceUnfold } nextQuiz={ nextQuiz } 
                     prevQuiz={ prevQuiz }/> :
-            <FeedbackView signalPanic={ signalPanic } signalSlow={ signalSlow } signalFast={ signalFast }/>
+            <FeedbackView signalPanic={ signalPanic } signalSlow={ signalSlow } signalFast={ signalFast } signalOk={ signalOk }/>
         
         // the quiz or the buttons are on the left and the scores are on the right
         return (

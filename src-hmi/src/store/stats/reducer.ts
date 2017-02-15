@@ -53,7 +53,8 @@ let initialState: StatState = {
             choices: ["peut être", "mr l'arbitre", "oui", "D"],
             choiceIds: ["0", "1", "2"],
             explanations: ["peut-être que c'est faux", "aux chiottes l'arbitre", "NON !!!!!!!!!", "Voilà !"],
-            answer: 3
+            answer: 3,
+            justification: "test"
         }, {
             id: "1",
             type: QuizType.MCQ,
@@ -62,7 +63,8 @@ let initialState: StatState = {
             choices: ["peut être", "mr l'arbitre", "oui", "D"],
             choiceIds: ["0", "1", "2"],
             explanations: ["peut-être que c'est faux", "aux chiottes l'arbitre", "NON !!!!!!!!!", "Voilà !"],
-            answer: 3
+            answer: 3,
+            justification: "test"
         }
     ],
     quizChoices: [

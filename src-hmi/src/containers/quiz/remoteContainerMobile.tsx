@@ -27,7 +27,8 @@ function mapDispatchToProps(dispatch): ActionProps {
         choose: (choice) => dispatch(chooseAction("lksdjfk", choice)),
         signalPanic: () => dispatch(signalAction(AttentionStateType.PANIC)),
         signalSlow: () => dispatch(signalAction(AttentionStateType.TOO_SLOW)),
-        signalFast: () => dispatch(signalAction(AttentionStateType.TOO_FAST))
+        signalFast: () => dispatch(signalAction(AttentionStateType.TOO_FAST)),
+        signalOk: () => dispatch(signalAction(AttentionStateType.OK))
     }
 }
 

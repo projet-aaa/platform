@@ -24,12 +24,13 @@ export class ClassRoom extends IRoom {
             choiceIds: ["0", "1", "2"],
 
             answer: 0,
-            explanations: "N'est ce pas évident?"
+            explanations: ["N'est ce pas évident?", "N'est ce pas évident?", "N'est ce pas évident?"],
+            justification: "N'est ce pas évident?"
         },
         "1": {
             id: "1",
             type: "MCQ",
-            title: "La secone question",
+            title: "La seconde question",
 
             question: "2 + 2?",
 
@@ -37,7 +38,8 @@ export class ClassRoom extends IRoom {
             choiceIds: ["0", "1", "2"],
 
             answer: 2,
-            explanations: "2 + 2 = 1 + 1 + 1 + 1 = 4 * 1 = 4"
+            explanations: ["faux", "faux", "2 + 2 = 1 + 1 + 1 + 1 = 4 * 1 = 4"],
+            justification: "2 + 2 = 1 + 1 + 1 + 1 = 4 * 1 = 4"
         }
     }
 
@@ -48,6 +50,9 @@ export class ClassRoom extends IRoom {
     
     maxscore: number = 0
     average: number = 0
+
+    get studentPop(): number { return this.studentSockets.length }
+    get teacherPop(): number { return this.teacherSockets.length }
 
     constructor(server, id) {
         super(server, id)
@@ -60,25 +65,40 @@ export class ClassRoom extends IRoom {
             // TEACHER
             case SocketInMsg.START_QUIZ: {
                 let quiz = this.quiz[msg.quizId]
-                for(let socket of this.sockets) {
-                    this.server.send(socket, SocketOutMsg.START_QUIZ, { quiz })
+                for(let socket of this.studentSockets) {
+                    this.server.send(socket, SocketOutMsg.STUDENT_START_QUIZ, { quiz })
+                }
+                for(let socket of this.teacherSockets) {
+                    this.server.send(socket, SocketOutMsg.TEACHER_START_QUIZ, { quiz })
+                }
+                break
+            }
+            case SocketInMsg.SHOW_FEEDBACK: {
+                for(let socket of this.studentSockets) {
+                    this.server.send(socket, SocketOutMsg.STUDENT_SHOW_FEEDBACK, { })
+                }
+                for(let socket of this.teacherSockets) {
+                    this.server.send(socket, SocketOutMsg.TEACHER_SHOW_FEEDBACK, { })
                 }
                 break
             }
             case SocketInMsg.STOP_QUIZ: {
-                for(let socket of this.sockets) {
-                    this.server.send(socket, SocketOutMsg.STOP_QUIZ, msg)
+                for(let socket of this.studentSockets) {
+                    this.server.send(socket, SocketOutMsg.STUDENT_STOP_QUIZ, { quizId: msg.quizId })
+                }
+                for(let socket of this.teacherSockets) {
+                    this.server.send(socket, SocketOutMsg.TEACHER_STOP_QUIZ, { quizId: msg.quizId })
                 }
                 break
             }
             // STUDENT
-            case SocketOutMsg.ANSWER: {
+            case SocketInMsg.ANSWER: {
                 for(let socket of this.teacherSockets) {
                     this.server.send(socket, SocketOutMsg.ANSWER, msg)
                 }
                 break
             }
-            case SocketOutMsg.SIGNAL_STATE: {
+            case SocketInMsg.SIGNAL_STATE: {
                 for(let socket of this.teacherSockets) {
                     this.server.send(socket, SocketOutMsg.SIGNAL_STATE, msg)
                 }
@@ -114,13 +134,37 @@ export class ClassRoom extends IRoom {
                 maxscore: this.maxscore,
                 average: this.average
             })
+
+            for(let socket of this.studentSockets) {
+                this.server.send(socket, SocketOutMsg.STUDENT_STUDENT_COUNT, {
+                    studentPop: this.studentPop
+                })
+            }
+            for(let socket of this.teacherSockets) {
+                this.server.send(socket, SocketOutMsg.STUDENT_STUDENT_COUNT, {
+                    studentPop: this.studentPop
+                })
+            }
         }
     }
     socketLeave(socket: SocketInfo) {
         if(socket.isTeacher) {
-            this.studentSockets.splice(this.studentSockets.indexOf(socket), 1)
-        } else {
+            console.log("[teacher disconnect]")
             this.teacherSockets.splice(this.teacherSockets.indexOf(socket), 1)
+        } else {
+            console.log("[student disconnect]")
+            this.studentSockets.splice(this.studentSockets.indexOf(socket), 1)
+
+            for(let socket of this.studentSockets) {
+                this.server.send(socket, SocketOutMsg.STUDENT_STUDENT_COUNT, {
+                    studentPop: this.studentPop
+                })
+            }
+            for(let socket of this.teacherSockets) {
+                this.server.send(socket, SocketOutMsg.STUDENT_STUDENT_COUNT, {
+                    studentPop: this.studentPop
+                })
+            }
         }
     }
 }

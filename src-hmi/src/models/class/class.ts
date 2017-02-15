@@ -19,6 +19,8 @@ export interface Quiz {
 
     answer: any
     explanations: any
+
+    justification: string
 }
 
 // The choice of a user for a given quiz
@@ -50,7 +52,8 @@ export const AttentionEventType = {
 export const AttentionStateType = {
     PANIC: "PANIC",
     TOO_SLOW: "TOO_SLOW",
-    TOO_FAST: "TOO_FAST"
+    TOO_FAST: "TOO_FAST",
+    OK: "OK"
 }
 
 export interface AttentionEvent {

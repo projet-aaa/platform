@@ -5,22 +5,35 @@ import { DashboardState } from "../../store/dashboard/reducers/reducer"
 
 import { Quiz } from "../../models/class/class"
 
-import { launchQuiz } from "../../store/dashboard/actions/actions"
+import { startQuiz, showFeedback, stopQuiz } from "../../store/dashboard/actions/actions"
 
 function mapStateToProps(state: any): StateProps {
     let dash: DashboardState = state.dashboard
+
+    let stats = {},
+        quiz = dash.currQuizId && dash.quiz ? dash.quiz[dash.currQuizId] : null
+
+    if(quiz) {
+        Object.keys(dash.currQuizStat).forEach(function (key) {
+            var count = dash.currQuizStat [key]
+            stats[(quiz as Quiz).choices[key]] = count
+        })
+    }
+
     return { 
         tooFast: dash.tooFast,
         tooSlow: dash.tooSlow,
         panic: dash.panic,
-        currentQuiz: dash.currQuizId && dash.quiz ? dash.quiz[dash.currQuizId] : null,
-        quizStats: dash.currQuizStat, // choice for the current quiz => percentage who chose
+        currentQuiz: quiz,
+        quizStats: stats, // choice for the current quiz => count who chose
         quizLaunchers: dash.quizLauncher ? dash.quizLauncher : []
     }
 }
 function mapDispatchToProps(dispatch): ActionProps {
     return {
-        launchQuiz: (quizId) => dispatch(launchQuiz(quizId))
+        launchQuiz: (quizId) => dispatch(startQuiz(quizId)),
+        correction: () => dispatch(showFeedback()),
+        finish: () => dispatch(stopQuiz())
     }
 }
 

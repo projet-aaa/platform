@@ -30,7 +30,8 @@ export class SocketServer {
                 socket,
                 roomId: -1,
                 username: null,
-                isTeacher: false
+                isTeacher: false,
+                subscribed: false
             }
 
             if(this.log)
@@ -119,7 +120,8 @@ export class SocketServer {
             if(this.log) {
                 console.log(
                     '[room change] username=', socketInfo.username, 
-                    'new room type=', newRoom.type, 'id=', newRoom.id
+                    'old room=', this.getRoomInfo(oldRoom),
+                    'new room=', this.getRoomInfo(newRoom)
                 )
             }
 
@@ -131,8 +133,10 @@ export class SocketServer {
 
             socketInfo.roomId = roomId
 
-            newRoom.sockets.push(socketInfo)
-            newRoom.socketEnter(socketInfo)
+            if(newRoom) {
+                newRoom.sockets.push(socketInfo)
+                newRoom.socketEnter(socketInfo)
+            }
         }
     }
 
@@ -149,11 +153,13 @@ export class SocketServer {
         })
     }
     getRoomInfo(room: IRoom): RoomInfo {
-        return { 
-            id: room.id,
-            type: room.type,
-            popStudent: room.sockets.length,
-            popTeacher: room.sockets.length
+        if(room) {
+            return { 
+                id: room.id,
+                type: room.type,
+                popStudent: room.sockets.length,
+                popTeacher: room.sockets.length
+            }
         }
     }
 }

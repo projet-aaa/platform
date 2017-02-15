@@ -1,10 +1,12 @@
 import { handleActions } from "redux-actions"
 
-import { ActionTypes, APIActionTypes, WSInActionTypes } from '../actions/actionTypes'
+import { ActionTypes, APIActionTypes, WSInActionTypes, WSOutActionTypes } from '../actions/actionTypes'
 
-import { QuizInstanceState, Quiz } from '../../../models/class/class'
+import { QuizInstanceState, Quiz, AttentionStateType } from '../../../models/class/class'
 
 export interface RemoteState {
+    attentionState: string,
+
     sessionId: string
     quiz: Quiz[]
 
@@ -15,6 +17,7 @@ export interface RemoteState {
     currQuizState: string
     choice: any
     choiceId: string
+    sent: boolean
 
     score: number
     rank: number
@@ -25,6 +28,8 @@ export interface RemoteState {
 }
 
 let initialstate: RemoteState = {
+    attentionState: AttentionStateType.OK,
+
     sessionId: null,
     quiz: [],
 
@@ -35,6 +40,7 @@ let initialstate: RemoteState = {
     currQuizState: QuizInstanceState.OFF,
     choice: null,
     choiceId: null,
+    sent: false,
 
     score: 0,
     rank: 0,
@@ -71,6 +77,16 @@ const reducer = handleActions({
             return state
         }
     },
+    [WSOutActionTypes.ANSWER]: function(state: RemoteState, action: any): RemoteState {
+        return Object.assign({}, state, {
+            sent: true
+        })
+    },
+    [WSOutActionTypes.SIGNAL_STATE]: function(state: RemoteState, action: any): RemoteState {
+        return Object.assign({}, state, {
+            attentionState: action.payload.state
+        })
+    },
     [WSInActionTypes.START_QUIZ]: function(state: RemoteState, action: any): RemoteState {
         if(state.currQuizId != null) {
             return Object.assign({}, state, {
@@ -82,7 +98,8 @@ const reducer = handleActions({
                 currQuizState: QuizInstanceState.HEADING,
                 choice: null,
                 choiceId: null,
-                currConsulQuizInd: state.quizHistory.length - 1
+                currConsulQuizInd: state.quizHistory.length - 1,
+                sent: false
             })
         } else {
             return Object.assign({}, state, {
@@ -92,9 +109,15 @@ const reducer = handleActions({
                 currQuizId: action.payload.quiz.id,
                 currQuizState: QuizInstanceState.HEADING,
                 choice: null,
-                choiceId: null
+                choiceId: null,
+                sent: false
             })
         }
+    },
+    [WSInActionTypes.SHOW_FEEDBACK]: function(state: RemoteState, action: any): RemoteState {
+        return Object.assign({}, state, {
+            currQuizState: QuizInstanceState.FEEDBACK
+        })
     },
     [WSInActionTypes.STOP_QUIZ]: function(state: RemoteState, action: any): RemoteState {
         if(state.currQuizId != null) {        
@@ -138,6 +161,11 @@ const reducer = handleActions({
             highscore: action.payload.highScore,
             maxscore: action.payload.maxscore,
             average: action.payload.average
+        })
+    },
+    [WSInActionTypes.STUDENT_COUNT]: function(state: RemoteState, action: any): RemoteState {
+        return Object.assign({}, state, {
+            studentPop: action.payload.studentPop
         })
     },
     [APIActionTypes.ANSWER_SUCCESS]: function(state: RemoteState, action: any): RemoteState {

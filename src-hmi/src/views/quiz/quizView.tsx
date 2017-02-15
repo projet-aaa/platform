@@ -70,7 +70,9 @@ export class View extends React.Component<Props, any> {
             validate,
             nextQuiz,
             prevQuiz
-        } = this.props;
+        } = this.props
+
+        console.log("showCorrection:", showCorrection)
 
         // the render of the answers can be different according to the type of quiz (MCQ, open question)
         let answers = null
@@ -78,14 +80,14 @@ export class View extends React.Component<Props, any> {
             // the render is a list of AnswerView (radio button and answer text)
             case QuizType.MCQ: 
                 let createChooseAction = (i) => {
-                    return (choose==null) ? () => {  }: () => { choose(i) }
+                    return choose == null ? () => {  }: () => { choose(i) }
                 } 
                 var answerItems = quiz.choices.map((item, i) => {
                     return <AnswerView
-                        key={item}
-                        ind={i} 
-                        text={item} 
-                        chosen={ quizChoice.choice == i } 
+                        key={ i }
+                        ind={ i } 
+                        text={ item } 
+                        chosen={ quizChoice == i } 
                         rightAnswer={ i == quiz.answer }
                         explanation={ quiz.explanations[i] } 
                         showCorrection={ showCorrection }
@@ -119,11 +121,12 @@ export class View extends React.Component<Props, any> {
                 <h3 style={bigSizeText}>Enoncé : { quiz.question }</h3>
                 <br/>
                 { answers }
+                { showCorrection ? <h3> { quiz.justification } </h3> : ""}
             </div>
         )
         // if we are in answer mode, we have to display a vilidate button
         let validateButton = null;
-        if (!(choose==null)) {
+        if (choose) {
             validateButton = (
                 <div className="row">
                     <div className="col-lg-offset-8 col-lg-4">
@@ -136,7 +139,7 @@ export class View extends React.Component<Props, any> {
         }
         // if they are associated to an action, we have to display previous and next button
         let quizRender = null;
-        if (nextQuiz == null && prevQuiz == null) {
+        if (!nextQuiz && !prevQuiz) {
             quizRender = (
                 <div className="row">
                     <div className="col-lg-12">
@@ -144,7 +147,7 @@ export class View extends React.Component<Props, any> {
                     </div>
                 </div>
             )
-        } else if (nextQuiz == null) {
+        } else if (!nextQuiz) {
             quizRender = (
                 <div className="row">
                     <div className="col-lg-2">
@@ -155,7 +158,7 @@ export class View extends React.Component<Props, any> {
                     </div>
                 </div>
             )
-        } else if (prevQuiz == null) {
+        } else if (!prevQuiz) {
             quizRender = (
                 <div className="row">
                     <div className="col-lg-8 col-lg-offset-2">

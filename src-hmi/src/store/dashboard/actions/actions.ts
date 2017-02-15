@@ -3,17 +3,25 @@ import { createAPIActionCreator } from '../../../utils'
 import { Action } from '../../../utils'
 import { APIActionTypes, WSOutActionTypes } from './actionTypes'
 
-export function showFeedbackAction() {
+
+export function startQuiz(quizId) {
+    return {
+        type: WSOutActionTypes.START_QUIZ,
+        payload: { quizId }
+    }
+}
+
+export function showFeedback() {
     return {
         type: WSOutActionTypes.SHOW_FEEDBACK,
         payload: { }
     }
 }
 
-export function launchQuiz(quizId) {
+export function stopQuiz() {
     return {
-        type: WSOutActionTypes.START_QUIZ,
-        payload: { quizId }
+        type: WSOutActionTypes.STOP_QUIZ,
+        payload: { }
     }
 }
 
