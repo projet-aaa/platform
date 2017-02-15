@@ -63,7 +63,7 @@ export class View extends React.Component<Props, any> {
         
 
         return (
-            <div> 
+            <div className="col-lg-12"> 
                 <div className="row">
                     <div className="col-lg-12">
                         {threadItem ? threadItem : "Il n'y a pas de question pour ce chapitre"}
