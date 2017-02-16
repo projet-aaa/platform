@@ -17,6 +17,7 @@ export interface ActionProps {
     updateRooms()
     joinRoom(roomId: number)
     leaveRoom()
+    closeRoom()
     openRoom()
 }
 
@@ -33,6 +34,7 @@ export class View extends React.Component<Props, any> {
             updateRooms,
             joinRoom,
             leaveRoom,
+            closeRoom,
             openRoom
         } = this.props
 
@@ -45,6 +47,7 @@ export class View extends React.Component<Props, any> {
                 <div>
                     <button onClick={ updateRooms }>Update rooms</button>
                     <button onClick={ leaveRoom }>Leave room</button>
+                    { room != -1 && <button onClick={ closeRoom }>Close room</button> }
                     { isTeacher && <button onClick={ openRoom }>Open room</button> }
                     Current room: { room != -1 ? room : "none" }
                     <br/>

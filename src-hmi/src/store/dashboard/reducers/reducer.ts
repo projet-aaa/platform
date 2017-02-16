@@ -75,7 +75,11 @@ const reducer = handleActions({
             if(action.payload.quizHistory.indexOf(key) >= 0) {
                 state = 2
             } else if(action.payload.currQuizId == key) {
-                state = 1
+                if(action.payload.currQuizState == QuizInstanceState.FEEDBACK) {
+                    state = 3
+                } else {
+                    state = 1
+                }
             } else {
                 state = 0
             }
@@ -119,11 +123,15 @@ const reducer = handleActions({
                     }
                 } else if(launcher.quizId == state.currQuizId) {
                     let answerCount = state.currQuizStat[(state.quiz[state.currQuizId] as Quiz).answer]
+                    if(!answerCount) {
+                        answerCount = 0
+                    }
+
                     return {
                         quizId: launcher.quizId,
                         title: launcher.title,
                         state: 2,
-                        successRate: state.studentPop ? (answerCount / state.studentPop) * 100 : 0
+                        successRate: state.studentPop > 0 ? (answerCount / state.studentPop) * 100 : 0
                     }
                 } else {
                     return launcher
@@ -160,6 +168,10 @@ const reducer = handleActions({
             return Object.assign({}, state, {
                 quizLauncher: state.quizLauncher.map(launcher => {
                     let answerCount = state.currQuizStat[(state.quiz[state.currQuizId] as Quiz).answer]
+                    if(!answerCount) {
+                        answerCount = 0
+                    }
+                    
                     if(launcher.quizId == state.currQuizId) {
                         return Object.assign({}, launcher, {
                             state: 2,
@@ -185,13 +197,3 @@ const reducer = handleActions({
 }, initialState);
 
 export default { [name]: reducer }
-
-// panic: state.panic 
-//     + (action.payload.attentionType == AttentionEventType.PANIC_START ? 1 : 0)
-//     + (action.payload.attentionType == AttentionEventType.PANIC_END ? -1 : 0),
-// tooSlow: state.tooSlow 
-//     + (action.payload.attentionType == AttentionEventType.TOO_SLOW_START ? 1 : 0)
-//     + (action.payload.attentionType == AttentionEventType.TOO_SLOW_END ? -1 : 0),
-// tooFast: state.tooFast
-//     + (action.payload.attentionType == AttentionEventType.TOO_FAST_START ? 1 : 0)
-//     + (action.payload.attentionType == AttentionEventType.TOO_FAST_END ? -1 : 0),

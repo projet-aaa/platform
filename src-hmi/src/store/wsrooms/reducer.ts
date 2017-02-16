@@ -7,12 +7,12 @@ import { RoomInfo } from '../../models/wsServer/server'
 
 interface WSRoomState {
     rooms: RoomInfo[]
-    currentRoom: RoomInfo
+    currentRoom: number
 }
 
 let initialState: WSRoomState = {
     rooms: [],
-    currentRoom: null
+    currentRoom: -1
 }
 
 const name = "wsserver"
@@ -29,7 +29,7 @@ const reducer = handleActions({
     },
     [InMsgType.LEAVE_ROOM_RES]: function(state: WSRoomState, action: any): WSRoomState {
         return Object.assign({}, state, {
-            currentRoom: null
+            currentRoom: -1
         })
     },
     [InMsgType.ROOM_OPENED]: function(state: WSRoomState, action: any): WSRoomState {
@@ -41,7 +41,8 @@ const reducer = handleActions({
         return Object.assign({}, state, {
             rooms: state.rooms.filter(room => {
                 action.payload.roomId != room.id
-            })
+            }),
+            currentRoom: state.currentRoom == action.payload.roomId ? -1 : state.currentRoom
         })
     }
 }, initialState);

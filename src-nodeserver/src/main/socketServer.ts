@@ -102,14 +102,16 @@ export class SocketServer {
     closeRoom(roomId: number) {
         let room = this.rooms[roomId]
 
-        if(this.log)
-            console.log('[close room] type=', room.type, ' id=', room.id)
+        if(room) {
+            if(this.log)
+                console.log('[close room] type=', room.type, ' id=', room.id)
 
-        for(let socket of room.sockets) {
-            this.changeSocketRoom(socket, -1)
+            for(let socket of room.sockets) {
+                this.changeSocketRoom(socket, -1)
+            }
+
+            this.rooms.splice(this.rooms.indexOf(room), 1)
         }
-
-        this.rooms[roomId] = null
     }
 
     changeSocketRoom(socketInfo: SocketInfo, roomId: number) {
@@ -148,7 +150,7 @@ export class SocketServer {
     }
 
     getRooms(): RoomInfo[] {
-        return this.rooms.map((room) => {
+        return this.rooms.filter(room => { return room }).map((room) => {
             return this.getRoomInfo(room)
         })
     }

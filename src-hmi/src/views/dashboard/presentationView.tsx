@@ -84,7 +84,7 @@ export class View extends React.Component<Props, any> {
         if (!showCorrection) {
             res = (
                 <div className="page-content">
-                    { quizRender ? quizRender : "En attente d'un quiz" }
+                    { quizRender ? quizRender : <h1>En attente d'un quiz</h1> }
                 </div>
             )
         } else {
