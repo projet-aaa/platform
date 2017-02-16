@@ -38,7 +38,7 @@ class Test
     private $live;
 
     /**
-     * @ORM\OneToMany(targetEntity="Question", mappedBy="test", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="test", cascade={"persist","remove"})
      */
     private $questions;
 

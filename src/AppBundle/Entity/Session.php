@@ -52,21 +52,21 @@ class Session
     /**
      * @var ArrayCollection[Subject] Documents linked to that session
      *
-     * @ORM\OneToMany(targetEntity="Subject", mappedBy="session")
+     * @ORM\OneToMany(targetEntity="Subject", mappedBy="session", cascade={"remove"})
      */
     private $subjects;
 
     /**
      * @var ArrayCollection[Thread]  All the threads related to that session.
      *
-     * @ORM\OneToMany(targetEntity="Thread", mappedBy="session")
+     * @ORM\OneToMany(targetEntity="Thread", mappedBy="session", cascade={"remove"})
      */
     private $threads;
 
     /**
      * @var ArrayCollection[Test] All the tests related to that session
      *
-     * @ORM\OneToMany(targetEntity="Test", mappedBy="session")
+     * @ORM\OneToMany(targetEntity="Test", mappedBy="session", cascade={"remove"})
      */
     private $tests;
 

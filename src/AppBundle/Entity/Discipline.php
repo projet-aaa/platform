@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ApiResource
  * @ORM\Entity
  * @UniqueEntity("name")
+ * @UniqueEntity("gitUrl")
  */
 class Discipline
 {
@@ -39,7 +40,7 @@ class Discipline
     private $gitKey;
 
     /**
-     * @ORM\OneToMany(targetEntity="Session", mappedBy="discipline")
+     * @ORM\OneToMany(targetEntity="Session", mappedBy="discipline", cascade={"remove"})
      */
     private $sessions;
 

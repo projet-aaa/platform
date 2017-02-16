@@ -38,7 +38,7 @@ class McqChoice
     /**
      * @var McqAnswer The list of McqAnswer that chose that answer
      *
-     * @ORM\OneToMany(targetEntity="McqAnswer", mappedBy="mcqChoice")
+     * @ORM\OneToMany(targetEntity="McqAnswer", mappedBy="mcqChoice", cascade={"remove"})
      */
     private $mcqAnswer;
 
