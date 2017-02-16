@@ -88,7 +88,7 @@ const reducer = handleActions({
         })
     },
     [WSInActionTypes.START_QUIZ]: function(state: RemoteState, action: any): RemoteState {
-        if(state.currQuizId != null) {
+        if(state.currQuizId) {
             return Object.assign({}, state, {
                 quiz: Object.assign({}, state.quiz, {
                     [action.payload.quiz.id]: action.payload.quiz

@@ -38,7 +38,9 @@ function mapStateToProps(state: any): any {
         rank: remote.rank,
         population: remote.studentPop,
         highscore: remote.highscore,
-        average: remote.average
+        average: remote.average,
+
+        state: remote.attentionState
     }
 }
 
@@ -80,7 +82,7 @@ function mergeProps(stateProps, dispatchProps, ownProps): Props {
     return Object.assign({}, stateProps, dispatchProps, ownProps, {
         nextQuiz: stateProps.question ? null : dispatchProps.nextQuiz,
         prevQuiz: stateProps.question ? null : dispatchProps.prevQuiz,
-        choose: stateProps.sent || stateProps.showCorrection || stateProps.quizChoice
+        choose: stateProps.sent || stateProps.showCorrection
             ? null 
             : dispatchProps.choose,
         validateAnswer: () => {

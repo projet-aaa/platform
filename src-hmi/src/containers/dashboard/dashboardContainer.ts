@@ -21,9 +21,9 @@ function mapStateToProps(state: any): StateProps {
     }
 
     return { 
-        tooFast: dash.tooFast,
-        tooSlow: dash.tooSlow,
-        panic: dash.panic,
+        tooFast: dash.studentPop ? (dash.tooFast / dash.studentPop) * 100 : 0,
+        tooSlow: dash.studentPop ? (dash.tooSlow / dash.studentPop) * 100 : 0,
+        panic: dash.studentPop ? (dash.panic / dash.studentPop) * 100 : 0,
         currentQuiz: quiz,
         quizStats: stats, // choice for the current quiz => count who chose
         quizLaunchers: dash.quizLauncher ? dash.quizLauncher : []

@@ -72,8 +72,6 @@ export class View extends React.Component<Props, any> {
             prevQuiz
         } = this.props
 
-        console.log("showCorrection:", showCorrection)
-
         // the render of the answers can be different according to the type of quiz (MCQ, open question)
         let answers = null
         switch(quiz.type) {
