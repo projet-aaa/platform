@@ -12,6 +12,7 @@ use ApiPlatform\Core\EventListener\EventPriorities;
 use AppBundle\Entity\Discipline;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -65,8 +66,31 @@ final class DisciplineSubscriber implements EventSubscriberInterface
          * Duplicated in DisciplineAdmin
          */
         $rootDir = $this->container->get('kernel')->getRootDir();
-        if(!is_dir($rootDir.'/../var/git/'.$discipline->getId())) {
-            mkdir($rootDir . '/../var/git/' . $discipline->getId());
+        $fs = new Filesystem();
+        $path = $rootDir . '/../var/git/' . $discipline->getId();
+        if(!is_dir($path)) {
+            $fs->mkdir($path,0775);
+            $git_client = $this->container->get('app.git.client');
+            $git_client->create($path,$discipline->getGitUrl());
+        }
+    }
+
+    public function deleteDiscipline(GetResponseForControllerResultEvent $event)
+    {
+        $discipline = $event->getControllerResult();
+        $method = $event->getRequest()->getMethod();
+
+        if (!$discipline instanceof Discipline || Request::METHOD_DELETE !== $method) {
+            return;
+        }
+
+        /** Remove the associated folder in /var/git/id_discipline
+         * Duplicated in DisciplineAdmin
+         */
+        $rootDir = $this->container->get('kernel')->getRootDir();
+        $fs = new Filesystem();
+        if(is_dir($rootDir.'/../var/git/'.$discipline->getId())) {
+            $fs->remove($rootDir . '/../var/git/' . $discipline->getId());
         }
     }
 

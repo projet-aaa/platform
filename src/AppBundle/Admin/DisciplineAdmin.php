@@ -2,10 +2,12 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Service\Git;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -14,10 +16,13 @@ class DisciplineAdmin extends AbstractAdmin
 
     private $kernel;
 
-    public function __construct($code, $class, $baseControllerName, KernelInterface $kernel)
+    private $git_client;
+
+    public function __construct($code, $class, $baseControllerName, KernelInterface $kernel, Git $git)
     {
         parent::__construct($code, $class, $baseControllerName);
         $this->kernel = $kernel;
+        $this->git_client = $git;
     }
 
     // Fields to be shown on create/edit forms
@@ -50,8 +55,23 @@ class DisciplineAdmin extends AbstractAdmin
      */
     public function postPersist($discipline){
         $rootDir = $this->kernel->getRootDir();
-        if(!is_dir($rootDir.'/../var/git/'.$discipline->getId())) {
-            mkdir($rootDir . '/../var/git/' . $discipline->getId());
+        $fs = new Filesystem();
+        $path = $rootDir . '/../var/git/' . $discipline->getId();
+        if(!is_dir($path)) {
+            $fs->mkdir($path,0775);
+            $this->git_client->create($path,$discipline->getGitUrl());
+        }
+    }
+
+    /**
+     * @param mixed $discipline
+     * Duplicate the code from DisciplineSubscriber to remove the associated folder in var/git.
+     */
+    public function preRemove($discipline){
+        $rootDir = $this->kernel->getRootDir();
+        $fs = new Filesystem();
+        if(is_dir($rootDir.'/../var/git/'.$discipline->getId())) {
+            $fs->remove($rootDir . '/../var/git/' . $discipline->getId());
         }
     }
 }
