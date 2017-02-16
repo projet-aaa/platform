@@ -14,6 +14,8 @@ import { auth, authWS } from '../store/auth/actions'
 
 import { urlWS, chartColors } from '../models/consts'
 
+import { Quiz } from '../models/class/class'
+
 // -- ACTION CREATOR HELPERS
 export interface Action<T>{
 	type: string
@@ -80,6 +82,12 @@ export function getText(id: string): string {
     return (document.getElementById(id) as any).value
 }
 
+// Get value from a combobox with a certain id
+export function getCbValue(id: string): string {
+    var elt = (document.getElementById(id) as any)
+    return elt.options[elt.selectedIndex].value
+}
+
 // -- API ACTION CREATOR FACTORY
 export function createAPIActionCreator(
     endpointFactory:(obj: any) => string, method: string, action: string, success: string, failure: string) {
@@ -144,4 +152,44 @@ export function ddmmyyyy(date: Date): string {
   return (dd>9 ? '' : '0') + dd + '/' + 
             (mm>9 ? '' : '0') + mm + '/' +
             date.getFullYear()
-};
+}
+
+// modify the value of the ith element of an array
+export function modifyArrayElement(array: any[], index: number, value: any): any[] {
+    if (0<index && index<array.length) {
+        array[index] = value
+    }
+    return array
+}
+
+// get the quiz associated to the id given from a list of quiz
+export function getQuizFromList(quizs: Quiz[], id: number): Quiz {
+    let res = null
+    for (var i=0 ; i<quizs.length ; i++) {
+        if (quizs[i].id==id) {
+            res = quizs[i]
+            break
+        }
+    }
+    return res
+}
+
+// randomize an array
+export function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}

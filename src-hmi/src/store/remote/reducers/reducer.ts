@@ -29,7 +29,7 @@ let initialstate: RemoteState = {
     currConsulQuizInd: -1,
 
     currQuizId: -1,
-    currQuizState: QuizInstanceState.OFF,
+    currQuizState: QuizInstanceState.HEADING,
     choice: null,
 
     score: 0,
