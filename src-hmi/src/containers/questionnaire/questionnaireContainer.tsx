@@ -12,18 +12,17 @@ import { QuestionnaireState } from "../../store/questionnaire/reducers/reducer"
 
 function mapStateToProps(state: any): StateProps {
     let questionnaire: QuestionnaireState = state.questionnaire
-    console.log("map state to props")
     return {
         // all the quiz available for this session
         quizs: questionnaire.quizs,
         // the collection of quiz launched
         actualQuizs: questionnaire.actualQuizs,
-        // the index of the current quiz in the quiz collection "quizs"
+        // the index of the current quiz in the quiz collection "actualQuizs"
         quizIndex: questionnaire.quizIndex,
         // actual quiz
         currentQuiz: questionnaire.currentQuiz,
-        // the list of choice for each quiz
-        quizChoice: questionnaire.quizChoice,
+        // the list of choices for each quiz
+        quizChoices: questionnaire.quizChoices,
         // the mode of quiz consultation (answer or correction)
         quizMode: questionnaire.quizMode,
         // the user score
@@ -32,7 +31,6 @@ function mapStateToProps(state: any): StateProps {
 }
 
 function mapDispatchToProps(dispatch, state): ActionProps {
-    console.log("map dispatch to props")
     return {
         // Fires an action signaling that a quiz has been chosen
         // id is the id of the quiz chosen and mode is answer or correction

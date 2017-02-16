@@ -156,10 +156,11 @@ export function ddmmyyyy(date: Date): string {
 
 // modify the value of the ith element of an array
 export function modifyArrayElement(array: any[], index: number, value: any): any[] {
-    if (0<index && index<array.length) {
-        array[index] = value
+    let res = array.slice()
+    if (0<=index && index<array.length) {
+        res[index] = value
     }
-    return array
+    return res
 }
 
 // get the quiz associated to the id given from a list of quiz

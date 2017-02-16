@@ -15,18 +15,30 @@ export interface QuestionnaireState {
     quizIndex: number
     // actual quiz
     currentQuiz: Quiz
-    // the list of choice for each quiz
-    quizChoice: QuizLocalChoice[]
+    // the list of choices for each quiz
+    quizChoices: QuizLocalChoice[]
     // the mode of quiz consultation (answer or correction)
     quizMode: string
     // the user score
     score: number
 }
 
+// Initialize the array quizChoices
 function fillTabChoice(quizs: Quiz[]): QuizLocalChoice[] {
     let res = []
-    for(var i=0; i<quizs.length ; i++) {
-        res[i] = { quizId: quizs[i].id, choice: -1}
+    for(var i=0 ; i<quizs.length ; i++) {
+        res[quizs[i].id] = { quizId: quizs[i].id, choice: -1}
+    }
+    return res
+}
+
+// compute the score after each validate action
+function computeScore(actualQuizs: Quiz[], quizChoices: QuizLocalChoice[]): number {
+    let res = 0
+    for(var i=0 ; i<actualQuizs.length ; i++) {
+        if (quizChoices[actualQuizs[i].id].choice==actualQuizs[i].answer) {
+            res = res + 1
+        }
     }
     return res
 }
@@ -64,7 +76,7 @@ let initialstate: QuestionnaireState = {
     actualQuizs: [],
     quizIndex: -1,
     currentQuiz: null,
-    quizChoice: [
+    quizChoices: [
         {
             quizId: 0,
             choice: -1
@@ -85,55 +97,47 @@ let initialstate: QuestionnaireState = {
 const name = "questionnaire"
 const reducer = handleActions({
     [ActionTypes.CHOOSE]: function(state: QuestionnaireState, action: any): QuestionnaireState {
-        console.log("reducer choose")
         return Object.assign({}, state, {
-            quizChoice: modifyArrayElement(state.quizChoice,state.quizIndex, action.payload.choice)
+            quizChoices: modifyArrayElement(state.quizChoices,state.currentQuiz.id, { quizId: state.currentQuiz.id, choice: action.payload.choice})
         })
     },
     [ActionTypes.VALIDATE]: function(state: QuestionnaireState, action: any): QuestionnaireState {
-        console.log("reducer validate")
         let newIndex = state.quizIndex + 1
         // something is displayed when quizIndex=actualQuizs.length but actualQuizs[actualQuizs.length]
         // doesn't exist so we don't change currentQuiz in that case
-        let newCurrentQuizz = state.actualQuizs[state.quizIndex]
+        let newCurrentQuizz
         if (state.quizIndex!=state.actualQuizs.length-1) {
             newCurrentQuizz = state.actualQuizs[newIndex]
+        } else {
+            newCurrentQuizz = state.actualQuizs[state.quizIndex]
         }
         return Object.assign({}, state, {
-            score: (state.quizChoice[state.currentQuiz.id].choice==state.currentQuiz.answer) ? state.score+1 : state.score,
+            score: computeScore(state.actualQuizs,state.quizChoices),
             quizIndex: newIndex,
             currentQuiz: newCurrentQuizz
         })
     },
     [ActionTypes.NEXT_CONSUL_QUIZ]: function(state: QuestionnaireState, action: any): QuestionnaireState {
-        console.log("reducer next")
-        let len = state.actualQuizs.length
-        if(len > 0 && state.quizIndex < len) {
-            let newIndex = state.quizIndex + 1
-            // something is displayed when quizIndex=actualQuizs.length but actualQuizs[actualQuizs.length]
-            // doesn't exist so we don't change currentQuiz in that case
-            let newCurrentQuizz = state.actualQuizs[state.quizIndex]
-            if (state.quizIndex!=state.actualQuizs.length-1) {
-                newCurrentQuizz = state.actualQuizs[newIndex]
-            }
-            return Object.assign({}, state, {
-                quizIndex: newIndex,
-                currentQuiz: newCurrentQuizz
-            })
+        let newIndex = state.quizIndex + 1
+        // something is displayed when quizIndex=actualQuizs.length but actualQuizs[actualQuizs.length]
+        // doesn't exist so we don't change currentQuiz in that case
+        let newCurrentQuizz
+        if (state.quizIndex!=state.actualQuizs.length-1) {
+            newCurrentQuizz = state.actualQuizs[newIndex]
         } else {
-            return state
+            newCurrentQuizz = state.actualQuizs[state.quizIndex]
         }
+        return Object.assign({}, state, {
+            quizIndex: newIndex,
+            currentQuiz: newCurrentQuizz
+        })
     },
     [ActionTypes.PREV_CONSUL_QUIZ]: function(state: QuestionnaireState, action: any): QuestionnaireState {
-        console.log("reducer prev")
-        if(state.actualQuizs.length > 0 && state.quizIndex > 0) {
+        if(state.actualQuizs.length > 1 && state.quizIndex > 0) {
             let newIndex = state.quizIndex - 1
+            let newCurrentQuizz = state.actualQuizs[newIndex]
             // something is displayed when quizIndex=actualQuizs.length but actualQuizs[actualQuizs.length]
             // doesn't exist so we don't change currentQuiz in that case
-            let newCurrentQuizz = state.actualQuizs[state.quizIndex]
-            if (state.quizIndex!=state.actualQuizs.length) {
-                newCurrentQuizz = state.actualQuizs[newIndex]
-            }
             return Object.assign({}, state, {
                 quizIndex: newIndex,
                 currentQuiz: newCurrentQuizz
@@ -158,18 +162,19 @@ const reducer = handleActions({
             currentQuiz: newQuiz,
             quizMode: action.payload.mode,
             score: 0,
-            quizChoice: fillTabChoice([newQuiz])
+            quizChoices: fillTabChoice([newQuiz])
         })
     },
     [ActionTypes.CHOOSE_COMBOQUIZ]: function(state: QuestionnaireState, action: any): QuestionnaireState {
-        let newActualQuizs = shuffle(state.quizs)
+        let aux = state.quizs.slice()
+        let newActualQuizs = shuffle(aux)
         return Object.assign({}, state, {
             actualQuizs: newActualQuizs,
             quizIndex: 0,
             currentQuiz: newActualQuizs[0],
             quizMode: "answer",
             score: 0,
-            quizChoice: fillTabChoice(newActualQuizs)
+            quizChoices: fillTabChoice(newActualQuizs)
         })
     }
 }, initialstate);

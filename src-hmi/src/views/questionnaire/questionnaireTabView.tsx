@@ -16,12 +16,12 @@ export interface StateProps {
     quizs: Quiz[]
     // the collection of quiz launched
     actualQuizs: Quiz[]
-    // the index of the current quiz in the quiz collection "quizs"
+    // the index of the current quiz in the quiz collection "actualQuizs"
     quizIndex: number
     // actual quiz
     currentQuiz: Quiz
-    // the list of choice for each quiz
-    quizChoice: QuizLocalChoice[]
+    // the list of choices for each quiz
+    quizChoices: QuizLocalChoice[]
     // the mode of quiz consultation (answer or correction)
     quizMode: string
     // the user score
@@ -60,7 +60,7 @@ export class View extends React.Component<Props, any> {
             actualQuizs,
             quizIndex,
             currentQuiz,
-            quizChoice,
+            quizChoices,
             quizMode,
             score,
             chooseQuiz,
@@ -105,7 +105,7 @@ export class View extends React.Component<Props, any> {
                 <div className="col-lg-2">
                     <button className="btn btn-primary" onClick={ () => chooseQuiz(parseInt(getCbValue("quizComboBox")),getCbValue("modeComboBox")) }>Choisir</button>
                 </div>
-                <div className="col-lg-2-offset-4">
+                <div className="col-lg-offset-4 col-lg-2">
                     <button className="btn btn-primary" onClick={ () => chooseComboQuiz() }>Combo Quiz</button>
                 </div>
             </div>
@@ -116,13 +116,13 @@ export class View extends React.Component<Props, any> {
             quizRender = (
                 <QuizView
                     quiz={ currentQuiz }
-                    quizChoice={ (quizMode=="answer") ? {quizId: currentQuiz.id, choice: -1} : quizChoice[currentQuiz.id] }
+                    quizChoice={ quizChoices[currentQuiz.id] }
                     showCorrection={ (quizMode=="correction") }
                     forceUnfold={ true }
-                    choose={ choose }
+                    choose={ (quizMode=="answer") ? choose : null }
                     validate={ validateAnswer }
-                    nextQuiz={ (actualQuizs.length==quizIndex) ? null : nextQuiz }
-                    prevQuiz={ (quizIndex==0) ? null : nextQuiz }
+                    nextQuiz={ (actualQuizs.length==quizIndex+1) ? null : nextQuiz }
+                    prevQuiz={ (quizIndex==0) ? null : prevQuiz }
                 />
             )
         }
@@ -130,12 +130,14 @@ export class View extends React.Component<Props, any> {
         // the quiz and the score if it's a combo quiz
         var mainRender = null
         if (quizIndex==actualQuizs.length) {
-            <div className="row">
-                <div className="col-lg-12">
-                    <h2 className="text-center">Score final : { score }/{ quizIndex }</h2>
-                    <button onClick={ () => seeCorrection }>Voir correction</button>
+            mainRender = (
+                <div className="row">
+                    <div className="col-lg-12 text-center">
+                        <h2>Score final : { score }/{ quizIndex }</h2>
+                        <button onClick={ seeCorrection }>Voir correction</button>
+                    </div>
                 </div>
-            </div>
+            )
         } else {
             mainRender = (
                 <div className="row">
