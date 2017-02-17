@@ -21,13 +21,24 @@ export interface QuestionnaireState {
     quizMode: string
     // the user score
     score: number
+    // for each quiz, true if the quiz has been validated
+    areValidated: boolean[]
 }
 
 // Initialize the array quizChoices
-function fillTabChoice(quizs: Quiz[]): QuizLocalChoice[] {
+function fillTabChoice(actualQuizs: Quiz[]): QuizLocalChoice[] {
     let res = []
-    for(var i=0 ; i<quizs.length ; i++) {
-        res[quizs[i].id] = { quizId: quizs[i].id, choice: -1}
+    for(var i=0 ; i<actualQuizs.length ; i++) {
+        res[actualQuizs[i].id] = { quizId: actualQuizs[i].id, choice: -1}
+    }
+    return res
+}
+
+// Initialize the array areValidated
+function fillTabValidated(actualQuizs: Quiz[]): QuizLocalChoice[] {
+    let res = []
+    for(var i=0 ; i<actualQuizs.length ; i++) {
+        res[actualQuizs[i].id] = false
     }
     return res
 }
@@ -91,14 +102,16 @@ let initialstate: QuestionnaireState = {
         }
     ],
     quizMode: null,
-    score: 0
+    score: 0,
+    areValidated: [false, false, false]
 }
 
 const name = "questionnaire"
 const reducer = handleActions({
     [ActionTypes.CHOOSE]: function(state: QuestionnaireState, action: any): QuestionnaireState {
         return Object.assign({}, state, {
-            quizChoices: modifyArrayElement(state.quizChoices,state.currentQuiz.id, { quizId: state.currentQuiz.id, choice: action.payload.choice})
+            quizChoices: modifyArrayElement(state.quizChoices,state.currentQuiz.id, { quizId: state.currentQuiz.id, choice: action.payload.choice}),
+            areValidated: modifyArrayElement(state.areValidated,state.currentQuiz.id, false)
         })
     },
     [ActionTypes.VALIDATE]: function(state: QuestionnaireState, action: any): QuestionnaireState {
@@ -114,7 +127,8 @@ const reducer = handleActions({
         return Object.assign({}, state, {
             score: computeScore(state.actualQuizs,state.quizChoices),
             quizIndex: newIndex,
-            currentQuiz: newCurrentQuizz
+            currentQuiz: newCurrentQuizz,
+            areValidated: modifyArrayElement(state.areValidated,state.currentQuiz.id, true)
         })
     },
     [ActionTypes.NEXT_CONSUL_QUIZ]: function(state: QuestionnaireState, action: any): QuestionnaireState {
@@ -127,20 +141,32 @@ const reducer = handleActions({
         } else {
             newCurrentQuizz = state.actualQuizs[state.quizIndex]
         }
+        // if the quiz hasn't been validate, we reset the choice
+        let newQuizChoice = state.quizChoices
+        if (!state.areValidated[state.currentQuiz.id]) {
+            newQuizChoice = modifyArrayElement(state.quizChoices,state.currentQuiz.id, { quizId: state.currentQuiz.id, choice: -1})
+        }
         return Object.assign({}, state, {
             quizIndex: newIndex,
-            currentQuiz: newCurrentQuizz
+            currentQuiz: newCurrentQuizz,
+            quizChoices: newQuizChoice
         })
     },
     [ActionTypes.PREV_CONSUL_QUIZ]: function(state: QuestionnaireState, action: any): QuestionnaireState {
         if(state.actualQuizs.length > 1 && state.quizIndex > 0) {
             let newIndex = state.quizIndex - 1
             let newCurrentQuizz = state.actualQuizs[newIndex]
+            // if the quiz hasn't been validate, we reset the choice
+            let newQuizChoice = state.quizChoices
+            if (!state.areValidated[state.currentQuiz.id]) {
+                newQuizChoice = modifyArrayElement(state.quizChoices,state.currentQuiz.id, { quizId: state.currentQuiz.id, choice: -1})
+            }
             // something is displayed when quizIndex=actualQuizs.length but actualQuizs[actualQuizs.length]
             // doesn't exist so we don't change currentQuiz in that case
             return Object.assign({}, state, {
                 quizIndex: newIndex,
-                currentQuiz: newCurrentQuizz
+                currentQuiz: newCurrentQuizz,
+                quizChoices: newQuizChoice
             })
         } else {
             return state
@@ -162,7 +188,8 @@ const reducer = handleActions({
             currentQuiz: newQuiz,
             quizMode: action.payload.mode,
             score: 0,
-            quizChoices: fillTabChoice([newQuiz])
+            quizChoices: fillTabChoice([newQuiz]),
+            areValidated: fillTabValidated([newQuiz])
         })
     },
     [ActionTypes.CHOOSE_COMBOQUIZ]: function(state: QuestionnaireState, action: any): QuestionnaireState {
@@ -174,7 +201,8 @@ const reducer = handleActions({
             currentQuiz: newActualQuizs[0],
             quizMode: "answer",
             score: 0,
-            quizChoices: fillTabChoice(newActualQuizs)
+            quizChoices: fillTabChoice(newActualQuizs),
+            areValidated: fillTabValidated(newActualQuizs)
         })
     }
 }, initialstate);
