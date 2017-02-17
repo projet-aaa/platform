@@ -33,13 +33,13 @@ export class View extends React.Component<any, any> {
         for (var i=0; i < names.length; i++) {
             if (names[i] == actualTabName) {
                 tabs.push(
-                    <li className="active">
+                    <li key={i} className="active">
                         <a>{ names[i] }</a>
                     </li>
                 )
             } else {
                 tabs.push(
-                    <li>
+                    <li key={i}>
                         <Link to={ urls[i] } >
                             { names[i] }
                         </Link>
@@ -52,7 +52,7 @@ export class View extends React.Component<any, any> {
         for (var i=0; i < children.length; i++) {
             if (names[i] == actualTabName) {
                 tabViews.push(
-                    <div id={ names[i] } className="tab-pane fade in active">
+                    <div key={i} id={ names[i] } className="tab-pane fade in active">
                         <div className="row">
                             { children[i] }
                         </div>
@@ -60,7 +60,7 @@ export class View extends React.Component<any, any> {
                 )
             } else {
                 tabViews.push(
-                    <div id={ names[i] } className="tab-pane fade">
+                    <div key={i} id={ names[i] } className="tab-pane fade">
                         <div className="row">
                             { children[i] }
                         </div>

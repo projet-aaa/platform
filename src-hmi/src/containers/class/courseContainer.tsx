@@ -13,7 +13,6 @@ import StatFeedbackContainer from '../../containers/class/statFeedbackContainer'
 import { AuthState } from "../../store/auth/reducer"
 
 function mapStateToProps(state: any, ownProps: any): any {
-    console.log(ownProps)
     let authState: AuthState = state.auth
     return { 
         isTeacher: authState.isTeacher

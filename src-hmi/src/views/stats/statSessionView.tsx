@@ -24,7 +24,7 @@ export class View extends React.Component<Props, any> {
         } = this.props
 
         return (
-            <div className="page-content">
+            <div className="col-lg-12">
                 <h2>Session en cours: </h2>
                 <SessionItemsView sessions={ sessions } choose={ choose }/>
             </div>
