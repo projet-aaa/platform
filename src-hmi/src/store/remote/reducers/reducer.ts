@@ -38,6 +38,7 @@ let initialstate: RemoteState = {
 
     currQuizId: null,
     currQuizState: QuizInstanceState.OFF,
+    
     choice: null,
     choiceId: null,
     sent: false,

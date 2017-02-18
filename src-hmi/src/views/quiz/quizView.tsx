@@ -149,7 +149,7 @@ export class View extends React.Component<Props, any> {
             quizRender = (
                 <div className="row">
                     <div className="col-lg-2">
-                        <button className="btn btn-primary covering-size">Précédent</button>
+                        <button className="btn btn-primary covering-size" onClick={ prevQuiz }>Précédent</button>
                     </div>
                     <div className="col-lg-8">
                         { questionRender }
@@ -163,7 +163,7 @@ export class View extends React.Component<Props, any> {
                         { questionRender }
                     </div>
                     <div className="col-lg-2">
-                        <button className="btn btn-primary covering-size">Suivant</button>
+                        <button className="btn btn-primary covering-size" onClick={ nextQuiz }>Suivant</button>
                     </div>
                 </div>
             )
@@ -171,13 +171,13 @@ export class View extends React.Component<Props, any> {
             quizRender = (
                 <div className="row">
                     <div className="col-lg-2">
-                        <button className="btn btn-primary covering-size">Précédent</button>
+                        <button className="btn btn-primary covering-size" onClick={ prevQuiz }>Précédent</button>
                     </div>
                     <div className="col-lg-8">
                         { questionRender }
                     </div>
                     <div className="col-lg-2">
-                        <button className="btn btn-primary covering-size">Suivant</button>
+                        <button className="btn btn-primary covering-size" onClick={ nextQuiz }>Suivant</button>
                     </div>
                 </div>
             )
