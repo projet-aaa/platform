@@ -16,7 +16,7 @@ export interface StateProps {
 }
 
 export interface ActionProps { 
-    chooseQuiz(quizId: number)
+    chooseQuiz(quizId: string)
     gotoFeedback()
     gotoSession()
 }

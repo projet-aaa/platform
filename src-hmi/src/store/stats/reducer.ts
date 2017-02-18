@@ -21,7 +21,7 @@ export interface StatState {
     quiz: Quiz[]
     quizChoices: any[]
 
-    currentQuizId: number
+    currentQuizId: string
 
     sessionIds: number[]
 }
@@ -46,21 +46,25 @@ let initialState: StatState = {
 
     quiz: [
         {
-            id: 0,
+            id: "0",
             type: QuizType.MCQ,
             title: "La question à mille rouble",
             question: "Est ce que je ok?",
             choices: ["peut être", "mr l'arbitre", "oui", "D"],
+            choiceIds: ["0", "1", "2"],
             explanations: ["peut-être que c'est faux", "aux chiottes l'arbitre", "NON !!!!!!!!!", "Voilà !"],
-            answer: 3
+            answer: 3,
+            justification: "test"
         }, {
-            id: 1,
+            id: "1",
             type: QuizType.MCQ,
             title: "La question facile",
             question: "Est ce que je ok?",
             choices: ["peut être", "mr l'arbitre", "oui", "D"],
+            choiceIds: ["0", "1", "2"],
             explanations: ["peut-être que c'est faux", "aux chiottes l'arbitre", "NON !!!!!!!!!", "Voilà !"],
-            answer: 3
+            answer: 3,
+            justification: "test"
         }
     ],
     quizChoices: [
@@ -69,7 +73,7 @@ let initialState: StatState = {
             "mr l'arbitre": 10    
         }
     ],
-    currentQuizId: 0,
+    currentQuizId: "0",
 
     sessionIds: [
         0, 1

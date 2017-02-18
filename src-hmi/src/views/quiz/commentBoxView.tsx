@@ -11,7 +11,7 @@ import * as MediaQuery from "react-responsive"
 import { getText } from '../../utils'
 
 export interface StateProps {
-
+    
 }
 
 export interface ActionProps {

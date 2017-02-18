@@ -29,7 +29,9 @@ export interface StateProps {
 }
 
 export interface ActionProps {
-    launchQuiz(quizId: number)
+    launchQuiz(quizId: string)
+    correction()
+    finish()
 }
 
 // style for ul tag
@@ -49,7 +51,9 @@ export class View extends React.Component<Props, any> {
             currentQuiz,
             quizStats,
             quizLaunchers,
-            launchQuiz
+            launchQuiz,
+            correction,
+            finish
         } = this.props
 
         var quizInfoItem = quizLaunchers.map((item) => {
@@ -59,7 +63,14 @@ export class View extends React.Component<Props, any> {
                 title={ item.title }
                 state={ item.state }
                 successRate={ item.successRate }
-                launch= { () => launchQuiz(item.quizId) }
+                launch= { () => {
+                    switch(item.state) {
+                        case 0: launchQuiz(item.quizId); break
+                        case 1: correction(); break
+                        case 2: break
+                        case 3: finish(); break
+                    }
+                }}
             />
         })
 

@@ -26,3 +26,5 @@
 /src/AppBundle/Resources/views/
 !/src/AppBundle/Resources/views/Default/
 /src-hmi/src/.vscode/
+/srcnodeserver
+/srchmi

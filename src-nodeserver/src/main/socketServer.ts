@@ -2,6 +2,7 @@ import { IMainRoom, IRoom } from './iroom'
 import { SocketInfo, RoomInfo, RoomType } from '../models/rooms'
 
 import { MainRoom } from '../rooms/mainRoom'
+import { ClassRoom } from '../rooms/classRoom'
 
 export class SocketServer {
 
@@ -15,6 +16,7 @@ export class SocketServer {
     log: boolean
 
     constructor(io, redis, log) {
+        console.log("v1")
         this.io = io
         this.redis = redis
         this.rooms = []
@@ -28,7 +30,8 @@ export class SocketServer {
                 socket,
                 roomId: -1,
                 username: null,
-                isTeacher: false
+                isTeacher: false,
+                subscribed: false
             }
 
             if(this.log)
@@ -76,17 +79,22 @@ export class SocketServer {
             if(this.log)
                 console.log('[redis msg] ', data)
             // TODO parse data and send it to the right room
+            
         })
     }
 
-    createRoom(type: number): number {
+    createRoom(type: string): number {
         let id = this.nextId++,
-            room = null
+            room: IRoom = null
 
         if(this.log)
             console.log('[create room] type=', type, ' id=', id)
-            
-        room.init(this)
+
+        switch(type) {
+            case RoomType.CLASS: room = new ClassRoom(this, id); break
+            default: room = new ClassRoom(this, id); break
+        }
+
         this.rooms[id] = room
 
         return id
@@ -94,14 +102,16 @@ export class SocketServer {
     closeRoom(roomId: number) {
         let room = this.rooms[roomId]
 
-        if(this.log)
-            console.log('[close room] type=', room.type, ' id=', room.id)
+        if(room) {
+            if(this.log)
+                console.log('[close room] type=', room.type, ' id=', room.id)
 
-        for(let socket of room.sockets) {
-            this.changeSocketRoom(socket, -1)
+            for(let socket of room.sockets) {
+                this.changeSocketRoom(socket, -1)
+            }
+
+            this.rooms.splice(this.rooms.indexOf(room), 1)
         }
-
-        this.rooms[roomId] = null
     }
 
     changeSocketRoom(socketInfo: SocketInfo, roomId: number) {
@@ -112,8 +122,8 @@ export class SocketServer {
             if(this.log) {
                 console.log(
                     '[room change] username=', socketInfo.username, 
-                    ' old room type=', oldRoom.type, ' id=', oldRoom.id, 
-                    ' new room type=', newRoom.type, ' id=', newRoom.id
+                    'old room=', this.getRoomInfo(oldRoom),
+                    'new room=', this.getRoomInfo(newRoom)
                 )
             }
 
@@ -125,8 +135,10 @@ export class SocketServer {
 
             socketInfo.roomId = roomId
 
-            newRoom.sockets.push(socketInfo)
-            newRoom.socketEnter(socketInfo)
+            if(newRoom) {
+                newRoom.sockets.push(socketInfo)
+                newRoom.socketEnter(socketInfo)
+            }
         }
     }
 
@@ -138,13 +150,18 @@ export class SocketServer {
     }
 
     getRooms(): RoomInfo[] {
-        return this.rooms.map((room) => {
+        return this.rooms.filter(room => { return room }).map((room) => {
+            return this.getRoomInfo(room)
+        })
+    }
+    getRoomInfo(room: IRoom): RoomInfo {
+        if(room) {
             return { 
                 id: room.id,
                 type: room.type,
                 popStudent: room.sockets.length,
                 popTeacher: room.sockets.length
             }
-        })
+        }
     }
 }

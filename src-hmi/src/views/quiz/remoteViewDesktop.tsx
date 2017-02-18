@@ -5,10 +5,10 @@ import { connect } from "react-redux";
 import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
-import {View as QuizView} from "../../views/quiz/quizView"
-import {View as ScoreView} from "../../views/quiz/scoreView"
-import {View as FeedbackView} from "../../views/quiz/feedbackView"
-import { View as CommentBoxView} from "./commentBoxView"
+import { View as QuizView } from "../../views/quiz/quizView"
+import { View as ScoreView } from "../../views/quiz/scoreView"
+import { View as FeedbackView } from "../../views/quiz/feedbackView"
+import { View as CommentBoxView } from "./commentBoxView"
 import { QuizType, Quiz, QuizLocalChoice } from "../../models/class/class"
 import { getText } from '../../utils'
 
@@ -34,12 +34,14 @@ export interface StateProps {
     highscore: number
     // the average of quiz
     average: number
+
+    state: string
 }
 export interface ActionProps {
     // Fires an action signaling that an answer has been chosen
-    choose(id: number, choice: any)
+    choose(choice: any)
     // Fires an action signaling that an answer has been validated
-    validateAnswer(quizId: number)
+    validateAnswer()
     // Fires an action signaling a comment has been sent
     sendComment(comment: string)
     // go to the next question
@@ -52,6 +54,7 @@ export interface ActionProps {
     signalSlow()
     // signal fast
     signalFast()
+    signalOk()
 }
 
 // style
@@ -80,19 +83,23 @@ export class View extends React.Component<Props, any> {
             population,
             highscore,
             average,
+            state,
             choose,
             sendComment,
             nextQuiz,
             prevQuiz,
             signalPanic,
             signalSlow,
-            signalFast
+            signalFast,
+            signalOk,
         } = this.props;
         
         // if there is a question we show the quiz, else we show the feedback buttons
         let left = question ?
-                    <QuizView quiz={ quiz } quizChoice={ quizChoice } choose={ choose } validate={ validateAnswer } showCorrection={ showCorrection } forceUnfold={ forceUnfold } nextQuiz={ nextQuiz } prevQuiz={ prevQuiz }/> :
-                    <FeedbackView signalPanic={ signalPanic } signalSlow={ signalSlow } signalFast={ signalFast }/>
+            <QuizView quiz={ quiz } quizChoice={ quizChoice } choose={ choose } validate={ validateAnswer } 
+                    showCorrection={ showCorrection } forceUnfold={ forceUnfold } nextQuiz={ nextQuiz } 
+                    prevQuiz={ prevQuiz }/> :
+            <FeedbackView state={ state } signalPanic={ signalPanic } signalSlow={ signalSlow } signalFast={ signalFast } signalOk={ signalOk }/>
         
         // the quiz or the buttons are on the left and the scores are on the right
         return (
@@ -100,9 +107,10 @@ export class View extends React.Component<Props, any> {
                 <div className="col-lg-8">
                     { left }
                 </div>
-                <div className="col-lg-4">>>>>>>> develop
+                <div className="col-lg-4">
                     <div className="row">
-                        <ScoreView score={ score } rank={ rank } population={ population } highScore={ highscore } average={ average }/>
+                        <ScoreView score={ score } rank={ rank } population={ population } 
+                            highScore={ highscore } average={ average }/>
                     </div>
                     <div className="row">
                         <CommentBoxView send={ sendComment }/>

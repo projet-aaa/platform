@@ -7,9 +7,20 @@ import { Quiz, QuizInstanceState, QuizLauncher, AttentionEventType } from "../..
 
 function mapStateToProps(state: any, prop): StateProps {
     let dash: DashboardState = state.dashboard
+
+    let stats = {},
+        quiz = dash.currQuizId && dash.quiz ? dash.quiz[dash.currQuizId] : null
+
+    if(quiz) {
+        Object.keys(dash.currQuizStat).forEach(function (key) {
+            var count = dash.currQuizStat [key]
+            stats[(quiz as Quiz).choices[key]] = count
+        })
+    }
+
     return { 
-        quiz: dash.quiz[dash.currQuizId],
-        stats: dash.currQuizStat,
+        quiz: quiz,
+        stats: stats,
         showCorrection: dash.currQuizState == QuizInstanceState.FEEDBACK
     }
 }

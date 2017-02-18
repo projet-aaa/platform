@@ -11,6 +11,7 @@ export interface SocketInfo {
     username: string
     isTeacher: boolean
     roomId: number
+    subscribed: boolean
 }
 
 export interface RoomInfo {

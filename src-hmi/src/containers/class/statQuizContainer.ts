@@ -11,7 +11,7 @@ function mapStateToProps(state: any, ownProps: any): StateProps {
 }
 function mapDispatchToProps(dispatch, ownProps): ActionProps {
     return {
-        chooseQuiz: (quizId: number) => console.log("Choose : " + quizId),
+        chooseQuiz: (quizId: string) => console.log("Choose : " + quizId),
         gotoFeedback: () => console.log("go to feedback"),
         gotoSession: () => console.log("go to sessions")
     }

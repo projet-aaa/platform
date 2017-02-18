@@ -38,7 +38,9 @@ export class View extends React.Component<Props, any> {
                 </div>
                 <div className="panel-body pan white-background"> 
                     <div className="pal">
-                        <chartjs.Pie data={ data } height={ 105 }/>                    
+                        { Object.keys(quizStats).length === 0 && quizStats.constructor === Object 
+                            ? <h1>En attente de réponse...</h1>
+                            : <chartjs.Pie data={ data } height={ 105 }/> }                   
                         { "Réponse correcte : " + correctChoice }
                     </div>
                 </div>

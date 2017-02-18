@@ -12,7 +12,7 @@ import * as io from 'socket.io-client'
 import authInfo from '../store/auth/reducer'
 import { auth, authWS } from '../store/auth/actions'
 
-import { urlWS, chartColors } from '../models/consts'
+import { urlWS, chartColors, apiRootURL } from '../models/consts'
 
 // -- ACTION CREATOR HELPERS
 export interface Action<T>{
@@ -45,14 +45,15 @@ export const storeFactory = (reducers: any[], connectWS: boolean, log: boolean) 
         applyMiddleware(...middlewares)
     );
 
-    (store as any).dispatch(auth('abeyet', 'abab'))
+    // MANUAL AUTHENTIFICATION
+    // (store as any).dispatch(auth('abeyet', 'abeyet'))
 
-    let i = setInterval(() => {
-        if(isAuthentified()) {
-            (store as any).dispatch(authWS(0, 'abeyet', false))
-            clearInterval(i)
-        }
-    }, 500)
+    // let i = setInterval(() => {
+    //     if(isAuthentified()) {
+    //         (store as any).dispatch(authWS(0, 'abeyet', false))
+    //         clearInterval(i)
+    //     }
+    // }, 500)
 
     return store
 }
@@ -82,11 +83,14 @@ export function getText(id: string): string {
 
 // -- API ACTION CREATOR FACTORY
 export function createAPIActionCreator(
-    endpointFactory:(obj: any) => string, method: string, action: string, success: string, failure: string) {
-    return (endpointInfo, body) => {
+    endpointFactory:(obj: any) => string, 
+    bodyFactory: (obj: any) => any, 
+    method: string, 
+    action: string, success: string, failure: string): (obj: any) => any {
+    return (info) => {
         let actionObj = {
             [CALL_API]: {
-                endpoint: endpointFactory(endpointInfo),
+                endpoint: apiRootURL + endpointFactory(info),
                 method: method,
                 types: [
                     action, 
@@ -96,9 +100,10 @@ export function createAPIActionCreator(
             }
         }
 
-        if(body) { 
-            (actionObj as any)[CALL_API].body = JSON.stringify(body) 
+        if(bodyFactory) { 
+            (actionObj as any)[CALL_API].body = JSON.stringify(bodyFactory(info)) 
         }
+
         if((document as any).token) { 
             (actionObj as any)[CALL_API].headers = {
                 'Authorization': 'Bearer ' + (document as any).token
