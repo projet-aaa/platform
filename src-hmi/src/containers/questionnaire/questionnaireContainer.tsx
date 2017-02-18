@@ -18,7 +18,7 @@ function mapStateToProps(state: any): StateProps {
         // the collection of quiz launched
         actualQuizs: questionnaire.actualQuizs,
         // the index of the current quiz in the quiz collection "actualQuizs"
-        quizIndex: questionnaire.quizIndex,
+        quizId: questionnaire.quizId,
         // actual quiz
         currentQuiz: questionnaire.currentQuiz,
         // the list of choices for each quiz

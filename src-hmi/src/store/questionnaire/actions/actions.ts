@@ -23,7 +23,7 @@ export function seeCorrectionAction() {
     return { type: ActionTypes.SEE_CORRECTION, payload: {} }
 }
 
-export function chooseQuizAction(quizId: number, mode: string) {
+export function chooseQuizAction(quizId: string, mode: string) {
     return { type: ActionTypes.CHOOSE_QUIZ, payload: { quizId, mode} }
 }
 

@@ -160,42 +160,27 @@ export function ddmmyyyy(date: Date): string {
 }
 
 // modify the value of the ith element of an array
-export function modifyArrayElement(array: any[], index: number, value: any): any[] {
+export function modifyArrayElement(array: any[], id: string, value: any): any[] {
     let res = array.slice()
-    if (0<=index && index<array.length) {
-        res[index] = value
-    }
-    return res
-}
-
-// get the quiz associated to the id given from a list of quiz
-export function getQuizFromList(quizs: Quiz[], id: number): Quiz {
-    let res = null
-    for (var i=0 ; i<quizs.length ; i++) {
-        if (quizs[i].id==id) {
-            res = quizs[i]
-            break
-        }
-    }
+    res[id] = value
     return res
 }
 
 // randomize an array
 export function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
+    var currentIndex = array.length, temporaryValue, randomIndex;
 
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
 
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
 
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
-
-  return array;
+    return array;
 }

@@ -4,7 +4,7 @@ import { handleActions } from "redux-actions"
 // INTERNAL IMPORTS
 import { ActionTypes } from '../actions/actionTypes'
 import { Quiz, QuizType, QuizLocalChoice } from '../../../models/class/class'
-import { modifyArrayElement, getQuizFromList, shuffle } from '../../../utils/index'
+import { modifyArrayElement, shuffle } from '../../../utils/index'
 
 export interface QuestionnaireState {
     // all the quiz available for this session
@@ -12,7 +12,7 @@ export interface QuestionnaireState {
     // the collection of quiz launched
     actualQuizs: Quiz[]
     // the id of the current quiz in the quiz collection "actualQuizs"
-    quizIndex: number
+    quizId: string
     // actual quiz
     currentQuiz: Quiz
     // the list of choices for each quiz
@@ -37,7 +37,7 @@ function fillTabChoice(actualQuizs: Quiz[]): QuizLocalChoice[] {
 // Initialize the array areValidated
 function fillTabValidated(actualQuizs: Quiz[]): QuizLocalChoice[] {
     let res = []
-    for(var i=0 ; i<actualQuizs.length ; i++) {
+    for(var i = 0; i<actualQuizs.length ; i++) {
         res[actualQuizs[i].id] = false
     }
     return res
@@ -57,47 +57,53 @@ function computeScore(actualQuizs: Quiz[], quizChoices: QuizLocalChoice[]): numb
 let initialstate: QuestionnaireState = {
     quizs: [
         {
-            id: 0,
+            id: "0",
             type: QuizType.MCQ,
             title: "Question compilation",
             question: "Parmi les langages suivants, lequel est compilé ?",
             choices: ["javascript", "C++", "python"],
+            choiceIds: ["0", "1", "2"],
             explanations: ["langage transformé en bytecode", "en effet", "interprété"],
+            justification: "ouaip",
             answer: 1 // index of the right answer (begins at 0)
         },
         {
-            id: 1,
+            id: "1",
             type: QuizType.MCQ,
             title: "Question compilation2",
             question: "Parmi les langages suivants, lequel est compilé 2?",
             choices: ["javascript", "C++", "python"],
+            choiceIds: ["0", "1", "2"],
             explanations: ["langage transformé en bytecode", "en effet", "interprété"],
+            justification: "ouaip",
             answer: 1 // index of the right answer (begins at 0)
         },
         {
-            id: 2,
+            id: "2",
             type: QuizType.MCQ,
             title: "Question compilation3",
             question: "Parmi les langages suivants, lequel est compilé 3?",
             choices: ["javascript", "C++", "python"],
+            choiceIds: ["0", "1", "2"],
             explanations: ["langage transformé en bytecode", "en effet", "interprété"],
+            justification: "ouaip",
             answer: 1 // index of the right answer (begins at 0)
         }
     ],
     actualQuizs: [],
-    quizIndex: -1,
+    quizId: null,
     currentQuiz: null,
     quizChoices: [
         {
-            quizId: 0,
+            quizId: "0",
             choice: -1
         },
         {
-            quizId: 1,
+            quizId: "1",
             choice: -1
         },
         {
-            quizId: 2,
+            quizId: "2",
             choice: -1
         }
     ],
@@ -110,67 +116,71 @@ const name = "questionnaire"
 const reducer = handleActions({
     [ActionTypes.CHOOSE]: function(state: QuestionnaireState, action: any): QuestionnaireState {
         return Object.assign({}, state, {
-            quizChoices: modifyArrayElement(state.quizChoices,state.currentQuiz.id, { quizId: state.currentQuiz.id, choice: action.payload.choice}),
-            areValidated: modifyArrayElement(state.areValidated,state.currentQuiz.id, false)
+            quizChoices: modifyArrayElement(state.quizChoices, state.currentQuiz.id, { quizId: state.currentQuiz.id, choice: action.payload.choice}),
+            areValidated: modifyArrayElement(state.areValidated, state.currentQuiz.id, false)
         })
     },
     [ActionTypes.VALIDATE]: function(state: QuestionnaireState, action: any): QuestionnaireState {
-        let newIndex = state.quizIndex + 1
-        // something is displayed when quizIndex=actualQuizs.length but actualQuizs[actualQuizs.length]
-        // doesn't exist so we don't change currentQuiz in that case
-        let newCurrentQuizz
-        if (state.quizIndex!=state.actualQuizs.length-1) {
-            newCurrentQuizz = state.actualQuizs[newIndex]
-        } else {
-            newCurrentQuizz = state.actualQuizs[state.quizIndex]
-        }
-        return Object.assign({}, state, {
-            score: computeScore(state.actualQuizs,state.quizChoices),
-            quizIndex: newIndex,
-            currentQuiz: newCurrentQuizz,
-            areValidated: modifyArrayElement(state.areValidated,state.currentQuiz.id, true)
-        })
+        // let newIndex = state.quizId + 1
+        // // something is displayed when quizIndex=actualQuizs.length but actualQuizs[actualQuizs.length]
+        // // doesn't exist so we don't change currentQuiz in that case
+        // let newCurrentQuizz
+        // if (state.quizId != state.actualQuizs.length-1) {
+        //     newCurrentQuizz = state.actualQuizs[newIndex]
+        // } else {
+        //     newCurrentQuizz = state.actualQuizs[state.quizId]
+        // }
+        // return Object.assign({}, state, {
+        //     score: computeScore(state.actualQuizs,state.quizChoices),
+        //     quizIndex: newIndex,
+        //     currentQuiz: newCurrentQuizz,
+        //     areValidated: modifyArrayElement(state.areValidated,state.currentQuiz.id, true)
+        // })
+        return state
     },
     [ActionTypes.NEXT_CONSUL_QUIZ]: function(state: QuestionnaireState, action: any): QuestionnaireState {
-        let newIndex = state.quizIndex + 1
-        // something is displayed when quizIndex=actualQuizs.length but actualQuizs[actualQuizs.length]
-        // doesn't exist so we don't change currentQuiz in that case
-        let newCurrentQuizz
-        if (state.quizIndex!=state.actualQuizs.length-1) {
-            newCurrentQuizz = state.actualQuizs[newIndex]
-        } else {
-            newCurrentQuizz = state.actualQuizs[state.quizIndex]
-        }
-        // if the quiz hasn't been validate, we reset the choice
-        let newQuizChoice = state.quizChoices
-        if (!state.areValidated[state.currentQuiz.id]) {
-            newQuizChoice = modifyArrayElement(state.quizChoices,state.currentQuiz.id, { quizId: state.currentQuiz.id, choice: -1})
-        }
-        return Object.assign({}, state, {
-            quizIndex: newIndex,
-            currentQuiz: newCurrentQuizz,
-            quizChoices: newQuizChoice
-        })
+        // let newIndex = state.quizId + 1
+        // // something is displayed when quizIndex=actualQuizs.length but actualQuizs[actualQuizs.length]
+        // // doesn't exist so we don't change currentQuiz in that case
+        // let newCurrentQuizz
+        // if (state.quizId!=state.actualQuizs.length-1) {
+        //     newCurrentQuizz = state.actualQuizs[newIndex]
+        // } else {
+        //     newCurrentQuizz = state.actualQuizs[state.quizId]
+        // }
+        // // if the quiz hasn't been validate, we reset the choice
+        // let newQuizChoice = state.quizChoices
+        // if (!state.areValidated[state.currentQuiz.id]) {
+        //     newQuizChoice = modifyArrayElement(state.quizChoices,state.currentQuiz.id, { quizId: state.currentQuiz.id, choice: -1})
+        // }
+        // return Object.assign({}, state, {
+        //     quizIndex: newIndex,
+        //     currentQuiz: newCurrentQuizz,
+        //     quizChoices: newQuizChoice
+        // })
+
+        return state
     },
     [ActionTypes.PREV_CONSUL_QUIZ]: function(state: QuestionnaireState, action: any): QuestionnaireState {
-        if(state.actualQuizs.length > 1 && state.quizIndex > 0) {
-            let newIndex = state.quizIndex - 1
-            let newCurrentQuizz = state.actualQuizs[newIndex]
-            // if the quiz hasn't been validate, we reset the choice
-            let newQuizChoice = state.quizChoices
-            if (!state.areValidated[state.currentQuiz.id]) {
-                newQuizChoice = modifyArrayElement(state.quizChoices,state.currentQuiz.id, { quizId: state.currentQuiz.id, choice: -1})
-            }
-            // something is displayed when quizIndex=actualQuizs.length but actualQuizs[actualQuizs.length]
-            // doesn't exist so we don't change currentQuiz in that case
-            return Object.assign({}, state, {
-                quizIndex: newIndex,
-                currentQuiz: newCurrentQuizz,
-                quizChoices: newQuizChoice
-            })
-        } else {
-            return state
-        }
+        // if(state.actualQuizs.length > 1 && state.quizId > 0) {
+        //     let newIndex = state.quizId - 1
+        //     let newCurrentQuizz = state.actualQuizs[newIndex]
+        //     // if the quiz hasn't been validate, we reset the choice
+        //     let newQuizChoice = state.quizChoices
+        //     if (!state.areValidated[state.currentQuiz.id]) {
+        //         newQuizChoice = modifyArrayElement(state.quizChoices,state.currentQuiz.id, { quizId: state.currentQuiz.id, choice: -1})
+        //     }
+        //     // something is displayed when quizIndex=actualQuizs.length but actualQuizs[actualQuizs.length]
+        //     // doesn't exist so we don't change currentQuiz in that case
+        //     return Object.assign({}, state, {
+        //         quizIndex: newIndex,
+        //         currentQuiz: newCurrentQuizz,
+        //         quizChoices: newQuizChoice
+        //     })
+        // } else {
+        //     return state
+        // }
+        return state
     },
     [ActionTypes.SEE_CORRECTION]: function(state: QuestionnaireState, action: any): QuestionnaireState {
         let newIndex = 0
@@ -181,7 +191,7 @@ const reducer = handleActions({
         })
     },
     [ActionTypes.CHOOSE_QUIZ]: function(state: QuestionnaireState, action: any): QuestionnaireState {
-        let newQuiz = getQuizFromList(state.quizs,action.payload.quizId)
+        let newQuiz = state.quizs[action.payload.quizId]
         return Object.assign({}, state, {
             actualQuizs: [newQuiz],
             quizIndex: 0,
