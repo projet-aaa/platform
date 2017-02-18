@@ -48,19 +48,12 @@ export const storeFactory = (reducers: any[], connectWS: boolean, log: boolean) 
     );
 
     // MANUAL AUTHENTIFICATION
-    // (store as any).dispatch(auth('abeyet', 'abeyet'))
-
-    // let i = setInterval(() => {
-    //     if(isAuthentified()) {
-    //         (store as any).dispatch(authWS(0, 'abeyet', false))
-    //         clearInterval(i)
-    //     }
-    // }, 500)
+    (store as any).dispatch(auth('abeyet', 'abeyet'))
 
     return store
 }
 
-// -- TEST HELPER
+// -- TEST HELPERS
 export function viewTestFactory<T>(View: any, props: T) {
     ReactDOM.render(React.createElement(View, props), document.getElementById('main'))
 }
@@ -78,6 +71,7 @@ export function apiTestFactory<T>(actionCreator, endpointInfo, body) {
     }, 100)
 }
 
+// -- HTML JS HELPERS
 // Get text from an element with a certain id
 export function getText(id: string): string {
     return (document.getElementById(id) as any).value
@@ -90,6 +84,10 @@ export function getCbValue(id: string): string {
 }
 
 // -- API ACTION CREATOR FACTORY
+let apiCallText = "API_CALL",
+    apiCallSuccessText = "API_CALL_SUCCESS",
+    apiCallFailureText = "API_CALL_FAILURE"
+let apiCallID = 0
 export function createAPIActionCreator(
     endpointFactory:(obj: any) => string, 
     bodyFactory: (obj: any) => any, 
@@ -119,6 +117,16 @@ export function createAPIActionCreator(
         }
 
         return actionObj
+    }
+}
+
+export const authAPIMiddleware = store => next => action => {
+    if(action.type.substring(0, apiCallSuccessText.length) == apiCallSuccessText) {
+        
+    } else if(action.type.substring(0, apiCallFailureText) == apiCallFailureText) {
+
+    } else {
+        next(action)
     }
 }
 
@@ -183,4 +191,22 @@ export function shuffle(array) {
     }
 
     return array;
+}
+
+// -- FETCH HELPER
+export function fetchOnUpdate (fn) {
+    return ((Component) => {
+        return class FetchOnUpdateDecorator extends React.Component<any, any> {
+
+            componentWillMount () {
+                fn(this.props)
+            }
+
+            render (): JSX.JSXElement {
+                return (
+                    <Component {...this.props} />
+                )
+            }
+        }
+    })
 }

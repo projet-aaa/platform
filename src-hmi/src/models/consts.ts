@@ -20,4 +20,4 @@ export const urlWS = domainWS + ":" + portWS
 
 export const appName = "AAA"
 
-export const apiRootURL = "localhost/app_dev.php/api"
+export const apiRootURL = "http://localhost/app_dev.php/api"
