@@ -145,28 +145,31 @@ export const authAPIMiddleware = store => next => action => {
         } else if(action.type.substring(0, apiCallFailureText.length) == apiCallFailureText) {
             let index = parseInt(action.type.substring(apiCallFailureText.length))
 
-            waitingAuthAPICalls.push(apiCalls[index].msg)
-            let authState = store.getState().auth,
-                interval = Date.now() - authState.lastAuthDate
-            if(authState.authentified && interval > 10000) {
-                store.dispatch(auth('abeyet', 'abeyet'))
-            }
-            if(!waitingAuth) {
-                waitingAuth = true
+            if(action.payload.status == 401) {
+                waitingAuthAPICalls.push(apiCalls[index].msg)
+                let authState = store.getState().auth,
+                    interval = Date.now() - authState.lastAuthDate
 
-                let i = setInterval(() => {
-                    if(isAuthentified()) {
-                        waitingAuth = false
-                        clearInterval(i)
-                        for(let apiMsg of waitingAuthAPICalls) {
-                            apiMsg[CALL_API].headers = {
-                                'Authorization': 'Bearer ' + (document as any).token
+                if(authState.authentified && interval > 10000 && !authState.authentifying) {
+                    store.dispatch(auth('abeyet', 'abeyet'))
+                }
+                if(!waitingAuth) {
+                    waitingAuth = true
+
+                    let i = setInterval(() => {
+                        if(isAuthentified()) {
+                            waitingAuth = false
+                            clearInterval(i)
+                            for(let apiMsg of waitingAuthAPICalls) {
+                                apiMsg[CALL_API].headers = {
+                                    'Authorization': 'Bearer ' + (document as any).token
+                                }
+                                store.dispatch(apiMsg)
                             }
-                            store.dispatch(apiMsg)
+                            waitingAuthAPICalls = []
                         }
-                        waitingAuthAPICalls = []
-                    }
-                }, 100)
+                    }, 100)
+                }
             }
             
             store.dispatch({
