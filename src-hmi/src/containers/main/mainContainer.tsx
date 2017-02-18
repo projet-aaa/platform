@@ -24,13 +24,13 @@ export default connect<StateProps, ActionProps, any>(
     mapDispatchToProps
 )(fetchOnUpdate(
     (props) => {
-        let i = setInterval(() => {
-            console.log("trying!")
-            if(isAuthentified()) {
-                console.log("authentified! ", (document as any).token)
-                props.fetchSessions()
-                clearInterval(i)
-            }
-        }, 100)
+        // let i = setInterval(() => {
+        //     console.log("trying!")
+        //     if(isAuthentified()) {
+                // console.log("authentified! ", (document as any).token)
+        props.fetchSessions()
+        //         clearInterval(i)
+        //     }
+        // }, 100)
     }
 ) (View))

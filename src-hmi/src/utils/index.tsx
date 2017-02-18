@@ -36,9 +36,10 @@ export const storeFactory = (reducers: any[], connectWS: boolean, log: boolean) 
 	reducer = combineReducers(reducers2)
 
     // GENERATING
-    let middlewares = [thunk]
+    let middlewares: any = [thunk]
 
     middlewares.push(apiMiddleware)
+    middlewares.push(authAPIMiddleware)
     if(socket) { middlewares.push(createSocketIoMiddleware(socket, 'SERVER/')) }
     if(log) { middlewares.push(createLogger()) }
 
@@ -84,24 +85,32 @@ export function getCbValue(id: string): string {
 }
 
 // -- API ACTION CREATOR FACTORY
-let apiCallText = "API_CALL",
+const apiCallText = "API_CALL",
     apiCallSuccessText = "API_CALL_SUCCESS",
     apiCallFailureText = "API_CALL_FAILURE"
-let apiCallID = 0
+
+let apiCallID = 0,
+    apiCalls = {},
+    waitingAuthAPICalls = [],
+    waitingAuth = false
+
 export function createAPIActionCreator(
     endpointFactory:(obj: any) => string, 
     bodyFactory: (obj: any) => any, 
     method: string, 
-    action: string, success: string, failure: string): (obj: any) => any {
+    action: string, success: string, failure: string
+): (obj: any) => any {
     return (info) => {
+        let id = apiCallID++
+
         let actionObj = {
             [CALL_API]: {
                 endpoint: apiRootURL + endpointFactory(info),
                 method: method,
                 types: [
                     action, 
-                    success, 
-                    failure
+                    apiCallSuccessText + id, 
+                    apiCallFailureText + id
                 ]
             }
         }
@@ -110,10 +119,14 @@ export function createAPIActionCreator(
             (actionObj as any)[CALL_API].body = JSON.stringify(bodyFactory(info)) 
         }
 
-        if((document as any).token) { 
-            (actionObj as any)[CALL_API].headers = {
-                'Authorization': 'Bearer ' + (document as any).token
-            }
+        (actionObj as any)[CALL_API].headers = {
+            'Authorization': 'Bearer ' + (document as any).token
+        }
+
+        apiCalls[id] = {
+            msg: actionObj,
+            successType: success,
+            failureType: failure
         }
 
         return actionObj
@@ -121,10 +134,46 @@ export function createAPIActionCreator(
 }
 
 export const authAPIMiddleware = store => next => action => {
-    if(action.type.substring(0, apiCallSuccessText.length) == apiCallSuccessText) {
-        
-    } else if(action.type.substring(0, apiCallFailureText) == apiCallFailureText) {
+    if(action.type && action.type.substring(0, apiCallText.length) == apiCallText) {
+        if(action.type.substring(0, apiCallSuccessText.length) == apiCallSuccessText) {
+            let index = parseInt(action.type.substring(apiCallSuccessText.length))
 
+            store.dispatch({
+                type: apiCalls[index].successType,
+                payload: action.payload
+            })
+        } else if(action.type.substring(0, apiCallFailureText.length) == apiCallFailureText) {
+            let index = parseInt(action.type.substring(apiCallFailureText.length))
+
+            waitingAuthAPICalls.push(apiCalls[index].msg)
+            let authState = store.getState().auth,
+                interval = Date.now() - authState.lastAuthDate
+            if(authState.authentified && interval > 10000) {
+                store.dispatch(auth('abeyet', 'abeyet'))
+            }
+            if(!waitingAuth) {
+                waitingAuth = true
+
+                let i = setInterval(() => {
+                    if(isAuthentified()) {
+                        waitingAuth = false
+                        clearInterval(i)
+                        for(let apiMsg of waitingAuthAPICalls) {
+                            apiMsg[CALL_API].headers = {
+                                'Authorization': 'Bearer ' + (document as any).token
+                            }
+                            store.dispatch(apiMsg)
+                        }
+                        waitingAuthAPICalls = []
+                    }
+                }, 100)
+            }
+            
+            store.dispatch({
+                type: apiCalls[index].failureType,
+                payload: action.payload
+            })
+        }
     } else {
         next(action)
     }
