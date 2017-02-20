@@ -13,6 +13,8 @@ export const SocketInMsg = {
 }
 
 export const SocketOutMsg = {
+    AUTHENTIFIED: "CLIENT/AUTHENTIFIED",
+
     GET_ROOMS_RES: "CLIENT/GET_ROOMS_RES",
     JOIN_ROOM_RES: "CLIENT/JOIN_ROOM_RES",
     LEAVE_ROOM_RES: "CLIENT/LEAVE_ROOM_RES",

@@ -1,34 +1,19 @@
-import { connect } from "react-redux";
+import { connect } from "react-redux"
 
-import { StateProps, ActionProps, View } from "../../views/dashboard/presentationView"
-import { DashboardState } from "../../store/dashboard/reducers/reducer"
+import createConnector from "../connection/connectionContainer"
 
-import { Quiz, QuizInstanceState, QuizLauncher, AttentionEventType } from "../../models/class/class"
+import Container from "./presLogicContainer"
 
-function mapStateToProps(state: any, prop): StateProps {
-    let dash: DashboardState = state.dashboard
-
-    let stats = {},
-        quiz = dash.currQuizId && dash.quiz ? dash.quiz[dash.currQuizId] : null
-
-    if(quiz) {
-        Object.keys(dash.currQuizStat).forEach(function (key) {
-            var count = dash.currQuizStat [key]
-            stats[(quiz as Quiz).choices[key]] = count
-        })
-    }
-
-    return { 
-        quiz: quiz,
-        stats: stats,
-        showCorrection: dash.currQuizState == QuizInstanceState.FEEDBACK
-    }
-}
-function mapDispatchToProps(dispatch): ActionProps {
+function mapStateToProps(state, ownProps) {
     return { }
 }
 
-export default connect<StateProps, ActionProps, any>(
-    mapStateToProps, 
-    mapDispatchToProps
-)(View)
+function mapDispatchToProps(dispatch, ownProps) {
+    return { }
+}
+
+function mergeProps(stateProps, dispatchProps, ownProps) {
+    return Object.assign(stateProps, dispatchProps, ownProps)
+}
+
+export default createConnector(Container, true)

@@ -9,7 +9,10 @@ export interface StateProps {
     rooms: RoomInfo[]
 }
 
-export interface ActionProps { }
+export interface ActionProps { 
+    gotoLive()
+    genURL(teacher: string)
+}
 
 type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
@@ -17,18 +20,20 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
-            rooms
-        } = this.props;
+            rooms,
+
+            genURL            
+        } = this.props
 
         return (
             <div>
                 <h2>Salles ouvertes</h2>
                 { rooms &&
-                    <ul>
+                    <ul className="list-group">
                     {rooms.map(room => {
-                        <li className="list-group-item"> 
-                            { room.teacher }
-                        </li>
+                        return <Link to={ genURL(room.teacher) } className="list-group-item"> 
+                            { genURL(room.teacher) } : { room.teacher }
+                        </Link>
                     })}
                     </ul>
                 }

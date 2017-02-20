@@ -13,6 +13,8 @@ export const OutMsgType = {
 }
 
 export const InMsgType = {
+    AUTHENTIFIED: "CLIENT/AUTHENTIFIED",
+    
     GET_ROOMS_RES: "CLIENT/GET_ROOMS_RES",
     JOIN_ROOM_RES: "CLIENT/JOIN_ROOM_RES",
     LEAVE_ROOM_RES: "CLIENT/LEAVE_ROOM_RES",
@@ -21,7 +23,7 @@ export const InMsgType = {
     ROOM_CLOSED: "CLIENT/ROOM_CLOSED"
 }
 
-export function getRooms(): Action<{}> {
+export function getRooms() {
     return {
         type: OutMsgType.GET_ROOMS,
         payload: {}
@@ -40,14 +42,14 @@ export function unsubscribe() {
     }
 }
 
-export function joinRoom(roomId: number): Action<{ roomId: number}> {
+export function joinRoom(roomId: number) {
     return {
         type: OutMsgType.JOIN_ROOM,
         payload: { roomId }
     }
 }
 
-export function leaveRoom(): Action<{}> {
+export function leaveRoom() {
     return {
         type: OutMsgType.LEAVE_ROOM,
         payload: {} 

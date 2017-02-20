@@ -151,7 +151,7 @@ export class SocketServer {
     }
 
     getRooms(): RoomInfo[] {
-        return this.rooms.filter(room => { return room }).map((room) => {
+        return this.rooms.filter(room => { return room }).map(room => {
             return this.getRoomInfo(room)
         })
     }

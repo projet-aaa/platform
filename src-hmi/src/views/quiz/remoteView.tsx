@@ -13,7 +13,9 @@ import { QuizType, Quiz } from "../../models/class/class"
 
 import { getText } from '../../utils'
 
-export interface StateProps { }
+export interface StateProps { 
+    isConnected: boolean
+}
 
 export interface ActionProps { }
 
@@ -23,13 +25,13 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
-
+            isConnected
         } = this.props;
         
         return (
             <div>
                 <MediaQuery query='(min-width: 1224px)'>
-                    <RemoteContainerDesktop/>
+                    <RemoteContainerDesktop isConnected={ isConnected }/>
                 </MediaQuery>
                 <MediaQuery query='(max-width: 1224px)'>
                     <RemoteContainerMobile/>

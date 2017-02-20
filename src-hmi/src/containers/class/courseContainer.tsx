@@ -30,6 +30,8 @@ export default connect<StateProps, ActionProps, any>(
 )((props, ctx) => {
     let prePath = "/" + props.UE + "/" + props.course
 
+    console.log("props: ", props)
+
     if(props.isTeacher) {
         return <TabsTemp 
         actualTabName={ props.name } 
@@ -39,23 +41,20 @@ export default connect<StateProps, ActionProps, any>(
                 prePath + "/statistique",
                 prePath + "/direct"] }>
             { props.name == "Cours" ? 
-                <CourseMainContainer courseId={ props.courseId }/> 
-                : <div>Shouldn't show</div> }
+                <CourseMainContainer {...props}/> : <div>Shouldn't show</div> }
             { props.name == "FAQ" ? 
-                <FAQContainer courseId={ props.courseId }/> 
-                : <div>Shouldn't show</div> }
+                <FAQContainer {...props}/> : <div>Shouldn't show</div> }
             { props.name == "Statistique" ? 
                 (props.statType == "QUIZ" ?
-                    <StatQuizContainer courseId={ props.courseId } /> :
+                    <StatQuizContainer {...props}/> :
                     (props.statType == "SESSION" ?
-                        <StatSessionContainer courseId={ props.courseId } /> :
-                        <StatFeedbackContainer courseId={ props.courseId } />
+                        <StatSessionContainer {...props}/> :
+                        <StatFeedbackContainer {...props}/>
                     )
                 )
                 : <div>Shouldn't show</div> }
             { props.name == "Direct" ?
-                <LiveContainer courseId={ props.courseId }/> 
-                : <div>Shouldn't show</div> }
+                <LiveContainer {...props}/> : <div>Shouldn't show</div> }
         </TabsTemp> 
     } else {
         return <TabsTemp 
@@ -65,14 +64,11 @@ export default connect<StateProps, ActionProps, any>(
                 prePath + "/faq",
                 prePath + "/direct"] }>
             { props.name == "Cours" ? 
-                <CourseMainContainer courseId={ props.courseId }/> 
-                : <div>Shouldn't show</div> }
+                <CourseMainContainer {...props}/> : <div>Shouldn't show</div> }
             { props.name == "FAQ" ? 
-                <FAQContainer courseId={ props.courseId }/> 
-                : <div>Shouldn't show</div> }
+                <FAQContainer {...props}/> : <div>Shouldn't show</div> }
             { props.name == "Direct" ? 
-                <LiveContainer courseId={ props.courseId }/> 
-                : <div>Shouldn't show</div> }
+                <LiveContainer {...props}/> : <div>Shouldn't show</div> }
         </TabsTemp> 
     }
 })

@@ -7,7 +7,7 @@ import {
 } from "../../store/wsrooms/actions"
 import { authWS } from "../../store/auth/actions"
 
-function mapStateToProps(state: any, ownProps: any): StateProps {
+function mapStateToProps(state: any, ownProps: any): any {
     let room = state.wsserver.currentRoom != -1 ? 
                 state.wsserver.rooms.find(r => r.id == state.wsserver.currentRoom) : null
     return {
@@ -15,7 +15,8 @@ function mapStateToProps(state: any, ownProps: any): StateProps {
             return { id: room.id, teacher: room.teacher }
         }),
         isTeacher: state.auth.isTeacher,
-        roomOwner: room != null ? room.teacher : null
+        roomOwner: room != null ? room.teacher : null,
+        roomId: room != null ? room.id : null
     }
 }
 function mapDispatchToProps(dispatch, ownProps): any {
@@ -37,7 +38,7 @@ function mapDispatchToProps(dispatch, ownProps): any {
 
 function mergeProps(stateProps, dispatchProps, ownProps): any {
     return Object.assign({}, stateProps, dispatchProps, ownProps, {
-        closeRoom: () => dispatchProps.closeRoom(stateProps.room)
+        closeRoom: () => dispatchProps.closeRoom(stateProps.roomId)
     })
 }
 

@@ -2,7 +2,7 @@ import { connect } from "react-redux"
 
 import createConnector from "../connection/connectionContainer"
 
-import Container from "./dashLogicContainer"
+import { View } from "../../views/quiz/remoteView"
 
 function mapStateToProps(state, ownProps) {
     return { }
@@ -16,4 +16,4 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     return Object.assign(stateProps, dispatchProps, ownProps)
 }
 
-export default createConnector(Container, true)
+export default createConnector(View, false)

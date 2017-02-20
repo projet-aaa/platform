@@ -13,6 +13,9 @@ import { QuizType, Quiz, QuizLocalChoice } from "../../models/class/class"
 import { getText } from '../../utils'
 
 export interface StateProps {
+    // has joined
+    isConnected: boolean
+    
     // a quiz
     quiz: Quiz
     // the current choice
@@ -72,11 +75,12 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
+            isConnected,
+
             quiz,
             quizChoice,
             showCorrection,
             forceUnfold,
-            validateAnswer,
             question,
             score,
             rank,
@@ -84,7 +88,9 @@ export class View extends React.Component<Props, any> {
             highscore,
             average,
             state,
+
             choose,
+            validateAnswer,
             sendComment,
             nextQuiz,
             prevQuiz,
@@ -103,19 +109,27 @@ export class View extends React.Component<Props, any> {
         
         // the quiz or the buttons are on the left and the scores are on the right
         return (
-            <div className="row">
-                <div className="col-lg-8">
-                    { left }
-                </div>
-                <div className="col-lg-4">
-                    <div className="row">
-                        <ScoreView score={ score } rank={ rank } population={ population } 
-                            highScore={ highscore } average={ average }/>
+            <div>
+            { isConnected ?
+                <div className="row">
+                    <div className="col-lg-8">
+                        { left }
                     </div>
-                    <div className="row">
-                        <CommentBoxView send={ sendComment }/>
+                    <div className="col-lg-4">
+                        <div className="row">
+                            <ScoreView score={ score } rank={ rank } population={ population } 
+                                highScore={ highscore } average={ average }/>
+                        </div>
+                        <div className="row">
+                            <CommentBoxView send={ sendComment }/>
+                        </div>
                     </div>
                 </div>
+                :
+                <div className="row">
+                    <h1>Connection au server...</h1>
+                </div>
+            }
             </div>
         );
     }
