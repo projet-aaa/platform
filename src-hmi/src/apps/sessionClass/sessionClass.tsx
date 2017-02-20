@@ -8,14 +8,13 @@ import { Provider } from 'react-redux';
 import remoteInfo from '../../store/remote/reducers/reducer'
 import dashboardInfo from '../../store/dashboard/reducers/reducer'
 import WSRoomInfo from '../../store/wsrooms/reducer'
-import sessionQuizInfo from '../../store/sessionQuiz/reducer'
 
 import SessionQuizContainer from '../../containers/sessionQuiz/sessionQuizContainer'
 
 import { storeFactory } from '../../utils'
 
 let store = storeFactory([
-    remoteInfo, dashboardInfo, WSRoomInfo, sessionQuizInfo
+    remoteInfo, dashboardInfo, WSRoomInfo
 ], true, true)
 
 let MainRouter =
