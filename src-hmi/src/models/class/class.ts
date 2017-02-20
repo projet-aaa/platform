@@ -23,6 +23,14 @@ export interface Quiz {
     justification: string
 }
 
+// a group of quiz
+export interface QuizGroup {
+    id: string
+    title: string
+    quizs: Quiz[]
+}
+
+
 // The choice of a user for a given quiz
 export interface QuizLocalChoice {
     quizId: string
