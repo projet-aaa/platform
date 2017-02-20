@@ -4,7 +4,7 @@ import { StateProps, ActionProps, View } from "../../views/class/liveView"
 
 function mapStateToProps(state: any, ownProps: any): StateProps {
     return { 
-        
+        rooms: []
     }
 }
 function mapDispatchToProps(dispatch, ownProps): ActionProps {

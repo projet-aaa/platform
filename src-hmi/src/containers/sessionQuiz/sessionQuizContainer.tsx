@@ -2,16 +2,20 @@ import { connect } from "react-redux";
 
 import { StateProps, ActionProps, View } from "../../views/sessionQuiz/sessionQuizView"
 
-import { getRooms, joinRoom, closeRoom, leaveRoom, openClassRoom, subscribe } from "../../store/wsrooms/actions"
+import { 
+    getRooms, joinRoom, closeRoom, leaveRoom, openClassRoom, subscribe 
+} from "../../store/wsrooms/actions"
 import { authWS } from "../../store/auth/actions"
-import { changeApp } from "../../store/sessionQuiz/actions"
 
 function mapStateToProps(state: any, ownProps: any): StateProps {
-    
+    let room = state.wsserver.currentRoom != -1 ? 
+                state.wsserver.rooms.find(r => r.id == state.wsserver.currentRoom) : null
     return {
-        rooms: state.wsserver.rooms.map((room) => room.id),
+        rooms: state.wsserver.rooms.map((room) => {
+            return { id: room.id, teacher: room.teacher }
+        }),
         isTeacher: state.auth.isTeacher,
-        room: state.wsserver.currentRoom
+        roomOwner: room != null ? room.teacher : null
     }
 }
 function mapDispatchToProps(dispatch, ownProps): any {

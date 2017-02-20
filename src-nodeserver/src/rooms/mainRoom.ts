@@ -1,4 +1,4 @@
-import { IMainRoom } from '../main/iroom'
+import { IMainRoom, IRoom } from '../main/iroom'
 import { SocketInfo, RoomInfo, RoomType } from '../models/rooms'
 
 import { SocketInMsg, SocketOutMsg } from '../models/main'
@@ -22,8 +22,14 @@ export class MainRoom extends IMainRoom {
                 break
             }
             case SocketInMsg.JOIN_ROOM: {
-                this.server.changeSocketRoom(socket, msg.roomId)
-                this.server.send(socket, SocketOutMsg.JOIN_ROOM_RES, { roomId: msg.roomId })
+                let id
+                if(!msg.auto) {
+                    id = msg.roomId
+                } else {
+                    id = this.server.rooms.find(room => room.teacher == socket.username).id
+                }
+                this.server.changeSocketRoom(socket, id)
+                this.server.send(socket, SocketOutMsg.JOIN_ROOM_RES, { roomId: id })
                 break
             }
             case SocketInMsg.LEAVE_ROOM: {
@@ -32,10 +38,12 @@ export class MainRoom extends IMainRoom {
                 break
             }
             case SocketInMsg.OPEN_ROOM: {
-                let room = this.server.getRoomInfo(this.server.rooms[this.server.createRoom(msg.type)])
+                let room = this.server.rooms[this.server.createRoom(msg.type, socket.username)],  
+                    roomInfo: IRoom = this.server.getRoomInfo(room)
+
                 for(let socket of this.sockets) {
                     if(socket.subscribed) {
-                        this.server.send(socket, SocketOutMsg.ROOM_OPENED, { room: room })
+                        this.server.send(socket, SocketOutMsg.ROOM_OPENED, { room: roomInfo })
                     }
                 }
                 break

@@ -8,9 +8,9 @@ import PresentationContainer from "../../containers/dashboard/presentationContai
 import RemoteContainer from "../../containers/quiz/remoteContainerDesktop"
 
 export interface StateProps { 
-    rooms: number[]
+    rooms: { id: number, teacher: string}[]
     isTeacher: boolean
-    room: number
+    roomOwner: string
 }
 
 export interface ActionProps { 
@@ -29,7 +29,7 @@ export class View extends React.Component<Props, any> {
         const {
             rooms,
             isTeacher,
-            room,
+            roomOwner,
 
             updateRooms,
             joinRoom,
@@ -47,12 +47,14 @@ export class View extends React.Component<Props, any> {
                 <div>
                     <button onClick={ updateRooms }>Update rooms</button>
                     <button onClick={ leaveRoom }>Leave room</button>
-                    { room != -1 && <button onClick={ closeRoom }>Close room</button> }
+                    { roomOwner != null && <button onClick={ closeRoom }>Close room</button> }
                     { isTeacher && <button onClick={ openRoom }>Open room</button> }
-                    Current room: { room != -1 ? room : "none" }
+                    Current room: { roomOwner != null ? roomOwner : "none" }
                     <br/>
                     { rooms.map(room => {
-                        return <button key={room} onClick={ () => joinRoom(room)}>Join Room { room }</button>
+                        return <button key={ room.id } onClick={ () => joinRoom(room.id) }>
+                            Join Room { room.teacher }
+                        </button>
                     })}
                 </div>
                 { remote && <RemoteContainer/>}

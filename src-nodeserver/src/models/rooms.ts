@@ -19,4 +19,5 @@ export interface RoomInfo {
     type: string
     popStudent: number
     popTeacher: number
+    teacher: string
 }

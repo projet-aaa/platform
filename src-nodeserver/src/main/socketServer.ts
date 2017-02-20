@@ -16,7 +16,6 @@ export class SocketServer {
     log: boolean
 
     constructor(io, redis, log) {
-        console.log("v1")
         this.io = io
         this.redis = redis
         this.rooms = []
@@ -83,7 +82,7 @@ export class SocketServer {
         })
     }
 
-    createRoom(type: string): number {
+    createRoom(type: string, teacher: string): number {
         let id = this.nextId++,
             room: IRoom = null
 
@@ -96,6 +95,8 @@ export class SocketServer {
         }
 
         this.rooms[id] = room
+        
+        room.teacher = teacher
 
         return id
     }
@@ -160,7 +161,8 @@ export class SocketServer {
                 id: room.id,
                 type: room.type,
                 popStudent: room.sockets.length,
-                popTeacher: room.sockets.length
+                popTeacher: room.sockets.length,
+                teacher: room.teacher
             }
         }
     }
