@@ -13,6 +13,7 @@ import sessionsInfo from '../store/sessions/reducer'
 import threadMessageInputInfo from '../store/faq/reducers/answerInput'
 import threadContentInfo from '../store/faq/reducers/threadContent'
 import questionInputInfo from '../store/faq/reducers/questionInput'
+import wsServerInfo from '../store/wsrooms/reducer'
 import questionnaireInfo from '../store/questionnaire/reducers/reducer'
 import mainInfo from '../store/main/reducers/reducer'
 
@@ -25,7 +26,7 @@ import { View as TabsTemp } from '../template/tabsTemp'
 import MainContainer from '../containers/main/mainContainer'
 import ProfileContainer from '../containers/profile/profileContainer'
 
-import { View as RemoteAppView } from '../views/quiz/remoteView'
+import RemoteContainer from '../containers/quiz/remoteContainer'
 import DashboardContainer from '../containers/dashboard/dashboardContainer'
 import PresentationContainer from '../containers/dashboard/presentationContainer'
 
@@ -46,7 +47,8 @@ let store = storeFactory([
     threadContentInfo,
     questionInputInfo,
     questionnaireInfo,
-    mainInfo
+    mainInfo,
+    wsServerInfo
 ], true, true)
 
 let MainRouter =
@@ -114,7 +116,7 @@ let MainRouter =
         </Route>
 
         <Route path="/:UE/:course/:profName/tele" component={ TopBandTemp }>
-            <IndexRoute component={ RemoteAppView }/>
+            <IndexRoute component={ RemoteContainer }/>
         </Route>
         <Route path="/:UE/:course/:profName/tb" component={ TopBandTemp }>
             <IndexRoute component={ DashboardContainer }/>

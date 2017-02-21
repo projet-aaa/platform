@@ -10,7 +10,7 @@ import createSocketIoMiddleware from 'redux-socket.io'
 import * as io from 'socket.io-client'
     
 import authInfo from '../store/auth/reducer'
-import { auth, authWS } from '../store/auth/actions'
+import { auth } from '../store/auth/actions'
 
 import { urlWS, chartColors, apiRootURL } from '../models/consts'
 
@@ -254,7 +254,7 @@ export function fetchOnUpdate (fn) {
                 fn(this.props)
             }
 
-            render (): JSX.JSXElement {
+            render () {
                 return (
                     <Component {...this.props} />
                 )

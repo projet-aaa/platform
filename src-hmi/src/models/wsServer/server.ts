@@ -11,3 +11,11 @@ export interface RoomInfo {
     popTeacher: number
     teacher: string
 }
+
+export const CONNECTION_STATE = {
+    NONE: 0,
+    AUTHENTIFYING: 1,
+    AUTHENTIFIED: 2,
+    JOINING: 3,
+    IN_ROOM: 4
+}

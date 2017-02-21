@@ -88,6 +88,8 @@ gulp.task('build', ['through-index', 'through-all', 'compile'], function () {
 })
 
 gulp.task('deploy', ['build'], function() {
+  gulp.src('src/dist/index.html.twig')
+    .pipe(gulp.dest('../src/AppBundle/Resources/views/Default/'))
   return gulp.src('dist/**/*')
     .pipe(gulp.dest('../web/webassets'))
 })

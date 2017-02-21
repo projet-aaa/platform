@@ -13,23 +13,27 @@ export class MainRoom extends IMainRoom {
                 socket.id = msg.id
                 socket.username = msg.username
                 socket.isTeacher = msg.isTeacher
+                this.server.send(socket, SocketOutMsg.AUTHENTIFIED, { })
                 break
             }
             case SocketInMsg.GET_ROOMS: {
                 this.server.send(socket, SocketOutMsg.GET_ROOMS_RES, {
-                    rooms: this.server.getRooms().slice(1)
+                    rooms: this.server.getRooms()
                 })
                 break
             }
             case SocketInMsg.JOIN_ROOM: {
                 let id
                 if(!msg.auto) {
-                    id = msg.roomId
+                    id = this.server.rooms[msg.roomId] ? msg.roomId : -2
                 } else {
-                    id = this.server.rooms.find(room => room.teacher == socket.username).id
+                    let room = this.server.getRooms().find(room => room.teacher == socket.username)
+                    id = room ? room.id : -2
                 }
-                this.server.changeSocketRoom(socket, id)
-                this.server.send(socket, SocketOutMsg.JOIN_ROOM_RES, { roomId: id })
+                if(id != -2) {
+                    this.server.changeSocketRoom(socket, id)
+                    this.server.send(socket, SocketOutMsg.JOIN_ROOM_RES, { roomId: id })
+                }
                 break
             }
             case SocketInMsg.LEAVE_ROOM: {
@@ -38,12 +42,18 @@ export class MainRoom extends IMainRoom {
                 break
             }
             case SocketInMsg.OPEN_ROOM: {
-                let room = this.server.rooms[this.server.createRoom(msg.type, socket.username)],  
-                    roomInfo: IRoom = this.server.getRoomInfo(room)
+                if(!this.server.rooms.find((room: IRoom) => 
+                    room && room.teacher == socket.username
+                )) {
+                    let room = this.server.rooms[this.server.createRoom(msg.type, socket.username)],  
+                        roomInfo: IRoom = this.server.getRoomInfo(room)
+                    
+                    console.log(this.server.rooms)
 
-                for(let socket of this.sockets) {
-                    if(socket.subscribed) {
-                        this.server.send(socket, SocketOutMsg.ROOM_OPENED, { room: roomInfo })
+                    for(let socket of this.sockets) {
+                        if(socket.subscribed) {
+                            this.server.send(socket, SocketOutMsg.ROOM_OPENED, { room: roomInfo })
+                        }
                     }
                 }
                 break
@@ -58,10 +68,11 @@ export class MainRoom extends IMainRoom {
                 break
             }
             case SocketInMsg.ROOM_SUBSCRIBE: {
+                console.log(this.server.rooms)
                 socket.subscribed = true
                 if(msg.fetch) {
                     this.server.send(socket, SocketOutMsg.GET_ROOMS_RES, {
-                        rooms: this.server.getRooms().slice(1)
+                        rooms: this.server.getRooms()
                     })
                 }
                 break
