@@ -25,12 +25,15 @@ export class MainRoom extends IMainRoom {
             case SocketInMsg.JOIN_ROOM: {
                 let id
                 if(!msg.auto) {
-                    id = msg.roomId
+                    id = this.server.rooms[msg.roomId] ? msg.roomId : -2
                 } else {
-                    id = this.server.rooms.find(room => room.teacher == socket.username).id
+                    let room = this.server.getRooms().find(room => room.teacher == socket.username)
+                    id = room ? room.id : -2
                 }
-                this.server.changeSocketRoom(socket, id)
-                this.server.send(socket, SocketOutMsg.JOIN_ROOM_RES, { roomId: id })
+                if(id != -2) {
+                    this.server.changeSocketRoom(socket, id)
+                    this.server.send(socket, SocketOutMsg.JOIN_ROOM_RES, { roomId: id })
+                }
                 break
             }
             case SocketInMsg.LEAVE_ROOM: {
