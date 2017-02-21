@@ -2,6 +2,8 @@ import { handleActions } from "redux-actions"
 
 import { APIActionTypes, ActionTypes, auth } from "./actions"
 
+import { Discipline } from "../../models/discipline"
+
 export interface AuthState {
     username: string
     password: string
@@ -12,11 +14,9 @@ export interface AuthState {
 
     isTeacher: boolean
     
-    disciplines: string[]
+    disciplines: Discipline[]
     groups: string[]
     group: string
-
-    discipline: string
 
     token: string
 
@@ -28,18 +28,16 @@ export interface AuthState {
 let initialState: AuthState = {
     username: null,
     password: null,
-    firstName: "Somin",
-    lastName: "Maurel",
+    firstName: null,
+    lastName: null,
     id: -1,
     //email: "somin.maurel@gmail.fr",
     
     isTeacher: false,
     
-    disciplines: ["TOB", "PIM", "PF"],
-    groups: ["3INB"],
-    group: "3IN",
-
-    discipline: "TOB",
+    disciplines: [],
+    groups: [],
+    group: null,
     
     token: null,
     authentifying: true,
@@ -67,9 +65,10 @@ const reducer = handleActions({
     },
     [APIActionTypes.FETCH_DISCIPLINE_SUCCESS]: function(state: AuthState, action: any): AuthState {
         return Object.assign({}, state, {
-            disciplines: action.payload["hydra:member"].map(discipline => {
-                // TODO
-            })
+            disciplines: action.payload["hydra:member"].map(discipline => { return {
+                id: discipline.id,
+                name: discipline.name
+            }})
         })
     },
     [APIActionTypes.AUTH]: function(state: AuthState, action: any): AuthState {

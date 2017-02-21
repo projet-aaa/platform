@@ -11,9 +11,7 @@ function mapStateToProps(state: any, ownProps: any): any {
     }
 }
 function mapDispatchToProps(dispatch, ownProps): ActionProps {
-    return {
-        
-    }
+    return { }
 }
 
 export default connect<StateProps, ActionProps, any>(

@@ -4,9 +4,11 @@
 import * as React from "react";
 import { Link } from "react-router"
 
+import { Discipline } from "../../models/discipline"
+
 export interface StateProps {
     // the disciplines list
-    disciplines: string[]
+    disciplines: Discipline[]
     // the actual discipline
     discipline: string
 }
@@ -31,12 +33,12 @@ export class View extends React.Component<Props, any> {
 
         let disciplinesRender = [];
         for(let i = 0; i < disciplines.length; i++) {
-            if (disciplines[i] == discipline) {
+            if (disciplines[i].name == discipline) {
                 disciplinesRender.push(
                     <li key={i} className="active">
-                        <Link to="/" onClick={e => e.preventDefault()}>
+                        <Link to={ "/" + disciplines[i] } >
                             <div className="icon-bg bg-orange"/>
-                            <span className="menu-title">{disciplines[i]}</span>
+                            <span className="menu-title">{ disciplines[i].name }</span>
                         </Link>
                     </li>
                 )
@@ -45,7 +47,7 @@ export class View extends React.Component<Props, any> {
                     <li key={i}>
                         <Link to={ "/" + disciplines[i] } >
                             <div className="icon-bg bg-orange"/>
-                            <span className="menu-title">{disciplines[i]}</span>
+                            <span className="menu-title">{ disciplines[i].name }</span>
                         </Link>
                     </li>
                 )
@@ -66,7 +68,7 @@ export class View extends React.Component<Props, any> {
                                     <span className="menu-title">Accueil</span>
                                 </Link>
                             </li>
-                            {disciplinesRender}
+                            { disciplinesRender }
                         </ul>
                     </div>
                 </nav>

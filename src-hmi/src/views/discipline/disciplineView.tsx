@@ -29,26 +29,26 @@ export class View extends React.Component<Props, any> {
         var CMRender = []
         var TDRender = []
         var TPRender = []
-        for (var i=0 ; i<sessions.length ; i++) {
+        for (var i in sessions) {
             if (sessions[i].sessionType == SessionType.CM) {
                 CMRender.push(
-                    <a key={i} href="#" className="list-group-item">
+                    <Link to={ sessions[i].discipline + "/" + sessions[i].sessionName } key={i} className="list-group-item">
                         { ddmmyyyy(sessions[i].date) } | { sessions[i].sessionName } : { sessions[i].teacherName } { sessions[i].live ? ": live!" : "" }
-                    </a>
+                    </Link>
                 )
             }
             if (sessions[i].sessionType == SessionType.TD) {
                 TDRender.push(
-                    <a key={i} href="#" className="list-group-item">
+                    <Link to={ sessions[i].discipline + "/" + sessions[i].sessionName } key={i} className="list-group-item">
                         { ddmmyyyy(sessions[i].date) } | { sessions[i].sessionName } : { sessions[i].teacherName } { sessions[i].live ? ": live!" : "" }
-                    </a>
+                    </Link>
                 )
             }
             if (sessions[i].sessionType == SessionType.TP) {
                 TPRender.push(
-                    <a key={i} href="#" className="list-group-item">
+                    <Link to={ sessions[i].discipline + "/" + sessions[i].sessionName } key={i} className="list-group-item">
                         { ddmmyyyy(sessions[i].date) } | { sessions[i].sessionName } : { sessions[i].teacherName } { sessions[i].live ? ": live!" : "" }
-                    </a>
+                    </Link>
                 )
             }
         }
@@ -58,15 +58,21 @@ export class View extends React.Component<Props, any> {
             <div>
                 <div>
                     <h2 className="tab">CMs</h2>
-                    { CMRender }
+                    <div className="row">
+                        { CMRender }
+                    </div>
                 </div>
                 <div>
                     <h2 className="tab">TDs</h2>
-                    { TDRender }
+                    <div className="row">
+                        { TDRender }
+                    </div>
                 </div>
                 <div>
                     <h2 className="tab">TPs</h2>
-                    { TPRender }
+                    <div className="row">
+                        { TPRender }
+                    </div>
                 </div>
             </div>
         );

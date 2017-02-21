@@ -15,9 +15,18 @@ export interface StateProps {
     sessions: Session[],
     // the list of disciplines
     disciplines: string[]
+    // the list of not checked disciplines in filters : discipline name -> is checked
+    areNotChecked: any
 }
 
-export interface ActionProps { }
+
+
+export interface ActionProps {
+    // click on a discipline filter
+    selectFilter(discipline: string)
+    // click on the serach button of the search bar
+    search()
+}
 
 export type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
@@ -26,13 +35,16 @@ export class View extends React.Component<Props, any> {
     render() {
         const {
             sessions,
-            disciplines
+            disciplines,
+            areNotChecked,
+            selectFilter,
+            search
         } = this.props
 
         var sessionsRender = []
         for (var i=0 ; i<sessions.length ; i++) {
             sessionsRender.push(
-                <a key={i} href="#" className="list-group-item">
+                <a key={i} className="list-group-item">
                     { ddmmyyyy(sessions[i].date) } | { sessions[i].discipline } | { sessions[i].sessionName } : { sessions[i].teacherName } { sessions[i].live ? ": live!" : "" }
                 </a>
             )
@@ -40,9 +52,9 @@ export class View extends React.Component<Props, any> {
         var filtersRender = []
         for (var i=0; i < disciplines.length; i++) {
             filtersRender.push(
-                <li key={i} className="without-bullet">
+                <li key={i} className="without-bullet" onClick={ (function(i){ return () => selectFilter(disciplines[i])})(i) }>
                     <label className="checkbox-inline">
-                        <input id="optionsVisa" type="checkbox" name="optionsRadios" value="Visa" />
+                        <input id="optionsVisa" type="checkbox" name="optionsRadios" value="Visa" checked={ !areNotChecked[disciplines[i]] }/>
                         &nbsp; { disciplines[i] }
                     </label>
                 </li>
@@ -59,14 +71,14 @@ export class View extends React.Component<Props, any> {
                                 <input type="text" placeholder="Rechercher" name="search" className="form-control input-lg"/>
 
                                 <div className="input-group-btn">
-                                    <button className="btn btn-lg btn-primary" type="submit">
+                                    <button className="btn btn-lg btn-primary" type="submit" onClick={ search }>
                                         <i className="fa fa-search"></i>
                                     </button>
                                 </div>
                             </div>
                         </form>
                     </div>
-                    <div className="row">
+                    <div className="row" style={ {marginTop:15} }>
                         { sessionsRender }
                     </div>
                 </div>

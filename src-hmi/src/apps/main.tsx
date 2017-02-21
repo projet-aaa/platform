@@ -18,6 +18,7 @@ import questionInputInfo from '../store/faq/reducers/questionInput'
 import wsServerInfo from '../store/wsrooms/reducer'
 import questionnaireInfo from '../store/questionnaire/reducers/reducer'
 import authInfo from '../store/auth/reducer'
+import mainInfo from '../store/main/reducers/reducer'
 
 // TEMPLATES
 import { View as TopBandLeftMenuTemp } from '../template/topBandLeftMenuTemp'
@@ -51,7 +52,8 @@ let store = storeFactory([
     questionInputInfo,
     wsServerInfo,
     questionnaireInfo,
-    authInfo
+    authInfo,
+    mainInfo
 ], true, true, auth)
 
 declare var username_global
@@ -60,7 +62,7 @@ declare var id_global
 
 // AUTHENTIFICATION
 (store as any).dispatch(auth(id_global, username_global, password_global))
-
+    
 // ROUTE
 let MainRouter =
 (<Provider store={store}>

@@ -31,13 +31,13 @@ export const WSInActionTypes = {
 
 export function auth(id: number, username: string, password: string) {
     return (dispatch, getState) => {
-        let { auth } = getState()
 
         dispatch(authAPI(username, password))
         dispatch(authLocal(id, username, password))
         dispatch(fetchUser({ id }))
 
         let i = setInterval(() => {
+            let { auth } = getState()
             if(auth.group) {
                 clearInterval(i)
                 dispatch(fetchDiscipline({ part: auth.group }))

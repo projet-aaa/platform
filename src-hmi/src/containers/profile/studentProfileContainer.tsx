@@ -11,7 +11,7 @@ function mapStateToProps(state: any): StateProps {
         firstName: auth.firstName,
         //email: auth.email,
         group: auth.group,
-        disciplines: auth.disciplines
+        disciplines: auth.disciplines.map(d => d.name)
     }
 }
 function mapDispatchToProps(dispatch): ActionProps {
