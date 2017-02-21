@@ -14,6 +14,7 @@ import threadMessageInputInfo from '../store/faq/reducers/answerInput'
 import threadContentInfo from '../store/faq/reducers/threadContent'
 import questionInputInfo from '../store/faq/reducers/questionInput'
 import wsServerInfo from '../store/wsrooms/reducer'
+import questionnaireInfo from '../store/questionnaire/reducers/reducer'
 
 // TEMPLATES
 import { View as TopBandLeftMenuTemp } from '../template/topBandLeftMenuTemp'
@@ -32,6 +33,8 @@ import CourseContainer from '../containers/class/courseContainer'
 
 import DisciplineContainer from '../containers/discipline/disciplineContainer'
 
+import QuestionnaireContainer from '../containers/questionnaire/questionnaireContainer'
+
 import { storeFactory } from '../utils'
 
 let store = storeFactory([
@@ -42,7 +45,8 @@ let store = storeFactory([
     threadMessageInputInfo,
     threadContentInfo,
     questionInputInfo,
-    wsServerInfo
+    wsServerInfo,
+    questionnaireInfo
 ], true, true)
 
 let MainRouter =
@@ -92,12 +96,19 @@ let MainRouter =
                             statType={ "ATTENTION" }
                         /> }
                     />
+                />
                 </Route>
                 <Route path="direct" component={ (props, ctx) => 
                     <CourseContainer 
                         name="Direct"
                         course={ props.params.course } UE={ props.params.UE }
                     /> }
+                />
+                <Route path="questionnaires" component={ (props, ctx) =>
+                    <CourseContainer 
+                        name="Questionnaires"
+                        course={ props.params.course } UE={ props.params.UE }
+                    /> } 
                 />
             </Route>
         </Route>

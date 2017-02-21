@@ -76,6 +76,7 @@ export class View extends React.Component<Props, any> {
                 prevQuiz={ null }
                 choose={ null }
                 validate={ null }
+                back={ null }
             />)
         }
 

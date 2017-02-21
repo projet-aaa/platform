@@ -57,6 +57,7 @@ export interface ActionProps {
     signalSlow()
     // signal fast
     signalFast()
+    // signal the student is neither in panic, too slow nor too fast
     signalOk()
 }
 
@@ -104,7 +105,7 @@ export class View extends React.Component<Props, any> {
         let left = question ?
             <QuizView quiz={ quiz } quizChoice={ quizChoice } choose={ choose } validate={ validateAnswer } 
                     showCorrection={ showCorrection } forceUnfold={ forceUnfold } nextQuiz={ nextQuiz } 
-                    prevQuiz={ prevQuiz }/> :
+                    prevQuiz={ prevQuiz } back={ null }/> :
             <FeedbackView state={ state } signalPanic={ signalPanic } signalSlow={ signalSlow } signalFast={ signalFast } signalOk={ signalOk }/>
         
         // the quiz or the buttons are on the left and the scores are on the right

@@ -74,7 +74,7 @@ function mapDispatchToProps(dispatch, state): any {
             oldState,
             state: AttentionStateType.OK,
             sessionId, authorId
-        }))
+        })),
     }
 }
 

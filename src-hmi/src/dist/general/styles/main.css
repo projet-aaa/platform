@@ -7080,3 +7080,12 @@ ul.chats li.out .message {
 .link-text:hover {
   text-decoration: underline
 }
+
+.no-padding {
+  padding: 0px
+}
+
+.vertical-fit {
+  top: 0;
+  bottom: 0
+}
