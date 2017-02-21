@@ -31,6 +31,8 @@ export interface ActionProps {
     nextQuiz()
     // go to the previous question
     prevQuiz()
+    // go back
+    back()
 }
 
 // style for the text
@@ -69,7 +71,8 @@ export class View extends React.Component<Props, any> {
             choose, 
             validate,
             nextQuiz,
-            prevQuiz
+            prevQuiz,
+            back
         } = this.props
 
         // the render of the answers can be different according to the type of quiz (MCQ, open question)
@@ -85,7 +88,7 @@ export class View extends React.Component<Props, any> {
                         key={ i }
                         ind={ i } 
                         text={ item } 
-                        chosen={ quizChoice == i } 
+                        chosen={ quizChoice.choice == i } 
                         rightAnswer={ i == quiz.answer }
                         explanation={ quiz.explanations[i] } 
                         showCorrection={ showCorrection }
@@ -116,79 +119,104 @@ export class View extends React.Component<Props, any> {
         // a question with its answers
         let questionRender = (
             <div>
-                <h3 style={bigSizeText}>Enoncé : { quiz.question }</h3>
+                <h3 style={bigSizeText}>{ quiz.question }</h3>
                 <br/>
                 { answers }
                 { showCorrection ? <h3> { quiz.justification } </h3> : ""}
             </div>
         )
-        // if we are in answer mode, we have to display a vilidate button
-        let validateButton = null;
-        if (choose) {
-            validateButton = (
-                <div className="row">
-                    <div className="col-lg-offset-8 col-lg-4">
-                        <div className="btn btn-lg btn-success" onClick={ () => validate() }>
-                            Valider réponse
-                        </div>
-                    </div>
+
+        // back button
+        var backButtonRender = []
+        if (back) {
+            backButtonRender.push(
+                <div className="col-lg-2 no-padding">
+                    <button className="btn btn-primary covering-size" onClick={ back }>
+                        Retour
+                    </button>
+                </div>
+            )
+            backButtonRender.push(
+                <div className="col-lg-3">
+                </div>
+            )
+        } else {
+            buttonsRender.push(
+                <div className="col-lg-5">
                 </div>
             )
         }
-        // if they are associated to an action, we have to display previous and next button
-        let quizRender = null;
-        if (!nextQuiz && !prevQuiz) {
-            quizRender = (
+        
+
+        // buttons
+        var buttonsRender = []
+        if (prevQuiz) {
+            buttonsRender.push(
+                <div className="col-lg-4 no-padding">
+                    <button className="btn btn-primary covering-size" onClick={ prevQuiz }>
+                        Précédent
+                    </button>
+                </div>
+            )
+        } else {
+            buttonsRender.push(
+                <div className="col-lg-4">
+                </div>
+            )
+        }
+        if (choose) {
+            buttonsRender.push(
+                <div className="col-lg-4 no-padding">
+                    <button className="btn btn-success covering-size" onClick={ validate }>
+                        Valider réponse
+                    </button>
+                </div>
+            )
+        } else {
+            buttonsRender.push(
+                <div className="col-lg-4">
+                </div>
+            )
+        }
+        if (nextQuiz) {
+            // if we are in answer mode (showcorrection is false) we display skip question
+            // else we display next
+            buttonsRender.push(
+                <div className="col-lg-4 no-padding">
+                    <button className="btn btn-primary covering-size" onClick={ nextQuiz }>
+                        { showCorrection ? "Suivant" : "Passer la question" }
+                    </button>
+                </div>
+            )
+        } else {
+            buttonsRender.push(
+                <div className="col-lg-4">
+                </div>
+            )
+        }
+
+        let quizRender = (
                 <div className="row">
                     <div className="col-lg-12">
                         { questionRender }
                     </div>
                 </div>
-            )
-        } else if (!nextQuiz) {
-            quizRender = (
-                <div className="row">
-                    <div className="col-lg-2">
-                        <button className="btn btn-primary covering-size" onClick={ prevQuiz }>Précédent</button>
-                    </div>
-                    <div className="col-lg-8">
-                        { questionRender }
-                    </div>
-                </div>
-            )
-        } else if (!prevQuiz) {
-            quizRender = (
-                <div className="row">
-                    <div className="col-lg-8 col-lg-offset-2">
-                        { questionRender }
-                    </div>
-                    <div className="col-lg-2">
-                        <button className="btn btn-primary covering-size" onClick={ nextQuiz }>Suivant</button>
-                    </div>
-                </div>
-            )
-        } else {
-            quizRender = (
-                <div className="row">
-                    <div className="col-lg-2">
-                        <button className="btn btn-primary covering-size" onClick={ prevQuiz }>Précédent</button>
-                    </div>
-                    <div className="col-lg-8">
-                        { questionRender }
-                    </div>
-                    <div className="col-lg-2">
-                        <button className="btn btn-primary covering-size" onClick={ nextQuiz }>Suivant</button>
-                    </div>
-                </div>
-            )
-        }
+        )
+               
         // returns a panel containing the question and the answers defined above
         return (
             <div>
                 <div className="panel">
                     <div className="pal">
-                        { quizRender }
-                        { validateButton }
+                        <div className="row">
+                            { quizRender }
+                        </div>
+                        <div className="row">
+                            { backButtonRender }
+                            <div className="col-lg-6">
+                                { buttonsRender }
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

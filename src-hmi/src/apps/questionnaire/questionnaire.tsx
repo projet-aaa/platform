@@ -17,8 +17,7 @@ let store = storeFactory([
 let MainRouter =
 (<Provider store={store}>
     <Router history={hashHistory}>
-        <Route path="/" component={ QuestionnaireContainer }>
-        </Route> 
+        <Route path="/" component={ QuestionnaireContainer }/>
     </Router>
 </Provider>)
 

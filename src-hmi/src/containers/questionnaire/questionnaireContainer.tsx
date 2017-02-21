@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { chooseAction, validateAction, 
         nextQuizAction, prevQuizAction,
         seeCorrectionAction, chooseQuizAction,
-        chooseComboQuizAction } from "../../store/questionnaire/actions/actions"
+        returnAction } from "../../store/questionnaire/actions/actions"
 import { Quiz } from "../../models/class/class"
 import { StateProps, ActionProps, View } from "../../views/questionnaire/questionnaireTabView"
 import { QuestionnaireState } from "../../store/questionnaire/reducers/reducer"
@@ -14,11 +14,11 @@ function mapStateToProps(state: any): StateProps {
     let questionnaire: QuestionnaireState = state.questionnaire
     return {
         // all the quiz available for this session
-        quizs: questionnaire.quizs,
+        quizGroups: questionnaire.quizGroups,
         // the collection of quiz launched
         actualQuizs: questionnaire.actualQuizs,
         // the index of the current quiz in the quiz collection "actualQuizs"
-        quizId: questionnaire.quizId,
+        quizIndex: questionnaire.quizIndex,
         // actual quiz
         currentQuiz: questionnaire.currentQuiz,
         // the list of choices for each quiz
@@ -35,8 +35,8 @@ function mapDispatchToProps(dispatch, state): ActionProps {
         // Fires an action signaling that a quiz has been chosen
         // id is the id of the quiz chosen and mode is answer or correction
         chooseQuiz: (id, mode) => dispatch(chooseQuizAction(id, mode)),
-        // Fires an action signaling that the combo of quiz has been chosen
-        chooseComboQuiz: () => dispatch(chooseComboQuizAction()),
+        // // Fires an action signaling that the combo of quiz has been chosen
+        // chooseComboQuiz: () => dispatch(chooseComboQuizAction()),
         // Fires an action signaling that an answer has been chosen
         choose: (id, choice) => dispatch(chooseAction(choice)),
         // Fires an action signaling that an answer has been validated
@@ -46,7 +46,9 @@ function mapDispatchToProps(dispatch, state): ActionProps {
         // go to the previous question
         prevQuiz: () => dispatch(prevQuizAction()),
         // at the end of a quiz, launch the correction
-        seeCorrection: () => dispatch(seeCorrectionAction())
+        seeCorrection: () => dispatch(seeCorrectionAction()),
+        // to return to the list of quiz
+        returnToChoices: () => dispatch(returnAction())
     }
 }
 

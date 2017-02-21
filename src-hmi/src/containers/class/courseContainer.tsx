@@ -9,6 +9,7 @@ import LiveContainer from '../../containers/class/liveContainer'
 import StatSessionContainer from '../../containers/class/statSessionContainer'
 import StatQuizContainer from '../../containers/class/statQuizContainer'
 import StatFeedbackContainer from '../../containers/class/statFeedbackContainer'
+import QuestionnaireContainer from '../../containers/questionnaire/questionnaireContainer'
 
 import { AuthState } from "../../store/auth/reducer"
 
@@ -60,10 +61,11 @@ export default connect<StateProps, ActionProps, any>(
     } else {
         return <TabsTemp 
         actualTabName={ props.name } 
-        names={ ["Cours", "FAQ", "Direct"] }
+        names={ ["Cours", "FAQ", "Direct", "Questionnaires"] }
         urls={ [prePath,
                 prePath + "/faq",
-                prePath + "/direct"] }>
+                prePath + "/direct",
+                prePath + "/questionnaires"] }>
             { props.name == "Cours" ? 
                 <CourseMainContainer courseId={ props.courseId }/> 
                 : <div>Shouldn't show</div> }
@@ -72,6 +74,9 @@ export default connect<StateProps, ActionProps, any>(
                 : <div>Shouldn't show</div> }
             { props.name == "Direct" ? 
                 <LiveContainer courseId={ props.courseId }/> 
+                : <div>Shouldn't show</div> }
+            { props.name == "Questionnaires" ?
+                <QuestionnaireContainer courseId={ props.courseId }/>
                 : <div>Shouldn't show</div> }
         </TabsTemp> 
     }
