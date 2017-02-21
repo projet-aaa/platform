@@ -1,15 +1,14 @@
 import { handleActions } from "redux-actions"
 
-import { Action } from "../../utils"
-import { APIActionTypes, auth } from "./actions"
+import { APIActionTypes, ActionTypes, auth } from "./actions"
 
 export interface AuthState {
-    login: string
+    username: string
+    password: string
     firstName: string
     lastName: string
-    id: string
-    password: string
-    email: string
+    id: number
+    //email: string
 
     isTeacher: boolean
     
@@ -27,12 +26,12 @@ export interface AuthState {
 }
 
 let initialState: AuthState = {
-    login: null,
+    username: null,
+    password: null,
     firstName: "Somin",
     lastName: "Maurel",
-    id: "/app_dev.php/api/users/2",
-    password: null,
-    email: "somin.maurel@gmail.fr",
+    id: -1,
+    //email: "somin.maurel@gmail.fr",
     
     isTeacher: false,
     
@@ -43,7 +42,6 @@ let initialState: AuthState = {
     discipline: "TOB",
     
     token: null,
-
     authentifying: true,
     authentified: false,
     lastAuthDate: null
@@ -51,6 +49,29 @@ let initialState: AuthState = {
 
 const name = "auth"
 const reducer = handleActions({
+    [ActionTypes.AUTH_LOCAL]: function(state: AuthState, action: any): AuthState {
+        (document as any).token = null
+        return Object.assign({}, state, {
+            id: action.payload.id,
+            username: action.payload.username,
+            password: action.payload.password
+        })
+    },
+    [APIActionTypes.FETCH_USER_SUCCESS]: function(state: AuthState, action: any): AuthState {
+        return Object.assign({}, state, {
+            isTeacher: action.payload.roles.indexOf("ROLE_PROF") >= 0,
+            firstName: action.payload.firstname,
+            lastName: action.payload.lastname,
+            group: action.payload.part ? action.payload.part : "3IN"
+        })
+    },
+    [APIActionTypes.FETCH_DISCIPLINE_SUCCESS]: function(state: AuthState, action: any): AuthState {
+        return Object.assign({}, state, {
+            disciplines: action.payload["hydra:member"].map(discipline => {
+                // TODO
+            })
+        })
+    },
     [APIActionTypes.AUTH]: function(state: AuthState, action: any): AuthState {
         (document as any).token = null
         return Object.assign({}, state, {

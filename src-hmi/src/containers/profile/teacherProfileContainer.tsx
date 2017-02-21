@@ -9,7 +9,7 @@ function mapStateToProps(state: any): StateProps {
     return { 
         lastName: auth.lastName,
         firstName: auth.firstName,
-        email: auth.email,
+        //email: auth.email,
         groups: auth.groups,
         disciplines: auth.disciplines
     }

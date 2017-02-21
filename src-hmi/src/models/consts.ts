@@ -21,3 +21,5 @@ export const urlWS = domainWS + ":" + portWS
 export const appName = "AAA"
 
 export const apiRootURL = "http://localhost/app_dev.php/api"
+
+export const loginURL = "http://localhost/app_dev.php/api/login_check"

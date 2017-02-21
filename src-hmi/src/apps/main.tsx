@@ -5,6 +5,8 @@ import * as React from 'react'
 import { Router, Route, IndexRoute, hashHistory } from 'react-router'
 import { Provider } from 'react-redux';
 
+import { auth } from '../store/auth/actions'
+
 // REDUCERS
 import remoteInfo from '../store/remote/reducers/reducer'
 import dashboardInfo from '../store/dashboard/reducers/reducer'
@@ -15,6 +17,7 @@ import threadContentInfo from '../store/faq/reducers/threadContent'
 import questionInputInfo from '../store/faq/reducers/questionInput'
 import wsServerInfo from '../store/wsrooms/reducer'
 import questionnaireInfo from '../store/questionnaire/reducers/reducer'
+import authInfo from '../store/auth/reducer'
 
 // TEMPLATES
 import { View as TopBandLeftMenuTemp } from '../template/topBandLeftMenuTemp'
@@ -37,6 +40,7 @@ import QuestionnaireContainer from '../containers/questionnaire/questionnaireCon
 
 import { storeFactory } from '../utils'
 
+// STORE CREATION (DEFINITION OF THE GLOBAL STATE)
 let store = storeFactory([
     remoteInfo,
     dashboardInfo,
@@ -46,9 +50,18 @@ let store = storeFactory([
     threadContentInfo,
     questionInputInfo,
     wsServerInfo,
-    questionnaireInfo
-], true, true)
+    questionnaireInfo,
+    authInfo
+], true, true, auth)
 
+declare var username_global
+declare var password_global
+declare var id_global
+
+// AUTHENTIFICATION
+(store as any).dispatch(auth(id_global, username_global, password_global))
+
+// ROUTE
 let MainRouter =
 (<Provider store={store}>
     <Router history={hashHistory}>
@@ -123,4 +136,5 @@ let MainRouter =
     </Router>
 </Provider>)
 
+// RENDER
 ReactDOM.render(MainRouter, document.getElementById('main'))

@@ -5,16 +5,16 @@ import * as React from 'react'
 import * as createLogger from 'redux-logger';
 import { apiMiddleware } from 'redux-api-middleware'
 import { CALL_API } from 'redux-api-middleware';
-
 import createSocketIoMiddleware from 'redux-socket.io'
 import * as io from 'socket.io-client'
-    
-import authInfo from '../store/auth/reducer'
-import { auth } from '../store/auth/actions'
 
 import { urlWS, chartColors, apiRootURL } from '../models/consts'
 
 import { Quiz } from '../models/class/class'
+
+declare var username_global
+declare var password_global
+declare var id_global
 
 // -- ACTION CREATOR HELPERS
 export interface Action<T>{
@@ -24,9 +24,9 @@ export interface Action<T>{
 }
 
 // -- STORE CREATOR HELPER
-export const storeFactory = (reducers: any[], connectWS: boolean, log: boolean) => {
+export const storeFactory = (reducers: any[], connectWS: boolean, log: boolean, auth) => {
     let socket = connectWS ? io.connect(urlWS) : null,
-        reducers2 = Object.assign({}, authInfo), len = reducers.length,
+        reducers2 = {}, len = reducers.length,
         reducer
 
     // CREATING MAIN REDUCER
@@ -39,17 +39,14 @@ export const storeFactory = (reducers: any[], connectWS: boolean, log: boolean) 
     let middlewares: any = [thunk]
 
     middlewares.push(apiMiddleware)
-    middlewares.push(authAPIMiddleware)
+    middlewares.push(authAPIMiddleware(auth))
     if(socket) { middlewares.push(createSocketIoMiddleware(socket, 'SERVER/')) }
     if(log) { middlewares.push(createLogger()) }
 
     let store = createStore(
         reducer,
         applyMiddleware(...middlewares)
-    );
-
-    // MANUAL AUTHENTIFICATION
-    (store as any).dispatch(auth('abeyet', 'abeyet'))
+    )
 
     return store
 }
@@ -59,18 +56,19 @@ export function viewTestFactory<T>(View: any, props: T) {
     ReactDOM.render(React.createElement(View, props), document.getElementById('main'))
 }
 
-export function apiTestFactory<T>(actionCreator, endpointInfo, body) {
-    let store = storeFactory([ 
-        authInfo
-    ], true, true)
+// WARNING OBSOLETE, DO NOT USE 
+//export function apiTestFactory<T>(actionCreator, endpointInfo, body) {
+//     let store = storeFactory([ 
+//         authInfo
+//     ], true, true, null)
 
-    let i = setInterval(() => {
-        if(isAuthentified()) {
-            store.dispatch(actionCreator(endpointInfo, body))
-            clearInterval(i)
-        }
-    }, 100)
-}
+//     let i = setInterval(() => {
+//         if(isAuthentified()) {
+//             store.dispatch(actionCreator(endpointInfo, body))
+//             clearInterval(i)
+//         }
+//     }, 100)
+// }
 
 // -- HTML JS HELPERS
 // Get text from an element with a certain id
@@ -133,7 +131,7 @@ export function createAPIActionCreator(
     }
 }
 
-export const authAPIMiddleware = store => next => action => {
+export const authAPIMiddleware = auth => store => next => action => {
     if(action.type && action.type.substring(0, apiCallText.length) == apiCallText) {
         if(action.type.substring(0, apiCallSuccessText.length) == apiCallSuccessText) {
             let index = parseInt(action.type.substring(apiCallSuccessText.length))
@@ -151,7 +149,7 @@ export const authAPIMiddleware = store => next => action => {
                     interval = Date.now() - authState.lastAuthDate
 
                 if(authState.authentified && interval > 10000 && !authState.authentifying) {
-                    store.dispatch(auth('abeyet', 'abeyet'))
+                    store.dispatch(auth(id_global, username_global, password_global))
                 }
                 if(!waitingAuth) {
                     waitingAuth = true

@@ -12,7 +12,7 @@ import { chartColors } from "../../models/consts"
 export interface StateProps {
     lastName: string
     firstName: string
-    email: string
+    //email: string
     group: string
     // name of lessons a student take
     disciplines: string[]
@@ -32,7 +32,7 @@ export class View extends React.Component<Props, any> {
         const {
             lastName,
             firstName,
-            email,
+            //email,
             group,
             disciplines
         } = this.props;
@@ -82,16 +82,6 @@ export class View extends React.Component<Props, any> {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-sm-3 control-label">Mail</label>
-                            <div className="col-sm-9 controls">
-                                <div className="row">
-                                    <div className="col-xs-9">
-                                        <input type="text" value={ email } contentEditable={ false } className="form-control" readOnly/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="form-group">
                             <label className="col-sm-3 control-label" style={ noPaddingTop }>Groupe</label>
                             <div className="col-sm-9 controls">
                                 <div className="row">
@@ -123,3 +113,14 @@ export class View extends React.Component<Props, any> {
         )
     }
 }
+
+// <div className="form-group">
+//     <label className="col-sm-3 control-label">Mail</label>
+//     <div className="col-sm-9 controls">
+//         <div className="row">
+//             <div className="col-xs-9">
+//                 <input type="text" value={ email } contentEditable={ false } className="form-control" readOnly/>
+//             </div>
+//         </div>
+//     </div>
+// </div>
