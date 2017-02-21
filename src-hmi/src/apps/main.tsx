@@ -14,6 +14,7 @@ import threadMessageInputInfo from '../store/faq/reducers/answerInput'
 import threadContentInfo from '../store/faq/reducers/threadContent'
 import questionInputInfo from '../store/faq/reducers/questionInput'
 import questionnaireInfo from '../store/questionnaire/reducers/reducer'
+import mainInfo from '../store/main/reducers/reducer'
 
 // TEMPLATES
 import { View as TopBandLeftMenuTemp } from '../template/topBandLeftMenuTemp'
@@ -44,7 +45,8 @@ let store = storeFactory([
     threadMessageInputInfo,
     threadContentInfo,
     questionInputInfo,
-    questionnaireInfo
+    questionnaireInfo,
+    mainInfo
 ], true, true)
 
 let MainRouter =

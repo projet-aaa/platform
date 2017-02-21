@@ -5111,9 +5111,9 @@ fieldset[disabled] .btn-white.active {
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
 }
-.input-group .input-group-btn .btn.btn-primary {
+/*.input-group .input-group-btn .btn.btn-primary {
   border-color: #d75252 !important;
-}
+}*/
 .input-group .input-group-btn .btn.btn-success {
   border-color: #4cae4c !important;
 }
