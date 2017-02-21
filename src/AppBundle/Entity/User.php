@@ -48,6 +48,11 @@ class User extends BaseUser implements \JsonSerializable
      */
     private $part; //group is a reserved word in sql.
 
+    /**
+     * @var array
+     * @Groups({"user"})
+     */
+    protected $roles;
 
     /**
      * @ORM\PrePersist()
