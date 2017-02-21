@@ -27,10 +27,6 @@ export function chooseQuizAction(quizGroupId: string, mode: string) {
     return { type: ActionTypes.CHOOSE_QUIZ, payload: { quizGroupId, mode} }
 }
 
-// export function chooseComboQuizAction() {
-//     return { type: ActionTypes.CHOOSE_COMBOQUIZ, payload: {} }
-// }
-
 export function returnAction() {
     return { type: ActionTypes.RETURN_TO_CHOICES, payload: {} }
 }

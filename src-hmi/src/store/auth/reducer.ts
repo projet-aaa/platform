@@ -34,7 +34,7 @@ let initialState: AuthState = {
     password: null,
     email: "somin.maurel@gmail.fr",
     
-    isTeacher: true,
+    isTeacher: false,
     
     disciplines: ["TOB", "PIM", "PF"],
     groups: ["3INB"],

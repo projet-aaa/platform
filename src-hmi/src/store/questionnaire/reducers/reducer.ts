@@ -236,19 +236,6 @@ const reducer = handleActions({
             areValidated: fillTabValidated(newQuizs)
         })
     },
-    // [ActionTypes.CHOOSE_COMBOQUIZ]: function(state: QuestionnaireState, action: any): QuestionnaireState {
-    //     let aux = state.quizs.slice()
-    //     let newActualQuizs = shuffle(aux)
-    //     return Object.assign({}, state, {
-    //         actualQuizs: newActualQuizs,
-    //         quizIndex: 0,
-    //         currentQuiz: newActualQuizs[0],
-    //         quizMode: "answer",
-    //         score: 0,
-    //         quizChoices: fillTabChoice(newActualQuizs),
-    //         areValidated: fillTabValidated(newActualQuizs)
-    //     })
-    // },
     [ActionTypes.RETURN_TO_CHOICES]: function(state: QuestionnaireState, action: any): QuestionnaireState {
         return Object.assign({}, state, {
             currentQuiz: null

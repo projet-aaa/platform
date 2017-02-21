@@ -7084,3 +7084,8 @@ ul.chats li.out .message {
 .no-padding {
   padding: 0px
 }
+
+.vertical-fit {
+  top: 0;
+  bottom: 0
+}

@@ -51,6 +51,19 @@ export interface ActionProps {
 var mediumSizeText = {
     fontSize: 30
 }
+var noMargin = {
+    marginTop: 0,
+    marginLeft: 0
+}
+var withmarginLeft = {
+    marginLeft: 15
+}
+var palNew = {
+    paddingTop: 0,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 0
+}
 
 export type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
@@ -66,7 +79,6 @@ export class View extends React.Component<Props, any> {
             quizMode,
             score,
             chooseQuiz,
-            // chooseComboQuiz,
             choose,
             validateAnswer,
             nextQuiz,
@@ -80,55 +92,11 @@ export class View extends React.Component<Props, any> {
         for (var i=0 ; i<quizGroups.length ; i++) {
             var aux = quizGroups[i]
             quizItems.push(
-                <a key={ aux.id } href="#" className="list-group-item" onClick={ (function(id){ return () => chooseQuiz(id, "answer")})(aux.id) }>
+                <a key={ aux.id } className="list-group-item" onClick={ (function(id){ return () => chooseQuiz(id, "answer")})(aux.id) }>
                     { aux.title }
                 </a>
             )
         }
-        // quizItems.push(
-        //     <a href="#" className="list-group-item" onClick={ chooseComboQuiz }>
-        //         Combo quiz
-        //     </a>
-        // )
-
-        // // the items for the combobox of quiz
-        // var quizItems = []
-        // for (var i=0 ; i<quizs.length ; i++) {
-        //     quizItems.push(
-        //         <option value={ quizs[i].id }>{ quizs[i].title }</option>
-        //     )
-        // }
-        // // the quiz combobox
-        // var quizComboBox = (
-        //     <select id="quizComboBox">
-        //         { quizItems }
-        //     </select>
-        // )
-        // // the mode combobox
-        // var modeComboBox = (
-        //     <select id="modeComboBox">
-        //         <option value="answer" selected>Répondre</option>
-        //         <option value="correction">Correction</option>
-        //     </select>
-        // )
-
-        // // the render of the selection of a quiz
-        // var quizChooseRender = (
-        //     <div className="row">
-        //         <div className="col-lg-2">
-        //             { quizComboBox }
-        //         </div>
-        //         <div className="col-lg-2">
-        //             { modeComboBox }
-        //         </div>
-        //         <div className="col-lg-2">
-        //             <button className="btn btn-primary" onClick={ () => chooseQuiz(getCbValue("quizComboBox"), getCbValue("modeComboBox")) }>Choisir</button>
-        //         </div>
-        //         <div className="col-lg-offset-4 col-lg-2">
-        //             <button className="btn btn-primary" onClick={ () => chooseComboQuiz() }>Combo Quiz</button>
-        //         </div>
-        //     </div>
-        // )
 
         var quizRender = null
         if (currentQuiz != null) {
@@ -148,20 +116,18 @@ export class View extends React.Component<Props, any> {
                     validate={ () => validateAnswer(currentQuiz.id) }
                     nextQuiz={ (quizMode=="correction" && quizIndex==actualQuizs.quizs.length-1) ? null : nextQuiz }
                     prevQuiz={ (quizIndex==0) ? null : prevQuiz }
+                    back = { returnToChoices }
                 />
             )
         }
 
-        // the render of the button to return to the quiz list and the title of the quiz group
+        // the title of the quiz group
         var topRender = null
         if (currentQuiz!= null) {
             topRender = (
                 <div className="row">
-                    <div className="col-lg-2">
-                        <button className="btn btn-primary" onClick={ returnToChoices }>Retour</button>
-                    </div>
-                    <div className="col-lg-10">
-                        {actualQuizs.title }
+                    <div className="col-lg-12">
+                        <h2>{ actualQuizs.title }</h2>
                     </div>
                 </div>
             )
@@ -204,7 +170,7 @@ export class View extends React.Component<Props, any> {
         }
 
         return (
-            <div>
+            <div style={ palNew }>
                 { mainRender }
             </div>
         );

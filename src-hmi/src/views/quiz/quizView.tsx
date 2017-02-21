@@ -31,6 +31,8 @@ export interface ActionProps {
     nextQuiz()
     // go to the previous question
     prevQuiz()
+    // go back
+    back()
 }
 
 // style for the text
@@ -69,7 +71,8 @@ export class View extends React.Component<Props, any> {
             choose, 
             validate,
             nextQuiz,
-            prevQuiz
+            prevQuiz,
+            back
         } = this.props
 
         // the render of the answers can be different according to the type of quiz (MCQ, open question)
@@ -123,19 +126,27 @@ export class View extends React.Component<Props, any> {
             </div>
         )
 
-        // // if we are in answer mode, we have to display a vilidate button
-        // let validateButton = null;
-        // if (choose) {
-        //     validateButton = (
-        //         <div className="row">
-        //             <div className="col-lg-offset-8 col-lg-4">
-        //                 <div className="btn btn-lg btn-success" onClick={ validate }>
-        //                     Valider réponse
-        //                 </div>
-        //             </div>
-        //         </div>
-        //     )
-        // }
+        // back button
+        var backButtonRender = []
+        if (back) {
+            backButtonRender.push(
+                <div className="col-lg-2 no-padding">
+                    <button className="btn btn-primary covering-size" onClick={ back }>
+                        Retour
+                    </button>
+                </div>
+            )
+            backButtonRender.push(
+                <div className="col-lg-3">
+                </div>
+            )
+        } else {
+            buttonsRender.push(
+                <div className="col-lg-5">
+                </div>
+            )
+        }
+        
 
         // buttons
         var buttonsRender = []
@@ -184,53 +195,14 @@ export class View extends React.Component<Props, any> {
             )
         }
 
-        let quizRender = null;
-        // if (!nextQuiz && !prevQuiz) {
-            quizRender = (
+        let quizRender = (
                 <div className="row">
                     <div className="col-lg-12">
                         { questionRender }
                     </div>
                 </div>
-            )
-        // } else if (!nextQuiz) {
-        //     quizRender = (
-        //         <div className="row">
-        //             <div className="col-lg-2">
-        //                 <button className="btn btn-primary covering-size" onClick={ prevQuiz }>Précédent</button>
-        //             </div>
-        //             <div className="col-lg-8">
-        //                 { questionRender }
-        //             </div>
-        //         </div>
-        //     )
-        // } else if (!prevQuiz) {
-        //     quizRender = (
-        //         <div className="row">
-        //             <div className="col-lg-8 col-lg-offset-2">
-        //                 { questionRender }
-        //             </div>
-        //             <div className="col-lg-2">
-        //                 <button className="btn btn-primary covering-size" onClick={ nextQuiz }>Suivant</button>
-        //             </div>
-        //         </div>
-        //     )
-        // } else {
-        //     quizRender = (
-        //         <div className="row">
-        //             <div className="col-lg-2">
-        //                 <button className="btn btn-primary covering-size" onClick={ prevQuiz }>Précédent</button>
-        //             </div>
-        //             <div className="col-lg-8">
-        //                 { questionRender }
-        //             </div>
-        //             <div className="col-lg-2">
-        //                 <button className="btn btn-primary covering-size" onClick={ nextQuiz }>Suivant</button>
-        //             </div>
-        //         </div>
-        //     )
-        // }
-        
+        )
+               
         // returns a panel containing the question and the answers defined above
         return (
             <div>
@@ -240,7 +212,8 @@ export class View extends React.Component<Props, any> {
                             { quizRender }
                         </div>
                         <div className="row">
-                            <div className="col-lg-offset-6 col-lg-5">
+                            { backButtonRender }
+                            <div className="col-lg-6">
                                 { buttonsRender }
                             </div>
                         </div>
