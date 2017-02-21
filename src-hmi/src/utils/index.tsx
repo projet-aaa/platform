@@ -254,7 +254,7 @@ export function fetchOnUpdate (fn) {
                 fn(this.props)
             }
 
-            render (): JSX.JSXElement {
+            render () {
                 return (
                     <Component {...this.props} />
                 )
