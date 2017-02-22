@@ -5,7 +5,7 @@ import * as MediaQuery from "react-responsive"
 
 import DashboardContainer from "../../containers/dashboard/dashboardContainer"
 import PresentationContainer from "../../containers/dashboard/presentationContainer"
-import RemoteContainer from "../../containers/quiz/remoteContainerDesktop"
+import RemoteContainer from "../../containers/quiz/remoteContainer"
 
 export interface StateProps { 
     rooms: { id: number, teacher: string}[]

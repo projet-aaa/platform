@@ -38,7 +38,7 @@ export interface StateProps {
     // the average of quiz
     average: number
 
-    state: string
+    attentionState: string
 }
 export interface ActionProps {
     // Fires an action signaling that an answer has been chosen
@@ -71,7 +71,7 @@ var palNew = {
 }
 
 export type Props = StateProps & ActionProps;
-export class View extends React.Component<Props, any> {
+export class View extends React.Component<any, any> {
     props: Props
 
     render() {
@@ -88,7 +88,7 @@ export class View extends React.Component<Props, any> {
             population,
             highscore,
             average,
-            state,
+            attentionState,
 
             choose,
             validateAnswer,
@@ -106,7 +106,7 @@ export class View extends React.Component<Props, any> {
             <QuizView quiz={ quiz } quizChoice={ quizChoice } choose={ choose } validate={ validateAnswer } 
                     showCorrection={ showCorrection } forceUnfold={ forceUnfold } nextQuiz={ nextQuiz } 
                     prevQuiz={ prevQuiz } back={ null }/> :
-            <FeedbackView state={ state } signalPanic={ signalPanic } signalSlow={ signalSlow } signalFast={ signalFast } signalOk={ signalOk }/>
+            <FeedbackView state={ attentionState } signalPanic={ signalPanic } signalSlow={ signalSlow } signalFast={ signalFast } signalOk={ signalOk }/>
         
         // the quiz or the buttons are on the left and the scores are on the right
         return (

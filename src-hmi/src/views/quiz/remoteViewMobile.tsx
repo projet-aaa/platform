@@ -49,7 +49,7 @@ var palNew = {
 }
 
 export type Props = StateProps & ActionProps;
-export class View extends React.Component<Props, any> {
+export class View extends React.Component<any, any> {
     props: Props
 
     render() {

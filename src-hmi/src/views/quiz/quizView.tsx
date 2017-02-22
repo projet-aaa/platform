@@ -16,7 +16,7 @@ export interface StateProps {
     // the quiz 
     quiz: Quiz
     // the quiz choice
-    quizChoice: QuizLocalChoice
+    quizChoice: any
     // true => show the correction
     showCorrection: boolean
     // true => answer explanations will be shown automatically, else we have to click on the answers
@@ -88,15 +88,15 @@ export class View extends React.Component<Props, any> {
                         key={ i }
                         ind={ i } 
                         text={ item } 
-                        chosen={ quizChoice.choice == i } 
+                        chosen={ quizChoice == i } 
                         rightAnswer={ i == quiz.answer }
                         explanation={ quiz.explanations[i] } 
                         showCorrection={ showCorrection }
                         forceUnfold={ forceUnfold }
 
                         choose={ createChooseAction(i) } 
-                    />;
-                });
+                    />
+                })
                 answers = 
                 (
                     <ul>
@@ -109,7 +109,7 @@ export class View extends React.Component<Props, any> {
                 answers =
                 (<input id="quiz-text" 
                         type="text" 
-                        value={ quizChoice.choice }
+                        value={ quizChoice }
                         style={ inputFieldStyle }
                         onChange={ () => choose(getText("quiz-text")) }> 
                 </input>)
@@ -141,7 +141,7 @@ export class View extends React.Component<Props, any> {
                 </div>
             )
         } else {
-            buttonsRender.push(
+            backButtonRender.push(
                 <div className="col-lg-5">
                 </div>
             )
