@@ -1,6 +1,7 @@
 import { connect } from "react-redux"
 
-import createConnector from "../connection/connectionContainer"
+import rootWrapper from "../../wrappers/rootWrapper"
+import connectionWrapper from "../../wrappers/connectionWrapper"
 
 import { RemoteState } from "../../store/remote/reducers/reducer"
 import { AuthState } from "../../store/auth/reducer"
@@ -120,7 +121,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     })
 }
 
-export default createConnector(
+export default connectionWrapper(
     connect<StateProps, ActionProps, any>(
         mapStateToProps, 
         mapDispatchToProps,

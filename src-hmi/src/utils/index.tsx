@@ -97,11 +97,11 @@ export function createAPIActionCreator(
     bodyFactory: (obj: any) => any, 
     method: string, 
     action: string, success: string, failure: string
-): (obj: any) => any {
-    return (info) => {
+): (obj: any, successPromise?) => any {
+    return (info, successPromise) => {
         let id = apiCallID++
 
-        let actionObj = {
+        let actionObj: any = {
             [CALL_API]: {
                 endpoint: apiRootURL + endpointFactory(info),
                 method: method,
@@ -114,17 +114,18 @@ export function createAPIActionCreator(
         }
 
         if(bodyFactory) { 
-            (actionObj as any)[CALL_API].body = JSON.stringify(bodyFactory(info)) 
+            actionObj[CALL_API].body = JSON.stringify(bodyFactory(info)) 
         }
 
-        (actionObj as any)[CALL_API].headers = {
+        actionObj[CALL_API].headers = {
             'Authorization': 'Bearer ' + (document as any).token
         }
 
         apiCalls[id] = {
             msg: actionObj,
             successType: success,
-            failureType: failure
+            failureType: failure,
+            successPromise
         }
 
         return actionObj
@@ -134,12 +135,17 @@ export function createAPIActionCreator(
 export const authAPIMiddleware = auth => store => next => action => {
     if(action.type && action.type.substring(0, apiCallText.length) == apiCallText) {
         if(action.type.substring(0, apiCallSuccessText.length) == apiCallSuccessText) {
-            let index = parseInt(action.type.substring(apiCallSuccessText.length))
+            let index = parseInt(action.type.substring(apiCallSuccessText.length)),
+                apiCall = apiCalls[index]
 
             store.dispatch({
-                type: apiCalls[index].successType,
+                type: apiCall.successType,
                 payload: action.payload
             })
+
+            if(apiCall.successPromise) {
+                apiCall.successPromise()
+            }
         } else if(action.type.substring(0, apiCallFailureText.length) == apiCallFailureText) {
             let index = parseInt(action.type.substring(apiCallFailureText.length))
 
@@ -241,22 +247,4 @@ export function shuffle(array) {
     }
 
     return array;
-}
-
-// -- FETCH HELPER
-export function fetchOnUpdate (fn) {
-    return ((Component) => {
-        return class FetchOnUpdateDecorator extends React.Component<any, any> {
-
-            componentWillMount () {
-                fn(this.props)
-            }
-
-            render () {
-                return (
-                    <Component {...this.props} />
-                )
-            }
-        }
-    })
 }

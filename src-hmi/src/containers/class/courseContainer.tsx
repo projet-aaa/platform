@@ -29,9 +29,10 @@ export default connect<StateProps, ActionProps, any>(
     mapStateToProps, 
     mapDispatchToProps
 )((props, ctx) => {
-    let prePath = "/" + props.UE + "/" + props.course
+    let prePath = "/" + props.params.UE + "/" + props.params.course
 
-    console.log("props: ", props)
+    console.log(props)
+    console.log(prePath)
 
     if(props.isTeacher) {
         return <TabsTemp 

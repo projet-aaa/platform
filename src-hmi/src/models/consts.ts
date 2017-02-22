@@ -23,3 +23,11 @@ export const appName = "AAA"
 export const apiRootURL = "http://localhost/app_dev.php/api"
 
 export const loginURL = "http://localhost/app_dev.php/api/login_check"
+
+declare var username_global
+declare var password_global
+declare var id_global
+
+export const username = username_global
+export const password = password_global
+export const id = id_global

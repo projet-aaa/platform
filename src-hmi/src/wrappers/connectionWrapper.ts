@@ -1,18 +1,18 @@
 import { connect } from "react-redux"
 
-import { fetchOnUpdate } from "../../utils"
+import rootWrapper from "./rootWrapper"
 
-import { View } from "../../views/quiz/remoteView"
+import { View } from "../views/quiz/remoteView"
 
-import { AuthState } from "../../store/auth/reducer" 
-import { WSRoomState } from "../../store/wsrooms/reducer"
+import { AuthState } from "../store/auth/reducer" 
+import { WSRoomState } from "../store/wsrooms/reducer"
 
-import { joinRoom, openClassRoom, subscribe } from "../../store/wsrooms/actions"
-import { authWS } from "../../store/auth/actions"
+import { joinRoom, openClassRoom, subscribe } from "../store/wsrooms/actions"
+import { authWS } from "../store/auth/actions"
 
-import { CONNECTION_STATE } from "../../models/wsServer/server"
+import { CONNECTION_STATE } from "../models/wsServer/server"
 
-export default function createConnector(View, isTeacher: boolean) {
+export default function connectionWrapper(View, isTeacher: boolean) {
     function mapStateToProps(state, ownProps) {
         let auth: AuthState = state.auth,
             wsrooms: WSRoomState = state.wsserver,
@@ -60,13 +60,11 @@ export default function createConnector(View, isTeacher: boolean) {
         return Object.assign(sp, dp, op)
     }
 
-    return connect<StateProps, ActionProps, any>(
-        mapStateToProps, 
+    return rootWrapper(
+        mapStateToProps,
         mapDispatchToProps,
-        mergeProps
-    )(fetchOnUpdate(
-        (props) => {
-            props.subscribe()
-        }
-    )(View))
+        mergeProps,
+        props => { props.subscribe() },
+        View
+    )
 }

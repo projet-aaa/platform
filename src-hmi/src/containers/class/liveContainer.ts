@@ -1,6 +1,6 @@
 import { connect } from "react-redux"
 
-import { fetchOnUpdate } from "../../utils"
+import rootWrapper from "../../wrappers/rootWrapper"
 
 import { StateProps, ActionProps, View } from "../../views/class/liveView"
 
@@ -14,7 +14,6 @@ function mapStateToProps(state, ownProps): StateProps {
     }
 }
 function mapDispatchToProps(dispatch, ownProps): any {
-    console.log(ownProps)
     return {
         subscribe: () => dispatch(subscribe(true)),
         genURL: ownProps.isTeacher ? 
@@ -23,11 +22,10 @@ function mapDispatchToProps(dispatch, ownProps): any {
     }
 }
 
-export default connect<StateProps, ActionProps, any>(
-    mapStateToProps, 
-    mapDispatchToProps
-)(fetchOnUpdate(
-    (props) => {
-        props.subscribe()
-    }
-)(View))
+export default rootWrapper(
+    mapStateToProps,
+    mapDispatchToProps,
+    null,
+    props => { props.subscribe()},
+    View
+)
