@@ -13,7 +13,7 @@ export const APIActionTypes = {
 
     END_QUIZ: "CLASS/END_QUIZ",
     END_QUIZ_SUCCESS: "CLASS/END_QUIZ_SUCCESS",
-    END_QUIZ_FAILURE: "CLASS/END_QUIZ_FAILURE"
+    END_QUIZ_FAILURE: "CLASS/END_QUIZ_FAILURE",
 }
 
 export const WSInActionTypes = {

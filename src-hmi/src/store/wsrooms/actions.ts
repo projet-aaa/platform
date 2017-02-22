@@ -1,5 +1,9 @@
 import { Action } from '../../utils'
 
+import * as fetch from "isomorphic-fetch"
+
+import { Quiz } from '../../models/class/class'
+
 export const OutMsgType = {
     GET_ROOMS: "SERVER/GET_ROOMS",
     JOIN_ROOM: "SERVER/JOIN_ROOM",
@@ -56,10 +60,16 @@ export function leaveRoom() {
     }
 }
 
-export function openClassRoom() {
+export function openClassRoom(sessionId: string) {
+    return dispatch => {
+        
+    }
+}
+
+export function openClassRoomServer(quiz: Quiz[], sessionId) {
     return {
         type: OutMsgType.OPEN_ROOM,
-        payload: { type: "CLASS" }
+        payload: { type: "CLASS", quiz, sessionId }
     }
 }
 

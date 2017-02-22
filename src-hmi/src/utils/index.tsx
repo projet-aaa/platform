@@ -144,7 +144,7 @@ export const authAPIMiddleware = auth => store => next => action => {
             })
 
             if(apiCall.successPromise) {
-                apiCall.successPromise()
+                apiCall.successPromise(action)
             }
         } else if(action.type.substring(0, apiCallFailureText.length) == apiCallFailureText) {
             let index = parseInt(action.type.substring(apiCallFailureText.length))

@@ -45,7 +45,7 @@ export class MainRoom extends IMainRoom {
                 if(!this.server.rooms.find((room: IRoom) => 
                     room && room.teacher == socket.username
                 )) {
-                    let room = this.server.rooms[this.server.createRoom(msg.type, socket.username)],  
+                    let room = this.server.rooms[this.server.createRoom(msg.type, socket.username, msg)],  
                         roomInfo: IRoom = this.server.getRoomInfo(room)
                     
                     console.log(this.server.rooms)

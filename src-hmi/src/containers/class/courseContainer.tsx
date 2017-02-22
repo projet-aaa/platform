@@ -20,9 +20,7 @@ function mapStateToProps(state: any, ownProps: any): any {
     }
 }
 function mapDispatchToProps(dispatch, ownProps): any {
-    return {
-        
-    }
+    return { }
 }
 
 export default connect<StateProps, ActionProps, any>(

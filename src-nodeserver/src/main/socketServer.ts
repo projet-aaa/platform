@@ -82,16 +82,26 @@ export class SocketServer {
         })
     }
 
-    createRoom(type: string, teacher: string): number {
+    createRoom(type: string, teacher: string, msg): number {
         let id = this.nextId++,
-            room: IRoom = null
+            room = null
 
         if(this.log)
             console.log('[create room] type=', type, ' id=', id)
 
         switch(type) {
-            case RoomType.CLASS: room = new ClassRoom(this, id); break
-            default: room = new ClassRoom(this, id); break
+            default: {
+                room = new ClassRoom(this, id)
+                if(msg.sessionId) {
+                    let quizs = {}
+                    msg.quiz.forEach(quiz => {
+                        quizs[quiz.id] = quiz
+                    })
+                    (room as ClassRoom).quiz = quizs;
+                    (room as ClassRoom).sessionId = msg.sessionId;
+                }
+                break
+            }
         }
 
         this.rooms[id] = room

@@ -56,7 +56,6 @@ function mapDispatchToProps(dispatch): ActionProps {
     }
  }
 
-
 export default rootWrapper(
     mapStateToProps, 
     mapDispatchToProps,
