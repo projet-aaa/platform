@@ -1,4 +1,6 @@
-import { connect } from "react-redux";
+import { connect } from "react-redux"
+
+import rootWrapper from "../../wrappers/rootWrapper"
 
 import { AuthState } from "../../store/auth/reducer"
 
@@ -14,7 +16,10 @@ function mapDispatchToProps(dispatch): any {
     return { }
 }
 
-export default connect<StateProps, ActionProps, any>(
+export default rootWrapper(
     mapStateToProps, 
-    mapDispatchToProps
-)(View)
+    mapDispatchToProps,
+    null,
+    null,
+    View
+)

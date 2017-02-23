@@ -36,7 +36,7 @@ export class View extends React.Component<Props, any> {
             if (disciplines[i].name == discipline) {
                 disciplinesRender.push(
                     <li key={i} className="active">
-                        <Link to={ "/" + disciplines[i] } >
+                        <Link to={ "/" + disciplines[i].name } >
                             <div className="icon-bg bg-orange"/>
                             <span className="menu-title">{ disciplines[i].name }</span>
                         </Link>
@@ -45,7 +45,7 @@ export class View extends React.Component<Props, any> {
             } else {
                 disciplinesRender.push(
                     <li key={i}>
-                        <Link to={ "/" + disciplines[i] } >
+                        <Link to={ "/" + disciplines[i].name } >
                             <div className="icon-bg bg-orange"/>
                             <span className="menu-title">{ disciplines[i].name }</span>
                         </Link>

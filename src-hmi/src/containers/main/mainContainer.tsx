@@ -1,7 +1,8 @@
-import { connect } from "react-redux";
+import { connect } from "react-redux"
 import * as _ from "underscore"
 
-import { fetchOnUpdate, isAuthentified } from "../../utils"
+import rootWrapper from "../../wrappers/rootWrapper"
+import { isAuthentified } from "../../utils"
 
 import { StateProps, ActionProps, View } from "../../views/main/mainView"
 
@@ -10,7 +11,7 @@ import { selectFilter, search } from "../../store/main/actions/actions"
 
 import { AuthState } from "../../store/auth/reducer"
 
-function mapStateToProps(state: any): StateProps {
+function mapStateToProps(state): StateProps {
     let auth: AuthState = state.auth
     return { 
         sessions: _.values(state.sessions.sessions)
@@ -28,11 +29,10 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect<StateProps, ActionProps, any>(
+export default rootWrapper(
     mapStateToProps, 
-    mapDispatchToProps
-)(fetchOnUpdate(
-    (props) => {
-        props.fetchSessions()
-    }
-) (View))
+    mapDispatchToProps,
+    null,
+    props => { props.fetchSessions() },
+    View
+)

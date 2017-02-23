@@ -3,7 +3,6 @@ import { createAPIActionCreator } from '../../../utils'
 import { Action } from '../../../utils'
 import { APIActionTypes, WSOutActionTypes } from './actionTypes'
 
-
 export function startQuiz(quizId) {
     return {
         type: WSOutActionTypes.START_QUIZ,

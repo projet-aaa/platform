@@ -6,5 +6,10 @@ services:
 
     discipline.search_filter:
         parent:    'api_platform.doctrine.orm.search_filter'
-        arguments: [ { part: 'exact'} ]
+        arguments: [ { part: 'exact', name: 'exact'} ]
         tags:      [ { name: 'api_platform.filter', id: 'discipline.search' } ]
+
+    session.search_filter:
+            parent:    'api_platform.doctrine.orm.search_filter'
+            arguments: [ { discipline: 'exact', name: 'exact'} ]
+            tags:      [ { name: 'api_platform.filter', id: 'session.search' } ]

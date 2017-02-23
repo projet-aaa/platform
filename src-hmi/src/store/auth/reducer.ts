@@ -17,6 +17,7 @@ export interface AuthState {
     disciplines: Discipline[]
     groups: string[]
     group: string
+    infoFetched: boolean
 
     token: string
 
@@ -38,6 +39,7 @@ let initialState: AuthState = {
     disciplines: [],
     groups: [],
     group: null,
+    infoFetched: false,
     
     token: null,
     authentifying: true,
@@ -68,7 +70,8 @@ const reducer = handleActions({
             disciplines: action.payload["hydra:member"].map(discipline => { return {
                 id: discipline.id,
                 name: discipline.name
-            }})
+            }}),
+            infoFetched: true
         })
     },
     [APIActionTypes.AUTH]: function(state: AuthState, action: any): AuthState {

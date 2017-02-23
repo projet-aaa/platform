@@ -29,24 +29,27 @@ export const WSInActionTypes = {
     
 }
 
-export function auth(id: number, username: string, password: string) {
+export function auth(id: number, username: string, password: string, successPromise?) {
     return (dispatch, getState) => {
+        if(!getState().auth.infoFetched) {
+            dispatch(authAPI(username, password))
+            dispatch(authLocal(id, username, password))
+            dispatch(fetchUser({ id }))
 
-        dispatch(authAPI(username, password))
-        dispatch(authLocal(id, username, password))
-        dispatch(fetchUser({ id }))
-
-        let i = setInterval(() => {
-            let { auth } = getState()
-            if(auth.group) {
-                clearInterval(i)
-                dispatch(fetchDiscipline({ part: auth.group }))
-            }
-        }, 250)
+            let i = setInterval(() => {
+                let { auth } = getState()
+                if(auth.group) {
+                    clearInterval(i)
+                    dispatch(fetchDiscipline({ part: auth.group }, successPromise))
+                }
+            }, 250)
+        } else {
+            successPromise()
+        }
     }
 }
 
-export const fetchUser: (info: { 
+const fetchUser: (info: { 
     id: number 
 }) => any
 = createAPIActionCreator(
@@ -57,9 +60,9 @@ export const fetchUser: (info: {
     APIActionTypes.FETCH_USER_SUCCESS,
     APIActionTypes.FETCH_USER_FAILURE
 )
-export const fetchDiscipline: (info: { 
+const fetchDiscipline: (info: { 
     part: string 
-}) => any
+}, successPromise?) => any
 = createAPIActionCreator(
     info => '/disciplines?part=' + info.part, 
     null,
@@ -69,14 +72,14 @@ export const fetchDiscipline: (info: {
     APIActionTypes.FETCH_DISCIPLINE_FAILURE
 )
 
-export function authLocal(id: number, username: string, password: string) {
+function authLocal(id: number, username: string, password: string) {
     return {
         type: ActionTypes.AUTH_LOCAL,
         payload: { id, username, password }
     }
 }
 
-export function authAPI(username: string, password: string) {
+function authAPI(username: string, password: string) {
     return {
         [CALL_API]: {
             endpoint: loginURL,

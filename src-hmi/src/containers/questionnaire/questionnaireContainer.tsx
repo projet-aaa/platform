@@ -2,6 +2,8 @@
 import { connect } from "react-redux";
 
 // INTERNAL IMPORTS
+import rootWrapper from "../../wrappers/rootWrapper"
+
 import { chooseAction, validateAction, 
         nextQuizAction, prevQuizAction,
         seeCorrectionAction, chooseQuizAction,
@@ -52,7 +54,10 @@ function mapDispatchToProps(dispatch, state): ActionProps {
     }
 }
 
-export default connect<StateProps, ActionProps, any>(
+export default rootWrapper(
     mapStateToProps, 
-    mapDispatchToProps
-)(View)
+    mapDispatchToProps,
+    null,
+    null,
+    View
+)

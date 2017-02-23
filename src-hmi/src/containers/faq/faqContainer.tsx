@@ -1,10 +1,14 @@
 import { connect } from "react-redux";
 
-import { retrieveThreadInfosAction, 
-         publishQuestionAction, 
-         changeQuestionValueAction,
-         postThreadMessageAction,
-         changeAnswerValueAction } from "../../store/faq/actions/actions"
+import rootWrapper from "../../wrappers/rootWrapper"
+
+import { 
+    retrieveThreadInfosAction, 
+    publishQuestionAction, 
+    changeQuestionValueAction,
+    postThreadMessageAction,
+    changeAnswerValueAction 
+} from "../../store/faq/actions/actions"
 
 import { StateProps, ActionProps, View } from "../../views/faq/faqView"
 
@@ -52,7 +56,10 @@ function mapDispatchToProps(dispatch): ActionProps {
     }
  }
 
-export default connect<StateProps, ActionProps, any>(
+export default rootWrapper(
     mapStateToProps, 
-    mapDispatchToProps
-)(View)
+    mapDispatchToProps,
+    null,
+    null,
+    View
+)

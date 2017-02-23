@@ -45,7 +45,7 @@ export class View extends React.Component<Props, any> {
                 backgroundColor: chartColors[j]
             }
             lessonRender.push(
-                <span>
+                <span key={ i }>
                     <span className="label label-defaut" style={ colorStyle } key={ disciplines[i] }>
                         { disciplines[i] }
                     </span>

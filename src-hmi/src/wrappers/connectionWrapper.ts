@@ -1,18 +1,18 @@
 import { connect } from "react-redux"
 
-import { fetchOnUpdate } from "../../utils"
+import rootWrapper from "./rootWrapper"
 
-import { View } from "../../views/quiz/remoteView"
+import { View } from "../views/quiz/remoteView"
 
-import { AuthState } from "../../store/auth/reducer" 
-import { WSRoomState } from "../../store/wsrooms/reducer"
+import { AuthState } from "../store/auth/reducer" 
+import { WSRoomState } from "../store/wsrooms/reducer"
 
-import { joinRoom, openClassRoom, subscribe } from "../../store/wsrooms/actions"
-import { authWS } from "../../store/auth/actions"
+import { joinRoom, openClassRoom, openClassRoomServer, subscribe } from "../store/wsrooms/actions"
+import { authWS } from "../store/auth/actions"
 
-import { CONNECTION_STATE } from "../../models/wsServer/server"
+import { CONNECTION_STATE } from "../models/wsServer/server"
 
-export default function createConnector(View, isTeacher: boolean) {
+export default function connectionWrapper(View, isTeacher: boolean) {
     function mapStateToProps(state, ownProps) {
         let auth: AuthState = state.auth,
             wsrooms: WSRoomState = state.wsserver,
@@ -36,21 +36,18 @@ export default function createConnector(View, isTeacher: boolean) {
             subscribe: () => dispatch(subscribe(true)),
             authWS: (id, username, isTeacher) => dispatch(authWS(id, username, isTeacher)),
             joinRoom: (roomId: number) => dispatch(joinRoom(roomId)),
-            createRoom: () => dispatch(openClassRoom())
+            // createRoom: () => dispatch(openClassRoom(ownProps.params.course))
+            createRoom: () => dispatch(openClassRoomServer(null, null))
         }
     }
 
     function mergeProps(sp, dp, op) {
         switch(sp.connectionState) {
-            case CONNECTION_STATE.NONE: {
-                dp.authWS(0, "abeyet", sp.isTeacher)
-                break
-            }
             case CONNECTION_STATE.AUTHENTIFIED: {
                 let room = sp.rooms.find(room => room.teacher == sp.teacher)
                 if(room) { 
                     dp.joinRoom(room.id) 
-                } else if(sp.isTeacher && sp.username == sp.teacher) {                
+                } else if(sp.isTeacher && sp.username == sp.teacher) {  
                     dp.createRoom()
                 }
                 break
@@ -60,13 +57,14 @@ export default function createConnector(View, isTeacher: boolean) {
         return Object.assign(sp, dp, op)
     }
 
-    return connect<StateProps, ActionProps, any>(
-        mapStateToProps, 
+    return rootWrapper(
+        mapStateToProps,
         mapDispatchToProps,
-        mergeProps
-    )(fetchOnUpdate(
-        (props) => {
-            props.subscribe()
-        }
-    )(View))
+        mergeProps,
+        props => { 
+            props.subscribe() 
+            props.authWS(0, "abeyet", props.isTeacher)
+        },
+        View
+    )
 }
