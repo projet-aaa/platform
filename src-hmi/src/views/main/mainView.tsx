@@ -45,9 +45,9 @@ export class View extends React.Component<Props, any> {
         for (var i=0 ; i<sessions.length ; i++) {
             sessionsRender.push(
                 <a key={i} className="list-group-item">
-                    { ddmmyyyy(sessions[i].date) } | { sessions[i].discipline } | { sessions[i].sessionName } : { sessions[i].teacherName } { sessions[i].live ? ": live!" : "" }
+                    { ddmmyyyy(sessions[i].updatedAt) } | { sessions[i].discipline } | { sessions[i].sessionName }
                 </a>
-            )
+            );
         }
         var filtersRender = []
         for (var i=0; i < disciplines.length; i++) {
