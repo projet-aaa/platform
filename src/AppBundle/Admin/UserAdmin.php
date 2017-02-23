@@ -37,8 +37,8 @@ class UserAdmin extends AbstractAdmin
     // Fields that will be displayed in list view
     protected function configureListFields(ListMapper $listMapper)
     {
-        $listMapper->addIdentifier('id')
-            ->add('username')
+        $listMapper->add('id')
+            ->addIdentifier('username')
             ->add('firstname')
             ->add('lastname')
             ->add('roles');
