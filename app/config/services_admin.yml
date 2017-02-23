@@ -12,76 +12,76 @@ services:
         class: AppBundle\Admin\AlertAdmin
         arguments: [~, AppBundle\Entity\Alert, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Alert }
+            - { name: sonata.admin, manager_type: orm, label: Alert, group: Cours }
 
     admin.discipline:
         class: AppBundle\Admin\DisciplineAdmin
         arguments: [~, AppBundle\Entity\Discipline, ~, '@kernel']
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Discipline }
+            - { name: sonata.admin, manager_type: orm, label: Discipline, group: General  }
 
     admin.feedback:
         class: AppBundle\Admin\FeedbackAdmin
         arguments: [~, AppBundle\Entity\Feedback, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Feedback }
+            - { name: sonata.admin, manager_type: orm, label: Feedback, group: Cours}
 
     admin.mcq_answer:
         class: AppBundle\Admin\McqAnswerAdmin
         arguments: [~, AppBundle\Entity\McqAnswer, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: MCQ Answer }
+            - { name: sonata.admin, manager_type: orm, label: MCQ Answer, group: Cours }
 
     admin.mcq_choice:
         class: AppBundle\Admin\McqChoiceAdmin
         arguments: [~, AppBundle\Entity\McqChoice, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: MCQ Choice }
+            - { name: sonata.admin, manager_type: orm, label: MCQ Choice, group: Cours }
 
     admin.question:
         class: AppBundle\Admin\QuestionAdmin
         arguments: [~, AppBundle\Entity\Question, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Question }
+            - { name: sonata.admin, manager_type: orm, label: Question, group: Cours }
 
     admin.session:
         class: AppBundle\Admin\SessionAdmin
         arguments: [~, AppBundle\Entity\Session, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Session }
+            - { name: sonata.admin, manager_type: orm, label: Session, group: General }
 
     admin.subject:
         class: AppBundle\Admin\SubjectAdmin
         arguments: [~, AppBundle\Entity\Subject, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Subject }
+            - { name: sonata.admin, manager_type: orm, label: Subject, group: General }
 
     admin.test:
         class: AppBundle\Admin\TestAdmin
         arguments: [~, AppBundle\Entity\Test, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Test }
+            - { name: sonata.admin, manager_type: orm, label: Test, group: Cours }
 
     admin.text_answer:
         class: AppBundle\Admin\TextAnswerAdmin
         arguments: [~, AppBundle\Entity\TextAnswer, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Text Answer }
+            - { name: sonata.admin, manager_type: orm, label: Text Answer, group: Cours }
 
     admin.thread:
         class: AppBundle\Admin\ThreadAdmin
         arguments: [~, AppBundle\Entity\Thread, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Thread }
+            - { name: sonata.admin, manager_type: orm, label: Thread, group: Cours,  }
 
     admin.thread_message:
             class: AppBundle\Admin\ThreadMessageAdmin
             arguments: [~, AppBundle\Entity\ThreadMessage, ~]
             tags:
-                - { name: sonata.admin, manager_type: orm, label: Thread Message }
+                - { name: sonata.admin, manager_type: orm, label: Thread Message, group: Cours }
 
     admin.user:
         class: AppBundle\Admin\UserAdmin
         arguments: [~, AppBundle\Entity\User, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: User }
+            - { name: sonata.admin, manager_type: orm, label: User, group: General }
