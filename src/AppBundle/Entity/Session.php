@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ApiResource
+ * @ApiResource(attributes={"filters"={"session.search"}})
  * @ORM\Entity
  * @UniqueEntity("name")
  * @ORM\HasLifecycleCallbacks()
