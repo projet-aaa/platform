@@ -61,10 +61,11 @@ export function leaveRoom() {
 export function openClassRoom(sessionId: string) {
     return dispatch => {
         fetcher('/sessions/' + sessionId)
-        .then((res: any) => res.tests.map(test => {
+        .then((res: any) => {
+            return res.tests.map(test => {
             let list = test.split('/')
             return list[list.length - 1]
-        }))
+        })})
         .then(tests => {
             let resQuestions = [],
                 choicesMissing = 0
@@ -92,6 +93,7 @@ export function openClassRoom(sessionId: string) {
                                     question.choices.push(choice)
                                     choicesMissing--
                                     if(!choicesMissing) {
+                                        console.log(resQuestions)
                                         let res = resQuestions.map(question => {
                                             return {
                                                 id: question.id,
@@ -101,7 +103,9 @@ export function openClassRoom(sessionId: string) {
                                                 question: question.text,
                                                 choices: question.choices && question.choices.map(choice => choice.text),
                                                 choiceIds: question.choices && question.choices.map(choice => choice.id),
-                                                answer: question.choices && question.choices.findIndex(choice => choice.correct),
+                                                answer: question.typeAnswer == "multiple" || question.typeAnswer == "unique" 
+                                                    ? question.choices && question.choices.findIndex(choice => choice.correct)
+                                                    : question.textAnswers && question.textAnswers.length && question.textAnswers[0],
                                                 explanations: question.choices && question.choices.map(choice => "NONE"),
                                                 justification: question.explication
                                             }

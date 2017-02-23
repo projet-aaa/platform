@@ -19,7 +19,7 @@ export interface StateProps {
     // a quiz
     quiz: Quiz
     // the current choice
-    quizChoice: QuizLocalChoice
+    quizChoice: any
 
     // true => show the correction
     showCorrection: boolean
@@ -99,7 +99,7 @@ export class View extends React.Component<any, any> {
             signalSlow,
             signalFast,
             signalOk,
-        } = this.props;
+        } = this.props
         
         // if there is a question we show the quiz, else we show the feedback buttons
         let left = question && quiz ?
@@ -132,6 +132,6 @@ export class View extends React.Component<any, any> {
                 </div>
             }
             </div>
-        );
+        )
     }
 }

@@ -126,7 +126,7 @@ export class ClassRoom extends IRoom {
             }
             // STUDENT
             case SocketInMsg.ANSWER: {
-                if(msg.type == "MCQ" && this.currQuizId && msg.questionId == this.currQuizId) {
+                if(this.currQuizId && msg.questionId == this.currQuizId) {
                     if(this.quiz[this.currQuizId].answer == msg.choice) {
                         this.correctAnswer++
                     }

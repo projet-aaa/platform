@@ -16,7 +16,7 @@ export interface StateProps {
     // a quiz
     quiz: Quiz
     // the current choice
-    quizChoice: QuizLocalChoice
+    quizChoice: any
 
     // true if there is a question now, false else (in that case we show the feedback buttons)
     question: boolean
@@ -65,7 +65,7 @@ export class View extends React.Component<any, any> {
             signalSlow,
             signalFast,
             signalOk
-        } = this.props;
+        } = this.props
         
         // if there is a question we show the quiz, else we show the feedback buttons
         let mainComponent = question ?
@@ -78,6 +78,6 @@ export class View extends React.Component<any, any> {
                 { mainComponent }
                 <CommentBoxViewMobile send={ sendComment }/>
             </div>
-        );
+        )
     }
 }

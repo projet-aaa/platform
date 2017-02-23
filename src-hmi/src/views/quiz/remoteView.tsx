@@ -67,6 +67,6 @@ export class View extends React.Component<Props, any> {
                     <MobileView {...this.props}/>
                 </MediaQuery>
             </div>
-        );
+        )
     }
 }

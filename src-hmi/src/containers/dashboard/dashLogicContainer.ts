@@ -11,13 +11,17 @@ function mapStateToProps(state: any): StateProps {
     let dash: DashboardState = state.dashboard
 
     let stats = {},
-        quiz = dash.currQuizId && dash.quiz ? dash.quiz[dash.currQuizId] : null
+        quiz: Quiz = dash.currQuizId && dash.quiz ? dash.quiz[dash.currQuizId] : null
 
     if(quiz) {
-        Object.keys(dash.currQuizStat).forEach(function (key) {
-            var count = dash.currQuizStat [key]
-            stats[(quiz as Quiz).choices[key]] = count
-        })
+        if(quiz.type == "MCQ") {
+            Object.keys(dash.currQuizStat).forEach(function (key) {
+                var count = dash.currQuizStat [key]
+                stats[(quiz as Quiz).choices[key]] = count
+            })
+        } else {
+            stats = dash.currQuizStat
+        }
     }
 
     return { 

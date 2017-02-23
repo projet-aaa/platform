@@ -31,7 +31,6 @@ export function answerAction(info: {
                 questionId: info.questionId
             }
         }
-        console.log(answer)
         dispatch(answerAPIAction(info))
         dispatch(answer)
     }

@@ -2,8 +2,6 @@ import { connect } from "react-redux"
 
 import rootWrapper from "./rootWrapper"
 
-import { View } from "../views/quiz/remoteView"
-
 import { AuthState } from "../store/auth/reducer" 
 import { WSRoomState } from "../store/wsrooms/reducer"
 

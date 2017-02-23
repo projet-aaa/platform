@@ -84,7 +84,10 @@ export class View extends React.Component<Props, any> {
                 <div className="col-lg-8">
                     <div className="row">
                         { currentQuiz != null &&  
-                            <QuizStatView quizStats={ quizStats } correctChoice={ currentQuiz.choices[currentQuiz.answer] }/>
+                            <QuizStatView quizStats={ quizStats } correctChoice={ 
+                                currentQuiz.type == "MCQ" ? 
+                                currentQuiz.choices[currentQuiz.answer] : currentQuiz.answer
+                            }/>
                         }
                     </div>
                     <div className="row">

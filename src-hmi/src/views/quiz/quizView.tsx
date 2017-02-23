@@ -80,10 +80,7 @@ export class View extends React.Component<Props, any> {
         switch(quiz.type) {
             // the render is a list of AnswerView (radio button and answer text)
             case QuizType.MCQ: 
-                let createChooseAction = (i) => {
-                    return choose == null ? () => {  }: () => { choose(i) }
-                } 
-                var answerItems = quiz.choices.map((item, i) => {
+                let answerItems = quiz.choices.map((item, i) => {
                     return <AnswerView
                         key={ i }
                         ind={ i } 
@@ -93,16 +90,10 @@ export class View extends React.Component<Props, any> {
                         explanation={ quiz.explanations[i] } 
                         showCorrection={ showCorrection }
                         forceUnfold={ forceUnfold }
-
-                        choose={ createChooseAction(i) } 
+                        choose={ choose == null ? () => { }: () => { choose(i) } } 
                     />
                 })
-                answers = 
-                (
-                    <ul>
-                        {answerItems}
-                    </ul>
-                )
+                answers = (<ul>{ answerItems }</ul>)
             break
             // the render is a text field
             case QuizType.TEXT:
@@ -119,15 +110,15 @@ export class View extends React.Component<Props, any> {
         // a question with its answers
         let questionRender = (
             <div>
-                <h3 style={bigSizeText}>{ quiz.question }</h3>
+                <h3 style={ bigSizeText }>{ quiz.question }</h3>
                 <br/>
                 { answers }
-                { showCorrection ? <h3> { quiz.justification } </h3> : ""}
+                { showCorrection && <h3> { quiz.justification } </h3> }
             </div>
         )
 
         // back button
-        var backButtonRender = []
+        let backButtonRender = []
         if (back) {
             backButtonRender.push(
                 <div className="col-lg-2 no-padding">
@@ -137,13 +128,11 @@ export class View extends React.Component<Props, any> {
                 </div>
             )
             backButtonRender.push(
-                <div className="col-lg-3">
-                </div>
+                <div className="col-lg-3"></div>
             )
         } else {
             backButtonRender.push(
-                <div className="col-lg-5">
-                </div>
+                <div className="col-lg-5"></div>
             )
         }
         
@@ -173,10 +162,7 @@ export class View extends React.Component<Props, any> {
                 </div>
             )
         } else {
-            buttonsRender.push(
-                <div className="col-lg-4">
-                </div>
-            )
+            buttonsRender.push(<div className="col-lg-4"></div>)
         }
         if (nextQuiz) {
             // if we are in answer mode (showcorrection is false) we display skip question
@@ -189,10 +175,7 @@ export class View extends React.Component<Props, any> {
                 </div>
             )
         } else {
-            buttonsRender.push(
-                <div className="col-lg-4">
-                </div>
-            )
+            buttonsRender.push(<div className="col-lg-4"></div>)
         }
 
         let quizRender = (

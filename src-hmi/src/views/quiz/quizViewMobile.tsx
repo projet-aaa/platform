@@ -58,14 +58,11 @@ export class View extends React.Component<Props, any> {
                         key={ i } 
                         ind={ i } 
                         text={ item } 
-                        choose={ () => choose(i) } 
+                        choose={ choose == null ? () => { } : () => choose(i) } 
                         chosen={ quizChoice == i }
                     />
                 })
-                answers = 
-                (<ul style={ paddingUl }>
-                    {answerItems}
-                </ul>)
+                answers = (<ul style={ paddingUl }>{ answerItems }</ul>)
             break
             case QuizType.TEXT:
                 answers =
@@ -81,7 +78,7 @@ export class View extends React.Component<Props, any> {
         // a question with its answers
         let questionRender = (
             <div>
-                <h3 style={sizeText}>Enoncé : { quiz.question }</h3>
+                <h3 style={ sizeText }>Enoncé : { quiz.question }</h3>
                 { answers }
             </div>
         )
