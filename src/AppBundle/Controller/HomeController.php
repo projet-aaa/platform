@@ -23,4 +23,17 @@ class HomeController extends Controller
         return $this->render('AppBundle:Default:index.html.twig');
     }
 
+    /**
+     * Returns the dev html page - a page containing several helper for devs
+     *
+     * @Route("/dev", name="devpage")
+     * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @return Response
+     */
+    public function devAction()
+    {
+        return $this->render('AppBundle:Default:dev.html.twig');
+    }
+
 }
