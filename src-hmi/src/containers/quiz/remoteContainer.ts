@@ -126,6 +126,5 @@ export default connectionWrapper(
         mapStateToProps, 
         mapDispatchToProps,
         mergeProps
-    )(View), 
-    false
+    )(View)
 )

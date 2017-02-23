@@ -10,7 +10,7 @@ import { authWS } from "../store/auth/actions"
 
 import { CONNECTION_STATE } from "../models/wsServer/server"
 
-export default function connectionWrapper(View, isTeacher: boolean) {
+export default function connectionWrapper(View) {
     function mapStateToProps(state, ownProps) {
         let auth: AuthState = state.auth,
             wsrooms: WSRoomState = state.wsserver,
@@ -19,8 +19,9 @@ export default function connectionWrapper(View, isTeacher: boolean) {
                 wsrooms.rooms.find(room => wsrooms.currentRoom == room.id) : null
 
         return {
-            username: "abeyet",
-            isTeacher: isTeacher,
+            id: auth.id,
+            username: auth.lastName,
+            isTeacher: auth.isTeacher,
             teacher,
             rooms: wsrooms.rooms,
             currentRoom,
@@ -59,8 +60,8 @@ export default function connectionWrapper(View, isTeacher: boolean) {
         mapDispatchToProps,
         mergeProps,
         props => { 
+            props.authWS(props.id, props.username, props.isTeacher)
             props.subscribe() 
-            props.authWS(0, "abeyet", props.isTeacher)
         },
         View
     )
