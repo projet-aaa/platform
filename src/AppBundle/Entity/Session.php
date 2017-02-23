@@ -44,7 +44,6 @@ class Session
      * @var \DateTime the last time the object was updated.
      * Auto-updated with preUpdate and prePersist callback
      *
-     * @Assert\NotBlank()
      * @ORM\Column(type="datetime", nullable=false)
      */
     private $updatedAt;
