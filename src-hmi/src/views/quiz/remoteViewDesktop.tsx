@@ -102,7 +102,7 @@ export class View extends React.Component<any, any> {
         } = this.props;
         
         // if there is a question we show the quiz, else we show the feedback buttons
-        let left = question ?
+        let left = question && quiz ?
             <QuizView quiz={ quiz } quizChoice={ quizChoice } choose={ choose } validate={ validateAnswer } 
                     showCorrection={ showCorrection } forceUnfold={ forceUnfold } nextQuiz={ nextQuiz } 
                     prevQuiz={ prevQuiz } back={ null }/> :

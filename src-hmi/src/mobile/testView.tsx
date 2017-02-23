@@ -1,9 +1,9 @@
-import * as React from 'react';
+import * as React from 'react'
 import {
     StyleSheet,
     Text,
     View
-} from 'react-native';
+} from 'react-native'
 
 export default class TextView extends React.Component<any, any> {
     render() {

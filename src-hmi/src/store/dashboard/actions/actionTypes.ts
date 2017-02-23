@@ -27,6 +27,8 @@ export const WSInActionTypes = {
     SIGNAL_STATE: "TEACHER/CLASS/SIGNAL_STATE",
 
     STUDENT_COUNT: "TEACHER/CLASS/STUDENT_COUNT",
+    
+    STUDENT_DISCONNECT: "TEACHER/CLASS/DISCONNECT"
 }
 
 export const WSOutActionTypes = {

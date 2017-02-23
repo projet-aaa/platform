@@ -1,5 +1,5 @@
 {
-  "name": "front-end",
+  "name": "JetPack",
   "version": "1.0.0",
   "description": "A react-redux todo boilerplate coded in typescript",
   "main": "index.js",

@@ -7,6 +7,7 @@ import { apiMiddleware } from 'redux-api-middleware'
 import { CALL_API } from 'redux-api-middleware';
 import createSocketIoMiddleware from 'redux-socket.io'
 import * as io from 'socket.io-client'
+import * as fetch from 'isomorphic-fetch'
 
 import { urlWS, chartColors, apiRootURL } from '../models/consts'
 
@@ -130,6 +131,21 @@ export function createAPIActionCreator(
 
         return actionObj
     }
+}
+
+export function fetcher(url, method?, obj?) {
+    let res: any = {
+        headers: {
+            Authorization: 'Bearer ' + (document as any).token
+        }
+    }
+    if(method) {
+        res.method = method
+    }
+    if(obj) {
+        res.body = JSON.stringify(obj)
+    }
+    return fetch(apiRootURL + url, res).then(res => res.json())
 }
 
 export const authAPIMiddleware = auth => store => next => action => {

@@ -193,6 +193,16 @@ const reducer = handleActions({
         return Object.assign({}, state, {
             studentPop: action.payload.studentPop
         })
+    },
+    [WSInActionTypes.STUDENT_DISCONNECT]: function(state: DashboardState, action: any): DashboardState {
+        return Object.assign({}, state, {
+            panic: state.panic + (action.payload.state == "PANIC" ? - 1: 0),
+            tooSlow: state.tooSlow + (action.payload.state == "TOO_SLOW" ? - 1: 0),
+            tooFast: state.tooFast + (action.payload.state == "TOO_FAST" ? - 1: 0),
+            currQuizStat: action.payload.choice != null ? Object.assign({}, state.currQuizStat, {
+                [action.payload.choice]: state.currQuizStat[action.payload.choice] - 1
+            }): state.currQuizStat
+        })
     }
 }, initialState);
 
