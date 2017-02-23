@@ -58,10 +58,14 @@ export function leaveRoom() {
     }
 }
 
-export function openClassRoom(sessionId: string) {
+export function openClassRoom(sessionName: string) {
     return dispatch => {
-        fetcher('/sessions/' + sessionId)
-        .then((res: any) => {
+        let sessionId
+        fetcher('/sessions?name=' + sessionName)
+        .then((res: any) => res["hydra:member"][0])
+        .then(res => {
+            console.log(res)
+            sessionId = res.id
             return res.tests.map(test => {
             let list = test.split('/')
             return list[list.length - 1]
