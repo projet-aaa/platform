@@ -80,15 +80,15 @@ export class View extends React.Component<Props, any> {
                     <div className="faq-item">
                         <div className="row">
                             <div className="col-lg-12">
-                                <a data-toggle="collapse" href={"#" + indRef} className={ forceUnfold ? "" : "collapsed" } aria-expanded={ forceUnfold ? "true" : "false" } style={ colorAnswerStyle }>
+                                <a data-toggle="collapse" href={ "#" + indRef } className={ forceUnfold ? "" : "collapsed" } aria-expanded={ forceUnfold ? "true" : "false" } style={ colorAnswerStyle }>
                                     <label className="tab" style={ mediumSizeText }>{ text }</label>
                                 </a>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-lg-12">
-                                <div id={indRef} className={ "panel-collapse collapse" + (forceUnfold ? " in" : "") } aria-expanded={ forceUnfold ? "true" : "false" }>
-                                    <div className="bigTab" style={sizeText}>
+                                <div id={ indRef } className={ "panel-collapse collapse" + (forceUnfold ? " in" : "") } aria-expanded={ forceUnfold ? "true" : "false" }>
+                                    <div className="bigTab" style={ sizeText }>
                                         { explanation }
                                     </div>
                                     <br/>

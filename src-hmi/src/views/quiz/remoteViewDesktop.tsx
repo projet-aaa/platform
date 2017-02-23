@@ -117,10 +117,7 @@ export class View extends React.Component<any, any> {
                         { left }
                     </div>
                     <div className="col-lg-4">
-                        <div className="row">
-                            <ScoreView score={ score } rank={ rank } population={ population } 
-                                highScore={ highscore } average={ average }/>
-                        </div>
+                        
                         <div className="row">
                             <CommentBoxView send={ sendComment }/>
                         </div>
@@ -135,3 +132,8 @@ export class View extends React.Component<any, any> {
         )
     }
 }
+
+// <div className="row">
+//                             <ScoreView score={ score } rank={ rank } population={ population } 
+//                                 highScore={ highscore } average={ average }/>
+//                         </div>

@@ -48,8 +48,7 @@ const reducer = handleActions({
         return Object.assign({}, state, {
             currQuizStat: Object.assign({}, state.currQuizStat, {
                 [action.payload.choice]: state.currQuizStat[action.payload.choice] 
-                    ? state.currQuizStat[action.payload.choice] + 1 
-                    : 1
+                    ? state.currQuizStat[action.payload.choice] + 1 : 1
             })
         })
     },

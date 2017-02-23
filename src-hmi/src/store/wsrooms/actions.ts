@@ -106,7 +106,7 @@ export function openClassRoom(sessionId: string) {
                                                 answer: question.typeAnswer == "multiple" || question.typeAnswer == "unique" 
                                                     ? question.choices && question.choices.findIndex(choice => choice.correct)
                                                     : question.textAnswers && question.textAnswers.length && question.textAnswers[0],
-                                                explanations: question.choices && question.choices.map(choice => "NONE"),
+                                                explanations: question.choices && question.choices.map(choice => ""),
                                                 justification: question.explication
                                             }
                                         })

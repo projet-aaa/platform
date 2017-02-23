@@ -74,10 +74,12 @@ export class View extends React.Component<any, any> {
         // the score is on the top, next there is the quiz or feddback and last the comment box
         return (
             <div style={ palNew }>
-                <ScoreViewMobile score={ score }/>
+
                 { mainComponent }
                 <CommentBoxViewMobile send={ sendComment }/>
             </div>
         )
     }
 }
+
+                // <ScoreViewMobile score={ score }/>
