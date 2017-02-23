@@ -99,4 +99,22 @@ class FeatureContext implements Context, SnippetAcceptingContext
         PHPUnit::assertTrue(is_dir($this->kernel->getRootDir().'/../var/git/'.$discipline->getId()));
 
     }
+
+    /**
+     * Get a github webpage too check that internet connection is ok.
+     * @Given I am connected to the internet
+     */
+    public function iAmConnectedToTheInternet(){
+        $content = file_get_contents('http://github.com/projet-aaa');//returns false if error.
+        PHPUnit::assertNotFalse($content);
+    }
+
+    /**
+     *
+     * @Then README file of :name folder should exist
+     */
+    public function readmeFileOfFolderShouldExist($name){
+        $discipline = $this->manager->getRepository('AppBundle:Discipline')->findOneByName($name);
+        PHPUnit::assertTrue(file_exists($this->kernel->getRootDir().'/../var/git/'.$discipline->getId().'/README.md'));
+    }
 }
