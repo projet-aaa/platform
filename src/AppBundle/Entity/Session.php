@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity("name")
  * @ORM\HasLifecycleCallbacks()
  */
-class Session
+class Session implements \JsonSerializable
 {
     /**
      * @ORM\Id
