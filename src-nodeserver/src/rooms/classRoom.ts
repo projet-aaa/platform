@@ -53,10 +53,12 @@ export class ClassRoom extends IRoom {
     correctAnswer: number
     totalAnswer: number
     currentStat: any
+    idToAnswer: any // student id -> choice
 
     panic: number = 0
     tooSlow: number = 0
     tooFast: number = 0
+    idToState: any // student id -> attention state
 
     get studentPop(): number { return this.studentSockets.length }
     get teacherPop(): number { return this.teacherSockets.length }
@@ -65,6 +67,7 @@ export class ClassRoom extends IRoom {
         super(server, id)
         this.studentSockets = []
         this.teacherSockets = []
+        this.idToState = {}
     }
 
     receiveSocketMsg(socket: SocketInfo, type: string, msg) {
@@ -82,6 +85,7 @@ export class ClassRoom extends IRoom {
                 this.currQuizId = msg.quizId
                 this.currQuizState = QuizInstanceState.HEADING
                 this.currentStat = {}
+                this.idToAnswer = {}
 
                 for(let socket of this.studentSockets) {
                     this.server.send(socket, SocketOutMsg.STUDENT_START_QUIZ, { quiz })
@@ -127,6 +131,7 @@ export class ClassRoom extends IRoom {
                         this.correctAnswer++
                     }
                     this.totalAnswer++
+                    this.idToAnswer[socket.id] = msg.choice
                     if(this.currentStat[msg.choice]) {
                         this.currentStat[msg.choice]++
                     } else {
@@ -140,9 +145,13 @@ export class ClassRoom extends IRoom {
                 break
             }
             case SocketInMsg.SIGNAL_STATE: {
-                this.panic += (msg.state == "PANIC" ? 1 : 0) - (msg.oldState == "PANIC" ? 1 : 0)
-                this.tooFast += (msg.state == "TOO_FAST" ? 1 : 0) - (msg.oldState == "TOO_FAST" ? 1 : 0)
-                this.tooSlow += (msg.state == "TOO_SLOW" ? 1 : 0) - (msg.oldState == "TOO_SLOW" ? 1 : 0)
+                let oldState = this.idToState[socket.id]
+
+                this.panic += (msg.state == "PANIC" ? 1 : 0) - (oldState == "PANIC" ? 1 : 0)
+                this.tooFast += (msg.state == "TOO_FAST" ? 1 : 0) - (oldState == "TOO_FAST" ? 1 : 0)
+                this.tooSlow += (msg.state == "TOO_SLOW" ? 1 : 0) - (oldState == "TOO_SLOW" ? 1 : 0)
+
+                this.idToState[socket.id] = msg.state
 
                 for(let socket of this.teacherSockets) {
                     this.server.send(socket, SocketOutMsg.SIGNAL_STATE, msg)
@@ -216,6 +225,18 @@ export class ClassRoom extends IRoom {
         } else {
             console.log("[student disconnect]")
             this.studentSockets.splice(this.studentSockets.indexOf(socket), 1)
+
+            for(let socket of this.teacherSockets) {
+                this.server.send(socket, SocketOutMsg.STUDENT_DISCONNECT, {
+                    choice: this.idToAnswer ? this.idToAnswer[socket.id] : null,
+                    state: this.idToState[socket.id]
+                })
+            }
+
+            if(this.idToAnswer) {
+                this.idToAnswer[socket.id] = null
+            }
+            this.idToState[socket.id] = null
 
             for(let socket of this.studentSockets) {
                 this.server.send(socket, SocketOutMsg.STUDENT_STUDENT_COUNT, {

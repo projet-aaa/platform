@@ -18,13 +18,13 @@ import { View } from "../../views/quiz/remoteView"
 function mapStateToProps(state, ownProps) {
     let remote: RemoteState = state.remote,
         auth: AuthState = state.auth,
-        quiz: Quiz = remote.quiz[remote.currQuizId]
+        quiz: Quiz = remote.quiz[remote.currQuizId] //&& remote.quiz.find(quiz => quiz.id == remote.currQuizId)
 
     return { 
         attentionState: remote.attentionState,
 
         sessionId: remote.sessionId,
-        quiz: quiz,
+        quiz,
         authorId: auth.id,
 
         questionId: remote.currQuizId,

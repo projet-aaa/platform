@@ -89,14 +89,16 @@ export class SocketServer {
         if(this.log)
             console.log('[create room] type=', type, ' id=', id)
 
+        console.log(msg)
+
         switch(type) {
             default: {
                 room = new ClassRoom(this, id)
                 if(msg.sessionId) {
                     let quizs = {}
-                    msg.quiz.forEach(quiz => {
+                    for(let quiz of msg.quiz) {
                         quizs[quiz.id] = quiz
-                    })
+                    }
                     (room as ClassRoom).quiz = quizs;
                     (room as ClassRoom).sessionId = msg.sessionId;
                 }

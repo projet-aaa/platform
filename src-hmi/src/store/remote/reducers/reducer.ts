@@ -144,9 +144,13 @@ const reducer = handleActions({
         })
     },
     [WSInActionTypes.CLASS_JOINED]: function(state: RemoteState, action: any): RemoteState {
+        let obj = {}
+        action.payload.quiz.forEach(quiz => {
+            obj[quiz.id] = quiz
+        })
         return Object.assign({}, state, {
             sessionId: action.payload.sessionId,
-            quiz: action.payload.quiz,
+            quiz: obj,
 
             quizHistory: action.payload.quizHistory,
             currConsulQuizInd: action.payload.quizHistory.length - 1,

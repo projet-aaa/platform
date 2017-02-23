@@ -36,8 +36,7 @@ export default function connectionWrapper(View, isTeacher: boolean) {
             subscribe: () => dispatch(subscribe(true)),
             authWS: (id, username, isTeacher) => dispatch(authWS(id, username, isTeacher)),
             joinRoom: (roomId: number) => dispatch(joinRoom(roomId)),
-            // createRoom: () => dispatch(openClassRoom(ownProps.params.course))
-            createRoom: () => dispatch(openClassRoomServer(null, null))
+            createRoom: () => dispatch(openClassRoom(ownProps.params.course))
         }
     }
 
