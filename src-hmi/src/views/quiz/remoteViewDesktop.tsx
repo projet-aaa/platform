@@ -5,14 +5,17 @@ import { connect } from "react-redux";
 import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
-import {View as QuizView} from "../../views/quiz/quizView"
-import {View as ScoreView} from "../../views/quiz/scoreView"
-import {View as FeedbackView} from "../../views/quiz/feedbackView"
-import { View as CommentBoxView} from "./commentBoxView"
+import { View as QuizView } from "../../views/quiz/quizView"
+import { View as ScoreView } from "../../views/quiz/scoreView"
+import { View as FeedbackView } from "../../views/quiz/feedbackView"
+import { View as CommentBoxView } from "./commentBoxView"
 import { QuizType, Quiz, QuizLocalChoice } from "../../models/class/class"
 import { getText } from '../../utils'
 
 export interface StateProps {
+    // has joined
+    isConnected: boolean
+    
     // a quiz
     quiz: Quiz
     // the current choice
@@ -34,12 +37,14 @@ export interface StateProps {
     highscore: number
     // the average of quiz
     average: number
+
+    attentionState: string
 }
 export interface ActionProps {
     // Fires an action signaling that an answer has been chosen
-    choose(id: number, choice: any)
+    choose(choice: any)
     // Fires an action signaling that an answer has been validated
-    validateAnswer(quizId: number)
+    validateAnswer()
     // Fires an action signaling a comment has been sent
     sendComment(comment: string)
     // go to the next question
@@ -52,6 +57,8 @@ export interface ActionProps {
     signalSlow()
     // signal fast
     signalFast()
+    // signal the student is neither in panic, too slow nor too fast
+    signalOk()
 }
 
 // style
@@ -64,52 +71,66 @@ var palNew = {
 }
 
 export type Props = StateProps & ActionProps;
-export class View extends React.Component<Props, any> {
+export class View extends React.Component<any, any> {
     props: Props
 
     render() {
         const {
+            isConnected,
+
             quiz,
             quizChoice,
             showCorrection,
             forceUnfold,
-            validateAnswer,
             question,
             score,
             rank,
             population,
             highscore,
             average,
+            attentionState,
+
             choose,
+            validateAnswer,
             sendComment,
             nextQuiz,
             prevQuiz,
             signalPanic,
             signalSlow,
-            signalFast
+            signalFast,
+            signalOk,
         } = this.props;
         
         // if there is a question we show the quiz, else we show the feedback buttons
         let left = question ?
-                    <QuizView quiz={ quiz } quizChoice={ quizChoice } choose={ choose } validate={ validateAnswer } showCorrection={ showCorrection } forceUnfold={ forceUnfold } nextQuiz={ nextQuiz } prevQuiz={ prevQuiz }/> :
-                    <FeedbackView signalPanic={ signalPanic } signalSlow={ signalSlow } signalFast={ signalFast }/>
+            <QuizView quiz={ quiz } quizChoice={ quizChoice } choose={ choose } validate={ validateAnswer } 
+                    showCorrection={ showCorrection } forceUnfold={ forceUnfold } nextQuiz={ nextQuiz } 
+                    prevQuiz={ prevQuiz } back={ null }/> :
+            <FeedbackView state={ attentionState } signalPanic={ signalPanic } signalSlow={ signalSlow } signalFast={ signalFast } signalOk={ signalOk }/>
         
         // the quiz or the buttons are on the left and the scores are on the right
         return (
-            <div className="page-content" >
+            <div>
+            { isConnected ?
                 <div className="row">
                     <div className="col-lg-8">
                         { left }
                     </div>
                     <div className="col-lg-4">
                         <div className="row">
-                            <ScoreView score={ score } rank={ rank } population={ population } highScore={ highscore } average={ average }/>
+                            <ScoreView score={ score } rank={ rank } population={ population } 
+                                highScore={ highscore } average={ average }/>
                         </div>
                         <div className="row">
                             <CommentBoxView send={ sendComment }/>
                         </div>
                     </div>
                 </div>
+                :
+                <div className="row">
+                    <h1>Connection au server...</h1>
+                </div>
+            }
             </div>
         );
     }

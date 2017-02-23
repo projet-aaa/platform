@@ -9,12 +9,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ApiResource
+ * @ApiResource(attributes={"filters"={"session.search"}})
  * @ORM\Entity
  * @UniqueEntity("name")
  * @ORM\HasLifecycleCallbacks()
  */
-class Session
+class Session implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -44,7 +44,6 @@ class Session
      * @var \DateTime the last time the object was updated.
      * Auto-updated with preUpdate and prePersist callback
      *
-     * @Assert\NotBlank()
      * @ORM\Column(type="datetime", nullable=false)
      */
     private $updatedAt;

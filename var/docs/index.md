@@ -8,10 +8,14 @@
    
     - [Install](https://github.com/projet-aaa/platform/blob/master/var/docs/back-end/install.md)
   
+    - [API](https://github.com/projet-aaa/platform/blob/master/var/docs/back-end/api.md)
+    
+    - [Integration & Imports](https://github.com/projet-aaa/platform/blob/master/var/docs/back-end/integration-imports.md)
+  
     - [Dev - Redis messages](https://github.com/projet-aaa/platform/blob/master/var/docs/back-end/redis-messages.md)
     
     - [Tests](https://github.com/projet-aaa/platform/blob/master/var/docs/back-end/tests.md)
-  
+    
  - [Browser front-end](https://github.com/projet-aaa/platform/blob/master/var/docs/browser-front-end)    
 
     - [React architecture](https://github.com/projet-aaa/platform/blob/master/var/docs/browser-front-end/react-architecture.md)

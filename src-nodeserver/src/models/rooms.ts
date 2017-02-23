@@ -11,6 +11,7 @@ export interface SocketInfo {
     username: string
     isTeacher: boolean
     roomId: number
+    subscribed: boolean
 }
 
 export interface RoomInfo {
@@ -18,4 +19,5 @@ export interface RoomInfo {
     type: string
     popStudent: number
     popTeacher: number
+    teacher: string
 }

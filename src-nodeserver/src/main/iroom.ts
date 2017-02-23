@@ -6,6 +6,7 @@ export abstract class IRoom {
     type: string
     server: any
     sockets: SocketInfo[]
+    teacher: string
 
     get occupancy(): number { return this.sockets.length }
 

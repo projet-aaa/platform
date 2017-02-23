@@ -54,7 +54,7 @@ class Question
      *
      * @ORM\OneToMany(targetEntity="McqChoice", mappedBy="question", cascade={"remove"})
      */
-    private $mcqChoice;
+    private $mcqChoices;
 
     /**
      * @var ArrayCollection[TextAnswer] All the answers to a text Question
@@ -86,7 +86,7 @@ class Question
      */
     public function __construct()
     {
-        $this->mcqChoice = new ArrayCollection();
+        $this->mcqChoices = new ArrayCollection();
         $this->textAnswers = new ArrayCollection();
     }
 
@@ -95,7 +95,7 @@ class Question
      */
     public function isMcqChoiceQuestionTypeConsistent()
     {
-        return ($this->typeAnswer == 'text' && $this->mcqChoice->count() == 0) ||
+        return ($this->typeAnswer == 'text' && $this->mcqChoices->count() == 0) ||
             $this->typeAnswer != 'text';
     }
 
@@ -160,31 +160,31 @@ class Question
     /**
      * @return mixed
      */
-    public function getMcqChoice()
+    public function getMcqChoices()
     {
-        return $this->mcqChoice;
+        return $this->mcqChoices;
     }
 
     /**
-     * @param mixed $mcqChoice
+     * @param mixed $mcqChoices
      */
-    public function setMcqChoice($mcqChoice)
+    public function setMcqChoices($mcqChoices)
     {
-        $this->mcqChoice = $mcqChoice;
+        $this->mcqChoices = $mcqChoices;
     }
 
     /**
      * @param $mcqChoice McqChoice a mcqchoice for the question
      */
     public function addMcqChoice(McqChoice $mcqChoice){
-        $this->mcqChoice[] = $mcqChoice;
+        $this->mcqChoices[] = $mcqChoice;
     }
 
     /**
      * @param McqChoice $mcqChoice
      */
     public function removeMcqChoice(McqChoice $mcqChoice){
-        $this->mcqChoice->removeElement($mcqChoice);
+        $this->mcqChoices->removeElement($mcqChoice);
     }
 
     /**

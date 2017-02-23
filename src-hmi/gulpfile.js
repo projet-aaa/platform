@@ -11,6 +11,7 @@ var gulp        = require('gulp'),
 
 var project = ts.createProject('src/tsconfig.json', { typescript: typescript });
 
+// HELPERS
 function getFolders(dir) {
   return fs.readdirSync(dir)
     .filter(function(file) {
@@ -54,19 +55,18 @@ function getApps() {
   }
 }
 
+// TASKS
 gulp.task('through-index', function () {
-  var apps = getApps()
-
-  return apps.map(function(app) {
+  return getApps().map(function(app) {
     var name = path.basename(app, '.tsx')
     return gulp.src(['src/dist/index.html'])
-      .pipe(gulp.dest('dist/' + name + '/') )
+      .pipe(gulp.dest('../web/webassets/' + name + '/') )
   })
 });
 
 gulp.task('through-all', function() {
   return gulp.src(['src/dist/general/**'])
-    .pipe(gulp.dest('dist/') )
+    .pipe(gulp.dest('../web/webassets') )
 })
 
 gulp.task('compile', function () {
@@ -75,21 +75,17 @@ gulp.task('compile', function () {
   return result.js.pipe(gulp.dest('.tmp'))
 });
 
-gulp.task('build', ['through-index', 'through-all', 'compile'], function () {
-  var apps = getApps()
-  
-  return apps.map(function(app) {
+gulp.task('build', ['through-index', 'through-all', 'compile'], function () { 
+  gulp.src('src/dist/index.html.twig')
+    .pipe(gulp.dest('../src/AppBundle/Resources/views/Default/'))
+
+  return getApps().map(function(app) {
     var name = path.basename(app, '.tsx')
     var b = browserify('.tmp/apps/' + app.split('.')[0] + '.js')
     return b.bundle()
       .pipe(source('bundle.js'))
-      .pipe(gulp.dest('dist/' + name))
+      .pipe(gulp.dest('../web/webassets/' + name))
   })
-})
-
-gulp.task('deploy', ['build'], function() {
-  return gulp.src('dist/**/*')
-    .pipe(gulp.dest('../web/webassets'))
 })
 
 gulp.task('clean', function (done) {

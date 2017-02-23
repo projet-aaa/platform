@@ -198,4 +198,56 @@ class JsonLdContext extends RestContext implements Context
         $client = $this->getSession()->getDriver()->getClient();
         $client->setServerParameter('HTTP_AUTHORIZATION', '');
     }
+
+
+    /** Test that a parameter is null
+     *
+     * @Then the property :propertyName should not be null
+     */
+    public function thePropertyIsNotNull($propertyName)
+    {
+        $data = json_decode($this->getSession()->getDriver()->getContent());
+        if (!empty($data)) {
+            if (!isset($data->$propertyName)) {
+                throw new Exception("Property '".$propertyName."' is not set!\n");
+            }
+        } else {
+            throw new Exception("The property was not found\n");
+        }
+    }
+
+    /** Test that a parameter is not null
+     *
+     * @Then the property :propertyName should be null
+     */
+    public function thePropertyIsNull($propertyName)
+    {
+        $data = json_decode($this->getSession()->getDriver()->getContent());
+        if (!empty($data)) {
+            if (isset($data->$propertyName)) {
+                throw new Exception("Property '".$propertyName."' is set!\n");
+            }
+        } else {
+            throw new Exception("The property was not found\n");
+        }
+    }
+
+    /** Test the value of a parameter
+     *
+     * @Then the property :propertyName should be equals to :propertyValue
+     */
+    public function thePropertyEquals($propertyName, $propertyValue)
+    {
+        $data = json_decode($this->getSession()->getDriver()->getContent());
+        if (!empty($data)) {
+            if (!isset($data->$propertyName)) {
+                throw new Exception("Property '".$propertyName."' is not set!\n");
+            }
+            if ($data->$propertyName !== $propertyValue) {
+                throw new \Exception('Property value mismatch! (given: '.$propertyValue.', match: '.$data->$propertyName.')');
+            }
+        } else {
+            throw new Exception("The property was not found\n");
+        }
+    }
 }

@@ -8,18 +8,32 @@ export const QuizType = {
 
 // The heading of a quiz
 export interface Quiz {
-    id: number
+    id: string
     type: string
     title: string
+
     question: string
+
     choices: any
+    choiceIds: string[]
+
     answer: any
     explanations: any
+
+    justification: string
 }
+
+// a group of quiz
+export interface QuizGroup {
+    id: string
+    title: string
+    quizs: Quiz[]
+}
+
 
 // The choice of a user for a given quiz
 export interface QuizLocalChoice {
-    quizId: number
+    quizId: string
 
     choice: any
 }
@@ -46,7 +60,8 @@ export const AttentionEventType = {
 export const AttentionStateType = {
     PANIC: "PANIC",
     TOO_SLOW: "TOO_SLOW",
-    TOO_FAST: "TOO_FAST"
+    TOO_FAST: "TOO_FAST",
+    OK: "OK"
 }
 
 export interface AttentionEvent {
@@ -68,7 +83,7 @@ export const QuizInstanceState = {
 }
 
 export interface QuizLauncher {
-    quizId: number
+    quizId: string
     title: string
     state: number // 0: not done; 1: being run; 2: already ran 
     successRate: number

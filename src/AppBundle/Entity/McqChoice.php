@@ -46,7 +46,7 @@ class McqChoice
      * @var Question the question which that object is a choice of
      *
      * @Assert\NotNull()
-     * @ORM\ManyToOne(targetEntity="Question", inversedBy="mcqChoice")
+     * @ORM\ManyToOne(targetEntity="Question", inversedBy="mcqChoices")
      * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
      */
     private $question;

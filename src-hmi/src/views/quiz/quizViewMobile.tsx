@@ -11,11 +11,11 @@ export interface StateProps {
     // the quiz 
     quiz: Quiz
     // the choice the player has done
-    quizChoice: QuizLocalChoice
+    quizChoice: any
 }
 export interface ActionProps {
-    choose(quizId: number, choice: any) // select an answer
-    validate(quizId: number) // validate the answer
+    choose(choice: any) // select an answer
+    validate() // validate the answer
 }
 
 // style for the text
@@ -42,34 +42,38 @@ export class View extends React.Component<Props, any> {
             quizChoice,
             choose, 
             validate
-        } = this.props;
+        } = this.props
 
         let inputFieldStyle = {
-            height:"25px",
-            fontSize:"15pt"
+            height: "25px",
+            fontSize: "15pt"
         }
 
         // answers can have different type according to the type of quiz (MCQ, open question)
-        let answers = null
+        let answers
         switch(quiz.type) {
             case QuizType.MCQ: 
                 var answerItems = quiz.choices.map((item, i) => {
-                    return <AnswerViewMobile key={item} ind={i} text={item} choose={ choose(quiz.id, i) } chosen={ quizChoice.choice == i }/>;
-                });
+                    return <AnswerViewMobile 
+                        key={ i } 
+                        ind={ i } 
+                        text={ item } 
+                        choose={ () => choose(i) } 
+                        chosen={ quizChoice == i }
+                    />
+                })
                 answers = 
-                (
-                    <ul style={ paddingUl }>
-                        {answerItems}
-                    </ul>
-                )
+                (<ul style={ paddingUl }>
+                    {answerItems}
+                </ul>)
             break
             case QuizType.TEXT:
                 answers =
                 (<input id="quiz-text" 
                         type="text" 
-                        value={ quizChoice.choice }
+                        value={ quizChoice }
                         style={ inputFieldStyle }
-                        onChange={ () => choose(quiz.id, getText("quiz-text")) }> 
+                        onChange={ () => choose(getText("quiz-text")) }> 
                 </input>)
             break
         }
@@ -82,23 +86,23 @@ export class View extends React.Component<Props, any> {
             </div>
         )
         let quizRender = (
-                <div className="row">
-                    <div className="col-lg-12">
-                        { questionRender }
-                    </div>
+            <div className="row">
+                <div className="col-lg-12">
+                    { questionRender }
                 </div>
-            )
+            </div>
+        )
 
         // validate button
         let validateButton = (
-                <div className="row">
-                    <div className="pull-right">
-                        <div className="btn btn-success" onClick={ () => validate(quiz.id) }>
-                            Valider réponse
-                        </div>
+            <div className="row">
+                <div className="pull-right">
+                    <div className="btn btn-success" onClick={ () => validate() }>
+                        Valider réponse
                     </div>
                 </div>
-            )
+            </div>
+        )
         
         // returns a panel containing the question and the answers defined above
         return (
@@ -110,6 +114,6 @@ export class View extends React.Component<Props, any> {
                     </div>
                 </div>
             </div>
-        );
+        )
     }
 }

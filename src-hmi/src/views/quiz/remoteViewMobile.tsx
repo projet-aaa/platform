@@ -25,9 +25,9 @@ export interface StateProps {
 }
 export interface ActionProps {
     // Fires an action signaling that an answer has been chosen
-    choose(id: number, choice: any)
+    choose(choice: any)
     // Fires an action signaling that an answer has been validated
-    validateAnswer(quizId: number)
+    validateAnswer()
     // Fires an action signaling a comment has been sent
     sendComment(comment: string)
     // signal panic
@@ -36,6 +36,7 @@ export interface ActionProps {
     signalSlow()
     // signal fast
     signalFast()
+    signalOk()
 }
 
 // style
@@ -48,7 +49,7 @@ var palNew = {
 }
 
 export type Props = StateProps & ActionProps;
-export class View extends React.Component<Props, any> {
+export class View extends React.Component<any, any> {
     props: Props
 
     render() {
@@ -62,13 +63,14 @@ export class View extends React.Component<Props, any> {
             sendComment,
             signalPanic,
             signalSlow,
-            signalFast
+            signalFast,
+            signalOk
         } = this.props;
         
         // if there is a question we show the quiz, else we show the feedback buttons
         let mainComponent = question ?
                     <QuizViewMobile quiz={ quiz } quizChoice={ quizChoice } choose={ choose } validate={ validateAnswer }/> :
-                    <FeedbackViewMobile signalPanic={ signalPanic } signalSlow={ signalSlow } signalFast={ signalFast }/>
+                    <FeedbackViewMobile signalPanic={ signalPanic } signalSlow={ signalSlow } signalFast={ signalFast } signalOk={ signalOk }/>
         // the score is on the top, next there is the quiz or feddback and last the comment box
         return (
             <div style={ palNew }>

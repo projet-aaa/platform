@@ -2,12 +2,12 @@ import { Thread } from "../../../models/faq"
 
 export const ActionTypes = {
     CREATETHREAD: "FAQ/CREATETHREAD",   
+    CHANGEANSWERVALUE: "FAQ/CHANGEANSWERVALUE",
     POSTTHREADMESSAGE: "FAQ/POSTTHREADMESSAGE",
     RETRIEVETHREADINFOS: "FAQ/RETRIEVETHREADINFOS",
     RECEIVETHREADINFOS: "FAQ/RECEIVETHREADINFOS",
     PUBLISHQUESTION: "FAQ/PUBLISHQUESTION",
     CHANGEQUESTIONVALUE: "FAQ/CHANGEQUESTIONVALUE"
-
 }
 
 
@@ -17,11 +17,15 @@ export interface CreateThreadAction {
         sessionId: number      
 }
 
+export interface ChangeAnswerValueAction {
+        threadId: number
+        answerValue: string
+}
+
 
 export interface PostThreadMessageAction {
         text: string        //as html
-        threadId: number  
-        user: string          
+        threadId: number        
 }
 
 

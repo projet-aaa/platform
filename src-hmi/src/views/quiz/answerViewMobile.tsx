@@ -39,24 +39,18 @@ export class View extends React.Component<Props, any> {
             text
         } = this.props;
 
-        let colorAnswerButton = null
+        let colorAnswerButton
         if (chosen) {
-            colorAnswerButton = {
-                backgroundColor: "green"
-            }
+            colorAnswerButton = { backgroundColor: "green" }
         } else {
-            colorAnswerButton = {
-
-            }
+            colorAnswerButton = { }
         }
     
         // An answer is a button
         return (
-            <div>
-                <li className="without-bullet" style={ bottomPadding }>
-                    <button className="btn btn-sm btn-primary covering-size" onClick={ choose } style={ colorAnswerButton }>{ text }</button>
-                </li>
-            </div>
-        );
+            <li className="without-bullet" style={ bottomPadding }>
+                <button className="btn btn-sm btn-primary covering-size" onClick={ choose } style={ colorAnswerButton }>{ text }</button>
+            </li>
+        )
     }
 }

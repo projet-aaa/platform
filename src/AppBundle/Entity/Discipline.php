@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ApiResource
+ * @ApiResource(attributes={"filters"={"discipline.search"}})
  * @ORM\Entity
  * @UniqueEntity("name")
  * @UniqueEntity("gitUrl")
@@ -43,6 +43,12 @@ class Discipline
      * @ORM\OneToMany(targetEntity="Session", mappedBy="discipline", cascade={"remove"})
      */
     private $sessions;
+
+    /**
+     * @var string the group allowed to see that discipline
+     * @ORM\Column(type="string", length=31, nullable=true)
+     */
+    private $part; //group is a reserved word in sql.
 
     public function __toString()
     {
@@ -127,6 +133,23 @@ class Discipline
     {
         $this->sessions = $sessions;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPart()
+    {
+        return $this->part;
+    }
+
+    /**
+     * @param mixed $part
+     */
+    public function setPart($part)
+    {
+        $this->part = $part;
+    }
+
 
 
 }

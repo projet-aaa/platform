@@ -4092,7 +4092,7 @@ h6 {
 }
 .badge-default,
 .label-default {
-  background-color: #999 !important;
+  background-color: #999;
 }
 .badge-primary,
 .label-primary {
@@ -5111,9 +5111,9 @@ fieldset[disabled] .btn-white.active {
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
 }
-.input-group .input-group-btn .btn.btn-primary {
+/*.input-group .input-group-btn .btn.btn-primary {
   border-color: #d75252 !important;
-}
+}*/
 .input-group .input-group-btn .btn.btn-success {
   border-color: #4cae4c !important;
 }
@@ -7030,10 +7030,19 @@ ul.chats li.out .message {
 }
 
 .faq-question {
-    font-size: 18px;
-    font-weight: 600;
-    color: #1ab394;
+    font-size: 20px;
+    font-weight: 400;
+    color: #23527c;
     display: block;
+    text-decoration: none;
+}
+
+.faq-question:focus {
+    color: #23527c;
+}
+
+.faq-question:hover {
+    color: #dc6767;
 }
 
 .white-background {
@@ -7060,6 +7069,10 @@ ul.chats li.out .message {
   width: 100%
 }
 
+.height-covering {
+  height: 100%
+}
+
 .link-text {
   color: blue
 }
@@ -7068,20 +7081,11 @@ ul.chats li.out .message {
   text-decoration: underline
 }
 
-
-/**************************************************************************/
-
-/*Indicator*/
-
-.indic-light {
-	height: 40px;
-	width: 40px;
-	border-radius: 20px;
-	background-color: grey;
+.no-padding {
+  padding: 0px
 }
 
-.warn-triggered {
-	background-color: red !important;
+.vertical-fit {
+  top: 0;
+  bottom: 0
 }
-
-/*******************************************************************************************/

@@ -31,7 +31,9 @@ class DisciplineAdmin extends AbstractAdmin
         $formMapper->add('name', 'text')
             ->add('gitUrl', 'text', array('required' =>false))
             ->add('gitKey','text', array('required' =>false))
-            ->add('sessions');
+            ->add('sessions')
+            ->add('part','text', array('label' => 'Groupe', 'help' => 'Le groupe qui pourra voir cette discipline', 'required' =>false))
+        ;
     }
 
     // Fields on which entities can be filtered.

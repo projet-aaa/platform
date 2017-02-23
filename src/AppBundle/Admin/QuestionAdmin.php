@@ -19,7 +19,7 @@ class QuestionAdmin extends AbstractAdmin
                 'choices' => array('text','unique','multiple'),
                 'choice_label' => function($val){ return $val; },
                 ))
-            ->add('mcqChoice')
+            ->add('mcqChoices')
             ->add('textAnswers')
             ->add('test');
     }
@@ -29,7 +29,7 @@ class QuestionAdmin extends AbstractAdmin
     {
         $datagridMapper->add('test')
             ->add('typeAnswer')
-            ->add('mcqChoice');
+            ->add('mcqChoices');
     }
 
     // Fields that will be displayed in list view

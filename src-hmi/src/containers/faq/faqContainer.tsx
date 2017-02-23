@@ -1,6 +1,14 @@
 import { connect } from "react-redux";
 
-import { retrieveThreadInfosAction, publishQuestionAction, changeQuestionValueAction } from "../../store/faq/actions/actions"
+import rootWrapper from "../../wrappers/rootWrapper"
+
+import { 
+    retrieveThreadInfosAction, 
+    publishQuestionAction, 
+    changeQuestionValueAction,
+    postThreadMessageAction,
+    changeAnswerValueAction 
+} from "../../store/faq/actions/actions"
 
 import { StateProps, ActionProps, View } from "../../views/faq/faqView"
 
@@ -8,7 +16,8 @@ function mapStateToProps(state: any): StateProps {
     return { 
         threadList: state.threadContent.threadList,
         sessionId: state.threadContent.sessionId,
-        questionValue: state.threadContent.questionValue
+        questionValue: state.questionInput.questionInputVal,
+        editorContents: state.threadMessageInput.threadMessageInputVal
     }
 }
 function mapDispatchToProps(dispatch): ActionProps {
@@ -31,12 +40,26 @@ function mapDispatchToProps(dispatch): ActionProps {
         //Update store with the content of the new question input
         changeQuestionInput : (sessionId, questionValue) => {
             dispatch(changeQuestionValueAction(sessionId,questionValue))
-        }
+        },
 
+        //Send the answer content to the server
+        sendAnswer: (content,threadId) => {
+            console.log(content)
+            if (content) {
+                dispatch(postThreadMessageAction(content,threadId))
+            }
+        },
+        //The content of the answer editor has changed
+        changeAnswerInput: (threadId, content) => {
+            dispatch(changeAnswerValueAction(threadId, content))
+        }
     }
  }
 
-export default connect<StateProps, ActionProps, any>(
+export default rootWrapper(
     mapStateToProps, 
-    mapDispatchToProps
-)(View)
+    mapDispatchToProps,
+    null,
+    null,
+    View
+)
