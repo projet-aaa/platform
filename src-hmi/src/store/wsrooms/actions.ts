@@ -81,9 +81,9 @@ export function openClassRoom(sessionId: string) {
                             resQuestions.push(question)
                             question.choices = []
 
-                            choicesMissing += question.mcqChoice.length
+                            choicesMissing += question.mcqChoices.length
                             
-                            question.mcqChoice.forEach(choice => {
+                            question.mcqChoices.forEach(choice => {
                                 let list = choice.split('/'),
                                     choiceId = list[list.length - 1]
 
@@ -108,7 +108,6 @@ export function openClassRoom(sessionId: string) {
                                         })
 
                                         dispatch(openClassRoomServer(res, sessionId))
-                                        //console.log(util.inspect(res, {showHidden: false, depth: null}))
                                     }
                                 })
                             })    
