@@ -3,6 +3,7 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,13 +34,28 @@ class GitlabController extends Controller
                     $git_client = $this->get('app.git.client');
                     $git_repo = $git_client::open($path);
                     $git_repo->pull();
-                    $response_content = $git_repo->log();
-                    $response_code = 200;
-                    dump($response_content);
 
-                } else {
-                    $response_content = 'No associated folder in var/git';
-                    $response_code = 500;
+                    //maj des fichiers et des questionnaires
+                    foreach ($json->commits as $commit){
+                        foreach ($commit->added as $file){
+                            dump($file);
+                            $session = $em->getRepository('AppBundle:Test')->getOneByDisciplineFile($repo,$file);
+
+                            if($session){
+                                dump('mettre a jour le test associé à '.$file);
+                            }
+                        }
+                    }
+
+
+                    $response_code = 200;
+                    $response_content = 'ok';
+                    dump($request->getContent());
+
+                } else { // No associated folder in var/git : the repository has been added after creation. let's clone it.
+                    $this->cloneRepo($json->project->http_url, $repo->getId());
+                    $response_content = 'No associated folder in var/git. The folder has been created.';
+                    $response_code = 201;
                 }
             } else {
                 $response_content = 'No repository linked to that URL :'.$json->project->http_url;
@@ -54,6 +70,23 @@ class GitlabController extends Controller
         $response->setStatusCode($response_code);
 
         return $response;
+    }
+
+    /**
+     * Clone a distant git repository and init it in var/git folder.
+     * This function is called when a git url is added after Discipline creation
+     *
+     * @param $repo_url string a valid git url
+     * @param $id string discipline id
+     */
+    private function cloneRepo($repo_url, $id){
+        $rootDir = $this->get('kernel')->getRootDir();
+        $fs = new Filesystem();
+        $path = $rootDir . '/../var/git/' . $id;
+        if(!is_dir($path)) {
+            $fs->mkdir($path,0775);
+            $this->get('app.git.client')->create($path,$repo_url);
+        }
     }
 
 }
