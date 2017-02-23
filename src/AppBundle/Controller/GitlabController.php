@@ -36,13 +36,33 @@ class GitlabController extends Controller
                     $git_repo->pull();
 
                     //maj des fichiers et des questionnaires
+                    $yaml_importer = $this->get('app.importer.yaml');
                     foreach ($json->commits as $commit){
                         foreach ($commit->added as $file){
                             dump($file);
-                            $session = $em->getRepository('AppBundle:Test')->getOneByDisciplineFile($repo,$file);
+                            $test = $em->getRepository('AppBundle:Test')->getOneByDisciplineFile($repo,$file);
 
-                            if($session){
-                                dump('mettre a jour le test associé à '.$file);
+                            if($test){
+                                try {
+                                    $yaml_importer->createFromYmlToData($test, $path . '/' . $file);
+                                }
+                                catch (\Exception $e){
+                                    dump($e->getMessage().' '.$e->getTraceAsString());
+                                }
+                            }
+                        }
+
+                        foreach ($commit->modified as $file){
+                            dump($file);
+                            $test = $em->getRepository('AppBundle:Test')->getOneByDisciplineFile($repo,$file);
+
+                            if($test){
+                                try {
+                                    $yaml_importer->updateFromYmlToData($test, $path . '/' . $file);
+                                }
+                                catch (\Exception $e){
+                                    dump($e->getMessage().' '.$e->getTraceAsString());
+                                }
                             }
                         }
                     }
