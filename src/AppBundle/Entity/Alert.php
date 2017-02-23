@@ -6,6 +6,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
+
 /**
  * @ApiResource(attributes={
  *     "normalization_context"={"groups"={"read"}},
@@ -27,7 +29,8 @@ class Alert implements \JsonSerializable
     /**
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
-     * @Groups({"read", "write"})
+     * @Groups({"read"})
+     * @Gedmo\Blameable(on="create")
      */
     private $author;
 
