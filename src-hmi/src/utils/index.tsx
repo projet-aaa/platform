@@ -76,6 +76,9 @@ export function viewTestFactory<T>(View: any, props: T) {
 export function getText(id: string): string {
     return (document.getElementById(id) as any).value
 }
+export function setText(id: string, text: string) {
+    (document.getElementById(id) as any).value = text
+}
 
 // Get value from a combobox with a certain id
 export function getCbValue(id: string): string {

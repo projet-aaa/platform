@@ -30,10 +30,10 @@ export class View extends React.Component<Props, any> {
             <div id="header-topbar-option-demo" className="page-header-topbar">
             <nav id="topbar" role="navigation" data-step="3" className="navbar navbar-default navbar-static-top" style={ noMarginBottom }>
                 <div className="navbar-header">
-                    <a id="logo" href="#" className="navbar-brand">
+                    <span id="logo" href="#" className="navbar-brand" disabled>
                     <span className="fa fa-rocket"></span>
                     <span className="logo-text">{ appName }</span>
-                    </a>
+                    </span>
                 </div>
                 <div className="topbar-main">
                     <ul className="nav navbar navbar-top-links navbar-right mbn height-covering" style={ noMarginRight }>
@@ -45,8 +45,8 @@ export class View extends React.Component<Props, any> {
                                 <span className="caret"></span>
                             </a>
                             <ul className="dropdown-menu dropdown-user pull-right">
-                                <li><Link to="/profil"><i className="fa fa-user"></i>Mon Profil</Link></li>
-                                <li><Link to="/"><i className="fa fa-key"></i>Déconnection</Link></li>
+                                <li><i className="fa fa-user"></i>Mon Profil</li>
+                                <li><i className="fa fa-key"></i>Déconnection</li>
                             </ul>
                         </li>
                     </ul>

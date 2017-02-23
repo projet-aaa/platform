@@ -8,7 +8,7 @@ import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
 // INTERNAL IMPORTS
-import { getText } from '../../utils'
+import { getText, setText } from '../../utils'
 
 export interface StateProps {
     
@@ -46,7 +46,10 @@ export class View extends React.Component<Props, any> {
                         <div className="row">
                             <div className="col-lg-12">
                                 <div className="pull-right">
-                                    <button className="btn btn-lg btn-primary" onClick={ () => send(getText("comment-text")) }>Send comment</button>
+                                    <button className="btn btn-lg btn-primary" onClick={ () => {
+                                        send(getText("comment-text"))
+                                        setText("comment-text", "")
+                                     } }>Send comment</button>
                                 </div>
                             </div>
                         </div>

@@ -18,7 +18,7 @@ const portWS = "8088"
 
 export const urlWS = domainWS + ":" + portWS
 
-export const appName = "AAA"
+export const appName = "Jetpack"
 
 export const apiRootURL = "http://localhost/app_dev.php/api"
 
