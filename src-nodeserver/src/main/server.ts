@@ -5,7 +5,7 @@ import * as redis from 'redis'
 
 import { SocketServer } from './socketServer'
 
-import { domain, port } from '../models/consts'
+import { domain, port, debug } from '../models/consts'
 
 let app = express()
 let server = http.createServer(app)
@@ -16,6 +16,12 @@ redisClient.subscribe('general')
 
 let ss = new SocketServer(io, redisClient, true)
 
-server.listen(port, function () {
-    console.log('Node app listening on port ' + port + '!')
-})
+if(debug){
+    server.listen(port, function () {
+        console.log('Node app listening on port ' + port + '!')
+    })
+} else {
+    server.listen(8088, "jetpack1.trendio.fr", function () {
+        console.log('Node app listening on port ' +  8088 + '!')
+    })
+}
