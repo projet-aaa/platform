@@ -9,8 +9,10 @@ var gulp        = require('gulp'),
 var project = ts.createProject('src/tsconfig.json', { typescript: typescript });
 
 gulp.task('build', function() { 
-    gulp.src('node_modules/**/*')
-        .pipe(gulp.dest('../nodejs/node_modules'))
+    if(process.argv.length <= 3) {
+        gulp.src('node_modules/**/*')
+            .pipe(gulp.dest('../nodejs/node_modules'))
+    }
 
     var result = gulp.src('src/**/*ts')
         .pipe(project())

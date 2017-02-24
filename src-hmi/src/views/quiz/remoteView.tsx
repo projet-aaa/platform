@@ -15,6 +15,8 @@ import { Quiz, QuizType, QuizInstanceState, AttentionStateType } from "../../mod
 import { getText } from '../../utils'
 
 export interface StateProps { 
+    isTeacher: boolean
+    
     attentionState: string
 
     sessionId: string

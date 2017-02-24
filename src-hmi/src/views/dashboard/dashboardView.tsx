@@ -14,6 +14,8 @@ import { View as StudentFeedbackView } from "./studentFeedbackView"
 import { Quiz, QuizLauncher } from '../../models/class/class'
 
 export interface StateProps {
+    isTeacher: boolean
+
     // number of people who signaled lesson goes too fast
     tooFast: number
     // number of people who signaled lesson goes too slow
@@ -47,6 +49,8 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
+            isTeacher,
+
             tooFast,
             tooSlow,
             panic, 
@@ -85,7 +89,8 @@ export class View extends React.Component<Props, any> {
 
         return (
             <div>
-                { isConnected ? 
+                { isTeacher ?
+                    (isConnected ? 
                     <div>
                         <div className="col-lg-8">
                             <div className="row">
@@ -118,6 +123,10 @@ export class View extends React.Component<Props, any> {
                     :
                     <div>
                         <h1>Connection au server...</h1>
+                    </div>)
+                    :
+                    <div className="row">
+                        <h1>Vous ne pouvez pas accéder au tableau de bord en tant qu'étudiant (bien essayé)</h1>
                     </div>
                 }
             </div>

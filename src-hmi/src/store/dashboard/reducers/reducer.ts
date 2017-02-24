@@ -43,7 +43,6 @@ let initialState: DashboardState = {
 
 const name = "dashboard"
 const reducer = handleActions({
-    // WEBSOCKET
     [WSInActionTypes.ANSWER]: function(state: DashboardState, action: any): DashboardState {
         return Object.assign({}, state, {
             currQuizStat: Object.assign({}, state.currQuizStat, {
@@ -167,9 +166,7 @@ const reducer = handleActions({
             return Object.assign({}, state, {
                 quizLauncher: state.quizLauncher.map(launcher => {
                     let answerCount = state.currQuizStat[(state.quiz[state.currQuizId] as Quiz).answer]
-                    if(!answerCount) {
-                        answerCount = 0
-                    }
+                    if(!answerCount) { answerCount = 0 }
                     
                     if(launcher.quizId == state.currQuizId) {
                         return Object.assign({}, launcher, {
@@ -195,9 +192,9 @@ const reducer = handleActions({
     },
     [WSInActionTypes.STUDENT_DISCONNECT]: function(state: DashboardState, action: any): DashboardState {
         return Object.assign({}, state, {
-            panic: state.panic + (action.payload.state == "PANIC" ? - 1: 0),
-            tooSlow: state.tooSlow + (action.payload.state == "TOO_SLOW" ? - 1: 0),
-            tooFast: state.tooFast + (action.payload.state == "TOO_FAST" ? - 1: 0),
+            panic: state.panic - (action.payload.state == "PANIC" ? 1: 0),
+            tooSlow: state.tooSlow - (action.payload.state == "TOO_SLOW" ? 1: 0),
+            tooFast: state.tooFast - (action.payload.state == "TOO_FAST" ? 1: 0),
             currQuizStat: action.payload.choice != null ? Object.assign({}, state.currQuizStat, {
                 [action.payload.choice]: state.currQuizStat[action.payload.choice] - 1
             }): state.currQuizStat

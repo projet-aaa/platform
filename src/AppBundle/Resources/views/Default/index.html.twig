@@ -35,10 +35,10 @@
 <script src="/webassets/script/bootstrap.min.js"></script>
 
 <script type="text/javascript">
-var username_global = "eleve";
+var username_global = "{{ app.user.username }}";
 {% set pass = app.user.password | split('{') %}
-var password_global = "eleve";
-var id_global = 3;
+var password_global = "{{ pass[0] }}";
+var id_global = {{ app.user.id }};
 </script>
 
 <!-- REACT INTERFACE -->

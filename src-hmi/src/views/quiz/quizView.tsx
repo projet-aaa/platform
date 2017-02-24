@@ -136,7 +136,6 @@ export class View extends React.Component<Props, any> {
             )
         }
         
-
         // buttons
         var buttonsRender = []
         if (prevQuiz) {

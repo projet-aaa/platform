@@ -13,6 +13,9 @@ import { QuizType, Quiz, QuizLocalChoice } from "../../models/class/class"
 import { getText } from '../../utils'
 
 export interface StateProps {
+    isConnected: boolean
+    isTeacher: boolean
+
     // a quiz
     quiz: Quiz
     // the current choice
@@ -22,8 +25,6 @@ export interface StateProps {
     question: boolean
     //the user score
     score: number
-
-    isConnected: boolean
 }
 export interface ActionProps {
     // Fires an action signaling that an answer has been chosen
@@ -56,11 +57,13 @@ export class View extends React.Component<any, any> {
 
     render() {
         const {
+            isConnected,
+            isTeacher,
+
             quiz,
             quizChoice,
             validateAnswer,
             score,
-            isConnected,
             
             question,
             choose,
@@ -78,15 +81,20 @@ export class View extends React.Component<any, any> {
         // the score is on the top, next there is the quiz or feddback and last the comment box
         return (
             <div style={ palNew }>
-
-                { isConnected ?
+            { !isTeacher ?
+                (isConnected ?
                     <div>
                         { mainComponent }
                         <CommentBoxViewMobile send={ sendComment }/>
                     </div>
                 :
                     <h1>Connection au server...</h1>
-                }
+                )
+                :
+                <div className="row">
+                    <h1>Vous ne pouvez pas accéder à la télécommande en tant que professeur</h1>
+                </div>
+            }
             </div>
         )
     }

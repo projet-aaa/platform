@@ -34,31 +34,35 @@ export function auth(id: number, username: string, password: string, successProm
         if(!getState().auth.infoFetched) {
             dispatch(authAPI(username, password))
             dispatch(authLocal(id, username, password))
-            dispatch(fetchUser({ id }))
 
             let i = setInterval(() => {
                 let { auth } = getState()
-                if(auth.group) {
+                if((document as any).token) {
                     clearInterval(i)
-                    dispatch(fetchDiscipline({ part: auth.group }, successPromise))
+                    dispatch(fetchUser({ id }, () => {
+                        let { auth } = getState()
+                        dispatch(fetchDiscipline({ part: auth.group }, successPromise))
+                    }))
                 }
             }, 250)
         } else {
-            successPromise()
+            if(successPromise) {
+                successPromise()
+            }
         }
     }
 }
 
 const fetchUser: (info: { 
     id: number 
-}) => any
+}, promise) => any
 = createAPIActionCreator(
     info => '/users/' + info.id, 
     null,
     'GET',
     APIActionTypes.FETCH_USER,
     APIActionTypes.FETCH_USER_SUCCESS,
-    APIActionTypes.FETCH_USER_FAILURE
+    APIActionTypes.FETCH_USER_FAILURE,
 )
 const fetchDiscipline: (info: { 
     part: string 

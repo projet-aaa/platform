@@ -39,6 +39,8 @@ import DisciplineContainer from '../containers/discipline/disciplineContainer'
 
 import QuestionnaireContainer from '../containers/questionnaire/questionnaireContainer'
 
+import LoginContainer from '../containers/devlogin/loginContainer'
+
 import { storeFactory } from '../utils'
 
 // STORE CREATION (DEFINITION OF THE GLOBAL STATE)
@@ -63,6 +65,7 @@ let MainRouter =
         <Route path="/" component={ TopBandLeftMenuTemp }>
             <IndexRoute component={ MainContainer }/>
         </Route>
+        <Route path="/login" component={ LoginContainer}/>
         <Route path="/profil" component={ TopBandLeftMenuTemp }>
             <IndexRoute component={ ProfileContainer }/>
         </Route>
