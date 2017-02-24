@@ -25,7 +25,7 @@ export class View extends React.Component<Props, any> {
         return (
             <div>
                 <TopBandContainer/>
-                <div className="page-content">
+                <div className="page-content" style={ {paddingBottom: 0, paddingTop: 0} }>
                     { children }
                 </div>
             </div>

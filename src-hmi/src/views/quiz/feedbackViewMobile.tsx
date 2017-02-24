@@ -15,7 +15,7 @@ export interface ActionProps {
 }
 
 var buttonMargin = {
-    margin : 10
+    margin: 0
 }
 
 type Props = StateProps & ActionProps;

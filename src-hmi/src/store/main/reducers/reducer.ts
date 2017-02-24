@@ -5,10 +5,13 @@ import { ActionTypes } from "../actions/actionTypes"
 export interface MainState {
     // the list of not checked disciplines in filters : discipline name -> is checked
     areNotChecked: any
+    // the string which was in the search bar when the search button was clicked
+    searchedString: string
 }
 
 let initialState: MainState = {
-    areNotChecked: {}
+    areNotChecked: {},
+    searchedString: ""
 }
 
 
@@ -23,10 +26,9 @@ const reducer = handleActions({
         })
     },
     [ActionTypes.SEARCH]: function(state: MainState, action: any): MainState {
-        // return Object.assign({}, state, {
-
-        // })
-        return state
+        return Object.assign({}, state, {
+            searchedString: action.payload.searchedString
+        })
     }
 }, initialState);
 
