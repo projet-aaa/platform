@@ -54,7 +54,7 @@ let store = storeFactory([
     questionnaireInfo,
     authInfo,
     mainInfo
-], true, true, auth)
+], true, auth)
     
 // ROUTE
 let MainRouter =

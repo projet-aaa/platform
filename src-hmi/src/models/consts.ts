@@ -13,16 +13,20 @@ export const chartColors = [
     "#000066", // sea blue
 ]
 
-const domainWS = "localhost"
+export const debug = false
+
+const domainWS = debug ? "localhost" : "jetpack-1.trendio.fr"
 const portWS = "8088"
 
 export const urlWS = domainWS + ":" + portWS
 
 export const appName = "Jetpack"
 
-export const apiRootURL = "http://localhost/app_dev.php/api"
+export const apiRootURL = debug ? "http://localhost/app_dev.php/api" :
+                                  "http://jetpack-1.trendio.fr/api"
 
-export const loginURL = "http://localhost/app_dev.php/api/login_check"
+export const loginURL = debug ? "http://localhost/app_dev.php/api/login_check" :
+                                "http://jetpack-1.trendio.fr/api/login_check"
 
 declare var username_global
 declare var password_global

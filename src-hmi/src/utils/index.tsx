@@ -9,7 +9,7 @@ import createSocketIoMiddleware from 'redux-socket.io'
 import * as io from 'socket.io-client'
 import * as fetch from 'isomorphic-fetch'
 
-import { urlWS, chartColors, apiRootURL } from '../models/consts'
+import { urlWS, chartColors, apiRootURL, debug } from '../models/consts'
 
 import { Quiz } from '../models/class/class'
 
@@ -25,7 +25,7 @@ export interface Action<T>{
 }
 
 // -- STORE CREATOR HELPER
-export const storeFactory = (reducers: any[], connectWS: boolean, log: boolean, auth) => {
+export const storeFactory = (reducers: any[], connectWS: boolean, auth) => {
     let socket = connectWS ? io.connect(urlWS) : null,
         reducers2 = {}, len = reducers.length,
         reducer
@@ -42,7 +42,7 @@ export const storeFactory = (reducers: any[], connectWS: boolean, log: boolean, 
     middlewares.push(apiMiddleware)
     middlewares.push(authAPIMiddleware(auth))
     if(socket) { middlewares.push(createSocketIoMiddleware(socket, 'SERVER/')) }
-    if(log) { middlewares.push(createLogger()) }
+    if(debug) { middlewares.push(createLogger()) }
 
     let store = createStore(
         reducer,
@@ -56,20 +56,6 @@ export const storeFactory = (reducers: any[], connectWS: boolean, log: boolean, 
 export function viewTestFactory<T>(View: any, props: T) {
     ReactDOM.render(React.createElement(View, props), document.getElementById('main'))
 }
-
-// WARNING OBSOLETE, DO NOT USE 
-//export function apiTestFactory<T>(actionCreator, endpointInfo, body) {
-//     let store = storeFactory([ 
-//         authInfo
-//     ], true, true, null)
-
-//     let i = setInterval(() => {
-//         if(isAuthentified()) {
-//             store.dispatch(actionCreator(endpointInfo, body))
-//             clearInterval(i)
-//         }
-//     }, 100)
-// }
 
 // -- HTML JS HELPERS
 // Get text from an element with a certain id

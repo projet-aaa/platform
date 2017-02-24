@@ -1,7 +1,7 @@
 {
   "name": "JetPack",
   "version": "1.0.0",
-  "description": "A react-redux todo boilerplate coded in typescript",
+  "description": "The front end to the jetpack application",
   "main": "index.js",
   "author": "GibsS",
   "license": "ISC",
