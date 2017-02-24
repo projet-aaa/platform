@@ -7,22 +7,14 @@ import * as redis from 'redis'
 import { SocketServer } from './socketServer'
 
 let app = express()
-let server = http.createServer(app);
+let server = http.createServer(app)
 let io = socketio(server)
 
 let redisClient = redis.createClient(6379, 'redis')
-redisClient.subscribe('general');
-
-let folderPath = process.argv[2]
-
-if(folderPath) {
-    app.get('/static', express.static(folderPath))
-} else {
-    app.get('/static', express.static('.'))
-}
+redisClient.subscribe('general')
 
 let ss = new SocketServer(io, redisClient, true)
 
-server.listen(8088, function () {
-    console.log('Node app listening on port 8088!');
-});
+server.listen(8088, "jetpack1.trendio.fr", function () {
+    console.log('Node app listening on port 8088!')
+})
