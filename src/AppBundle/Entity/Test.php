@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\TestRepository")
  */
 class Test implements \JsonSerializable
 {
@@ -38,7 +38,7 @@ class Test implements \JsonSerializable
     private $live;
 
     /**
-     * @ORM\OneToMany(targetEntity="Question", mappedBy="test", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="test", cascade={"persist","remove"})
      */
     private $questions;
 

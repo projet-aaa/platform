@@ -52,14 +52,14 @@ class Question
     /**
      * @var ArrayCollection[McqChoice] all the available choice of answer
      *
-     * @ORM\OneToMany(targetEntity="McqChoice", mappedBy="question")
+     * @ORM\OneToMany(targetEntity="McqChoice", mappedBy="question", cascade={"remove"})
      */
     private $mcqChoices;
 
     /**
      * @var ArrayCollection[TextAnswer] All the answers to a text Question
      *
-     * @ORM\OneToMany(targetEntity="TextAnswer", mappedBy="question")
+     * @ORM\OneToMany(targetEntity="TextAnswer", mappedBy="question", cascade={"remove"})
      */
     private $textAnswers;
 

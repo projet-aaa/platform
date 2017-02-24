@@ -31,3 +31,7 @@ services:
 
     app.git.client:
         class: AppBundle\Service\Git
+
+    app.importer.yaml:
+        class: AppBundle\Service\YamlImporter
+        arguments: ["@doctrine.orm.entity_manager"]
