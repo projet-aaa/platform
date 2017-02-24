@@ -130,20 +130,9 @@ export class View extends React.Component<Props, any> {
         var backButtonRender = []
         if (back) {
             backButtonRender.push(
-                <div className="col-lg-2 no-padding">
-                    <button className="btn btn-primary covering-size" onClick={ back }>
-                        Retour
-                    </button>
-                </div>
-            )
-            backButtonRender.push(
-                <div className="col-lg-3">
-                </div>
-            )
-        } else {
-            backButtonRender.push(
-                <div className="col-lg-5">
-                </div>
+                <button className="btn btn-primary" onClick={ back }>
+                    Retour
+                </button>
             )
         }
         
@@ -152,46 +141,25 @@ export class View extends React.Component<Props, any> {
         var buttonsRender = []
         if (prevQuiz) {
             buttonsRender.push(
-                <div className="col-lg-4 no-padding">
-                    <button className="btn btn-primary covering-size" onClick={ prevQuiz }>
-                        Précédent
-                    </button>
-                </div>
-            )
-        } else {
-            buttonsRender.push(
-                <div className="col-lg-4">
-                </div>
+                <button className="btn btn-primary" onClick={ prevQuiz }>
+                    Précédent
+                </button>
             )
         }
         if (choose) {
             buttonsRender.push(
-                <div className="col-lg-4 no-padding">
-                    <button className="btn btn-success covering-size" onClick={ validate }>
-                        Valider réponse
-                    </button>
-                </div>
-            )
-        } else {
-            buttonsRender.push(
-                <div className="col-lg-4">
-                </div>
+                <button className="btn btn-success" onClick={ validate }>
+                    Valider réponse
+                </button>
             )
         }
         if (nextQuiz) {
             // if we are in answer mode (showcorrection is false) we display skip question
             // else we display next
             buttonsRender.push(
-                <div className="col-lg-4 no-padding">
-                    <button className="btn btn-primary covering-size" onClick={ nextQuiz }>
-                        { showCorrection ? "Suivant" : "Passer la question" }
-                    </button>
-                </div>
-            )
-        } else {
-            buttonsRender.push(
-                <div className="col-lg-4">
-                </div>
+                <button className="btn btn-primary" onClick={ nextQuiz }>
+                    { showCorrection ? "Suivant" : "Passer la question" }
+                </button>
             )
         }
 
@@ -212,8 +180,10 @@ export class View extends React.Component<Props, any> {
                             { quizRender }
                         </div>
                         <div className="row">
-                            { backButtonRender }
-                            <div className="col-lg-6">
+                            <div className="pull-left">
+                                { backButtonRender }
+                            </div>
+                            <div className="pull-right">
                                 { buttonsRender }
                             </div>
                         </div>
