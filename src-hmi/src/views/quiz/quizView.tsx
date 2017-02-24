@@ -164,11 +164,11 @@ export class View extends React.Component<Props, any> {
         }
 
         let quizRender = (
-                <div className="row">
-                    <div className="col-lg-12">
-                        { questionRender }
-                    </div>
+            <div className="row">
+                <div className="col-lg-12">
+                    { questionRender }
                 </div>
+            </div>  
         )
                
         // returns a panel containing the question and the answers defined above
@@ -176,15 +176,15 @@ export class View extends React.Component<Props, any> {
             <div>
                 <div className="panel">
                     <div className="pal">
+                        { quizRender } 
                         <div className="row">
-                            { quizRender }
-                        </div>
-                        <div className="row">
-                            <div className="pull-left">
-                                { backButtonRender }
-                            </div>
-                            <div className="pull-right">
-                                { buttonsRender }
+                            <div className="col-lg-12">
+                                <div className="pull-left">
+                                    { backButtonRender }
+                                </div>
+                                <div className="pull-right">
+                                    { buttonsRender }
+                                </div>
                             </div>
                         </div>
                     </div>
