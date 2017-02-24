@@ -20,7 +20,7 @@ export class View extends React.Component<Props, any> {
             fullpath,
         } = this.props
 
-        let path = ["TOB"]
+        let path = [""]
 
         // this var is the render off the path (home > page 1 > page 1.1)
         var pathRender = [];

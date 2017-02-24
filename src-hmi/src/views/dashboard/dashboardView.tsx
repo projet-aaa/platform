@@ -26,6 +26,8 @@ export interface StateProps {
     quizStats: any
     // the list of quiz to launch
     quizLaunchers: QuizLauncher[]
+
+    isConnected: boolean
 }
 
 export interface ActionProps {
@@ -51,6 +53,8 @@ export class View extends React.Component<Props, any> {
             currentQuiz,
             quizStats,
             quizLaunchers,
+            isConnected,
+
             launchQuiz,
             correction,
             finish
@@ -81,33 +85,41 @@ export class View extends React.Component<Props, any> {
 
         return (
             <div>
-                <div className="col-lg-8">
-                    <div className="row">
-                        { currentQuiz != null &&  
-                            <QuizStatView quizStats={ quizStats } correctChoice={ 
-                                currentQuiz.type == "MCQ" ? 
-                                currentQuiz.choices[currentQuiz.answer] : currentQuiz.answer
-                            }/>
-                        }
-                    </div>
-                    <div className="row">
-                        <StudentFeedbackView panicRate={panic} 
-                                    slowRate={tooSlow}
-                                    quickRate={tooFast}/>
-                    </div>
-                </div>
-                <div className="col-lg-4">
-                    <div className="panel">
-                        <div className="panel-heading">
-                            Statistiques de quizz
+                { isConnected ? 
+                    <div>
+                        <div className="col-lg-8">
+                            <div className="row">
+                                { currentQuiz != null &&  
+                                    <QuizStatView quizStats={ quizStats } correctChoice={ 
+                                        currentQuiz.type == "MCQ" ? 
+                                        currentQuiz.choices[currentQuiz.answer] : currentQuiz.answer
+                                    }/>
+                                }
+                            </div>
+                            <div className="row">
+                                <StudentFeedbackView panicRate={panic} 
+                                            slowRate={tooSlow}
+                                            quickRate={tooFast}/>
+                            </div>
                         </div>
-                        <div className="panel-body pan white-background">
-                            <div className="pal">
-                                { quizInfos }
+                        <div className="col-lg-4">
+                            <div className="panel">
+                                <div className="panel-heading">
+                                    Statistiques de quizz
+                                </div>
+                                <div className="panel-body pan white-background">
+                                    <div className="pal">
+                                        { quizInfos }
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    :
+                    <div>
+                        <h1>Connection au server...</h1>
+                    </div>
+                }
             </div>
         );
     }

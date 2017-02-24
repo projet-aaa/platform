@@ -9,7 +9,7 @@ import { joinRoom, subscribe } from "../../store/wsrooms/actions"
 
 import { CONNECTION_STATE } from "../../models/wsServer/server"
 
-function mapStateToProps(state: any, prop): StateProps {
+function mapStateToProps(state: any, prop) {
     let dash: DashboardState = state.dashboard
 
     let stats = {},

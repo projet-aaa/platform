@@ -7,7 +7,7 @@ import { Quiz } from "../../models/class/class"
 
 import { startQuiz, showFeedback, stopQuiz } from "../../store/dashboard/actions/actions"
 
-function mapStateToProps(state: any): StateProps {
+function mapStateToProps(state: any) {
     let dash: DashboardState = state.dashboard
 
     let stats = {},

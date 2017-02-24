@@ -1,3 +1,3 @@
 #Mobile front-end documentation
 
-The application is deployable on mobile device. It is developed with React-Native
+A proof of concept has been developed for deploying a mobile version but nothing as been developed so far.

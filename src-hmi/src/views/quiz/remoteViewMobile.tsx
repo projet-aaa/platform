@@ -22,6 +22,8 @@ export interface StateProps {
     question: boolean
     //the user score
     score: number
+
+    isConnected: boolean
 }
 export interface ActionProps {
     // Fires an action signaling that an answer has been chosen
@@ -58,6 +60,8 @@ export class View extends React.Component<any, any> {
             quizChoice,
             validateAnswer,
             score,
+            isConnected,
+            
             question,
             choose,
             sendComment,
@@ -75,8 +79,14 @@ export class View extends React.Component<any, any> {
         return (
             <div style={ palNew }>
 
-                { mainComponent }
-                <CommentBoxViewMobile send={ sendComment }/>
+                { isConnected ?
+                    <div>
+                        { mainComponent }
+                        <CommentBoxViewMobile send={ sendComment }/>
+                    </div>
+                :
+                    <h1>Connection au server...</h1>
+                }
             </div>
         )
     }

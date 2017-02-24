@@ -21,6 +21,8 @@ export interface StateProps {
     stats: any
     // true => we show the right answer
     showCorrection: boolean
+
+    isConnected: boolean
 }
 export interface ActionProps { }
 
@@ -59,7 +61,8 @@ export class View extends React.Component<Props, any> {
         const {
             quiz,
             stats,
-            showCorrection
+            showCorrection,
+            isConnected
         } = this.props;
 
         let quizRender 
@@ -115,7 +118,13 @@ export class View extends React.Component<Props, any> {
         // the quiz or the buttons are on the left and the scores are on the right
         return (
             <div>
-                { res }
+                { isConnected ? 
+                    res 
+                :
+                    <div>
+                        <h1>Connection au server...</h1>
+                    </div>
+                }
             </div>
         );
     }

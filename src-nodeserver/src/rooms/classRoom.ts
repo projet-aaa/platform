@@ -222,6 +222,10 @@ export class ClassRoom extends IRoom {
         if(socket.isTeacher) {
             console.log("[teacher disconnect]")
             this.teacherSockets.splice(this.teacherSockets.indexOf(socket), 1)
+
+            if(this.teacher == socket.username) {
+                this.server.closeRoom(this.id)
+            }
         } else {
             console.log("[student disconnect]")
             this.studentSockets.splice(this.studentSockets.indexOf(socket), 1)
