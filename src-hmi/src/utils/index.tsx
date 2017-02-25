@@ -9,7 +9,7 @@ import createSocketIoMiddleware from 'redux-socket.io'
 import * as io from 'socket.io-client'
 import * as fetch from 'isomorphic-fetch'
 
-import { urlWS, chartColors, apiRootURL, debug } from '../models/consts'
+import { urlWS, chartColors, apiRootURL, debug, log } from '../models/consts'
 
 import { Quiz } from '../models/class/class'
 
@@ -42,7 +42,7 @@ export const storeFactory = (reducers: any[], connectWS: boolean, auth) => {
     middlewares.push(apiMiddleware)
     middlewares.push(authAPIMiddleware(auth))
     if(socket) { middlewares.push(createSocketIoMiddleware(socket, 'SERVER/')) }
-    if(debug) { middlewares.push(createLogger()) }
+    if(log) { middlewares.push(createLogger()) }
 
     let store = createStore(
         reducer,
