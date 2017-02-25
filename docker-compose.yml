@@ -1,3 +1,4 @@
+# Api server and main website
 web:
     build: .
     environment:
@@ -10,6 +11,7 @@ web:
     ports:
         - 80:80
 
+#Persistent data storage
 database:
     image: mysql
     environment:
@@ -17,9 +19,23 @@ database:
         MYSQL_DATABASE: api_platform
         MYSQL_USER: api_platform
         MYSQL_PASSWORD: api_platform
+    volumes:
+        - "./docker/mysql:/var/lib/mysql"
 
+#Message queue
 redis:
     image: redis
     ports:
         - 6379:6379
+
+#Web socket server
+nodejs:
+    build: nodejs
+    links:
+        - redis
+    volumes:
+        - ./nodejs:/app
+    ports:
+        - 8088:8088
+
 

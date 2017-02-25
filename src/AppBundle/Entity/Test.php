@@ -3,11 +3,12 @@
 namespace AppBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\TestRepository")
  */
 class Test implements \JsonSerializable
 {
@@ -30,7 +31,14 @@ class Test implements \JsonSerializable
     private $gitPath;
 
     /**
-     * @ORM\OneToMany(targetEntity="Question", mappedBy="test")
+     * @var boolean True if the test is a test for live session (ie a test with only one question)
+     *
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private $live;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="test", cascade={"persist","remove"})
      */
     private $questions;
 
@@ -41,31 +49,45 @@ class Test implements \JsonSerializable
     private $session;
 
     /**
-     * Specify data which should be serialized to JSON
-     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
-     * @since 5.4.0
+     * @return string
      */
-    function jsonSerialize()
-    {
-        return [
-            'id' => $this->id,
-            'title' => $this->getTitle(),
-            'gitPath' => $this->getGitPath(),
-            'session' => $this->getSession(),
-        ];
-    }
-
     public function __toString()
     {
         return 'Test '.$this->getTitle().' '.substr($this->getId(),0,5);
     }
 
+    public function __construct()
+    {
+        $this->questions = new ArrayCollection();
+    }
+
+    /**
+     * @Assert\IsTrue(message="A live test can't have more than one question")
+     * @return bool
+     */
+    public function isLiveConsistent(){
+        return ($this->live && $this->getQuestions()->count() <=1) || !$this->live;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     */
+    function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'gitPath' => $this->gitPath,
+            'live' => $this->live,
+            'session' => $this->session->id,
+            'questions' => $this->questions,
+        ];
+    }
+
     /** Auto generated methods*/
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
@@ -73,15 +95,7 @@ class Test implements \JsonSerializable
     }
 
     /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getTitle()
     {
@@ -89,7 +103,7 @@ class Test implements \JsonSerializable
     }
 
     /**
-     * @param mixed $title
+     * @param string $title
      */
     public function setTitle($title)
     {
@@ -97,7 +111,7 @@ class Test implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getGitPath()
     {
@@ -105,7 +119,7 @@ class Test implements \JsonSerializable
     }
 
     /**
-     * @param mixed $gitPath
+     * @param string $gitPath
      */
     public function setGitPath($gitPath)
     {
@@ -113,7 +127,7 @@ class Test implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection
      */
     public function getQuestions()
     {
@@ -121,15 +135,29 @@ class Test implements \JsonSerializable
     }
 
     /**
-     * @param mixed $questions
+     * Add missions.
+     *
+     * @param Question $question
      */
-    public function setQuestions($questions)
+    public function addQuestion(Question $question)
     {
-        $this->questions = $questions;
+        $this->questions[] = $question;
+        $question->setTest($this);
     }
 
     /**
-     * @return mixed
+     * Remove a question.
+     *
+     * @param Question $question
+     */
+    public function removeQuestion(Question $question)
+    {
+        $this->questions->removeElement($question);
+        $question->setTest(null);
+    }
+
+    /**
+     * @return Session
      */
     public function getSession()
     {
@@ -137,11 +165,29 @@ class Test implements \JsonSerializable
     }
 
     /**
-     * @param mixed $session
+     * @param Session $session
      */
-    public function setSession($session)
+    public function setSession(Session $session)
     {
         $this->session = $session;
     }
+
+    /**
+     * @return boolean
+     */
+    public function getLive()
+    {
+        return $this->live;
+    }
+
+    /**
+     * @param boolean $live
+     */
+    public function setLive($live)
+    {
+        $this->live = $live;
+    }
+
+
 
 }

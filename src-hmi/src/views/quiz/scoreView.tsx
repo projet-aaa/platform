@@ -22,7 +22,7 @@ export interface StateProps {
 
 export interface ActionProps {}
 
-// Style for the text
+// style for the text
 var mediumSizeText = {
     fontSize: 30
 }
@@ -38,18 +38,16 @@ export class View extends React.Component<Props, any> {
 
         // we show a panel containing all the values defined above
         return (
-            <div>
-                <div className="panel panel-blue">
-                    <div className="panel-heading" style={mediumSizeText}>
-                        Scores :
-                    </div>
-                    <div className="panel-body pan white-background">
-                        <div className="pal">
-                            <h3>Score global : {score}</h3>
-                            <h3>Rang : {rank}/{population}</h3>
-                            <h3>high score : {highScore}</h3>
-                            <h3>moyenne : {average}</h3>
-                        </div>
+            <div className="panel panel-blue">
+                <div className="panel-heading" style={mediumSizeText}>
+                    Scores :
+                </div>
+                <div className="panel-body pan white-background">
+                    <div className="pal">
+                        <h3>Score global : {score}</h3>
+                        <h3>Rang : {rank}/{population}</h3>
+                        <h3>high score : {highScore}</h3>
+                        <h3>moyenne : {average}</h3>
                     </div>
                 </div>
             </div>

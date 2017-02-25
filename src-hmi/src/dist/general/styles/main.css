@@ -46,7 +46,7 @@ body {
   line-height: 1.42857143;
   color: #999999;
   background-color: #f0f2f5;
-  height: 100%;
+  /*height: 100%;*/
 }
 input,
 button,
@@ -1151,8 +1151,8 @@ background: #303030; /* Old browsers */
 }
 /* End Left Sidebar Collapsed */
 .page-content {
-  padding: 20px 20px 50px 20px;
-  min-height: 700px;
+  padding: 20px 20px 50px 20px; 
+  /*min-height: 700px;*/
 }
 #footer {
   position: fixed;
@@ -4092,7 +4092,7 @@ h6 {
 }
 .badge-default,
 .label-default {
-  background-color: #999 !important;
+  background-color: #999;
 }
 .badge-primary,
 .label-primary {
@@ -5111,9 +5111,9 @@ fieldset[disabled] .btn-white.active {
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
 }
-.input-group .input-group-btn .btn.btn-primary {
+/*.input-group .input-group-btn .btn.btn-primary {
   border-color: #d75252 !important;
-}
+}*/
 .input-group .input-group-btn .btn.btn-success {
   border-color: #4cae4c !important;
 }
@@ -7030,10 +7030,19 @@ ul.chats li.out .message {
 }
 
 .faq-question {
-    font-size: 18px;
-    font-weight: 600;
-    color: #1ab394;
+    font-size: 20px;
+    font-weight: 400;
+    color: #23527c;
     display: block;
+    text-decoration: none;
+}
+
+.faq-question:focus {
+    color: #23527c;
+}
+
+.faq-question:hover {
+    color: #dc6767;
 }
 
 .white-background {
@@ -7048,23 +7057,35 @@ ul.chats li.out .message {
     margin-left:1em
 }
 
-
-/**************************************************************************/
-
-/*Indicator*/
-
-.indic-light {
-	height: 40px;
-	width: 40px;
-	border-radius: 20px;
-	background-color: grey;
+.bigTab {
+    margin-left:5em
 }
 
-.warn-triggered {
-	background-color: red !important;
+.no-resize {
+  resize: none;
 }
 
+.covering-size {
+  width: 100%
+}
 
+.height-covering {
+  height: 100%
+}
 
+.link-text {
+  color: blue
+}
 
+.link-text:hover {
+  text-decoration: underline
+}
 
+.no-padding {
+  padding: 0px
+}
+
+.vertical-fit {
+  top: 0;
+  bottom: 0
+}

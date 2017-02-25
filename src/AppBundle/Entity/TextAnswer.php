@@ -30,7 +30,7 @@ class TextAnswer
     private $author;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Question", inversedBy="textAnswer")
+     * @ORM\ManyToOne(targetEntity="Question", inversedBy="textAnswers")
      * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
      */
     private $question;
@@ -40,10 +40,18 @@ class TextAnswer
         return 'Text Answer '.$this->getId();
     }
 
+    /**
+     * @Assert\IsTrue(message="The owning question is not of type text")
+     * @return bool
+     */
+    public function isQuestionConsistent(){
+        return $this->getQuestion()->getTypeAnswer() == 'text';
+    }
+
     /** Auto generated methods*/
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
@@ -51,15 +59,7 @@ class TextAnswer
     }
 
     /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getText()
     {
@@ -67,7 +67,7 @@ class TextAnswer
     }
 
     /**
-     * @param mixed $text
+     * @param string $text
      */
     public function setText($text)
     {
@@ -75,7 +75,7 @@ class TextAnswer
     }
 
     /**
-     * @return mixed
+     * @return User
      */
     public function getAuthor()
     {
@@ -83,15 +83,15 @@ class TextAnswer
     }
 
     /**
-     * @param mixed $author
+     * @param User $author
      */
-    public function setAuthor($author)
+    public function setAuthor(User $author)
     {
         $this->author = $author;
     }
 
     /**
-     * @return mixed
+     * @return Question
      */
     public function getQuestion()
     {
@@ -99,9 +99,9 @@ class TextAnswer
     }
 
     /**
-     * @param mixed $question
+     * @param Question $question
      */
-    public function setQuestion($question)
+    public function setQuestion(Question $question)
     {
         $this->question = $question;
     }

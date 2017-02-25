@@ -48,6 +48,11 @@ class User extends BaseUser implements \JsonSerializable
      */
     private $part; //group is a reserved word in sql.
 
+    /**
+     * @var array
+     * @Groups({"user"})
+     */
+    protected $roles;
 
     /**
      * @ORM\PrePersist()
@@ -80,7 +85,7 @@ class User extends BaseUser implements \JsonSerializable
     /** Auto generated methods */
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getFirstname()
     {
@@ -88,7 +93,7 @@ class User extends BaseUser implements \JsonSerializable
     }
 
     /**
-     * @param mixed $firstname
+     * @param string $firstname
      */
     public function setFirstname($firstname)
     {
@@ -96,7 +101,7 @@ class User extends BaseUser implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
@@ -104,15 +109,7 @@ class User extends BaseUser implements \JsonSerializable
     }
 
     /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getLastname()
     {
@@ -120,7 +117,7 @@ class User extends BaseUser implements \JsonSerializable
     }
 
     /**
-     * @param mixed $lastname
+     * @param string $lastname
      */
     public function setLastname($lastname)
     {
@@ -128,7 +125,7 @@ class User extends BaseUser implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getUsername()
     {
@@ -136,7 +133,7 @@ class User extends BaseUser implements \JsonSerializable
     }
 
     /**
-     * @param mixed $username
+     * @param string $username
      */
     public function setUsername($username)
     {
@@ -144,7 +141,7 @@ class User extends BaseUser implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getPart()
     {
@@ -152,7 +149,7 @@ class User extends BaseUser implements \JsonSerializable
     }
 
     /**
-     * @param mixed $part
+     * @param string $part
      */
     public function setPart($part)
     {
@@ -160,7 +157,10 @@ class User extends BaseUser implements \JsonSerializable
     }
 
 
-
+    /**
+     * @param UserInterface|null $user
+     * @return bool
+     */
     public function isUser(UserInterface $user = null)
     {
         return $user instanceof self && $user->id === $this->id;

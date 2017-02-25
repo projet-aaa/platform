@@ -6,6 +6,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 /**
+ * An option to answer a multiple choice question.
+ *
  * @ApiResource
  * @ORM\Entity
  */
@@ -19,45 +21,49 @@ class McqChoice
     private $id;
 
     /**
-     * A text that describes the answer in a MCQ
+     * @var string The option displayed text
      *
-     * @Assert\NotBlank()
-     * @ORM\Column(type="string", length=255, nullable=false)
-     */
-    private $answer;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $text;
 
     /**
+     * @var boolean is it the correct (or one of the correct answer) ?
+     *
      * @Assert\NotNull()
      * @ORM\Column(type="boolean", nullable=false)
      */
     private $correct;
 
     /**
-     * @ORM\OneToOne(targetEntity="McqAnswer", mappedBy="mcqChoice")
+     * @var McqAnswer The list of McqAnswer that chose that answer
+     *
+     * @ORM\OneToMany(targetEntity="McqAnswer", mappedBy="mcqChoice", cascade={"remove"})
      */
     private $mcqAnswer;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Question", inversedBy="mcqChoice")
+     * @var Question the question which that object is a choice of
+     *
+     * @Assert\NotNull()
+     * @ORM\ManyToOne(targetEntity="Question", inversedBy="mcqChoices")
      * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
      */
     private $question;
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
-        return 'McqChoice '.$this->getId();
+        return 'McqChoice '.$this->getText().' '.substr($this->getId(),0,5);
     }
 
 
     /** auto generated methods */
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
@@ -65,31 +71,7 @@ class McqChoice
     }
 
     /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAnswer()
-    {
-        return $this->answer;
-    }
-
-    /**
-     * @param mixed $answer
-     */
-    public function setAnswer($answer)
-    {
-        $this->answer = $answer;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getText()
     {
@@ -97,7 +79,7 @@ class McqChoice
     }
 
     /**
-     * @param mixed $text
+     * @param string $text
      */
     public function setText($text)
     {
@@ -105,7 +87,7 @@ class McqChoice
     }
 
     /**
-     * @return mixed
+     * @return boolean
      */
     public function getCorrect()
     {
@@ -113,7 +95,7 @@ class McqChoice
     }
 
     /**
-     * @param mixed $correct
+     * @param boolean $correct
      */
     public function setCorrect($correct)
     {
@@ -121,7 +103,7 @@ class McqChoice
     }
 
     /**
-     * @return mixed
+     * @return McqAnswer
      */
     public function getMcqAnswer()
     {
@@ -129,7 +111,7 @@ class McqChoice
     }
 
     /**
-     * @param mixed $mcqAnswer
+     * @param McqAnswer $mcqAnswer
      */
     public function setMcqAnswer($mcqAnswer)
     {
@@ -137,7 +119,7 @@ class McqChoice
     }
 
     /**
-     * @return mixed
+     * @return Question
      */
     public function getQuestion()
     {
@@ -145,9 +127,9 @@ class McqChoice
     }
 
     /**
-     * @param mixed $question
+     * @param Question $question
      */
-    public function setQuestion($question)
+    public function setQuestion(Question $question)
     {
         $this->question = $question;
     }

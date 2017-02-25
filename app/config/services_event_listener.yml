@@ -24,3 +24,7 @@ services:
     listener.test:
         class: AppBundle\EventSubscriber\TestSubscriber
         arguments: ['@app.redis.client']
+        
+    listener.discipline:
+        class: AppBundle\EventSubscriber\DisciplineSubscriber
+        arguments: ['@service_container']

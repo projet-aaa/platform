@@ -83,7 +83,7 @@ final class McqAnswerSubscriber implements EventSubscriberInterface
         $this->redis->publish('general', json_encode(
             array(
                 'type' => 'readMcqAnswer',
-                'payload' => array('alert' => $mcqAnswer))));
+                'payload' => array('mcqAnswer' => $mcqAnswer))));
     }
 
     /** Send a redis message to tell that a McqAnswer was updated
@@ -101,7 +101,7 @@ final class McqAnswerSubscriber implements EventSubscriberInterface
         $this->redis->publish('general', json_encode(
             array(
                 'type' => 'updateMcqAnswer',
-                'payload' => array('alert' => $mcqAnswer))));
+                'payload' => array('mcqAnswer' => $mcqAnswer))));
     }
 
     /** Send a redis message to tell that a McqAnswer was deleted
@@ -119,6 +119,6 @@ final class McqAnswerSubscriber implements EventSubscriberInterface
         $this->redis->publish('general', json_encode(
             array(
                 'type' => 'deleteMcqAnswer',
-                'payload' => array('alert' => $mcqAnswer))));
+                'payload' => array('mcqAnswer' => $mcqAnswer))));
     }
 }

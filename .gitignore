@@ -2,6 +2,7 @@
 /build/
 /phpunit.xml
 /nodejs/node_modules
+/nodejs/npm-debug.log
 /src/AppBundle/Entity/*.php~
 /src-hmi/src/*.log
 /var/*
@@ -24,3 +25,7 @@
 *.swp
 /src/AppBundle/Resources/views/
 !/src/AppBundle/Resources/views/Default/
+/src-hmi/src/.vscode/
+/srcnodeserver
+/srchmi
+/scripts

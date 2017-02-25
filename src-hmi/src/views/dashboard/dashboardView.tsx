@@ -7,33 +7,40 @@ import { connect } from "react-redux";
 import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
-// INTERNAL IMPORTS
-import { View as QuizLauncherView } from "./quizLauncherView"
+import { View as QuizLauncherView} from "./quizLauncherView"
 import { View as QuizStatView } from "./quizStatView"
 import { View as StudentFeedbackView } from "./studentFeedbackView"
-import { StudentFeedback, QuizStats } from "../../models/dashboard"
+
+import { Quiz, QuizLauncher } from '../../models/class/class'
 
 export interface StateProps {
-    // the student feedbacks
-    studentFeedback : StudentFeedback
-    // the quiz statistics
-    quizStatsArray : QuizStats[]
+    isTeacher: boolean
+
+    // number of people who signaled lesson goes too fast
+    tooFast: number
+    // number of people who signaled lesson goes too slow
+    tooSlow: number
+    // number of people who signaled the are panicking
+    panic: number
+    // the current quiz
+    currentQuiz: Quiz
+    // choice for the current quiz => percentage who chose
+    quizStats: any
+    // the list of quiz to launch
+    quizLaunchers: QuizLauncher[]
+
+    isConnected: boolean
 }
 
 export interface ActionProps {
-    // Fires an action signaling that a quiz has been launched
-    launchQuiz(quizTitle: string)
+    launchQuiz(quizId: string)
+    correction()
+    finish()
 }
 
-// return the last completed quiz
-function getLastCompleted(quizStatsArray: QuizStats[]) 
-{
-    var i = quizStatsArray.length - 1;
-    while (quizStatsArray[i].state!=0)
-    {
-        i--;
-    }
-    return quizStatsArray[i]; 
+// style for ul tag
+var paddingUl = {
+    padding: 0
 }
 
 export type Props = StateProps & ActionProps;
@@ -42,47 +49,86 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
-            studentFeedback, quizStatsArray,
-            launchQuiz
-        } = this.props;
+            isTeacher,
 
-        var quizInfoItem = quizStatsArray.map((item) => {
-            return <QuizLauncherView quizStats={item} key={item.title} title={item.title} launch={() => launchQuiz(item.title)}> </QuizLauncherView>;
-        });
+            tooFast,
+            tooSlow,
+            panic, 
+            currentQuiz,
+            quizStats,
+            quizLaunchers,
+            isConnected,
+
+            launchQuiz,
+            correction,
+            finish
+        } = this.props
+
+        var quizInfoItem = quizLaunchers.map((item) => {
+            return <QuizLauncherView 
+                key={ item.title } 
+                quizId={ item.quizId } 
+                title={ item.title }
+                state={ item.state }
+                successRate={ item.successRate }
+                launch= { () => {
+                    switch(item.state) {
+                        case 0: launchQuiz(item.quizId); break
+                        case 1: correction(); break
+                        case 2: break
+                        case 3: finish(); break
+                    }
+                }}
+            />
+        })
 
         var quizInfos = 
-        (<ul>
+        (<ul style={ paddingUl }>
             {quizInfoItem}
         </ul>)
-        
-        // show a diagram for the stats, 3 warning lights for the feedback and a panel with the quiz which can be selected
-        return (
-            <div className="page-content" >
-                <div className="row ">
-                    <div className="col-md-8">
-                        <QuizStatView quizStats={getLastCompleted(quizStatsArray)}> </QuizStatView>
-                    </div>
 
-                    <div className="col-md-4">
-                        <div className="panel">
-                            <div className="panel-heading">
-                                Statistiques de quizz
+        return (
+            <div>
+                { isTeacher ?
+                    (isConnected ? 
+                    <div>
+                        <div className="col-lg-8">
+                            <div className="row">
+                                { currentQuiz != null &&  
+                                    <QuizStatView quizStats={ quizStats } correctChoice={ 
+                                        currentQuiz.type == "MCQ" ? 
+                                        currentQuiz.choices[currentQuiz.answer] : currentQuiz.answer
+                                    }/>
+                                }
                             </div>
-                            <div className="panel-body pan white-background">
-                                <div className="pal">
-                                    {quizInfos}
+                            <div className="row">
+                                <StudentFeedbackView panicRate={panic} 
+                                            slowRate={tooSlow}
+                                            quickRate={tooFast}/>
+                            </div>
+                        </div>
+                        <div className="col-lg-4">
+                            <div className="panel">
+                                <div className="panel-heading">
+                                    Statistiques de quizz
+                                </div>
+                                <div className="panel-body pan white-background">
+                                    <div className="pal">
+                                        { quizInfos }
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-12">
-                        <StudentFeedbackView panicAlert={studentFeedback.panicAlert} 
-                                    slowerAlert={studentFeedback.slowerAlert}
-                                    quickerAlert={studentFeedback.quickerAlert}> </StudentFeedbackView>
+                    :
+                    <div>
+                        <h1>Connection au server...</h1>
+                    </div>)
+                    :
+                    <div className="row">
+                        <h1>Vous ne pouvez pas accéder au tableau de bord en tant qu'étudiant (bien essayé)</h1>
                     </div>
-                </div>
+                }
             </div>
         );
     }

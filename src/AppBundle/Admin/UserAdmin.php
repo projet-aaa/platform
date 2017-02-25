@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class UserAdmin extends AbstractAdmin
 {
+    // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper->add('username')
@@ -25,6 +26,7 @@ class UserAdmin extends AbstractAdmin
         ->add('email');
     }
 
+    // Fields on which entities can be filtered.
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper->add('username')
@@ -32,10 +34,11 @@ class UserAdmin extends AbstractAdmin
         ->add('roles');
     }
 
+    // Fields that will be displayed in list view
     protected function configureListFields(ListMapper $listMapper)
     {
-        $listMapper->addIdentifier('id')
-            ->add('username')
+        $listMapper->add('id')
+            ->addIdentifier('username')
             ->add('firstname')
             ->add('lastname')
             ->add('roles');

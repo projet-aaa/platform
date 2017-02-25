@@ -52,8 +52,10 @@ On the root  directory, we can find a traditionnal Symfony architecture
     - Action : contains business logic related to API entrypoints.
     - Admin : contains class related to the [admin dashboard](http://localhost/admin)
     - Controller : contains controllers class
+    - EventSubscriber: contains the listeners of the entities
     - Entity : contains models classes
     - Resources : contains views
+    - Security: contains the voters of the entities
 
  - tests : contains unit tests
  - var: contains all files used by the platform. **that folder should be writable**. In details

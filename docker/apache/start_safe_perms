@@ -14,7 +14,8 @@ main() {
 
     local owner group owner_id group_id tmp
     read owner group owner_id group_id < <(stat -c '%U %G %u %g' .)
-    if [[ $owner = UNKNOWN ]]; then
+
+    if [[ $owner = UNKNOWN ]] || [[ $owner = root ]] ; then
         owner=$(randname)
         if [[ $group = UNKNOWN ]]; then
             group=$owner

@@ -8,11 +8,12 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\User;
 
-class LoadUserData implements FixtureInterface
+class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
 {
 
     const DEFAULT_USERS = array(
@@ -39,10 +40,21 @@ class LoadUserData implements FixtureInterface
             $user->setPlainPassword($user_model['password']);
             $user->setRoles($user_model['roles']);
             $user->setEnabled(true);
+            $this->addReference('user'.$user_model['username'], $user);
             $manager->persist($user);
 
         }
 
         $manager->flush();
+    }
+
+    /**
+     * Get the order of this fixture
+     *
+     * @return integer
+     */
+    public function getOrder()
+    {
+        return 1;
     }
 }
