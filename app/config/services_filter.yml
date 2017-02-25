@@ -10,6 +10,11 @@ services:
         tags:      [ { name: 'api_platform.filter', id: 'discipline.search' } ]
 
     session.search_filter:
-            parent:    'api_platform.doctrine.orm.search_filter'
-            arguments: [ { discipline: 'exact', name: 'exact'} ]
-            tags:      [ { name: 'api_platform.filter', id: 'session.search' } ]
+        parent:    'api_platform.doctrine.orm.search_filter'
+        arguments: [ { discipline: 'exact', name: 'exact'} ]
+        tags:      [ { name: 'api_platform.filter', id: 'session.search' } ]
+
+    alert.search_filter:
+        parent:    'api_platform.doctrine.orm.search_filter'
+        arguments: [ { id: 'exact', alertType: 'exact' } ]
+        tags:      [ { name: 'api_platform.filter', id: 'alert.search' } ]

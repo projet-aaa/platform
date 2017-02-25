@@ -11,7 +11,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * @ApiResource(attributes={
  *     "normalization_context"={"groups"={"read"}},
- *     "denormalization_context"={"groups"={"write"}}
+ *     "denormalization_context"={"groups"={"write"}},
+ *     "filters"={"alert.search"}
  * })
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
