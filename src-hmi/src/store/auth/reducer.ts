@@ -59,6 +59,11 @@ const reducer = handleActions({
             password: action.payload.password
         })
     },
+    [ActionTypes.UPDATE_PROFILE]: function(state: AuthState, action): AuthState {
+        return Object.assign({}, state, {
+            group: action.payload.group
+        })
+    },
     [APIActionTypes.FETCH_USER_SUCCESS]: function(state: AuthState, action: any): AuthState {
         return Object.assign({}, state, {
             isTeacher: action.payload.roles.indexOf("ROLE_PROF") >= 0,

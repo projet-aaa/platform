@@ -9,7 +9,7 @@ import createSocketIoMiddleware from 'redux-socket.io'
 import * as io from 'socket.io-client'
 import * as fetch from 'isomorphic-fetch'
 
-import { urlWS, chartColors, apiRootURL, debug, log } from '../models/consts'
+import { urlWS, chartColors, apiRootURL, log } from '../models/consts'
 
 import { Quiz } from '../models/class/class'
 
@@ -132,6 +132,7 @@ export function fetcher(url, method?, obj?) {
         res.method = method
     }
     if(obj) {
+        res.headers['Content-type'] = 'application/ld+json'
         res.body = JSON.stringify(obj)
     }
     return fetch(apiRootURL + url, res).then(res => res.json())

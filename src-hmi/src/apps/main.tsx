@@ -19,6 +19,7 @@ import wsServerInfo from '../store/wsrooms/reducer'
 import questionnaireInfo from '../store/questionnaire/reducers/reducer'
 import authInfo from '../store/auth/reducer'
 import mainInfo from '../store/main/reducers/reducer'
+import profileInfo from '../store/profile/reducer'
 
 // TEMPLATES
 import { View as TopBandLeftMenuTemp } from '../template/topBandLeftMenuTemp'
@@ -55,7 +56,8 @@ let store = storeFactory([
     wsServerInfo,
     questionnaireInfo,
     authInfo,
-    mainInfo
+    mainInfo,
+    profileInfo
 ], true, auth)
     
 // ROUTE
