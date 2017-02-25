@@ -5,6 +5,7 @@ import * as MediaQuery from "react-responsive"
 
 
 export interface StateProps {
+    studentCount: number
     // percent of panicking people
     panicRate: number
     // percent of people who think lesson goes too slow
@@ -29,6 +30,7 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
+            studentCount,
             panicRate,
             slowRate,
             quickRate        
@@ -51,26 +53,29 @@ export class View extends React.Component<Props, any> {
         return (
                 <div className="panel">
                     <div className="panel-heading">
-                        Retours des élèves
+                        Informations de la salle:
                     </div>
                     <div className="panel-body">
                         <div style={ palNew }>
                             <div className="row">
-                                Incompréhension
+                                Nombre d'étudiants: { studentCount }
+                            </div>
+                            <div className="row">
+                                Incompréhension: { panicRate }%
                                 <div className="progress progress-sm mbn">
                                     <div role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"
                                         style={ panicStyle } className="progress-bar covering-size"/>
                                 </div>
                             </div>
                             <div className="row">
-                                Trop lent
+                                Trop lent: { slowRate }%
                                 <div className="progress progress-sm mbn">
                                     <div role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"
                                         style={ slowStyle } className="progress-bar covering-size"/>
                                 </div>
                             </div>
                             <div className="row">
-                                Trop rapide
+                                Trop rapide: { quickRate }%
                                 <div className="progress progress-sm mbn">
                                     <div role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"
                                         style={ fastStyle } className="progress-bar covering-size"/>
