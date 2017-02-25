@@ -3,8 +3,9 @@ security:
         FOS\UserBundle\Model\UserInterface: plaintext
 
     role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
+        ROLE_ADMIN:       [ROLE_PROF, ROLE_USER]
         ROLE_SUPER_ADMIN: ROLE_ADMIN
+        ROLE_PROF: ROLE_USER
 
     providers:
         fos_userbundle:
@@ -51,7 +52,7 @@ security:
                 manager: admin_sso
                 login_action: false         # BeSimpleSsoAuthBundle:TrustedSso:login
                 logout_action: false        # BeSimpleSsoAuthBundle:TrustedSso:logout
-                create_users: false
+                create_users: true          #creates user if they don't exist in db.
                 created_users_roles: [ROLE_USER ]
                 login_path: /login
                 check_path: /login_check
@@ -63,7 +64,8 @@ security:
     access_control:
         - { path: ^/login,    roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/api/gitlab, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/,      roles: IS_AUTHENTICATED_FULLY}
 
 

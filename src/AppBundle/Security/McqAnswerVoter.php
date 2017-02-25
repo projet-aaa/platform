@@ -97,7 +97,7 @@ class McqAnswerVoter extends BaseVoter
      */
     private function canRead(McqAnswer $mcqAnswer, User $user)
     {
-        return $mcqAnswer->getAuthor() === $user || $user->getRole() === 'ROLE_ADMIN';
+        return $mcqAnswer->getAuthor() === $user || in_array('ROLE_ADMIN',$user->getRoles());
     }
 
     /**
@@ -109,7 +109,7 @@ class McqAnswerVoter extends BaseVoter
      */
     private function canUpdate(McqAnswer $mcqAnswer, User $user)
     {
-        return $mcqAnswer->getAuthor() === $user || $user->getRole() === 'ROLE_ADMIN';
+        return $mcqAnswer->getAuthor() === $user || in_array('ROLE_ADMIN',$user->getRoles());
     }
 
     /**
@@ -121,6 +121,6 @@ class McqAnswerVoter extends BaseVoter
      */
     private function canDelete(McqAnswer $mcqAnswer, User $user)
     {
-        return $mcqAnswer->getAuthor() === $user || $user->getRole() === 'ROLE_ADMIN';
+        return $mcqAnswer->getAuthor() === $user || in_array('ROLE_ADMIN',$user->getRoles());
     }
 }

@@ -14,7 +14,8 @@ main() {
 
     local owner group owner_id group_id tmp
     read owner group owner_id group_id < <(stat -c '%U %G %u %g' .)
-    if [[ $owner = UNKNOWN ]]; then
+
+    if [[ $owner = UNKNOWN ]] || [[ $owner = root ]] ; then
         owner=$(randname)
         if [[ $group = UNKNOWN ]]; then
             group=$owner
@@ -34,6 +35,7 @@ main() {
     # Not volumes, so need to be chowned
     chown -R "$owner:$group" /var/{lock,log,run}/apache*
     chown -R "$owner:$group" var
+    chown -R "$owner:$group" vendor
     exec /usr/sbin/apache2ctl "$@"
 }
 

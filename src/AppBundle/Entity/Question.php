@@ -3,11 +3,14 @@
 namespace AppBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource
+ * A question in a test.
+ *
+ * @ApiResource(attributes={"filters"={"question.search"}})
  * @ORM\Entity
  */
 class Question
@@ -20,47 +23,86 @@ class Question
     private $id;
 
     /**
+     * @var string the question text.
+     *
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $text;
 
     /**
+     * @var string a text displayed after the question.
+     *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $explication;
 
     /**
+     * @var string the type of the question among :
+     *  - text a question expecting a text answer typed by the student
+     *  - unique : one correct answer among several
+     *  - multiple : several correct answers among several
+     *
      * @Assert\NotBlank()
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @Assert\Choice({"text", "unique", "multiple"})
+     * @ORM\Column(type="string", length=16, nullable=false)
      */
     private $typeAnswer;
 
     /**
-     * @ORM\OneToMany(targetEntity="McqChoice", mappedBy="question")
+     * @var ArrayCollection[McqChoice] all the available choice of answer
+     *
+     * @ORM\OneToMany(targetEntity="McqChoice", mappedBy="question", cascade={"remove"})
      */
-    private $mcqChoice;
+    private $mcqChoices;
 
     /**
-     * @ORM\OneToMany(targetEntity="TextAnswer", mappedBy="question")
+     * @var ArrayCollection[TextAnswer] All the answers to a text Question
+     *
+     * @ORM\OneToMany(targetEntity="TextAnswer", mappedBy="question", cascade={"remove"})
      */
-    private $textAnswer;
+    private $textAnswers;
 
     /**
+     * @var Test the owner of the question
+     *
+     * @Assert\NotNull()
+     *
      * @ORM\ManyToOne(targetEntity="Test", inversedBy="questions")
      * @ORM\JoinColumn(name="test_id", referencedColumnName="id")
      */
     private $test;
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return 'Q '.$this->getText();
     }
 
+    /**
+     * Question constructor.
+     */
+    public function __construct()
+    {
+        $this->mcqChoices = new ArrayCollection();
+        $this->textAnswers = new ArrayCollection();
+    }
+
+    /**
+     * @Assert\IsTrue(message = "A question with answer type text can't have some McqChoice.")
+     */
+    public function isMcqChoiceQuestionTypeConsistent()
+    {
+        return ($this->typeAnswer == 'text' && $this->mcqChoices->count() == 0) ||
+            $this->typeAnswer != 'text';
+    }
+
     /** auto generated methods */
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
@@ -68,15 +110,7 @@ class Question
     }
 
     /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getText()
     {
@@ -84,7 +118,7 @@ class Question
     }
 
     /**
-     * @param mixed $text
+     * @param string $text
      */
     public function setText($text)
     {
@@ -92,7 +126,7 @@ class Question
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getExplication()
     {
@@ -100,7 +134,7 @@ class Question
     }
 
     /**
-     * @param mixed $explication
+     * @param string $explication
      */
     public function setExplication($explication)
     {
@@ -108,7 +142,7 @@ class Question
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getTypeAnswer()
     {
@@ -116,7 +150,7 @@ class Question
     }
 
     /**
-     * @param mixed $typeAnswer
+     * @param string $typeAnswer
      */
     public function setTypeAnswer($typeAnswer)
     {
@@ -126,37 +160,65 @@ class Question
     /**
      * @return mixed
      */
-    public function getMcqChoice()
+    public function getMcqChoices()
     {
-        return $this->mcqChoice;
+        return $this->mcqChoices;
     }
 
     /**
-     * @param mixed $mcqChoice
+     * @param mixed $mcqChoices
      */
-    public function setMcqChoice($mcqChoice)
+    public function setMcqChoices($mcqChoices)
     {
-        $this->mcqChoice = $mcqChoice;
+        $this->mcqChoices = $mcqChoices;
     }
 
     /**
-     * @return mixed
+     * @param $mcqChoice McqChoice a mcqchoice for the question
      */
-    public function getTextAnswer()
-    {
-        return $this->textAnswer;
+    public function addMcqChoice(McqChoice $mcqChoice){
+        $this->mcqChoices[] = $mcqChoice;
     }
 
     /**
-     * @param mixed $textAnswer
+     * @param McqChoice $mcqChoice
      */
-    public function setTextAnswer($textAnswer)
-    {
-        $this->textAnswer = $textAnswer;
+    public function removeMcqChoice(McqChoice $mcqChoice){
+        $this->mcqChoices->removeElement($mcqChoice);
     }
 
     /**
-     * @return mixed
+     * @return string
+     */
+    public function getTextAnswers()
+    {
+        return $this->textAnswers;
+    }
+
+    /**
+     * @param string $textAnswers
+     */
+    public function setTextAnswers($textAnswers)
+    {
+        $this->textAnswers = $textAnswers;
+    }
+
+    /**
+     * @param TextAnswer $textAnswer
+     */
+    public function addTextAnswer(TextAnswer $textAnswer){
+        $this->textAnswers[] = $textAnswer;
+    }
+
+    /**
+     * @param TextAnswer $textAnswer
+     */
+    public function removeTextAnswer(TextAnswer $textAnswer){
+        $this->textAnswers->removeElement($textAnswer);
+    }
+
+    /**
+     * @return Test
      */
     public function getTest()
     {
@@ -164,9 +226,9 @@ class Question
     }
 
     /**
-     * @param mixed $test
+     * @param Test $test
      */
-    public function setTest($test)
+    public function setTest(Test $test)
     {
         $this->test = $test;
     }

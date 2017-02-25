@@ -3,13 +3,14 @@
 namespace AppBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\TestRepository")
  */
-class Test
+class Test implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -30,7 +31,14 @@ class Test
     private $gitPath;
 
     /**
-     * @ORM\OneToMany(targetEntity="Question", mappedBy="test")
+     * @var boolean True if the test is a test for live session (ie a test with only one question)
+     *
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private $live;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="test", cascade={"persist","remove"})
      */
     private $questions;
 
@@ -40,15 +48,46 @@ class Test
      */
     private $session;
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return 'Test '.$this->getTitle().' '.substr($this->getId(),0,5);
     }
 
+    public function __construct()
+    {
+        $this->questions = new ArrayCollection();
+    }
+
+    /**
+     * @Assert\IsTrue(message="A live test can't have more than one question")
+     * @return bool
+     */
+    public function isLiveConsistent(){
+        return ($this->live && $this->getQuestions()->count() <=1) || !$this->live;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     */
+    function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'gitPath' => $this->gitPath,
+            'live' => $this->live,
+            'session' => $this->session->id,
+            'questions' => $this->questions,
+        ];
+    }
+
     /** Auto generated methods*/
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
@@ -56,15 +95,7 @@ class Test
     }
 
     /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getTitle()
     {
@@ -72,7 +103,7 @@ class Test
     }
 
     /**
-     * @param mixed $title
+     * @param string $title
      */
     public function setTitle($title)
     {
@@ -80,7 +111,7 @@ class Test
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getGitPath()
     {
@@ -88,7 +119,7 @@ class Test
     }
 
     /**
-     * @param mixed $gitPath
+     * @param string $gitPath
      */
     public function setGitPath($gitPath)
     {
@@ -96,7 +127,7 @@ class Test
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection
      */
     public function getQuestions()
     {
@@ -104,15 +135,29 @@ class Test
     }
 
     /**
-     * @param mixed $questions
+     * Add missions.
+     *
+     * @param Question $question
      */
-    public function setQuestions($questions)
+    public function addQuestion(Question $question)
     {
-        $this->questions = $questions;
+        $this->questions[] = $question;
+        $question->setTest($this);
     }
 
     /**
-     * @return mixed
+     * Remove a question.
+     *
+     * @param Question $question
+     */
+    public function removeQuestion(Question $question)
+    {
+        $this->questions->removeElement($question);
+        $question->setTest(null);
+    }
+
+    /**
+     * @return Session
      */
     public function getSession()
     {
@@ -120,11 +165,29 @@ class Test
     }
 
     /**
-     * @param mixed $session
+     * @param Session $session
      */
-    public function setSession($session)
+    public function setSession(Session $session)
     {
         $this->session = $session;
     }
+
+    /**
+     * @return boolean
+     */
+    public function getLive()
+    {
+        return $this->live;
+    }
+
+    /**
+     * @param boolean $live
+     */
+    public function setLive($live)
+    {
+        $this->live = $live;
+    }
+
+
 
 }

@@ -1,18 +1,31 @@
-// represents the score of a user on the last quiz
+// SCORE VIEW
+// Renders the score of a student during a live lesson
 
+// EXTERAL IMPORTS
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
 export interface StateProps {
-   score: number // his score
-   rank: number // his rank
-   highScore: number // the high score
-   average: number // the average
+    // his score
+    score: number
+    // his rank
+    rank: number
+    // the people number who answered the questions
+    population: number
+    // the high score
+    highScore: number
+    // the average
+    average: number
 }
 
 export interface ActionProps {}
+
+// style for the text
+var mediumSizeText = {
+    fontSize: 30
+}
 
 type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
@@ -20,26 +33,21 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
-            score, rank, highScore, average
+            score, rank, population, highScore, average
         } = this.props;
 
-        var mediumSizeText = {
-            fontSize: 30
-        }
         // we show a panel containing all the values defined above
         return (
-            <div>
-                <div className="panel panel-blue">
-                    <div className="panel-heading" style={mediumSizeText}>
-                        Scores :
-                    </div>
-                    <div className="panel-body pan white-background">
-                        <div className="pal">
-                            <h3>Score global : {score}</h3>
-                            <h3>Rang : {rank}</h3>
-                            <h3>high score : {highScore}</h3>
-                            <h3>moyenne : {average}</h3>
-                        </div>
+            <div className="panel panel-blue">
+                <div className="panel-heading" style={mediumSizeText}>
+                    Scores :
+                </div>
+                <div className="panel-body pan white-background">
+                    <div className="pal">
+                        <h3>Score global : {score}</h3>
+                        <h3>Rang : {rank}/{population}</h3>
+                        <h3>high score : {highScore}</h3>
+                        <h3>moyenne : {average}</h3>
                     </div>
                 </div>
             </div>

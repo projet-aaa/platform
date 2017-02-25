@@ -1,26 +1,58 @@
-// represents what sees a student during a live session (his remote)
+// REMOTE VIEW
+// Renders the student remote during a live lesson
 
+// EXTERAL IMPORTS
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
-import QuizContainer from "../../containers/quiz/quizContainer"
-import ScoreContainer from "../../containers/quiz/scoreContainer"
-import FeedbackContainer from "../../containers/quiz/feedbackContainer"
+import { View as DesktopView } from "../../views/quiz/remoteViewDesktop"
+import { View as MobileView } from "../../views/quiz/remoteViewMobile"
 
-import { QuizType, Quiz } from "../../models/quiz"
+import { Quiz, QuizType, QuizInstanceState, AttentionStateType } from "../../models/class/class"
 
-export interface StateProps {
-    quiz: Quiz // a quiz
+import { getText } from '../../utils'
+
+export interface StateProps { 
+    isTeacher: boolean
+    
+    attentionState: string
+
+    sessionId: string
+    quiz: Quiz
+    authorId: string
+
+    questionId: string
+
+    quizChoice: any
+    choiceId: string
+    sent: boolean
+
+    showCorrection: boolean
+    forceUnfold: boolean
+    question: boolean
+
+    score: number
+    rank: number
+    population: number
+    highscore: number
+    average: number
+
+    isConnected: boolean
 }
-export interface ActionProps {
-    validateAnswer(quizId: number) // validate an answer
-}
 
-// get the text of an element of the page with the id "id"
-function getText(id: string): string {
-    return (document.getElementById(id) as any).value
+export interface ActionProps { 
+    choose(choice),
+    nextQuiz(),
+    prevQuiz(),
+    validateAnswer(),
+    sendComment(text),
+
+    signalPanic(),
+    signalSlow(),
+    signalFast(),
+    signalOk()
 }
 
 export type Props = StateProps & ActionProps;
@@ -28,30 +60,15 @@ export class View extends React.Component<Props, any> {
     props: Props
 
     render() {
-        const {
-            quiz,
-            validateAnswer
-        } = this.props;
-        
-        // if there is a question we show the quiz, else we show the feedback buttons
-        let question = true,
-            left = question ?  
-                    <QuizContainer quiz={ quiz } validate={ validateAnswer }/> :
-                    <FeedbackContainer/>
-        // the quiz or the buttons are on the left and the scores are on the right
         return (
             <div>
-                <div className="page-content">
-                    <div className="row">
-                        <div className="col-md-8">
-                            { left }
-                        </div>
-                        <div className="col-md-4">
-                            <ScoreContainer/>
-                        </div>
-                    </div>
-                </div>
+                <MediaQuery query='(min-width: 1224px)'>
+                    <DesktopView {...this.props}/>
+                </MediaQuery>
+                <MediaQuery query='(max-width: 1224px)'>
+                    <MobileView {...this.props}/>
+                </MediaQuery>
             </div>
-        );
+        )
     }
 }

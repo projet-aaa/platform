@@ -3,11 +3,16 @@
 namespace AppBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 /**
- * @ApiResource
+ * @ApiResource(attributes={"filters"={"discipline.search"}})
  * @ORM\Entity
+ * @UniqueEntity("name")
+ * @UniqueEntity("gitUrl")
  */
 class Discipline
 {
@@ -35,19 +40,30 @@ class Discipline
     private $gitKey;
 
     /**
-     * @ORM\OneToMany(targetEntity="Session", mappedBy="discipline")
+     * @ORM\OneToMany(targetEntity="Session", mappedBy="discipline", cascade={"remove"})
      */
     private $sessions;
+
+    /**
+     * @var string the group allowed to see that discipline
+     * @ORM\Column(type="string", length=31, nullable=true)
+     */
+    private $part; //group is a reserved word in sql.
 
     public function __toString()
     {
       return $this->getName().' '.substr($this->getId(),0,5);
     }
 
+    public function __construct()
+    {
+        $this->sessions = new ArrayCollection();
+    }
+
     /** Auto generated methods*/
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
@@ -55,15 +71,7 @@ class Discipline
     }
 
     /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -71,7 +79,7 @@ class Discipline
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
     public function setName($name)
     {
@@ -79,7 +87,7 @@ class Discipline
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getGitUrl()
     {
@@ -87,7 +95,7 @@ class Discipline
     }
 
     /**
-     * @param mixed $gitUrl
+     * @param string $gitUrl
      */
     public function setGitUrl($gitUrl)
     {
@@ -95,7 +103,7 @@ class Discipline
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getGitKey()
     {
@@ -103,7 +111,7 @@ class Discipline
     }
 
     /**
-     * @param mixed $gitKey
+     * @param string $gitKey
      */
     public function setGitKey($gitKey)
     {
@@ -111,7 +119,7 @@ class Discipline
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection[Session]
      */
     public function getSessions()
     {
@@ -119,12 +127,29 @@ class Discipline
     }
 
     /**
-     * @param mixed $sessions
+     * @param ArrayCollection $sessions
      */
     public function setSessions($sessions)
     {
         $this->sessions = $sessions;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPart()
+    {
+        return $this->part;
+    }
+
+    /**
+     * @param mixed $part
+     */
+    public function setPart($part)
+    {
+        $this->part = $part;
+    }
+
 
 
 }

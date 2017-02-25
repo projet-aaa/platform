@@ -31,13 +31,16 @@ class Subject
      */
     private $resource;
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return 'Subject ' . $this->id;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
@@ -45,15 +48,7 @@ class Subject
     }
 
     /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
+     * @return Session
      */
     public function getSession()
     {
@@ -61,15 +56,15 @@ class Subject
     }
 
     /**
-     * @param mixed $session
+     * @param Session $session
      */
-    public function setSession($session)
+    public function setSession(Session $session)
     {
         $this->session = $session;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getResource()
     {
@@ -77,7 +72,7 @@ class Subject
     }
 
     /**
-     * @param mixed $resource
+     * @param string $resource
      */
     public function setResource($resource)
     {

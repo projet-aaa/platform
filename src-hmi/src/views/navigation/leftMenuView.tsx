@@ -1,10 +1,25 @@
+// Represents the menu with the disciplines on the left of the application
+
+// INTERNAL IMPORTS
 import * as React from "react";
 import { Link } from "react-router"
 
+import { Discipline } from "../../models/discipline"
+
 export interface StateProps {
-    disciplines: string[]
+    // the disciplines list
+    disciplines: Discipline[]
+    // the actual discipline
+    discipline: string
 }
-export interface ActionProps {}
+
+export interface ActionProps {  }
+
+// style
+var navbarPosition = {
+    top: 0,
+    bottom: 0
+}
 
 export type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
@@ -12,23 +27,36 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
-            disciplines
-        } = this.props;
-        var disciplinesRender = [];
-        for(var i=0;i<disciplines.length;i++) {
-            disciplinesRender.push(
-                <li>
-                    <Link to="/">
-                        <div className="icon-bg bg-orange"/>
-                        <span className="menu-title">{disciplines[i]}</span>
-                    </Link>
-                </li>
-            )
+            disciplines,
+            discipline
+        } = this.props
+
+        let disciplinesRender = [];
+        for(let i = 0; i < disciplines.length; i++) {
+            if (disciplines[i].name == discipline) {
+                disciplinesRender.push(
+                    <li key={i} className="active">
+                        <Link to={ "/" + disciplines[i].name } >
+                            <div className="icon-bg bg-orange"/>
+                            <span className="menu-title">{ disciplines[i].name }</span>
+                        </Link>
+                    </li>
+                )
+            } else {
+                disciplinesRender.push(
+                    <li key={i}>
+                        <Link to={ "/" + disciplines[i].name } >
+                            <div className="icon-bg bg-orange"/>
+                            <span className="menu-title">{ disciplines[i].name }</span>
+                        </Link>
+                    </li>
+                )
+            }
         }
         return (
             <div>
                 <nav id="sidebar" role="navigation" data-step="2" data-intro="Template has &lt;b&gt;many navigation styles&lt;/b&gt;"
-                        data-position="right" className="navbar-default navbar-static-side">
+                        data-position="right" className="navbar-default navbar-static-side" style={ navbarPosition }>
                     <div className="sidebar-collapse menu-scroll">
                         <ul id="side-menu" className="nav">
                             <div className="clearfix"></div>
@@ -40,7 +68,7 @@ export class View extends React.Component<Props, any> {
                                     <span className="menu-title">Accueil</span>
                                 </Link>
                             </li>
-                            {disciplinesRender}
+                            { disciplinesRender }
                         </ul>
                     </div>
                 </nav>

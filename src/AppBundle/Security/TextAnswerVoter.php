@@ -96,7 +96,7 @@ class TextAnswerVoter extends BaseVoter
      */
     private function canRead(TextAnswer $textAnswer, User $user)
     {
-        return $textAnswer->getAuthor() === $user || $user->getRole() === 'ROLE_ADMIN';
+        return $textAnswer->getAuthor() === $user || in_array('ROLE_ADMIN',$user->getRoles());
     }
 
     /**
@@ -108,7 +108,7 @@ class TextAnswerVoter extends BaseVoter
      */
     private function canUpdate(TextAnswer $textAnswer, User $user)
     {
-        return $textAnswer->getAuthor() === $user || $user->getRole() === 'ROLE_ADMIN';
+        return $textAnswer->getAuthor() === $user || in_array('ROLE_ADMIN',$user->getRoles());
     }
 
     /**
@@ -120,6 +120,6 @@ class TextAnswerVoter extends BaseVoter
      */
     private function canDelete(TextAnswer $textAnswer, User $user)
     {
-        return $textAnswer->getAuthor() === $user || $user->getRole() === 'ROLE_ADMIN';
+        return $textAnswer->getAuthor() === $user || in_array('ROLE_ADMIN',$user->getRoles());
     }
 }

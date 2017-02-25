@@ -3,11 +3,17 @@
 namespace BeSimple\SsoAuthBundle\Security\Core\Authentication\Provider;
 
 
+use AppBundle\Entity\User;
+use BeSimple\SsoAuthBundle\Security\Core\Authentication\Token\SsoToken;
+use FOS\UserBundle\Doctrine\UserManager;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\AuthenticationServiceException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use BeSimple\SsoAuthBundle\Security\Core\User\UserFactoryInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
  * Overrides SsoAuthenticationProvider (same namespace) to handle connexion and create
@@ -17,6 +23,15 @@ use BeSimple\SsoAuthBundle\Security\Core\User\UserFactoryInterface;
  */
 class SsoAuthenticationOverrideProvider extends SsoAuthenticationProvider
 {
+
+    protected $userManager;
+
+    public function __construct(UserProviderInterface $userProvider, UserCheckerInterface $userChecker,
+                                $createUsers = false, array $createdUsersRoles = array('ROLE_USER'), $hideUserNotFound = true,UserManager $userManager)
+    {
+        parent::__construct($userProvider, $userChecker, $createUsers, $createdUsersRoles, $hideUserNotFound);
+        $this->userManager = $userManager;
+    }
 
     /**
      * @throws \Symfony\Component\Security\Core\Exception\UsernameNotFoundException
@@ -32,7 +47,7 @@ class SsoAuthenticationOverrideProvider extends SsoAuthenticationProvider
         try {
             $user = $this->retrieveUser($username);
         } catch (UsernameNotFoundException $notFound) {
-            if ($this->createUsers && $this->userProvider instanceof UserFactoryInterface) {
+            if ($this->createUsers && $this->userProvider instanceof UserProviderInterface) {
                 $user = $this->createUser($username, $attributes);
             } elseif ($this->hideUserNotFound) {
                 throw new BadCredentialsException('Bad credentials', 0, $notFound);
@@ -40,6 +55,7 @@ class SsoAuthenticationOverrideProvider extends SsoAuthenticationProvider
                 throw $notFound;
             }
         }
+
         return $user;
     }
 
@@ -75,13 +91,19 @@ class SsoAuthenticationOverrideProvider extends SsoAuthenticationProvider
      */
     protected function createUser($username, array $attributes = array())
     {
-        if (!$this->userProvider instanceof UserFactoryInterface) {
-            throw new AuthenticationServiceException('UserProvider must implement UserFactoryInterface to create unknown users.');
+        if (!$this->userProvider instanceof UserProviderInterface) {
+            throw new AuthenticationServiceException('UserProvider must implement UserProviderInterface to create unknown users.');
         }
 
         try {
-            $user = $this->userProvider->createUser($username, $this->createdUsersRoles, $attributes);
-
+            /* @var User */
+            $user = $this->userManager->createUser($username, $this->createdUsersRoles, $attributes);
+            $user->setUsername($username);
+            $user->setPlainPassword($this->generateRandomString(8));
+            $user->setPassword($this->generateRandomString(8));
+            $user->setFirstname(substr($username,0,1));
+            $user->setLastname(substr($username,0,strlen($username)-1));
+            dump($user);
             if (!$user instanceof UserInterface) {
                 throw new AuthenticationServiceException('The user provider must create an UserInterface object.');
             }
@@ -90,5 +112,43 @@ class SsoAuthenticationOverrideProvider extends SsoAuthenticationProvider
         }
 
         return $user;
+    }
+
+    /**
+     * @{inheritdoc}
+     */
+    public function authenticate(TokenInterface $token)
+    {
+        if (!$this->supports($token)) {
+            return null;
+        }
+
+        $validation = $token->getManager()->validateCredentials($token->getCredentials());
+        if (!$validation->isSuccess()) {
+            throw new BadCredentialsException('Authentication has not been validated by SSO provider.');
+        }
+
+        $user = $this->provideUser($validation->getUsername(), $validation->getAttributes());
+
+        //remove post auth and pre-auth because we don't really implement useradvancedinterface
+        $authenticatedToken = new SsoToken($token->getManager(), $token->getCredentials(), $user, $user->getRoles(), $validation->getAttributes());
+        foreach ($token->getAttributes() as $name => $value) {
+            if ('sso:validation' == $name) {
+                continue;
+            }
+            $authenticatedToken->setAttribute($name, $value);
+        }
+
+        return $authenticatedToken;
+    }
+
+    private function generateRandomString($length = 10) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 }

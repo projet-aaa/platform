@@ -1,0 +1,18 @@
+test:
+  title: Questions sur les couleurs et les chevaux
+  live: false
+  session: REPLACE_WITH_SESSION_ID
+  questions:
+     - {text: Quel est la couleur du cheval blanc d'Henri 4 ?,
+        explication: la réponse est contenue dans la question,
+        typeAnswer: text
+      }
+     - {text: Quel est la couleur du cheval blanc d'Henri 4 ?, explication: la réponse est contenue dans la question,
+        typeAnswer: unique,
+        mcqChoices: [{text: Blanc, correct: true},  {text: Noir, correct: false}]
+      }
+     - {text: Quel est la couleur du cheval blanc d'Henri 4 ?,
+        explication: la réponse est contenue dans la question,
+              typeAnswer: multiple,
+              mcqChoices: [{text: Blanc, correct: true},  {text: Noir, correct: false},  {text: Plus blanc que blanc, correct: true}]
+          }

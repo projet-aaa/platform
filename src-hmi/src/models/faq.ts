@@ -1,13 +1,23 @@
-export interface FAQAnswer {
+
+// ------------------------------
+// -- FAQ
+// ------------------------------
+
+
+// An answer to a thread question
+export interface ThreadMessage {
+    id: number
     text: string
     author: string
     date: Date
     votes: number
 }
 
-export interface FAQQuestion {
+// A question and its answers
+export interface Thread {
+    id: number
     text: string
     author: string
     date: Date
-    answers: FAQAnswer[]
-}
+    answers: ThreadMessage[]
+}   
