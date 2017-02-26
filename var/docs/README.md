@@ -8,6 +8,8 @@
    
     - [Install](https://github.com/projet-aaa/platform/blob/master/var/docs/back-end/install.md)
   
+    - [(optionnal) SSL Setup](https://github.com/projet-aaa/platform/blob/master/var/docs/back-end/ssl-setup.md)
+  
     - [API](https://github.com/projet-aaa/platform/blob/master/var/docs/back-end/api.md)
     
     - [Integration & Imports](https://github.com/projet-aaa/platform/blob/master/var/docs/back-end/integration-imports.md)
