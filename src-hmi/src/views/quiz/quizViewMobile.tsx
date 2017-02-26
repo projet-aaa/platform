@@ -52,6 +52,7 @@ export class View extends React.Component<Props, any> {
         // answers can have different type according to the type of quiz (MCQ, open question)
         let answers
         switch(quiz.type) {
+            case QuizType.MMCQ:
             case QuizType.MCQ: 
                 var answerItems = quiz.choices.map((item, i) => {
                     return <AnswerViewMobile 
@@ -59,7 +60,7 @@ export class View extends React.Component<Props, any> {
                         ind={ i } 
                         text={ item } 
                         choose={ choose == null ? () => { } : () => choose(i) } 
-                        chosen={ quizChoice == i }
+                        chosen={ quiz.type == QuizType.MMCQ ? quizChoice.contains(i) : quizChoice == i }
                     />
                 })
                 answers = (<ul style={ paddingUl }>{ answerItems }</ul>)

@@ -1,4 +1,4 @@
-import { Action, fetcher } from '../../utils'
+import { Action, fetcher, findAllIndex } from '../../utils'
 
 import { Quiz } from '../../models/class/class'
 
@@ -97,19 +97,19 @@ export function openClassRoom(sessionName: string) {
                                     question.choices.push(choice)
                                     choicesMissing--
                                     if(!choicesMissing) {
-                                        console.log(resQuestions)
                                         let res = resQuestions.map(question => {
+                                            let type = question.typeAnswer == "multiple" ? "MMCQ" :
+                                                (question.typeAnswer == "unique" ? "MCQ" : "TEXT")
                                             return {
                                                 id: question.id,
-                                                type: question.typeAnswer == "multiple" || question.typeAnswer == "unique" 
-                                                    ? "MCQ" : "TEXT",
+                                                type,
                                                 title: question.text,
                                                 question: question.text,
                                                 choices: question.choices && question.choices.map(choice => choice.text),
                                                 choiceIds: question.choices && question.choices.map(choice => choice.id),
-                                                answer: question.typeAnswer == "multiple" || question.typeAnswer == "unique" 
-                                                    ? question.choices && question.choices.findIndex(choice => choice.correct)
-                                                    : question.textAnswers && question.textAnswers.length && question.textAnswers[0],
+                                                answer: type == "MMCQ" ? findAllIndex(question.choices, (choice: any) => choice.correct) :
+                                                        type == "MCQ" ? question.choices && question.choices.findIndex(choice => choice.correct) :
+                                                        question.textAnswers && question.textAnswers.length && question.textAnswers[0],
                                                 explanations: question.choices && question.choices.map(choice => ""),
                                                 justification: question.explication
                                             }

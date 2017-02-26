@@ -29,9 +29,6 @@ export default connect<StateProps, ActionProps, any>(
 )((props, ctx) => {
     let prePath = "/" + props.params.UE + "/" + props.params.course
 
-    console.log(props)
-    console.log(prePath)
-
     if(props.isTeacher) {
         return <TabsTemp 
         actualTabName={ props.name } 

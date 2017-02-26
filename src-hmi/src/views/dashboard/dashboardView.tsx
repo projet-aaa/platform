@@ -11,7 +11,7 @@ import { View as QuizLauncherView} from "./quizLauncherView"
 import { View as QuizStatView } from "./quizStatView"
 import { View as StudentFeedbackView } from "./studentFeedbackView"
 
-import { Quiz, QuizLauncher, QuizInstanceState } from '../../models/class/class'
+import { Quiz, QuizLauncher, QuizInstanceState, QuizType } from '../../models/class/class'
 
 export interface StateProps {
     isTeacher: boolean
@@ -107,8 +107,9 @@ export class View extends React.Component<Props, any> {
                                     quizStats={ quizStats } 
                                     correctChoice={ 
                                         currentQuiz != null &&
-                                        (currentQuiz.type == "MCQ" ? 
-                                        currentQuiz.choices[currentQuiz.answer] : currentQuiz.answer)
+                                        (currentQuiz.type == QuizType.MCQ ? currentQuiz.choices[currentQuiz.answer] : 
+                                         currentQuiz.type == QuizType.MMCQ ? currentQuiz.answer.map(a => currentQuiz.choices[a]) :
+                                         currentQuiz.answer)
                                     }
                                     quizButton={ quizState == QuizInstanceState.HEADING ? 
                                         () => correction() : () => finish() 

@@ -55,22 +55,18 @@ export class View extends React.Component<Props, any> {
         
         let colorAnswerStyle = null
         if (!showCorrection) {
-            colorAnswerStyle = {}
+            colorAnswerStyle = { }
         } else {
             if(rightAnswer) {
-                colorAnswerStyle = {
-                    color: "green"
-                }
+                colorAnswerStyle = { color: "green" }
             } else if (chosen) {
-                colorAnswerStyle = {
-                    color: "red"
-                }
+                colorAnswerStyle = { color: "red" }
             } else {
-                colorAnswerStyle = {
-                    
-                }
+                colorAnswerStyle = { }
             }
         }
+
+        console.log(ind + ": " + chosen)
         
         let indRef = "ind" + ind
         let res = null

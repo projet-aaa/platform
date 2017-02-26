@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { StateProps, ActionProps, View } from "../../views/dashboard/dashboardView"
 import { DashboardState } from "../../store/dashboard/reducers/reducer"
 
-import { Quiz } from "../../models/class/class"
+import { Quiz, QuizType } from "../../models/class/class"
 
 import { startQuiz, showFeedback, stopQuiz } from "../../store/dashboard/actions/actions"
 
@@ -14,7 +14,7 @@ function mapStateToProps(state: any) {
         quiz: Quiz = dash.currQuizId && dash.quiz ? dash.quiz[dash.currQuizId] : null
 
     if(quiz) {
-        if(quiz.type == "MCQ") {
+        if(quiz.type == QuizType.MCQ || quiz.type == QuizType.MMCQ) {
             Object.keys(dash.currQuizStat).forEach(function (key) {
                 var count = dash.currQuizStat [key]
                 stats[(quiz as Quiz).choices[key]] = count

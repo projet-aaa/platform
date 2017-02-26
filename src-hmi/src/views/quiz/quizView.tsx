@@ -79,21 +79,21 @@ export class View extends React.Component<Props, any> {
         let answers = null
         switch(quiz.type) {
             // the render is a list of AnswerView (radio button and answer text)
+            case QuizType.MMCQ:
             case QuizType.MCQ: 
-                let answerItems = quiz.choices.map((item, i) => {
+                answers = (<ul>{ quiz.choices.map((item, i) => {
                     return <AnswerView
                         key={ i }
                         ind={ i } 
                         text={ item } 
-                        chosen={ quizChoice == i } 
-                        rightAnswer={ i == quiz.answer }
+                        chosen={ quiz.type == QuizType.MMCQ ? quizChoice.indexOf(i) >= 0 : quizChoice == i } 
+                        rightAnswer={ quiz.type == QuizType.MMCQ ? quiz.answer.indexOf(i) >= 0 : quiz.answer == i }
                         explanation={ quiz.explanations[i] } 
                         showCorrection={ showCorrection }
                         forceUnfold={ forceUnfold }
                         choose={ choose == null ? () => { }: () => { choose(i) } } 
                     />
-                })
-                answers = (<ul>{ answerItems }</ul>)
+                }) }</ul>)
             break
             // the render is a text field
             case QuizType.TEXT:

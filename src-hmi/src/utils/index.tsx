@@ -254,3 +254,13 @@ export function shuffle(array) {
 
     return array;
 }
+
+export function findAllIndex<T>(list: T[], f: (val:T) => boolean): number[] {
+    let res = []
+    for(let i = 0; i < list.length; i++) {
+        if(f(list[i])) {
+            res.push(i)
+        }
+    }
+    return res
+}
