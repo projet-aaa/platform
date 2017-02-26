@@ -1,14 +1,30 @@
 import * as http from 'http'
+import * as https from 'https'
 import * as express from 'express'
 import * as socketio from 'socket.io'
 import * as redis from 'redis'
+import * as fs from 'fs'
 
 import { SocketServer } from './socketServer'
 
 import { domain, port, debug } from '../models/consts'
 
+let sslmode_available = fs.existsSync('/tls/server.key') && fs.existsSync('/tls/server.crt');
+
 let app = express()
-let server = http.createServer(app)
+let server = null;
+if(!sslmode_available){
+    server = http.createServer(app)
+    console.log('Server created for http mode (no SSL) ');
+}
+else{
+    let options = {
+        key: fs.readFileSync('/tls/server.key'),
+        cert: fs.readFileSync('/tls/server.crt')
+    };
+    server = https.createServer(options,app);
+    console.log('Server created for https mode (SSL)');
+}
 let io = socketio(server)
 
 let redisClient = redis.createClient(6379, 'redis')
@@ -21,7 +37,6 @@ if(debug){
         console.log('Node app listening on port ' + port + '!')
     })
 } else {
-    server.listen(8088, "jetpack1.trendio.fr", function () {
-        console.log('Node app listening on port ' +  8088 + '!')
-    })
+    server.listen(8088);
+    console.log('Node app listening on port ' +  8088 + '!');
 }
