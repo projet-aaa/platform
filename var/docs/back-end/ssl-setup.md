@@ -39,6 +39,9 @@ openssl req -new -key server.key -out server.csr
 openssl x509 -req -sha256 -days 365 -in server.csr -signkey server.key -out server.crt
 ```
 
+If you respect naming conventions, websocket server will automatically boot on ssl mode.
+Otherwise you will have to adapt names in `src-nodeserver/src/main/server.ts`.
+
 
 ## Example of a docker-compose.yml ready for SSL
 
