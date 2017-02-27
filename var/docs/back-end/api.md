@@ -30,3 +30,59 @@ Session can be filtered on their name. It will returns all the sessions exactly 
 **Question**
 
 Question can be filtered on their test to get all the questions of a test.
+
+## Special Entrypoints
+
+The APi follows REST standard. However we have added several special entrypoints for specific purpose.
+
+**Get the tree of a Test**
+
+GET `/api/tests/{id}/tree` and you will get a Test and its Questions and its McqChoices nested
+
+Example 
+
+```json
+{
+    "@context": "/app_dev.php/api/contexts/Test",
+    "@id": "/app_dev.php/api/tests/5a382c10-fb35-11e6-a402-0242ac110004",
+    "@type": "Test",
+    "id": "5a382c10-fb35-11e6-a402-0242ac110004",
+    "title": "Intro Objets",
+    "gitPath": null,
+    "live": true,
+    "questions": [
+        {
+            "@id": "/app_dev.php/api/questions/5a383404-fb35-11e6-a402-0242ac110004",
+            "@type": "Question",
+            "id": "5a383404-fb35-11e6-a402-0242ac110004",
+            "text": "Can objects of abstract classes be instantiated ?",
+            "explication": "Abstract class can't be instantiated",
+            "typeAnswer": "unique",
+            "mcqChoices": [
+                {
+                    "@id": "/app_dev.php/api/mcq_choices/5a383b73-fb35-11e6-a402-0242ac110004",
+                    "@type": "McqChoice",
+                    "id": "5a383b73-fb35-11e6-a402-0242ac110004",
+                    "text": "True",
+                    "correct": false
+                },
+                {
+                    "@id": "/app_dev.php/api/mcq_choices/5a38428f-fb35-11e6-a402-0242ac110004",
+                    "@type": "McqChoice",
+                    "id": "5a38428f-fb35-11e6-a402-0242ac110004",
+                    "text": "False",
+                    "correct": true
+                },
+                {
+                    "@id": "/app_dev.php/api/mcq_choices/5a38b314-fb35-11e6-a402-0242ac110004",
+                    "@type": "McqChoice",
+                    "id": "5a38b314-fb35-11e6-a402-0242ac110004",
+                    "text": "Polymorphism",
+                    "correct": false
+                }
+            ]
+        }
+    ],
+    "session": "/app_dev.php/api/sessions/5a382436-fb35-11e6-a402-0242ac110004"
+}
+```
