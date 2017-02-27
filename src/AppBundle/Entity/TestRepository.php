@@ -25,4 +25,16 @@ class TestRepository extends EntityRepository
         return $query->getOneOrNullResult();
     }
 
+    public function getFullTree(Test $test){
+        $qb = $this->_em->createQueryBuilder();
+        $query = $qb->select('t')->from('AppBundle:Test','t')
+            ->where('t.id = :id')
+            ->setParameter('id',$test->getId())
+            ->leftJoin('t.session', 'session')
+            ->addSelect('session')
+            ->getQuery();
+
+        return $query->getOneOrNullResult();
+    }
+
 }
