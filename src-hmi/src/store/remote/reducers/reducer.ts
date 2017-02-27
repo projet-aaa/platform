@@ -63,8 +63,16 @@ const reducer = handleActions({
             } else {
                 choice = action.payload.choice
             }
+
+            return Object.assign({}, state, {
+                choice
+            })
         } else if(type == QuizType.TEXT) {
             choice = action.payload.choice
+
+            return Object.assign({}, state, {
+                choice
+            })
         } else if(type == QuizType.MMCQ) {
             if(!choice) {
                 choice = []
@@ -74,11 +82,11 @@ const reducer = handleActions({
             } else {
                 choice.push(action.payload.choice)
             }
-        }
 
-        return Object.assign({}, state, {
-            choice: Object.assign([], choice)
-        })
+            return Object.assign({}, state, {
+                choice: Object.assign([], choice)
+            })
+        }
     },
     [ActionTypes.NEXT_CONSUL_QUIZ]: function(state: RemoteState, action: any): RemoteState {
         let len = state.quizHistory.length
