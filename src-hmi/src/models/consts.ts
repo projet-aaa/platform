@@ -24,10 +24,10 @@ export const urlWS = domainWS + ":" + portWS
 export const appName = "Jetpack"
 
 export const apiRootURL = debug ? "http://localhost/app_dev.php/api" :
-                                  "http://jetpack0.trendio.fr/api"
+                                  "https://jetpack0.trendio.fr/api"
 
 export const loginURL = debug ? "http://localhost/app_dev.php/api/login_check" :
-                                "http://jetpack0.trendio.fr/api/login_check"
+                                "https://jetpack0.trendio.fr/api/login_check"
 
 declare var username_global
 declare var password_global

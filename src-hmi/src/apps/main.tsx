@@ -72,6 +72,14 @@ let MainRouter =
             <IndexRoute component={ ProfileContainer }/>
         </Route>
 
+        <Route path="/session/:profName" component={ TopBandTemp }>
+            <IndexRoute component={ RemoteContainer }/>
+        </Route>
+        <Route path="/session/:course/:profName/tb" component={ TopBandTemp }>
+            <IndexRoute component={ DashboardContainer }/>
+        </Route>
+        <Route path="/session/:course/:profName/presentation" component={ PresentationContainer }/>
+
         <Route path="/:UE" component={ TopBandLeftMenuTemp }>
             <IndexRoute component={ DisciplineContainer }/>
             <Route path=":course">
@@ -93,14 +101,6 @@ let MainRouter =
                 <Route path="questionnaires" component={ (p, c) => <CourseContainer name="Questionnaires" {...p} /> } />
             </Route>
         </Route>
-
-        <Route path="/:UE/:course/:profName/tele" component={ TopBandTemp }>
-            <IndexRoute component={ RemoteContainer }/>
-        </Route>
-        <Route path="/:UE/:course/:profName/tb" component={ TopBandTemp }>
-            <IndexRoute component={ DashboardContainer }/>
-        </Route>
-        <Route path="/:UE/:course/:profName/presentation" component={ PresentationContainer }/>
     </Router>
 </Provider>)
 

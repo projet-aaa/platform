@@ -45,18 +45,22 @@ const name = "dashboard"
 const reducer = handleActions({
     [WSInActionTypes.ANSWER]: function(state: DashboardState, action: any): DashboardState {
         let choices = {}
-        if(action.payload.choice.length != null) {
-            for(let choice of action.payload.choice) {
-                choices[choice] = state.currQuizStat[choice] 
-                    ? state.currQuizStat[choice] + 1 : 1
+        if(state.currQuizId) {
+            if(state.quiz[state.currQuizId].type == QuizType.MMCQ) {
+                for(let choice of action.payload.choice) {
+                    choices[choice] = state.currQuizStat[choice] 
+                        ? state.currQuizStat[choice] + 1 : 1
+                }
+            } else {
+                choices[action.payload.choice] = state.currQuizStat[action.payload.choice] 
+                        ? state.currQuizStat[action.payload.choice] + 1 : 1
             }
+            return Object.assign({}, state, {
+                currQuizStat: Object.assign({}, state.currQuizStat, choices)
+            })
         } else {
-            choices[action.payload.choice] = state.currQuizStat[action.payload.choice] 
-                    ? state.currQuizStat[action.payload.choice] + 1 : 1
+            return state
         }
-        return Object.assign({}, state, {
-            currQuizStat: Object.assign({}, state.currQuizStat, choices)
-        })
     },
     [WSInActionTypes.SIGNAL_STATE]: function(state: DashboardState, action: any): DashboardState {
         return Object.assign({}, state, {

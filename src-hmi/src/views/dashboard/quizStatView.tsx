@@ -58,7 +58,7 @@ export class View extends React.Component<Props, any> {
                             </button>
                         </div> :
                         <div className="pal">
-                            <h1>Aucune quiz lancé</h1>
+                            <h1>Aucun quiz lancé</h1>
                         </div>
                     }
                 </div>
