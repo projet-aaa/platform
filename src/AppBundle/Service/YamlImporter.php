@@ -86,7 +86,6 @@ class YamlImporter
         catch(\Exception $e){
             throw  new \Exception('Invalid Yaml format');
         }
-        dump($read);
         $test->setTitle($read['title']);
         if($read['live'] && count($read['questions']) > 1){
             throw new \Exception('A live test can\'t have more than 1 question');
