@@ -35,9 +35,7 @@ class YamlImporter
         }
 
         $test->setTitle($read['title']);
-        if($read['live'] && count($read['questions']) > 1){
-            throw new \Exception('A live test can\'t have more than 1 question');
-        }
+
         $test->setLive($read['live']);
         $session = $this->em->getRepository('AppBundle:Session')->findOneById($read['session']);
         if($session === null){
@@ -87,9 +85,7 @@ class YamlImporter
             throw  new \Exception('Invalid Yaml format - '.$e->getMessage());
         }
         $test->setTitle($read['title']);
-        if($read['live'] && count($read['questions']) > 1){
-            throw new \Exception('A live test can\'t have more than 1 question');
-        }
+
         $test->setLive($read['live']);
 
         $session = $this->em->getRepository('AppBundle:Session')->findOneById($read['session']);
