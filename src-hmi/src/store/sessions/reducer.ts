@@ -140,7 +140,7 @@ const reducer = handleActions({
     },
     [APIActionTypes.FETCH_SESSIONS_SUCCESS]: function(state: SessionState, action: any) {
 
-        var sessionList = action.payload["hydra:member"];
+        var sessionList = action.payload.fetchResult["hydra:member"];
 
         sessionList.map ( (item) => 
             {
@@ -150,6 +150,8 @@ const reducer = handleActions({
                 
                 item.sessionType = item.type;
                 delete item.type;
+
+                item.discipline = action.payload.disciplineId;
 
                 item.updatedAt = new Date(item.updatedAt);
             }

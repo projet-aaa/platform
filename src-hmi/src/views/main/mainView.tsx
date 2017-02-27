@@ -8,13 +8,14 @@ import * as MediaQuery from "react-responsive"
 
 // INTERNAL IMPORTS
 import { Session, SessionType } from "../../models/session"
-import { ddmmyyyy } from "../../utils/index"
+import { Discipline } from "../../models/discipline"
+import { ddmmyyyy, findAllIndex } from "../../utils/index"
 
 export interface StateProps {
     // the list of sessions of all disciplines, it must be sorted by reverse date
     sessions: Session[],
     // the list of disciplines
-    disciplines: string[]
+    disciplines: Discipline[]
     // the list of not checked disciplines in filters : discipline name -> is checked
     areNotChecked: any
 }
@@ -23,7 +24,7 @@ export interface StateProps {
 
 export interface ActionProps {
     // click on a discipline filter
-    selectFilter(discipline: string)
+    selectFilter(disciplineId: string)
     // click on the serach button of the search bar
     search()
 }
@@ -43,19 +44,24 @@ export class View extends React.Component<Props, any> {
 
         var sessionsRender = []
         for (var i=0 ; i<sessions.length ; i++) {
-            sessionsRender.push(
-                <a key={i} className="list-group-item">
-                    { ddmmyyyy(sessions[i].updatedAt) } | { sessions[i].discipline } | { sessions[i].sessionName }
-                </a>
-            );
+            if ( !areNotChecked[sessions[i].discipline]) {
+                //Match the session's discipline id to disciplineName
+                //There should be only one result to findAllIndex so first element is picked 
+                var disciplineName = disciplines[findAllIndex(disciplines, (discipline) => {return (discipline.id == sessions[i].discipline)})[0]].name
+                sessionsRender.push(
+                    <a key={i} className="list-group-item">
+                        { ddmmyyyy(sessions[i].updatedAt) } | { disciplineName } | { sessions[i].sessionName }
+                    </a>
+                );
+            }
         }
         var filtersRender = []
         for (var i=0; i < disciplines.length; i++) {
             filtersRender.push(
-                <li key={i} className="without-bullet" onClick={ (function(i){ return () => selectFilter(disciplines[i])})(i) }>
+                <li key={i} className="without-bullet" onClick={ (function(i){ return () => selectFilter(disciplines[i].id)})(i) }>
                     <label className="checkbox-inline">
-                        <input id="optionsVisa" type="checkbox" name="optionsRadios" value="Visa" checked={ !areNotChecked[disciplines[i]] }/>
-                        &nbsp; { disciplines[i] }
+                        <input id="optionsVisa" type="checkbox" name="optionsRadios" value="Visa" checked={ !areNotChecked[disciplines[i].id] }/>
+                        &nbsp; { disciplines[i].name }
                     </label>
                 </li>
             )
@@ -66,17 +72,15 @@ export class View extends React.Component<Props, any> {
             <div>
                 <div className="col-lg-8">
                     <div className="row">
-                        <form action="" method="POST" className="box box-solid">
-                            <div className="input-group">
-                                <input type="text" placeholder="Rechercher" name="search" className="form-control input-lg"/>
+                        <div className="input-group">
+                            <input type="text" placeholder="Rechercher" name="search" className="form-control input-lg"/>
 
-                                <div className="input-group-btn">
-                                    <button className="btn btn-lg btn-primary" type="submit" onClick={ search }>
-                                        <i className="fa fa-search"></i>
-                                    </button>
-                                </div>
+                            <div className="input-group-btn">
+                                <button className="btn btn-lg btn-primary" onClick={ search }>
+                                    <i className="fa fa-search"></i>
+                                </button>
                             </div>
-                        </form>
+                        </div>
                     </div>
                     <div className="row" style={ {marginTop:15} }>
                         { sessionsRender }

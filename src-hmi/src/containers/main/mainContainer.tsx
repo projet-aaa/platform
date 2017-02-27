@@ -17,13 +17,14 @@ function mapStateToProps(state): StateProps {
         sessions: _.values(state.sessions.sessions)
                     .filter(session => !state.main.areNotChecked[session.discipline])
                     .sort((elt1, elt2) => elt2.date - elt1.date),
-        disciplines: auth.disciplines.map(d => d.name),
+        disciplines: auth.disciplines,
         areNotChecked: state.main.areNotChecked
     }
 }
+
 function mapDispatchToProps(dispatch) {
     return {
-        fetchSessions: () => dispatch(fetchSessions(null)),
+        fetchSessions: (disciplines) => dispatch(fetchSessions(disciplines)),
         selectFilter: (discipline) => dispatch(selectFilter(discipline)),
         search: () => dispatch(search())
     }
@@ -33,6 +34,6 @@ export default rootWrapper(
     mapStateToProps, 
     mapDispatchToProps,
     null,
-    props => { props.fetchSessions() },
+    props => { props.fetchSessions(props.disciplines)},
     View
 )
