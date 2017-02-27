@@ -38,7 +38,7 @@ class McqChoice
     /**
      * @var McqAnswer The list of McqAnswer that chose that answer
      *
-     * @ORM\OneToMany(targetEntity="McqAnswer", mappedBy="mcqChoice")
+     * @ORM\OneToMany(targetEntity="McqAnswer", mappedBy="mcqChoice", cascade={"remove"})
      */
     private $mcqAnswer;
 
@@ -46,7 +46,7 @@ class McqChoice
      * @var Question the question which that object is a choice of
      *
      * @Assert\NotNull()
-     * @ORM\ManyToOne(targetEntity="Question", inversedBy="mcqChoice")
+     * @ORM\ManyToOne(targetEntity="Question", inversedBy="mcqChoices")
      * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
      */
     private $question;

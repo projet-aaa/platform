@@ -27,10 +27,9 @@ This will install all the dependencies and create the "node_modules" folder.
 To build a specific "application" (index.tsx in folder src/apps), run:
 
 ```sh
-gulp build --[The name of the folder of the application]
+gulp build --[The name path to the application (ie the .tsx representing your application in the apps folder)]
+gulp build --main # for example, to build the main application
 ```
-
-This will create the dist folder in src, adds all the assets necessary, creates a folder for the application in the dist folder and puts index.html and bundle.js inside of it. To test it, you can just run the index.html in your browser. (!!! The fontawesome elements (little icons) won't work because of CORS, nothing to worry about !!!)
 
 To build every applications (can take a while), run:
 
@@ -38,6 +37,4 @@ To build every applications (can take a while), run:
 gulp build
 ```
 
-##Deploy manually
-
-The above build process simply creates the application in the src-hmi/dist folder. To actually have it production ready, you can run the same command but replace build by deploy. 
+These commands will put create the source code for the web pages: it will put the scripts and the styles in web/webassets and it will modify the index.html.twig in src/AppBundle/Resources/views/Default.

@@ -2,8 +2,6 @@ import { connect } from "react-redux"
 
 import rootWrapper from "./rootWrapper"
 
-import { View } from "../views/quiz/remoteView"
-
 import { AuthState } from "../store/auth/reducer" 
 import { WSRoomState } from "../store/wsrooms/reducer"
 
@@ -12,7 +10,7 @@ import { authWS } from "../store/auth/actions"
 
 import { CONNECTION_STATE } from "../models/wsServer/server"
 
-export default function connectionWrapper(View, isTeacher: boolean) {
+export default function connectionWrapper(View) {
     function mapStateToProps(state, ownProps) {
         let auth: AuthState = state.auth,
             wsrooms: WSRoomState = state.wsserver,
@@ -21,8 +19,9 @@ export default function connectionWrapper(View, isTeacher: boolean) {
                 wsrooms.rooms.find(room => wsrooms.currentRoom == room.id) : null
 
         return {
-            username: "abeyet",
-            isTeacher: isTeacher,
+            id: auth.id,
+            username: auth.lastName,
+            isTeacher: auth.isTeacher,
             teacher,
             rooms: wsrooms.rooms,
             currentRoom,
@@ -36,8 +35,7 @@ export default function connectionWrapper(View, isTeacher: boolean) {
             subscribe: () => dispatch(subscribe(true)),
             authWS: (id, username, isTeacher) => dispatch(authWS(id, username, isTeacher)),
             joinRoom: (roomId: number) => dispatch(joinRoom(roomId)),
-            // createRoom: () => dispatch(openClassRoom(ownProps.params.course))
-            createRoom: () => dispatch(openClassRoomServer(null, null))
+            createRoom: () => dispatch(openClassRoom(ownProps.params.course))
         }
     }
 
@@ -62,8 +60,8 @@ export default function connectionWrapper(View, isTeacher: boolean) {
         mapDispatchToProps,
         mergeProps,
         props => { 
+            props.authWS(props.id, props.username, props.isTeacher)
             props.subscribe() 
-            props.authWS(0, "abeyet", props.isTeacher)
         },
         View
     )

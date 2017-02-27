@@ -15,12 +15,16 @@ import { QuizType, Quiz } from "../../models/class/class"
 import { chartColors } from "../../models/consts"
 
 export interface StateProps {
+    isTeacher: boolean
+
     // a quiz
     quiz: Quiz
     // statistics: choice => count
     stats: any
     // true => we show the right answer
     showCorrection: boolean
+
+    isConnected: boolean
 }
 export interface ActionProps { }
 
@@ -57,19 +61,19 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
+            isTeacher,
+            
             quiz,
             stats,
-            showCorrection
+            showCorrection,
+            isConnected
         } = this.props;
 
         let quizRender 
         if(quiz) {
             quizRender = (<QuizView 
                 quiz={ quiz } 
-                quizChoice={{
-                    quizId: quiz.id,
-                    choice: -1 
-                }}
+                quizChoice={ quiz.answer }
                 showCorrection={ showCorrection } 
                 forceUnfold={ true } 
                 nextQuiz={ null } 
@@ -115,7 +119,17 @@ export class View extends React.Component<Props, any> {
         // the quiz or the buttons are on the left and the scores are on the right
         return (
             <div>
-                { res }
+                { isTeacher ?
+                    (isConnected ? 
+                        res :
+                        <div>
+                            <h1>Connection au server...</h1>
+                        </div>)
+                    :
+                    <div className="row">
+                        <h1>Vous ne pouvez pas accéder à la vue de présentation en tant qu'étudiant (bien essayé)</h1>
+                    </div>
+                }
             </div>
         );
     }

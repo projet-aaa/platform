@@ -1,7 +1,7 @@
 {
-  "name": "front-end",
+  "name": "node-server",
   "version": "1.0.0",
-  "description": "A react-redux todo boilerplate coded in typescript",
+  "description": "A node server for communication during a quiz session",
   "main": "index.js",
   "author": "GibsS",
   "license": "ISC",

@@ -4,6 +4,8 @@ import { SocketInfo, RoomInfo, RoomType } from '../models/rooms'
 import { MainRoom } from '../rooms/mainRoom'
 import { ClassRoom } from '../rooms/classRoom'
 
+import { SocketOutMsg } from '../models/main'
+
 export class SocketServer {
 
     io
@@ -94,9 +96,9 @@ export class SocketServer {
                 room = new ClassRoom(this, id)
                 if(msg.sessionId) {
                     let quizs = {}
-                    msg.quiz.forEach(quiz => {
+                    for(let quiz of msg.quiz) {
                         quizs[quiz.id] = quiz
-                    })
+                    }
                     (room as ClassRoom).quiz = quizs;
                     (room as ClassRoom).sessionId = msg.sessionId;
                 }
@@ -115,10 +117,11 @@ export class SocketServer {
 
         if(room) {
             if(this.log)
-                console.log('[close room] type=', room.type, ' id=', room.id)
+                console.log('[close room] type=', room.type, 'id=', room.id)
 
             for(let socket of room.sockets) {
                 this.changeSocketRoom(socket, -1)
+                this.send(socket, SocketOutMsg.ROOM_CLOSED, { roomId: roomId })
             }
 
             this.rooms.splice(this.rooms.indexOf(room), 1)

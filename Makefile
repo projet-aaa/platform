@@ -1,6 +1,7 @@
 install: build up status
 
 up:
+
 		docker-compose up -d
 
 stop:
@@ -8,6 +9,7 @@ stop:
 		docker-compose stop
 
 rm: stop
+
 		docker-compose rm
 
 build:
@@ -20,4 +22,4 @@ status:
 
 test_behat:
 
-	docker-compose run --rm web vendor/bin/behat .
+		docker-compose run --rm web vendor/bin/behat .

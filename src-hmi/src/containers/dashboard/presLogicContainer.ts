@@ -9,7 +9,7 @@ import { joinRoom, subscribe } from "../../store/wsrooms/actions"
 
 import { CONNECTION_STATE } from "../../models/wsServer/server"
 
-function mapStateToProps(state: any, prop): StateProps {
+function mapStateToProps(state: any, prop) {
     let dash: DashboardState = state.dashboard
 
     let stats = {},
@@ -31,23 +31,7 @@ function mapDispatchToProps(dispatch): ActionProps {
     return { }
 }
 
-
-function mergeProps(stateProps, dispatchProps, ownProps) {
-    switch(stateProps.connectionState) {
-        case CONNECTION_STATE.NONE: 
-        case CONNECTION_STATE.AUTHENTIFYING: 
-        case CONNECTION_STATE.AUTHENTIFIED: {
-            let room = stateProps.rooms.find(room => room.teacher == stateProps.teacher)
-            if(room) { dispatchProps.joinRoom(room.id) }
-            break
-        }
-        default: break
-    }
-    return Object.assign(stateProps, dispatchProps, ownProps)
-}
-
 export default connect<StateProps, ActionProps, any>(
     mapStateToProps, 
-    mapDispatchToProps,
-    mergeProps
+    mapDispatchToProps
 )(View)

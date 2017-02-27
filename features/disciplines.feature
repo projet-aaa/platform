@@ -18,6 +18,24 @@ Feature: Manage disciplines
     Then the response status code should be 201
     And the response should be in JSON
     And the header "Content-Type" should be equal to "application/ld+json; charset=utf-8"
+    And the git-folder associated with discipline "PF" should exist
+
+  Scenario: Clone at creation works
+    Given I am connected to the internet
+    Given I authenticate myself as admin
+    When I add "Content-Type" header equal to "application/ld+json"
+    And I add "Accept" header equal to "application/ld+json"
+    And I send a "POST" request to "/api/disciplines" with body:
+    """
+    {
+      "name": "Telecoms", "gitUrl": "https://github.com/projet-aaa/Test-git.git"
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the header "Content-Type" should be equal to "application/ld+json; charset=utf-8"
+    And the git-folder associated with discipline "Telecoms" should exist
+    And README file of "Telecoms" folder should exist
 
 
   Scenario: Discipline data should be validated. name is unique among Discipline

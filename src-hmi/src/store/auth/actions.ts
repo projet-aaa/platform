@@ -1,10 +1,12 @@
 import { CALL_API } from 'redux-api-middleware'
-import { createAPIActionCreator } from '../../utils'
+import { createAPIActionCreator, fetcher } from '../../utils'
 
 import { loginURL } from "../../models/consts"
 
 export const ActionTypes = {
     AUTH_LOCAL: "AUTH/AUTH_LOCAL",
+
+    UPDATE_PROFILE: "AUTH/UPDATE_PROFILE"
 }
 
 export const APIActionTypes = {
@@ -34,31 +36,35 @@ export function auth(id: number, username: string, password: string, successProm
         if(!getState().auth.infoFetched) {
             dispatch(authAPI(username, password))
             dispatch(authLocal(id, username, password))
-            dispatch(fetchUser({ id }))
 
             let i = setInterval(() => {
                 let { auth } = getState()
-                if(auth.group) {
+                if((document as any).token) {
                     clearInterval(i)
-                    dispatch(fetchDiscipline({ part: auth.group }, successPromise))
+                    dispatch(fetchUser({ id }, () => {
+                        let { auth } = getState()
+                        dispatch(fetchDiscipline({ part: auth.group }, successPromise))
+                    }))
                 }
             }, 250)
         } else {
-            successPromise()
+            if(successPromise) {
+                successPromise()
+            }
         }
     }
 }
 
 const fetchUser: (info: { 
     id: number 
-}) => any
+}, promise) => any
 = createAPIActionCreator(
     info => '/users/' + info.id, 
     null,
     'GET',
     APIActionTypes.FETCH_USER,
     APIActionTypes.FETCH_USER_SUCCESS,
-    APIActionTypes.FETCH_USER_FAILURE
+    APIActionTypes.FETCH_USER_FAILURE,
 )
 const fetchDiscipline: (info: { 
     part: string 
@@ -102,6 +108,29 @@ function authAPI(username: string, password: string) {
                 APIActionTypes.AUTH_FAILURE
             ]
         }
+    }
+}
+
+export function updateProfile(group: string) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: ActionTypes.UPDATE_PROFILE,
+            payload: { group }
+        })
+        dispatch(updateProfileAPI(group))
+    }
+}
+
+export function updateProfileAPI(group: string) {
+    return (dispatch, getState) => {
+        let { auth } = getState()
+        fetcher('/users/' + auth.id, 'PUT', {
+            part: group
+        })
+        .then(res => {
+            console.log("update successful:", res)
+        })
+        .catch(error => console.log("error"))
     }
 }
 

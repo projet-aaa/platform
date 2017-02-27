@@ -5,6 +5,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Yaml\Yaml;
 
 class HomeController extends Controller
 {
@@ -33,6 +34,8 @@ class HomeController extends Controller
      */
     public function devAction()
     {
+        dump(Yaml::parse(file_get_contents(__DIR__.'/../../../var/docs/back-end/test_import.yml')));
+
         return $this->render('AppBundle:Default:dev.html.twig');
     }
 

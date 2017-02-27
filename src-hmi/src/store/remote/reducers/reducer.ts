@@ -2,7 +2,7 @@ import { handleActions } from "redux-actions"
 
 import { ActionTypes, APIActionTypes, WSInActionTypes, WSOutActionTypes } from '../actions/actionTypes'
 
-import { QuizInstanceState, Quiz, AttentionStateType } from '../../../models/class/class'
+import { QuizInstanceState, Quiz, AttentionStateType, QuizType } from '../../../models/class/class'
 
 export interface RemoteState {
     attentionState: string,
@@ -54,8 +54,30 @@ let initialstate: RemoteState = {
 const name = "remote"
 const reducer = handleActions({
     [ActionTypes.CHOOSE]: function(state: RemoteState, action: any): RemoteState {
+        let type = state.quiz[state.currQuizId].type,
+            choice = state.choice
+
+        if(type == QuizType.MCQ) {
+            if(choice == action.payload.choice) {
+                choice = -1
+            } else {
+                choice = action.payload.choice
+            }
+        } else if(type == QuizType.TEXT) {
+            choice = action.payload.choice
+        } else if(type == QuizType.MMCQ) {
+            if(!choice) {
+                choice = []
+            }
+            if(choice.indexOf(action.payload.choice) >= 0) {
+                choice.splice(choice.indexOf(action.payload.choice), 1)
+            } else {
+                choice.push(action.payload.choice)
+            }
+        }
+
         return Object.assign({}, state, {
-            choice: action.payload.choice
+            choice: Object.assign([], choice)
         })
     },
     [ActionTypes.NEXT_CONSUL_QUIZ]: function(state: RemoteState, action: any): RemoteState {
@@ -97,7 +119,7 @@ const reducer = handleActions({
                 quizHistory: [...state.quizHistory, state.currQuizId],
                 currQuizId: action.payload.quiz.id,
                 currQuizState: QuizInstanceState.HEADING,
-                choice: null,
+                choice: action.payload.quiz.type == QuizType.MMCQ ? [] : null,
                 choiceId: null,
                 currConsulQuizInd: state.quizHistory.length - 1,
                 sent: false
@@ -109,7 +131,7 @@ const reducer = handleActions({
                 }),
                 currQuizId: action.payload.quiz.id,
                 currQuizState: QuizInstanceState.HEADING,
-                choice: null,
+                choice: action.payload.quiz.type == QuizType.MMCQ ? [] : null,
                 choiceId: null,
                 sent: false
             })
@@ -144,16 +166,21 @@ const reducer = handleActions({
         })
     },
     [WSInActionTypes.CLASS_JOINED]: function(state: RemoteState, action: any): RemoteState {
+        let obj = {}
+        action.payload.quiz.forEach(quiz => {
+            obj[quiz.id] = quiz
+        })
         return Object.assign({}, state, {
             sessionId: action.payload.sessionId,
-            quiz: action.payload.quiz,
+            quiz: obj,
 
             quizHistory: action.payload.quizHistory,
             currConsulQuizInd: action.payload.quizHistory.length - 1,
 
             currQuizId: action.payload.currQuizId,
             currQuizState: action.payload.currQuizState,
-            choice: null,
+            choice: obj[action.payload.currQuizId] && 
+                    (obj[action.payload.currQuizId].type == QuizType.MMCQ ? [] : null),
             choiceId: null,
 
             score: 0,

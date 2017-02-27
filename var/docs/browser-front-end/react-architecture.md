@@ -48,6 +48,7 @@ The NPM modules used can be found in src-hmi/package.json, the main ones are:
 - react-router: The application is an SPA (Single page application) so for handling the changing of the URL and the navigation in the application, we use this library.
 - react-responsive: Allows use to make the application responsive and run it on mobile aswell as desktop.
 - socket.io-client: The socket io client.
+- redux-api-middleware: This is a redux middleware that allows us to send API Calls and handle their response within the redux ecosystem
 
 ##Architecture
 
@@ -86,16 +87,18 @@ In the src folder, you can find the `tsconfig.json` file: it is used to define t
 
 - views: Contains all the React components
 
-###Adding to the application
+- templates: Contains wrapping views that handle the common aspects of the interface (head band, left menu..)
 
-####To add a new View
+- mobile: Source code of the mobile application. At the time of writing, their is no more than a "POC".
 
-Go in the view folder, pick the appropriate folder or create it and create a new view. It must look as follow:
+###HOW TO
 
-```ts
+Though you might want to modify the architecture at some point, adding features to the application boils down to the following tasks:
 
-```
+- create views: go in the views folder to create a view (copy an existing one for frame of reference).
 
-####To modify the redux unique store
+- create containers: got in the containers folder and create a container (copy an existing one for frame of reference) and pick a view to connect the container to (remember, in react-redux, a container is the interface between redux and react views).
 
-Go in the store folder, create a new folder 
+- create a new part of the global state: if you need to store more information in the application, you will likely have to create a new part of the redux store. To do so, go in the store folder, create a folder with the name of the state (first, make sure that your state is not already present some where in the existing store). In that folder create all the actions and reducer files you need (use other reducer and actions files for reference).
+
+- create API actions: Their are two ways of making API calls: chaining "fetches" (see src/store/wsrooms/actions for reference) and redux-api-middleware (see src/store/remote/actions/actions for reference).

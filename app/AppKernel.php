@@ -36,6 +36,9 @@ class AppKernel extends Kernel
 
             //default data
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+
+            //automatic author update
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

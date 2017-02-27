@@ -31,7 +31,7 @@ class Thread
     private $text;
 
     /**
-     * @ORM\OneToMany(targetEntity="ThreadMessage", mappedBy="thread")
+     * @ORM\OneToMany(targetEntity="ThreadMessage", mappedBy="thread", cascade={"remove"})
      */
     private $threadMessages;
 

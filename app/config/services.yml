@@ -17,7 +17,7 @@ services:
         class: BeSimple\SsoAuthBundle\Security\Core\Authentication\Provider\SsoAuthenticationOverrideProvider
         abstract: true
         public: false
-        arguments: [~, "@security.user_checker", ~, ~, "%security.authentication.hide_user_not_found%"]
+        arguments: [~, "@security.user_checker", ~, ~, "%security.authentication.hide_user_not_found%","@fos_user.user_manager"]
 
     listener.voter:
         class: AppBundle\EventSubscriber\AccessListener
@@ -31,3 +31,7 @@ services:
 
     app.git.client:
         class: AppBundle\Service\Git
+
+    app.importer.yaml:
+        class: AppBundle\Service\YamlImporter
+        arguments: ["@doctrine.orm.entity_manager"]

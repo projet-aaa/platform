@@ -19,6 +19,7 @@ import wsServerInfo from '../store/wsrooms/reducer'
 import questionnaireInfo from '../store/questionnaire/reducers/reducer'
 import authInfo from '../store/auth/reducer'
 import mainInfo from '../store/main/reducers/reducer'
+import profileInfo from '../store/profile/reducer'
 
 // TEMPLATES
 import { View as TopBandLeftMenuTemp } from '../template/topBandLeftMenuTemp'
@@ -39,6 +40,8 @@ import DisciplineContainer from '../containers/discipline/disciplineContainer'
 
 import QuestionnaireContainer from '../containers/questionnaire/questionnaireContainer'
 
+import LoginContainer from '../containers/devlogin/loginContainer'
+
 import { storeFactory } from '../utils'
 
 // STORE CREATION (DEFINITION OF THE GLOBAL STATE)
@@ -53,8 +56,9 @@ let store = storeFactory([
     wsServerInfo,
     questionnaireInfo,
     authInfo,
-    mainInfo
-], true, true, auth)
+    mainInfo,
+    profileInfo
+], true, auth)
     
 // ROUTE
 let MainRouter =
@@ -63,6 +67,7 @@ let MainRouter =
         <Route path="/" component={ TopBandLeftMenuTemp }>
             <IndexRoute component={ MainContainer }/>
         </Route>
+        <Route path="/login" component={ LoginContainer}/>
         <Route path="/profil" component={ TopBandLeftMenuTemp }>
             <IndexRoute component={ ProfileContainer }/>
         </Route>
