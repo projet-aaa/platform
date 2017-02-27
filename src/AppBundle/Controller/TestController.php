@@ -1,7 +1,5 @@
 <?php
 
-// src/AppBundle/Controller/BookController.php
-
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Test;
