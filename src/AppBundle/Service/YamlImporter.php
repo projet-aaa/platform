@@ -31,7 +31,7 @@ class YamlImporter
             $read = $read['test'];
         }
         catch(\Exception $e){
-            throw  new \Exception('Invalid Yaml format');
+            throw  new \Exception('Invalid Yaml format - '.$e->getMessage());
         }
 
         $test->setTitle($read['title']);
@@ -84,7 +84,7 @@ class YamlImporter
             $read = $read['test'];
         }
         catch(\Exception $e){
-            throw  new \Exception('Invalid Yaml format');
+            throw  new \Exception('Invalid Yaml format - '.$e->getMessage());
         }
         $test->setTitle($read['title']);
         if($read['live'] && count($read['questions']) > 1){
