@@ -8,6 +8,10 @@
 
 The API has some special filters on several entities :
 
+**Alert**
+
+An alert can be filtered on its alertType and its session. Both filter expect exact value.
+
 **Discipline**
 
 Discipline can be filtered on their part (reminder : a part is the name given to a group). 
@@ -18,6 +22,19 @@ Example : `GET http://localhost/app_dev.php/api/disciplines?part=3IN&part[]=2IN`
 Discipline can be filtered on their name. It will returns all the disciplines exactly matching the provided name.
 (reminder : a name is unique among disciplines.)
 
+
+**Feedback**
+
+A feedback can be filtered on its session. It expects an exact value.
+
+**MCQ Answer**
+
+A Mcq answer can be filtered on the session it belongs to (exact value expected). This is not a direct filter. It uses the association through question and test.
+
+**Question**
+
+Question can be filtered on their test to get all the questions of a test.
+
 **Session**
 
 Session can be filtered on their discipline. It will returns all the sessions belonging to the provided discipline id.
@@ -27,9 +44,10 @@ Exemple : `http://localhost/app_dev.php/api/sessions?discipline=ee488ac2-f99c-11
 Session can be filtered on their name. It will returns all the sessions exactly matching the provided name.
 (reminder : a name is unique among sessions)
 
-**Question**
+**Text Answer**
 
-Question can be filtered on their test to get all the questions of a test.
+A Text answer can be filtered on the session it belongs to (exact value expected). This is not a direct filter. It uses the association through question and test.
+
 
 ## Special Entrypoints
 
