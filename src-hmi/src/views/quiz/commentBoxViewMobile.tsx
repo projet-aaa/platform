@@ -35,7 +35,7 @@ export class View extends React.Component<Props, any> {
 
         // a comment box is a text area with a send button
         return (
-            <div className="panel panel-blue">
+            <div className="panel panel-blue" style={ {marginTop: 10} }>
                 <div className="panel-heading" style={sizeText}>
                     Comment :
                 </div>

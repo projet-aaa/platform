@@ -8,9 +8,9 @@ export function selectFilter(discipline: string) {
     }
 }
 
-export function search() {
+export function search(searchedString: string) {
     return {
         type: ActionTypes.SEARCH,
-        payload: {}
+        payload: { searchedString }
     }
 }

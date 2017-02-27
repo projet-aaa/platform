@@ -3,8 +3,11 @@
 // INTERNAL IMPORTS
 import * as React from "react";
 import { Link } from "react-router"
+import * as MediaQuery from "react-responsive"
 
 import { Discipline } from "../../models/discipline"
+import { View as DesktopView } from "./leftMenuViewDesktop"
+import { View as MobileView } from "./leftMenuViewMobile"
 
 export interface StateProps {
     // the disciplines list
@@ -15,63 +18,19 @@ export interface StateProps {
 
 export interface ActionProps {  }
 
-// style
-var navbarPosition = {
-    top: 0,
-    bottom: 0
-}
-
 export type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
     props: Props
 
     render() {
-        const {
-            disciplines,
-            discipline
-        } = this.props
-
-        let disciplinesRender = [];
-        for(let i = 0; i < disciplines.length; i++) {
-            if (disciplines[i].name == discipline) {
-                disciplinesRender.push(
-                    <li key={i} className="active">
-                        <Link to={ "/" + disciplines[i].name } >
-                            <div className="icon-bg bg-orange"/>
-                            <span className="menu-title">{ disciplines[i].name }</span>
-                        </Link>
-                    </li>
-                )
-            } else {
-                disciplinesRender.push(
-                    <li key={i}>
-                        <Link to={ "/" + disciplines[i].name } >
-                            <div className="icon-bg bg-orange"/>
-                            <span className="menu-title">{ disciplines[i].name }</span>
-                        </Link>
-                    </li>
-                )
-            }
-        }
         return (
             <div>
-                <nav id="sidebar" role="navigation" data-step="2" data-intro="Template has &lt;b&gt;many navigation styles&lt;/b&gt;"
-                        data-position="right" className="navbar-default navbar-static-side" style={ navbarPosition }>
-                    <div className="sidebar-collapse menu-scroll">
-                        <ul id="side-menu" className="nav">
-                            <div className="clearfix"></div>
-                            <li>
-                                <Link to="/">
-                                    <i className="fa fa-home">
-                                        <div className="icon-bg bg-green"/>
-                                    </i>
-                                    <span className="menu-title">Accueil</span>
-                                </Link>
-                            </li>
-                            { disciplinesRender }
-                        </ul>
-                    </div>
-                </nav>
+                <MediaQuery query='(min-width: 767px)'>
+                    <DesktopView {...this.props}/>
+                </MediaQuery>
+                <MediaQuery query='(max-width: 767px)'>
+                    <MobileView {...this.props}/>
+                </MediaQuery>
             </div>
         );
     }

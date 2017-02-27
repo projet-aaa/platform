@@ -121,18 +121,9 @@ export class View extends React.Component<Props, any> {
         let backButtonRender = []
         if (back) {
             backButtonRender.push(
-                <div className="col-lg-2 no-padding">
-                    <button className="btn btn-primary covering-size" onClick={ back }>
-                        Retour
-                    </button>
-                </div>
-            )
-            backButtonRender.push(
-                <div className="col-lg-3"></div>
-            )
-        } else {
-            backButtonRender.push(
-                <div className="col-lg-5"></div>
+                <button className="btn btn-primary" onClick={ back }>
+                    Retour
+                </button>
             )
         }
         
@@ -140,49 +131,34 @@ export class View extends React.Component<Props, any> {
         var buttonsRender = []
         if (prevQuiz) {
             buttonsRender.push(
-                <div className="col-lg-4 no-padding">
-                    <button className="btn btn-primary covering-size" onClick={ prevQuiz }>
-                        Précédent
-                    </button>
-                </div>
-            )
-        } else {
-            buttonsRender.push(
-                <div className="col-lg-4">
-                </div>
+                <button className="btn btn-primary" onClick={ prevQuiz }>
+                    Précédent
+                </button>
             )
         }
         if (choose) {
             buttonsRender.push(
-                <div className="col-lg-4 no-padding">
-                    <button className="btn btn-success covering-size" onClick={ validate }>
-                        Valider réponse
-                    </button>
-                </div>
+                <button className="btn btn-success" onClick={ validate }>
+                    Valider réponse
+                </button>
             )
-        } else {
-            buttonsRender.push(<div className="col-lg-4"></div>)
         }
         if (nextQuiz) {
             // if we are in answer mode (showcorrection is false) we display skip question
             // else we display next
             buttonsRender.push(
-                <div className="col-lg-4 no-padding">
-                    <button className="btn btn-primary covering-size" onClick={ nextQuiz }>
-                        { showCorrection ? "Suivant" : "Passer la question" }
-                    </button>
-                </div>
+                <button className="btn btn-primary" onClick={ nextQuiz }>
+                    { showCorrection ? "Suivant" : "Passer la question" }
+                </button>
             )
-        } else {
-            buttonsRender.push(<div className="col-lg-4"></div>)
         }
 
         let quizRender = (
-                <div className="row">
-                    <div className="col-lg-12">
-                        { questionRender }
-                    </div>
+            <div className="row">
+                <div className="col-lg-12">
+                    { questionRender }
                 </div>
+            </div>  
         )
                
         // returns a panel containing the question and the answers defined above
@@ -190,13 +166,15 @@ export class View extends React.Component<Props, any> {
             <div>
                 <div className="panel">
                     <div className="pal">
+                        { quizRender } 
                         <div className="row">
-                            { quizRender }
-                        </div>
-                        <div className="row">
-                            { backButtonRender }
-                            <div className="col-lg-6">
-                                { buttonsRender }
+                            <div className="col-lg-12">
+                                <div className="pull-left">
+                                    { backButtonRender }
+                                </div>
+                                <div className="pull-right">
+                                    { buttonsRender }
+                                </div>
                             </div>
                         </div>
                     </div>

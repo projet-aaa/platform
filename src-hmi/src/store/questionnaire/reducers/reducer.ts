@@ -29,7 +29,11 @@ export interface QuestionnaireState {
 function fillTabChoice(actualQuizs: QuizGroup): QuizLocalChoice[] {
     let res = []
     for(var i=0 ; i<actualQuizs.quizs.length ; i++) {
-        res[actualQuizs.quizs[i].id] = { quizId: actualQuizs.quizs[i].id, choice: -1}
+        if (actualQuizs.quizs[i].type==QuizType.MCQ) {
+            res[actualQuizs.quizs[i].id] = { quizId: actualQuizs.quizs[i].id, choice: -1}
+        } else {
+            res[actualQuizs.quizs[i].id] = ""
+        }
     }
     return res
 }
@@ -129,14 +133,14 @@ let initialstate: QuestionnaireState = {
                 },
                 {
                     id: "1",
-                    type: QuizType.MCQ,
+                    type: QuizType.TEXT,
                     title: "Question compilation2",
-                    question: "Parmi les langages suivants, lequel est compilé 2?",
-                    choices: ["javascript", "C++", "python"],
-                    choiceIds: ["0", "1", "2"],
-                    explanations: ["langage transformé en bytecode", "en effet", "interprété"],
-                    justification: "ouaip",
-                    answer: 1 // index of the right answer (begins at 0)
+                    question: "Quelle est la meilleure ville du monde ?",
+                    choices: [],
+                    choiceIds: [],
+                    explanations: [],
+                    justification: "Chocolatines en force !!!",
+                    answer: "Toulouse"
                 }
             ]
         },
