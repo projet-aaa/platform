@@ -20,8 +20,8 @@ class YamlImporter
 
     /**
      * Create tree test from a YML file
-     * @param Test $test
-     * @param $file string path to the file
+     * @param Test $test an already existing Test that will be filled with $file content
+     * @param $file string path to the file to be imported
      * @return bool
      * @throws \Exception
      */
@@ -51,6 +51,7 @@ class YamlImporter
             $q->setText($question['text']);
             $q->setExplication($question['explication']);
             $q->setTypeAnswer($question['typeAnswer']);
+            $q->setTest($test);
             $this->em->persist($q);
 
             //creates associated mcqchoices
