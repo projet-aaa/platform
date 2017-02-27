@@ -1,0 +1,40 @@
+<html>
+<head>
+
+</head>
+<body>
+
+<form action="{{ path('api_login_check') }}" method="POST">
+    <input type="text" placeholder="username" name="_username"><br>
+    <input type="text" placeholder="password" name="_password"><br>
+
+    <button type="submit">Valider</button>
+</form>
+
+<div id="token">
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+        crossorigin="anonymous"></script>
+<script type="text/javascript">
+    var username_global = "{{ app.user.username }}";
+    {% set pass = app.user.password | split('{') %}
+    var password_global = "{{ pass[0] }}";
+    var id_global = "{{ app.user.id }}";
+
+    $(function () {
+        $.post("{{ path('login_check') }}", {
+            _username: username_global,
+            _password: password_global
+        }, function (data) {
+            console.log(data);
+        });
+        return false;
+    });
+</script>
+
+</body>
+
+</html>

@@ -13,10 +13,13 @@ import { QuizType, Quiz, QuizLocalChoice } from "../../models/class/class"
 import { getText } from '../../utils'
 
 export interface StateProps {
+    isConnected: boolean
+    isTeacher: boolean
+
     // a quiz
     quiz: Quiz
     // the current choice
-    quizChoice: QuizLocalChoice
+    quizChoice: any
 
     // true if there is a question now, false else (in that case we show the feedback buttons)
     question: boolean
@@ -54,10 +57,14 @@ export class View extends React.Component<any, any> {
 
     render() {
         const {
+            isConnected,
+            isTeacher,
+
             quiz,
             quizChoice,
             validateAnswer,
             score,
+            
             question,
             choose,
             sendComment,
@@ -65,7 +72,7 @@ export class View extends React.Component<any, any> {
             signalSlow,
             signalFast,
             signalOk
-        } = this.props;
+        } = this.props
         
         // if there is a question we show the quiz, else we show the feedback buttons
         let mainComponent = question ?
@@ -74,10 +81,23 @@ export class View extends React.Component<any, any> {
         // the score is on the top, next there is the quiz or feddback and last the comment box
         return (
             <div style={ palNew }>
-                <ScoreViewMobile score={ score }/>
-                { mainComponent }
-                <CommentBoxViewMobile send={ sendComment }/>
+            { !isTeacher ?
+                (isConnected ?
+                    <div>
+                        { mainComponent }
+                        <CommentBoxViewMobile send={ sendComment }/>
+                    </div>
+                :
+                    <h1>Connection au server...</h1>
+                )
+                :
+                <div className="row">
+                    <h1>Vous ne pouvez pas accéder à la télécommande en tant que professeur</h1>
+                </div>
+            }
             </div>
-        );
+        )
     }
 }
+
+                // <ScoreViewMobile score={ score }/>

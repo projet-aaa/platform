@@ -564,9 +564,9 @@ class GitRepo {
         }
 
         if ($format === null)
-            return $this->run('log ' . $diff . $filepath);
+            return $this->run('log ' . ($diff ?? '') . $filepath);
         else
-            return $this->run('log --pretty=format:"' . $format . '" ' . $diff .$filepath);
+            return $this->run('log --pretty=format:"' . ($format ?? ''). '" ' . ($diff ?? '') .$filepath);
     }
 
     /**

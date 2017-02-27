@@ -3,24 +3,30 @@ import { connect } from "react-redux";
 import { StateProps, ActionProps, View } from "../../views/dashboard/dashboardView"
 import { DashboardState } from "../../store/dashboard/reducers/reducer"
 
-import { Quiz } from "../../models/class/class"
+import { Quiz, QuizType } from "../../models/class/class"
 
 import { startQuiz, showFeedback, stopQuiz } from "../../store/dashboard/actions/actions"
 
-function mapStateToProps(state: any): StateProps {
+function mapStateToProps(state: any) {
     let dash: DashboardState = state.dashboard
 
     let stats = {},
-        quiz = dash.currQuizId && dash.quiz ? dash.quiz[dash.currQuizId] : null
+        quiz: Quiz = dash.currQuizId && dash.quiz ? dash.quiz[dash.currQuizId] : null
 
     if(quiz) {
-        Object.keys(dash.currQuizStat).forEach(function (key) {
-            var count = dash.currQuizStat [key]
-            stats[(quiz as Quiz).choices[key]] = count
-        })
+        if(quiz.type == QuizType.MCQ || quiz.type == QuizType.MMCQ) {
+            Object.keys(dash.currQuizStat).forEach(function (key) {
+                var count = dash.currQuizStat [key]
+                stats[(quiz as Quiz).choices[key]] = count
+            })
+        } else {
+            stats = dash.currQuizStat
+        }
     }
 
     return { 
+        studentCount: dash.studentPop,
+        quizState: dash.currQuizState,
         tooFast: dash.studentPop ? (dash.tooFast / dash.studentPop) * 100 : 0,
         tooSlow: dash.studentPop ? (dash.tooSlow / dash.studentPop) * 100 : 0,
         panic: dash.studentPop ? (dash.panic / dash.studentPop) * 100 : 0,

@@ -19,6 +19,7 @@ import wsServerInfo from '../store/wsrooms/reducer'
 import questionnaireInfo from '../store/questionnaire/reducers/reducer'
 import authInfo from '../store/auth/reducer'
 import mainInfo from '../store/main/reducers/reducer'
+import profileInfo from '../store/profile/reducer'
 
 // TEMPLATES
 import { View as TopBandLeftMenuTemp } from '../template/topBandLeftMenuTemp'
@@ -39,6 +40,8 @@ import DisciplineContainer from '../containers/discipline/disciplineContainer'
 
 import QuestionnaireContainer from '../containers/questionnaire/questionnaireContainer'
 
+import LoginContainer from '../containers/devlogin/loginContainer'
+
 import { storeFactory } from '../utils'
 
 // STORE CREATION (DEFINITION OF THE GLOBAL STATE)
@@ -53,15 +56,9 @@ let store = storeFactory([
     wsServerInfo,
     questionnaireInfo,
     authInfo,
-    mainInfo
-], true, true, auth)
-
-declare var username_global
-declare var password_global
-declare var id_global
-
-// AUTHENTIFICATION
-(store as any).dispatch(auth(id_global, username_global, password_global))
+    mainInfo,
+    profileInfo
+], true, auth)
     
 // ROUTE
 let MainRouter =
@@ -70,6 +67,7 @@ let MainRouter =
         <Route path="/" component={ TopBandLeftMenuTemp }>
             <IndexRoute component={ MainContainer }/>
         </Route>
+        <Route path="/login" component={ LoginContainer}/>
         <Route path="/profil" component={ TopBandLeftMenuTemp }>
             <IndexRoute component={ ProfileContainer }/>
         </Route>
@@ -77,54 +75,22 @@ let MainRouter =
         <Route path="/:UE" component={ TopBandLeftMenuTemp }>
             <IndexRoute component={ DisciplineContainer }/>
             <Route path=":course">
-                <IndexRoute component={ (props, ctx) => 
-                    <CourseContainer 
-                        name="Cours"
-                        course={ props.params.course } UE={ props.params.UE }
-                    /> }
-                />
-                <Route path="faq" component={ (props, ctx) => 
-                    <CourseContainer 
-                        name="FAQ"
-                        course={ props.params.course } UE={ props.params.UE }
-                    /> }
-                />
+                <IndexRoute component={ (p, c) => <CourseContainer  name="Cours" {...p} /> } />
+                <Route path="faq" component={ (p, c) => <CourseContainer name="FAQ" {...p} /> } />
                 <Route path="statistique">
-                    <IndexRoute component={ (props, ctx) => 
-                        <CourseContainer 
-                            name="Statistique"
-                            course={ props.params.course } UE={ props.params.UE }
-                            statType={ "SESSION" }
-                        /> }
+                    <IndexRoute component={ (p, c) => 
+                        <CourseContainer name="Statistique" {...p} statType={ "SESSION" } /> }
                     />
-                    <Route path=":sessionId/quiz" component={ (props, ctx) => 
-                        <CourseContainer 
-                            name="Statistique"
-                            course={ props.params.course } UE={ props.params.UE }
-                            statType={ "QUIZ" }
-                        /> }
+                    <Route path=":sessionId/quiz" component={ (p, c) => 
+                        <CourseContainer name="Statistique" {...p} statType={ "QUIZ" } /> }
                     />
-                    <Route path=":sessionId/attention" component={ (props, ctx) => 
-                        <CourseContainer 
-                            name="Statistique"
-                            course={ props.params.course } UE={ props.params.UE }
-                            statType={ "ATTENTION" }
-                        /> }
+                    <Route path=":sessionId/attention" component={ (p, c) => 
+                        <CourseContainer name="Statistique" {...p} statType={ "ATTENTION" } /> }
                     />
                 />
                 </Route>
-                <Route path="direct" component={ (props, ctx) => 
-                    <CourseContainer 
-                        name="Direct"
-                        course={ props.params.course } UE={ props.params.UE }
-                    /> }
-                />
-                <Route path="questionnaires" component={ (props, ctx) =>
-                    <CourseContainer 
-                        name="Questionnaires"
-                        course={ props.params.course } UE={ props.params.UE }
-                    /> } 
-                />
+                <Route path="direct" component={ (p, c) =>  <CourseContainer name="Direct" {...p} /> } />
+                <Route path="questionnaires" component={ (p, c) => <CourseContainer name="Questionnaires" {...p} /> } />
             </Route>
         </Route>
 

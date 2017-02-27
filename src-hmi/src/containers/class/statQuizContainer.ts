@@ -1,4 +1,6 @@
-import { connect } from "react-redux";
+import { connect } from "react-redux"
+
+import rootWrapper from "../../wrappers/rootWrapper"
 
 import { StateProps, ActionProps, View } from "../../views/stats/statQuizView"
 
@@ -17,7 +19,10 @@ function mapDispatchToProps(dispatch, ownProps): ActionProps {
     }
 }
 
-export default connect<StateProps, ActionProps, any>(
+export default rootWrapper(
     mapStateToProps, 
-    mapDispatchToProps
-)(View)
+    mapDispatchToProps,
+    null,
+    null,
+    View
+)

@@ -15,6 +15,8 @@ import { Quiz, QuizType, QuizInstanceState, AttentionStateType } from "../../mod
 import { getText } from '../../utils'
 
 export interface StateProps { 
+    isTeacher: boolean
+    
     attentionState: string
 
     sessionId: string
@@ -67,6 +69,6 @@ export class View extends React.Component<Props, any> {
                     <MobileView {...this.props}/>
                 </MediaQuery>
             </div>
-        );
+        )
     }
 }

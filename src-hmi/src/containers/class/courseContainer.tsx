@@ -20,18 +20,14 @@ function mapStateToProps(state: any, ownProps: any): any {
     }
 }
 function mapDispatchToProps(dispatch, ownProps): any {
-    return {
-        
-    }
+    return { }
 }
 
 export default connect<StateProps, ActionProps, any>(
     mapStateToProps, 
     mapDispatchToProps
 )((props, ctx) => {
-    let prePath = "/" + props.UE + "/" + props.course
-
-    console.log("props: ", props)
+    let prePath = "/" + props.params.UE + "/" + props.params.course
 
     if(props.isTeacher) {
         return <TabsTemp 

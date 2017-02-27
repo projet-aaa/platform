@@ -1,3 +1,6 @@
+# If you want to use an SSL certificate : check the documentation in var/docs/back-end
+
+# Api server and main website
 web:
     build: .
     environment:
@@ -9,7 +12,11 @@ web:
         - .:/app
     ports:
         - 80:80
+###    labels:
+###      - "traefik.backend=web-jetpack"
+###      - "traefik.frontend.rule=Host:REPLACE_WITH_YOUR_HOST"
 
+#Persistent data storage
 database:
     image: mysql
     environment:
@@ -17,20 +24,39 @@ database:
         MYSQL_DATABASE: api_platform
         MYSQL_USER: api_platform
         MYSQL_PASSWORD: api_platform
+    volumes:
+        - "./docker/mysql:/var/lib/mysql"
 
+#Message queue
 redis:
     image: redis
     ports:
         - 6379:6379
 
-
+#Web socket server
 nodejs:
     build: nodejs
     links:
         - redis
     volumes:
         - ./nodejs:/app
+###        - ./docker/tls:/tls
     ports:
         - 8088:8088
+
+#Reverse proxy to manage SSL at runtime
+###traefik:
+###  image: traefik:camembert
+###  command: |
+###    -c /dev/null --web --docker --docker.domain=docker.localhost --logLevel=DEBUG
+###    --defaultEntryPoints='http,https' --entryPoints='Name:http Address::80 Redirect.EntryPoint:https'
+###    --entryPoints='Name:https Address::443 TLS:tls/server.crt,tls/server.key'0
+###  ports:
+###    - "80:80"
+###    - "8080:8080"
+###    - "443:443"
+###  volumes:
+###    - /var/run/docker.sock:/var/run/docker.sock
+###    - ./docker/tls:/tls
 
 

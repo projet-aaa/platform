@@ -3,11 +3,19 @@
 namespace AppBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
+
 /**
- * @ApiResource
+ * @ApiResource(attributes={
+ *     "normalization_context"={"groups"={"read"}},
+ *     "denormalization_context"={"groups"={"write"}},
+ *     "filters"={"alert.search"}
+ * })
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks()
  */
 class Alert implements \JsonSerializable
 {
@@ -15,35 +23,42 @@ class Alert implements \JsonSerializable
      * @ORM\Id
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
+     * @Groups({"read"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
+     * @Groups({"read"})
+     * @Gedmo\Blameable(on="create")
      */
     private $author;
 
     /**
      * @ORM\ManyToOne(targetEntity="Session")
+     * @Groups({"read", "write"})
      */
     private $session;
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
+     * @Groups({"read"})
      */
     private $createdAt;
 
     /**
      * @Assert\NotBlank()
      * @ORM\Column(type="text", nullable=false)
+     * @Groups({"read", "write"})
      */
     private $text;
 
     /**
-     * @Assert\Choice({"tooFast", "tooSlow", "good"})
+     * @Assert\Choice({"tooFast", "tooSlow", "good","page"})
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=15, nullable=false)
+     * @Groups({"read", "write"})
      */
     private $alertType;
 
@@ -72,6 +87,13 @@ class Alert implements \JsonSerializable
     public function __toString()
     {
       return $this->getAlertType().' '.substr($this->getId(),0,5);
+    }
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function prePersist(){
+        $this->createdAt = new \DateTime('now');
     }
 
     /** Auto generated methods*/

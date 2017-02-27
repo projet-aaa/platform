@@ -79,30 +79,21 @@ export class View extends React.Component<Props, any> {
         let answers = null
         switch(quiz.type) {
             // the render is a list of AnswerView (radio button and answer text)
+            case QuizType.MMCQ:
             case QuizType.MCQ: 
-                let createChooseAction = (i) => {
-                    return choose == null ? () => {  }: () => { choose(i) }
-                } 
-                var answerItems = quiz.choices.map((item, i) => {
+                answers = (<ul>{ quiz.choices.map((item, i) => {
                     return <AnswerView
                         key={ i }
                         ind={ i } 
                         text={ item } 
-                        chosen={ quizChoice == i } 
-                        rightAnswer={ i == quiz.answer }
+                        chosen={ quiz.type == QuizType.MMCQ ? quizChoice.indexOf(i) >= 0 : quizChoice == i } 
+                        rightAnswer={ quiz.type == QuizType.MMCQ ? quiz.answer.indexOf(i) >= 0 : quiz.answer == i }
                         explanation={ quiz.explanations[i] } 
                         showCorrection={ showCorrection }
                         forceUnfold={ forceUnfold }
-
-                        choose={ createChooseAction(i) } 
+                        choose={ choose == null ? () => { }: () => { choose(i) } } 
                     />
-                })
-                answers = 
-                (
-                    <ul>
-                        {answerItems}
-                    </ul>
-                )
+                }) }</ul>)
             break
             // the render is a text field
             case QuizType.TEXT:
@@ -119,15 +110,15 @@ export class View extends React.Component<Props, any> {
         // a question with its answers
         let questionRender = (
             <div>
-                <h3 style={bigSizeText}>{ quiz.question }</h3>
+                <h3 style={ bigSizeText }>{ quiz.question }</h3>
                 <br/>
                 { answers }
-                { showCorrection ? <h3> { quiz.justification } </h3> : ""}
+                { showCorrection && <h3> { quiz.justification } </h3> }
             </div>
         )
 
         // back button
-        var backButtonRender = []
+        let backButtonRender = []
         if (back) {
             backButtonRender.push(
                 <button className="btn btn-primary" onClick={ back }>
@@ -136,7 +127,6 @@ export class View extends React.Component<Props, any> {
             )
         }
         
-
         // buttons
         var buttonsRender = []
         if (prevQuiz) {

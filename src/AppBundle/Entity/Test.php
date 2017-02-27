@@ -8,9 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\TestRepository")
  */
-class Test
+class Test implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -38,7 +38,7 @@ class Test
     private $live;
 
     /**
-     * @ORM\OneToMany(targetEntity="Question", mappedBy="test", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="test", cascade={"persist","remove"})
      */
     private $questions;
 
@@ -67,6 +67,21 @@ class Test
      */
     public function isLiveConsistent(){
         return ($this->live && $this->getQuestions()->count() <=1) || !$this->live;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     */
+    function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'gitPath' => $this->gitPath,
+            'live' => $this->live,
+            'session' => $this->session->id,
+            'questions' => $this->questions,
+        ];
     }
 
     /** Auto generated methods*/

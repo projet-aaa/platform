@@ -1,6 +1,7 @@
 import { connect } from "react-redux"
 
-import createConnector from "../connection/connectionContainer"
+import rootWrapper from "../../wrappers/rootWrapper"
+import connectionWrapper from "../../wrappers/connectionWrapper"
 
 import { RemoteState } from "../../store/remote/reducers/reducer"
 import { AuthState } from "../../store/auth/reducer"
@@ -17,13 +18,13 @@ import { View } from "../../views/quiz/remoteView"
 function mapStateToProps(state, ownProps) {
     let remote: RemoteState = state.remote,
         auth: AuthState = state.auth,
-        quiz: Quiz = remote.quiz[remote.currQuizId]
+        quiz: Quiz = remote.quiz[remote.currQuizId] //&& remote.quiz.find(quiz => quiz.id == remote.currQuizId)
 
     return { 
         attentionState: remote.attentionState,
 
         sessionId: remote.sessionId,
-        quiz: quiz,
+        quiz,
         authorId: auth.id,
 
         questionId: remote.currQuizId,
@@ -120,11 +121,10 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     })
 }
 
-export default createConnector(
+export default connectionWrapper(
     connect<StateProps, ActionProps, any>(
         mapStateToProps, 
         mapDispatchToProps,
         mergeProps
-    )(View), 
-    false
+    )(View)
 )

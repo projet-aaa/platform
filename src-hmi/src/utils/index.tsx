@@ -7,8 +7,9 @@ import { apiMiddleware } from 'redux-api-middleware'
 import { CALL_API } from 'redux-api-middleware';
 import createSocketIoMiddleware from 'redux-socket.io'
 import * as io from 'socket.io-client'
+import * as fetch from 'isomorphic-fetch'
 
-import { urlWS, chartColors, apiRootURL } from '../models/consts'
+import { urlWS, chartColors, apiRootURL, log } from '../models/consts'
 
 import { Quiz } from '../models/class/class'
 
@@ -24,7 +25,7 @@ export interface Action<T>{
 }
 
 // -- STORE CREATOR HELPER
-export const storeFactory = (reducers: any[], connectWS: boolean, log: boolean, auth) => {
+export const storeFactory = (reducers: any[], connectWS: boolean, auth) => {
     let socket = connectWS ? io.connect(urlWS) : null,
         reducers2 = {}, len = reducers.length,
         reducer
@@ -56,24 +57,13 @@ export function viewTestFactory<T>(View: any, props: T) {
     ReactDOM.render(React.createElement(View, props), document.getElementById('main'))
 }
 
-// WARNING OBSOLETE, DO NOT USE 
-//export function apiTestFactory<T>(actionCreator, endpointInfo, body) {
-//     let store = storeFactory([ 
-//         authInfo
-//     ], true, true, null)
-
-//     let i = setInterval(() => {
-//         if(isAuthentified()) {
-//             store.dispatch(actionCreator(endpointInfo, body))
-//             clearInterval(i)
-//         }
-//     }, 100)
-// }
-
 // -- HTML JS HELPERS
 // Get text from an element with a certain id
 export function getText(id: string): string {
     return (document.getElementById(id) as any).value
+}
+export function setText(id: string, text: string) {
+    (document.getElementById(id) as any).value = text
 }
 
 // Get value from a combobox with a certain id
@@ -97,11 +87,11 @@ export function createAPIActionCreator(
     bodyFactory: (obj: any) => any, 
     method: string, 
     action: string, success: string, failure: string
-): (obj: any) => any {
-    return (info) => {
+): (obj: any, successPromise?) => any {
+    return (info, successPromise) => {
         let id = apiCallID++
 
-        let actionObj = {
+        let actionObj: any = {
             [CALL_API]: {
                 endpoint: apiRootURL + endpointFactory(info),
                 method: method,
@@ -114,32 +104,54 @@ export function createAPIActionCreator(
         }
 
         if(bodyFactory) { 
-            (actionObj as any)[CALL_API].body = JSON.stringify(bodyFactory(info)) 
+            actionObj[CALL_API].body = JSON.stringify(bodyFactory(info)) 
         }
 
-        (actionObj as any)[CALL_API].headers = {
+        actionObj[CALL_API].headers = {
             'Authorization': 'Bearer ' + (document as any).token
         }
 
         apiCalls[id] = {
             msg: actionObj,
             successType: success,
-            failureType: failure
+            failureType: failure,
+            successPromise
         }
 
         return actionObj
     }
 }
 
+export function fetcher(url, method?, obj?) {
+    let res: any = {
+        headers: {
+            Authorization: 'Bearer ' + (document as any).token
+        }
+    }
+    if(method) {
+        res.method = method
+    }
+    if(obj) {
+        res.headers['Content-type'] = 'application/ld+json'
+        res.body = JSON.stringify(obj)
+    }
+    return fetch(apiRootURL + url, res).then(res => res.json())
+}
+
 export const authAPIMiddleware = auth => store => next => action => {
     if(action.type && action.type.substring(0, apiCallText.length) == apiCallText) {
         if(action.type.substring(0, apiCallSuccessText.length) == apiCallSuccessText) {
-            let index = parseInt(action.type.substring(apiCallSuccessText.length))
+            let index = parseInt(action.type.substring(apiCallSuccessText.length)),
+                apiCall = apiCalls[index]
 
             store.dispatch({
-                type: apiCalls[index].successType,
+                type: apiCall.successType,
                 payload: action.payload
             })
+
+            if(apiCall.successPromise) {
+                apiCall.successPromise(action)
+            }
         } else if(action.type.substring(0, apiCallFailureText.length) == apiCallFailureText) {
             let index = parseInt(action.type.substring(apiCallFailureText.length))
 
@@ -243,20 +255,12 @@ export function shuffle(array) {
     return array;
 }
 
-// -- FETCH HELPER
-export function fetchOnUpdate (fn) {
-    return ((Component) => {
-        return class FetchOnUpdateDecorator extends React.Component<any, any> {
-
-            componentWillMount () {
-                fn(this.props)
-            }
-
-            render () {
-                return (
-                    <Component {...this.props} />
-                )
-            }
+export function findAllIndex<T>(list: T[], f: (val:T) => boolean): number[] {
+    let res = []
+    for(let i = 0; i < list.length; i++) {
+        if(f(list[i])) {
+            res.push(i)
         }
-    })
+    }
+    return res
 }

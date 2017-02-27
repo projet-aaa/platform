@@ -78,3 +78,8 @@ Standalone files are :
 - composer.lock : contains a solution of the dependencies resolution
 - Makefile : some shortcuts for dummies.
 - phpunit.xml.dist : PHPUnit configuration
+
+
+## Entity schema
+
+![Entity schema](../images/entity_schema-20170225.png)

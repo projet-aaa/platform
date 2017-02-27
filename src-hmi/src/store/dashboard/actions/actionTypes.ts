@@ -13,7 +13,7 @@ export const APIActionTypes = {
 
     END_QUIZ: "CLASS/END_QUIZ",
     END_QUIZ_SUCCESS: "CLASS/END_QUIZ_SUCCESS",
-    END_QUIZ_FAILURE: "CLASS/END_QUIZ_FAILURE"
+    END_QUIZ_FAILURE: "CLASS/END_QUIZ_FAILURE",
 }
 
 export const WSInActionTypes = {
@@ -27,6 +27,8 @@ export const WSInActionTypes = {
     SIGNAL_STATE: "TEACHER/CLASS/SIGNAL_STATE",
 
     STUDENT_COUNT: "TEACHER/CLASS/STUDENT_COUNT",
+    
+    STUDENT_DISCONNECT: "TEACHER/CLASS/DISCONNECT"
 }
 
 export const WSOutActionTypes = {

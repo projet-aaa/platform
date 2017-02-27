@@ -6,6 +6,7 @@ export interface StateProps {
     appName: string
     // the user full name
     userFullName: string
+    isAdmin: boolean
 }
 export interface ActionProps {}
 
@@ -16,7 +17,8 @@ export class View extends React.Component<Props, any> {
     render() {
         const {
             appName,
-            userFullName
+            userFullName,
+            isAdmin
         } = this.props;
         return (
             <div id="header-topbar-option-demo" className="page-header-topbar">
@@ -37,6 +39,7 @@ export class View extends React.Component<Props, any> {
                                     <ul className="dropdown-menu dropdown-user pull-right">
                                         <li><Link to="/profil"><i className="fa fa-user"></i>Mon Profil</Link></li>
                                         <li><Link to="/"><i className="fa fa-key"></i>Déconnection</Link></li>
+                                        { isAdmin && <li><a href="/admin"><i className="fa fa-lock"></i>Espace admin</a></li>}
                                     </ul>
                                 </li>
                             </div>

@@ -9,12 +9,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ApiResource
+ * @ApiResource(attributes={"filters"={"session.search"}})
  * @ORM\Entity
  * @UniqueEntity("name")
  * @ORM\HasLifecycleCallbacks()
  */
-class Session
+class Session implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -44,7 +44,6 @@ class Session
      * @var \DateTime the last time the object was updated.
      * Auto-updated with preUpdate and prePersist callback
      *
-     * @Assert\NotBlank()
      * @ORM\Column(type="datetime", nullable=false)
      */
     private $updatedAt;
@@ -52,21 +51,21 @@ class Session
     /**
      * @var ArrayCollection[Subject] Documents linked to that session
      *
-     * @ORM\OneToMany(targetEntity="Subject", mappedBy="session")
+     * @ORM\OneToMany(targetEntity="Subject", mappedBy="session", cascade={"remove"})
      */
     private $subjects;
 
     /**
      * @var ArrayCollection[Thread]  All the threads related to that session.
      *
-     * @ORM\OneToMany(targetEntity="Thread", mappedBy="session")
+     * @ORM\OneToMany(targetEntity="Thread", mappedBy="session", cascade={"remove"})
      */
     private $threads;
 
     /**
      * @var ArrayCollection[Test] All the tests related to that session
      *
-     * @ORM\OneToMany(targetEntity="Test", mappedBy="session")
+     * @ORM\OneToMany(targetEntity="Test", mappedBy="session", cascade={"remove"})
      */
     private $tests;
 

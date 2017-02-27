@@ -11,9 +11,13 @@ import { View as QuizLauncherView} from "./quizLauncherView"
 import { View as QuizStatView } from "./quizStatView"
 import { View as StudentFeedbackView } from "./studentFeedbackView"
 
-import { Quiz, QuizLauncher } from '../../models/class/class'
+import { Quiz, QuizLauncher, QuizInstanceState, QuizType } from '../../models/class/class'
 
 export interface StateProps {
+    isTeacher: boolean
+    studentCount: number
+    quizState: string
+
     // number of people who signaled lesson goes too fast
     tooFast: number
     // number of people who signaled lesson goes too slow
@@ -26,6 +30,8 @@ export interface StateProps {
     quizStats: any
     // the list of quiz to launch
     quizLaunchers: QuizLauncher[]
+
+    isConnected: boolean
 }
 
 export interface ActionProps {
@@ -45,12 +51,18 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
+            isTeacher,
+            studentCount,
+            quizState,
+
             tooFast,
             tooSlow,
             panic, 
             currentQuiz,
             quizStats,
             quizLaunchers,
+            isConnected,
+
             launchQuiz,
             correction,
             finish
@@ -81,30 +93,60 @@ export class View extends React.Component<Props, any> {
 
         return (
             <div>
-                <div className="col-lg-8">
-                    <div className="row">
-                        { currentQuiz != null &&  
-                            <QuizStatView quizStats={ quizStats } correctChoice={ currentQuiz.choices[currentQuiz.answer] }/>
-                        }
-                    </div>
-                    <div className="row">
-                        <StudentFeedbackView panicRate={panic} 
+                { isTeacher ?
+                    (isConnected ? 
+                    <div>
+                        <div className="col-lg-8">
+                            <div className="row">
+                                <QuizStatView 
+                                    showQuiz={ currentQuiz != null }
+                                    question={ currentQuiz && currentQuiz.question }
+                                    state={ currentQuiz && 
+                                        (quizState == QuizInstanceState.HEADING ? "énoncé" : "correction") 
+                                    }
+                                    quizStats={ quizStats } 
+                                    correctChoice={ 
+                                        currentQuiz != null &&
+                                        (currentQuiz.type == QuizType.MCQ ? currentQuiz.choices[currentQuiz.answer] : 
+                                         currentQuiz.type == QuizType.MMCQ ? currentQuiz.answer.map(a => currentQuiz.choices[a]) :
+                                         currentQuiz.answer)
+                                    }
+                                    quizButton={ quizState == QuizInstanceState.HEADING ? 
+                                        () => correction() : () => finish() 
+                                    }
+                                />
+                            </div>
+                            <div className="row">
+                                <StudentFeedbackView 
+                                    studentCount={studentCount}
+                                    panicRate={panic} 
                                     slowRate={tooSlow}
-                                    quickRate={tooFast}/>
-                    </div>
-                </div>
-                <div className="col-lg-4">
-                    <div className="panel">
-                        <div className="panel-heading">
-                            Statistiques de quizz
+                                    quickRate={tooFast}
+                                />
+                            </div>
                         </div>
-                        <div className="panel-body pan white-background">
-                            <div className="pal">
-                                { quizInfos }
+                        <div className="col-lg-4">
+                            <div className="panel">
+                                <div className="panel-heading">
+                                    Statistiques de quiz
+                                </div>
+                                <div className="panel-body pan white-background">
+                                    <div className="pal">
+                                        { quizInfos }
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    :
+                    <div>
+                        <h1>Connection au server...</h1>
+                    </div>)
+                    :
+                    <div className="row">
+                        <h1>Vous ne pouvez pas accéder au tableau de bord en tant qu'étudiant (bien essayé)</h1>
+                    </div>
+                }
             </div>
         );
     }

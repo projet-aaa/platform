@@ -2,6 +2,7 @@
 // -- QUIZ
 // ------------------------------
 export const QuizType = {
+    MMCQ: 'MMCQ',
     MCQ: 'MCQ', 
     TEXT: 'TEXT'
 }

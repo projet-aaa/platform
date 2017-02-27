@@ -15,11 +15,12 @@ import { getText } from '../../utils'
 export interface StateProps {
     // has joined
     isConnected: boolean
+    isTeacher: boolean
     
     // a quiz
     quiz: Quiz
     // the current choice
-    quizChoice: QuizLocalChoice
+    quizChoice: any
 
     // true => show the correction
     showCorrection: boolean
@@ -77,6 +78,7 @@ export class View extends React.Component<any, any> {
     render() {
         const {
             isConnected,
+            isTeacher,
 
             quiz,
             quizChoice,
@@ -99,10 +101,10 @@ export class View extends React.Component<any, any> {
             signalSlow,
             signalFast,
             signalOk,
-        } = this.props;
+        } = this.props
         
         // if there is a question we show the quiz, else we show the feedback buttons
-        let left = question ?
+        let left = question && quiz ?
             <QuizView quiz={ quiz } quizChoice={ quizChoice } choose={ choose } validate={ validateAnswer } 
                     showCorrection={ showCorrection } forceUnfold={ forceUnfold } nextQuiz={ nextQuiz } 
                     prevQuiz={ prevQuiz } back={ null }/> :
@@ -111,16 +113,14 @@ export class View extends React.Component<any, any> {
         // the quiz or the buttons are on the left and the scores are on the right
         return (
             <div>
-            { isConnected ?
+            { !isTeacher ?
+                (isConnected ?
                 <div className="row">
                     <div className="col-lg-8">
                         { left }
                     </div>
                     <div className="col-lg-4">
-                        <div className="row">
-                            <ScoreView score={ score } rank={ rank } population={ population } 
-                                highScore={ highscore } average={ average }/>
-                        </div>
+                        
                         <div className="row">
                             <CommentBoxView send={ sendComment }/>
                         </div>
@@ -129,9 +129,18 @@ export class View extends React.Component<any, any> {
                 :
                 <div className="row">
                     <h1>Connection au server...</h1>
+                </div>)
+                :
+                <div className="row">
+                    <h1>Vous ne pouvez pas accéder à la télécommande en tant que professeur</h1>
                 </div>
             }
             </div>
-        );
+        )
     }
 }
+
+// <div className="row">
+//                             <ScoreView score={ score } rank={ rank } population={ population } 
+//                                 highScore={ highscore } average={ average }/>
+//                         </div>

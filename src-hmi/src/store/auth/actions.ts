@@ -1,10 +1,12 @@
 import { CALL_API } from 'redux-api-middleware'
-import { createAPIActionCreator } from '../../utils'
+import { createAPIActionCreator, fetcher } from '../../utils'
 
 import { loginURL } from "../../models/consts"
 
 export const ActionTypes = {
     AUTH_LOCAL: "AUTH/AUTH_LOCAL",
+
+    UPDATE_PROFILE: "AUTH/UPDATE_PROFILE"
 }
 
 export const APIActionTypes = {
@@ -29,37 +31,44 @@ export const WSInActionTypes = {
     
 }
 
-export function auth(id: number, username: string, password: string) {
+export function auth(id: number, username: string, password: string, successPromise?) {
     return (dispatch, getState) => {
+        if(!getState().auth.infoFetched) {
+            dispatch(authAPI(username, password))
+            dispatch(authLocal(id, username, password))
 
-        dispatch(authAPI(username, password))
-        dispatch(authLocal(id, username, password))
-        dispatch(fetchUser({ id }))
-
-        let i = setInterval(() => {
-            let { auth } = getState()
-            if(auth.group) {
-                clearInterval(i)
-                dispatch(fetchDiscipline({ part: auth.group }))
+            let i = setInterval(() => {
+                let { auth } = getState()
+                if((document as any).token) {
+                    clearInterval(i)
+                    dispatch(fetchUser({ id }, () => {
+                        let { auth } = getState()
+                        dispatch(fetchDiscipline({ part: auth.group }, successPromise))
+                    }))
+                }
+            }, 250)
+        } else {
+            if(successPromise) {
+                successPromise()
             }
-        }, 250)
+        }
     }
 }
 
-export const fetchUser: (info: { 
+const fetchUser: (info: { 
     id: number 
-}) => any
+}, promise) => any
 = createAPIActionCreator(
     info => '/users/' + info.id, 
     null,
     'GET',
     APIActionTypes.FETCH_USER,
     APIActionTypes.FETCH_USER_SUCCESS,
-    APIActionTypes.FETCH_USER_FAILURE
+    APIActionTypes.FETCH_USER_FAILURE,
 )
-export const fetchDiscipline: (info: { 
+const fetchDiscipline: (info: { 
     part: string 
-}) => any
+}, successPromise?) => any
 = createAPIActionCreator(
     info => '/disciplines?part=' + info.part, 
     null,
@@ -69,14 +78,14 @@ export const fetchDiscipline: (info: {
     APIActionTypes.FETCH_DISCIPLINE_FAILURE
 )
 
-export function authLocal(id: number, username: string, password: string) {
+function authLocal(id: number, username: string, password: string) {
     return {
         type: ActionTypes.AUTH_LOCAL,
         payload: { id, username, password }
     }
 }
 
-export function authAPI(username: string, password: string) {
+function authAPI(username: string, password: string) {
     return {
         [CALL_API]: {
             endpoint: loginURL,
@@ -99,6 +108,29 @@ export function authAPI(username: string, password: string) {
                 APIActionTypes.AUTH_FAILURE
             ]
         }
+    }
+}
+
+export function updateProfile(group: string) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: ActionTypes.UPDATE_PROFILE,
+            payload: { group }
+        })
+        dispatch(updateProfileAPI(group))
+    }
+}
+
+export function updateProfileAPI(group: string) {
+    return (dispatch, getState) => {
+        let { auth } = getState()
+        fetcher('/users/' + auth.id, 'PUT', {
+            part: group
+        })
+        .then(res => {
+            console.log("update successful:", res)
+        })
+        .catch(error => console.log("error"))
     }
 }
 

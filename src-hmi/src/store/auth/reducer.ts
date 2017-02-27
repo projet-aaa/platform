@@ -12,11 +12,13 @@ export interface AuthState {
     id: number
     //email: string
 
+    admin: boolean
     isTeacher: boolean
     
     disciplines: Discipline[]
     groups: string[]
     group: string
+    infoFetched: boolean
 
     token: string
 
@@ -33,14 +35,16 @@ let initialState: AuthState = {
     id: -1,
     //email: "somin.maurel@gmail.fr",
     
+    admin: false,
     isTeacher: false,
     
     disciplines: [],
     groups: [],
     group: null,
+    infoFetched: false,
     
     token: null,
-    authentifying: true,
+    authentifying: false,
     authentified: false,
     lastAuthDate: null
 }
@@ -55,12 +59,18 @@ const reducer = handleActions({
             password: action.payload.password
         })
     },
+    [ActionTypes.UPDATE_PROFILE]: function(state: AuthState, action): AuthState {
+        return Object.assign({}, state, {
+            group: action.payload.group
+        })
+    },
     [APIActionTypes.FETCH_USER_SUCCESS]: function(state: AuthState, action: any): AuthState {
         return Object.assign({}, state, {
             isTeacher: action.payload.roles.indexOf("ROLE_PROF") >= 0,
+            admin: action.payload.roles.indexOf("ROLE_ADMIN") >= 0,
             firstName: action.payload.firstname,
             lastName: action.payload.lastname,
-            group: action.payload.part ? action.payload.part : "3IN"
+            group: action.payload.part
         })
     },
     [APIActionTypes.FETCH_DISCIPLINE_SUCCESS]: function(state: AuthState, action: any): AuthState {
@@ -68,7 +78,8 @@ const reducer = handleActions({
             disciplines: action.payload["hydra:member"].map(discipline => { return {
                 id: discipline.id,
                 name: discipline.name
-            }})
+            }}),
+            infoFetched: true
         })
     },
     [APIActionTypes.AUTH]: function(state: AuthState, action: any): AuthState {
