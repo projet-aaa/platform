@@ -37,6 +37,6 @@ if(debug){
         console.log('Node app listening on port ' + port + '!')
     })
 } else {
-    server.listen(8088);
-    console.log('Node app listening on port ' +  8088 + '!');
+    server.listen(port);
+    console.log('Node app listening on port ' +  port + '!');
 }

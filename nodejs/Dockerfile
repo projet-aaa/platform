@@ -1,5 +1,5 @@
 FROM node:boron
 
 WORKDIR /app
-EXPOSE 8088
+EXPOSE 8080
 CMD ["node", "js/main/server.js"]
