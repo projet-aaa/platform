@@ -31,6 +31,9 @@ A feedback can be filtered on its session. It expects an exact value.
 
 A Mcq answer can be filtered on the session it belongs to (exact value expected). This is not a direct filter. It uses the association through question and test.
 
+Example : `GET http://localhost/app_dev.php/api/mcq_answers?question.test.session=2b3308f3-fd27-11e6-a4f6-0242ac110003
+`
+
 **Question**
 
 Question can be filtered on their test to get all the questions of a test.
@@ -48,6 +51,7 @@ Session can be filtered on their name. It will returns all the sessions exactly 
 
 A Text answer can be filtered on the session it belongs to (exact value expected). This is not a direct filter. It uses the association through question and test.
 
+Example : `http://localhost/app_dev.php/api/text_answers?question.test.session=2b3308f3-fd27-11e6-a4f6-0242ac110003`
 
 ## Special Entrypoints
 
