@@ -28,3 +28,8 @@ services:
         parent:    'api_platform.doctrine.orm.search_filter'
         arguments: [ { question.test.session: 'exact' } ]
         tags:      [ { name: 'api_platform.filter', id: 'mcq_answer.search' } ]
+
+    text_answer.search_filter:
+        parent:    'api_platform.doctrine.orm.search_filter'
+        arguments: [ { question.test.session: 'exact' } ]
+        tags:      [ { name: 'api_platform.filter', id: 'text_answer.search' } ]
