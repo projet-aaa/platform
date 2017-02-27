@@ -48,10 +48,10 @@ export class View extends React.Component<Props, any> {
                 //Match the session's discipline id to disciplineName
                 //There should be only one result to findAllIndex so first element is picked 
                 var disciplineName = disciplines[findAllIndex(disciplines, (discipline) => {return (discipline.id == sessions[i].discipline)})[0]].name
-                sessionsRender.push(
-                    <a key={i} className="list-group-item">
+                sessionsRender.push( 
+                    <Link to={"/" + disciplineName + "/" + sessions[i].sessionName} key={i} className="list-group-item">
                         { ddmmyyyy(sessions[i].updatedAt) } | { disciplineName } | { sessions[i].sessionName }
-                    </a>
+                    </Link>
                 );
             }
         }
