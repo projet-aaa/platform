@@ -55,7 +55,7 @@ class Alert implements \JsonSerializable
     private $text;
 
     /**
-     * @Assert\Choice({"tooFast", "tooSlow", "good","page"})
+     * @Assert\Choice({"tooFast", "tooSlow", "good", "page", "panic"})
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=15, nullable=false)
      * @Groups({"read", "write"})

@@ -16,7 +16,7 @@ class AlertAdmin extends AbstractAdmin
         $formMapper->add('author')
             ->add('alertType', ChoiceType::class,
                 ['label' => 'Alert Type',
-                    'choices' => ['tooSlow', 'tooFast', 'good'],
+                    'choices' => ['tooSlow', 'tooFast', 'good', 'page', 'panic'],
                     'choice_label' => function($val){return $val;}])
             ->add('text')
             ->add('session')
