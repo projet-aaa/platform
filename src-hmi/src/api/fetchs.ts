@@ -14,6 +14,7 @@ export function fetchTest(testId: string, success?: (obj) => void, failure?: (ob
                 let type = question.typeAnswer == "unique" ? QuizType.MCQ :
                           question.typeAnswer == "multiple" ? QuizType.MMCQ 
                           : QuizType.TEXT
+                          
                 let q: Quiz = {
                     id: question.id,
                     iriId: question["@id"],

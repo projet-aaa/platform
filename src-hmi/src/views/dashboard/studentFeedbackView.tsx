@@ -38,15 +38,15 @@ export class View extends React.Component<Props, any> {
 
         // widths of the progress bars
         var panicStyle = {
-            width: panicRate + "%",
+            width: (studentCount == 0 ? 0 : (panicRate/studentCount) * 100) + "%",
             backgroundColor: "#d9534f" // danger color
         }
         var slowStyle = {
-            width: slowRate + "%",
+            width: (studentCount == 0 ? 0 : (slowRate/studentCount) * 100) + "%",
             backgroundColor: "#5cb85c" // success color
         }
         var fastStyle = {
-            width: quickRate + "%",
+            width: (studentCount == 0 ? 0 : (quickRate/studentCount) * 100) + "%",
             backgroundColor: "#f0ad4e" // warning color
         }
 
@@ -61,21 +61,21 @@ export class View extends React.Component<Props, any> {
                                 Nombre d'étudiants: { studentCount }
                             </div>
                             <div className="row">
-                                Incompréhension: { panicRate }%
+                                Incompréhension: { panicRate }/{ studentCount }
                                 <div className="progress progress-sm mbn">
                                     <div role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"
                                         style={ panicStyle } className="progress-bar covering-size"/>
                                 </div>
                             </div>
                             <div className="row">
-                                Trop lent: { slowRate }%
+                                Trop lent: { slowRate }/{ studentCount }
                                 <div className="progress progress-sm mbn">
                                     <div role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"
                                         style={ slowStyle } className="progress-bar covering-size"/>
                                 </div>
                             </div>
                             <div className="row">
-                                Trop rapide: { quickRate }%
+                                Trop rapide: { quickRate }/{ studentCount }
                                 <div className="progress progress-sm mbn">
                                     <div role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"
                                         style={ fastStyle } className="progress-bar covering-size"/>

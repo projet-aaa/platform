@@ -56,7 +56,7 @@ function mapDispatchToProps(dispatch, ownProps) {
             if(type != QuizType.TEXT) {
                 dispatch(answerAction({ type, choice, choiceId, questionId, questionIriId, text: null }))
             } else {
-                dispatch(answerAction({ type, choice: null, choiceId: null, questionId, questionIriId, text: choice }))
+                dispatch(answerAction({ type, choice, choiceId: null, questionId, questionIriId, text: choice }))
             }
         },
         sendComment: (text, sessionId, authorId) => dispatch(commentAction({ text, sessionId, authorId })),

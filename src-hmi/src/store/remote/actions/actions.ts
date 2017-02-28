@@ -24,7 +24,8 @@ export function answerAction(info: {
     questionIriId: string
 }) {
     return (dispatch) => {
-        let answer = {
+        dispatch(answerAPIAction(info))
+        dispatch({
             type: WSOutActionTypes.ANSWER,
             payload: {
                 type: info.type,
@@ -32,9 +33,7 @@ export function answerAction(info: {
                 choice: info.choice,
                 questionId: info.questionId
             }
-        }
-        dispatch(answerAPIAction(info))
-        dispatch(answer)
+        })
     }
 }
 

@@ -181,6 +181,8 @@ const reducer = handleActions({
             obj[quiz.id] = quiz
         })
         return Object.assign({}, state, {
+            attentionState: AttentionStateType.OK,
+            
             sessionId: action.payload.sessionId,
             iriSessionId: action.payload.iriSessionId,
             quiz: obj,

@@ -65,8 +65,6 @@ export class View extends React.Component<Props, any> {
                 colorAnswerStyle = { }
             }
         }
-
-        console.log(ind + ": " + chosen)
         
         let indRef = "ind" + ind
         let res = null
