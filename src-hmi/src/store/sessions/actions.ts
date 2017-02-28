@@ -24,21 +24,31 @@ export const APIActionTypes = {
 
 export function fetchSessions(disciplines: Discipline[]) {
     return dispatch => {
+        let resultList = []
+        let receivedFetch = 0;
         for(var index=0; index < disciplines.length; index++ ) {
             let currentId = disciplines[index].id
             fetcher('/sessions?discipline=' + currentId )
             .then(res => {
-                dispatch({
-                    type: APIActionTypes.FETCH_SESSIONS_SUCCESS,
-                    payload: {
-                        fetchResult: res,
-                        disciplineId: currentId
-                    }
-                })
+                receivedFetch++;
+                resultList.push({
+                    fetchResult: res,
+                    disciplineId: currentId
+                });
+                if(receivedFetch==disciplines.length) {
+                    dispatch({
+                        type: APIActionTypes.FETCH_SESSIONS_SUCCESS,
+                        payload: resultList
+                    });
+                }
             })
             .catch(error => {
                 console.log(error)
-            })
+                dispatch({
+                    type: APIActionTypes.FETCH_SESSIONS_FAILURE,
+                    payload: error
+                })
+            });
         }
     }
 }

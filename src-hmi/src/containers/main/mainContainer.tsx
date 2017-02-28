@@ -16,7 +16,7 @@ function mapStateToProps(state): StateProps {
     return { 
         sessions: _.values(state.sessions.sessions)
                     .filter(session => !state.main.areNotChecked[session.discipline])
-                    .sort((elt1, elt2) => elt2.date - elt1.date),
+                    .sort((elt1, elt2) => elt2.updatedAt - elt1.updatedAt),
         disciplines: auth.disciplines,
         areNotChecked: state.main.areNotChecked
     }
