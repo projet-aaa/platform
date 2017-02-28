@@ -43,28 +43,7 @@ class YamlImporter
         }
         $test->setSession($session);
 
-
-        foreach ($read['questions'] as $question){
-            $q = new Question();
-            $q->setText($question['text']);
-            $q->setExplication($question['explication']);
-            $q->setTypeAnswer($question['typeAnswer']);
-            $q->setTest($test);
-            $this->em->persist($q);
-
-            //creates associated mcqchoices
-            if($question['typeAnswer'] == 'unique' || $question['typeAnswer'] == 'multiple'){
-                foreach ($question['mcqChoices'] as $choice){
-                    $c = new McqChoice();
-                    $c->setText($choice['text']);
-                    $c->setCorrect($choice['correct']);
-                    $c->setQuestion($q);
-                    $this->em->persist($c);
-                }
-            }
-        }
-
-        $this->em->flush();
+        $this->proceed($test, $read);
 
         return true;
 
@@ -93,17 +72,24 @@ class YamlImporter
             throw  new \Exception('Session with id '.$read['session'].' doesn\'t exists');
         }
         $test->setSession($session);
+        $this->proceed($test, $read);
 
+        return true;
+    }
+
+    public function proceed(Test $test, array $read){
 
         foreach ($read['questions'] as $question){
             //is it a new question ?
             $question_exists = $this->em->getRepository('AppBundle:Question')->findBy(array('test' => $test, 'text' => $question['text']));
+
 
             if(count($question_exists) == 0) { // new question : let's create it
                 $q = new Question();
                 $q->setText($question['text']);
                 $q->setExplication($question['explication']);
                 $q->setTypeAnswer($question['typeAnswer']);
+                $q->setTest($test);
                 $this->em->persist($q);
 
                 //creates associated mcqchoices
@@ -150,10 +136,7 @@ class YamlImporter
 
             }
         }
-
         $this->em->flush();
-
-        return true;
     }
 
 }
