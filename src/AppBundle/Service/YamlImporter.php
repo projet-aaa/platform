@@ -20,8 +20,8 @@ class YamlImporter
 
     /**
      * Create tree test from a YML file
-     * @param Test $test
-     * @param $file string path to the file
+     * @param Test $test an already existing Test that will be filled with $file content
+     * @param $file string path to the file to be imported
      * @return bool
      * @throws \Exception
      */
@@ -31,13 +31,11 @@ class YamlImporter
             $read = $read['test'];
         }
         catch(\Exception $e){
-            throw  new \Exception('Invalid Yaml format');
+            throw  new \Exception('Invalid Yaml format - '.$e->getMessage());
         }
 
         $test->setTitle($read['title']);
-        if($read['live'] && count($read['questions']) > 1){
-            throw new \Exception('A live test can\'t have more than 1 question');
-        }
+
         $test->setLive($read['live']);
         $session = $this->em->getRepository('AppBundle:Session')->findOneById($read['session']);
         if($session === null){
@@ -51,6 +49,7 @@ class YamlImporter
             $q->setText($question['text']);
             $q->setExplication($question['explication']);
             $q->setTypeAnswer($question['typeAnswer']);
+            $q->setTest($test);
             $this->em->persist($q);
 
             //creates associated mcqchoices
@@ -83,13 +82,10 @@ class YamlImporter
             $read = $read['test'];
         }
         catch(\Exception $e){
-            throw  new \Exception('Invalid Yaml format');
+            throw  new \Exception('Invalid Yaml format - '.$e->getMessage());
         }
-        dump($read);
         $test->setTitle($read['title']);
-        if($read['live'] && count($read['questions']) > 1){
-            throw new \Exception('A live test can\'t have more than 1 question');
-        }
+
         $test->setLive($read['live']);
 
         $session = $this->em->getRepository('AppBundle:Session')->findOneById($read['session']);
