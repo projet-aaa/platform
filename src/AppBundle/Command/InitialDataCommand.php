@@ -19,16 +19,16 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
-class DemoDataCommand extends ContainerAwareCommand
+class InitialDataCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
         $this
             // the name of the command (the part after "bin/console")
-            ->setName('app:load-data')
+            ->setName('app:data:initial')
 
             // the short description shown while running "php bin/console list"
-            ->setDescription('Loads demo data')
+            ->setDescription('Loads initial data')
 
             // the full command description shown when running the command with
             // the "--help" option

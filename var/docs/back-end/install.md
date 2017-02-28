@@ -21,7 +21,7 @@ Once the build process is over, execute :
     #create the database schema
     docker-compose exec web php bin/console doctrine:schema:create
     #load default data
-    docker-compose exec web php bin/console doctrine:fixtures:load -n
+    docker-compose exec web php bin/console app:data:initial
 ```
 
 On dev mode, you can create an account on [http://localhost/app_dev.php/register](http://localhost/app_dev.php/register)
