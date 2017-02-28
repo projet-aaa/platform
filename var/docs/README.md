@@ -23,6 +23,8 @@
     - [React architecture](https://github.com/projet-aaa/platform/blob/master/var/docs/browser-front-end/react-architecture.md)
 
     - [Build process](https://github.com/projet-aaa/platform/blob/master/var/docs/browser-front-end/build-process.md)
+ 
+    - [Dev Tools](https://github.com/projet-aaa/platform/blob/master/var/docs/browser-front-end/dev-tools.md)
 
  - [Mobile front-end](https://github.com/projet-aaa/platform/blob/master/var/docs/mobile-front-end)
 
