@@ -100,10 +100,11 @@ class SsoAuthenticationOverrideProvider extends SsoAuthenticationProvider
             $user = $this->userManager->createUser($username, $this->createdUsersRoles, $attributes);
             $user->setUsername($username);
             $user->setPlainPassword($this->generateRandomString(8));
-            $user->setPassword($this->generateRandomString(8));
             $user->setFirstname(substr($username,0,1));
             $user->setLastname(substr($username,1,strlen($username)-1));
+            $user->setEnabled(true);
             $this->userManager->updateUser($user);
+
             if (!$user instanceof UserInterface) {
                 throw new AuthenticationServiceException('The user provider must create an UserInterface object.');
             }
