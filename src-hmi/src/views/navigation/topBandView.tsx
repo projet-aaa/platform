@@ -19,7 +19,8 @@ export class View extends React.Component<Props, any> {
             appName,
             userFullName,
             isAdmin
-        } = this.props;
+        } = this.props
+        
         return (
             <div id="header-topbar-option-demo" className="page-header-topbar">
                 <nav id="topbar" role="navigation" data-step="3" className="navbar navbar-default navbar-static-top" style={ {marginBottom: 0} }>
@@ -38,7 +39,7 @@ export class View extends React.Component<Props, any> {
                                     </a>
                                     <ul className="dropdown-menu dropdown-user pull-right">
                                         <li><Link to="/profil"><i className="fa fa-user"></i>Mon Profil</Link></li>
-                                        <li><Link to="/"><i className="fa fa-key"></i>Déconnection</Link></li>
+                                        <li><a href="/logout"><i className="fa fa-key"></i>Déconnection</a></li>
                                         { isAdmin && <li><a href="/admin"><i className="fa fa-lock"></i>Espace admin</a></li>}
                                     </ul>
                                 </li>
