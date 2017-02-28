@@ -5,7 +5,9 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Entity\Alert;
 use AppBundle\Entity\Discipline;
+use AppBundle\Entity\Feedback;
 use AppBundle\Entity\McqAnswer;
 use AppBundle\Entity\McqChoice;
 use AppBundle\Entity\Question;
@@ -27,7 +29,7 @@ class LoadDemoData extends AbstractFixture implements OrderedFixtureInterface
     {
         //override id strategy for all fixtures objects
         $managed_classes = array(Discipline::class, Session::class, Test::class, Question::class,
-            McqChoice::class, TextAnswer::class,
+            McqChoice::class, TextAnswer::class, Feedback::class, Alert::class,
             McqAnswer::class);
         foreach ($managed_classes as $c) {
             $metadata = $manager->getClassMetaData($c);
@@ -149,6 +151,27 @@ class LoadDemoData extends AbstractFixture implements OrderedFixtureInterface
         $q3_d->setId('rth452u7-fda0-11e6-aa56-0242ac110003');
         $manager->persist($q3_d);
 
+        $f1 = new Feedback();
+        $f1->setId('rat415p0-fda0-11e6-aa56-0242ac110003');
+        $f1->setAuthor($this->getReference('usersmaurel'));
+        $f1->setSession($session1);
+        $f1->setText('erreur sur la slide courante. Devrait etre 10 e non 100.');
+        $manager->persist($f1);
+
+        $f2 = new Feedback();
+        $f2->setId('scn000f1-fda0-11e6-aa56-0242ac110003');
+        $f2->setAuthor($this->getReference('userabeyet'));
+        $f2->setSession($session1);
+        $f2->setText('Image manquante');
+        $manager->persist($f2);
+
+        $al1 = new Alert();
+        $al1->setId('ump999p0-fda0-11e6-aa56-0242ac110003');
+        $al1->setAuthor($this->getReference('usersmaurel'));
+        $al1->setSession($session1);
+        $al1->setText("slow");
+        $al1->setAlertType('tooSlow');
+        $manager->persist($al1);
 
         $manager->flush();
     }
