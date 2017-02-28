@@ -108,6 +108,7 @@ export function createAPIActionCreator(
         }
 
         actionObj[CALL_API].headers = {
+            'Content-Type': 'application/ld+json',
             'Authorization': 'Bearer ' + (document as any).token
         }
 

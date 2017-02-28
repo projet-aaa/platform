@@ -23,11 +23,12 @@ function mapStateToProps(state, ownProps) {
     return { 
         attentionState: remote.attentionState,
 
-        sessionId: remote.sessionId,
+        sessionId: remote.iriSessionId,
         quiz,
-        authorId: auth.id,
+        authorId: auth.iriId,
 
         questionId: remote.currQuizId,
+        questionIriId: quiz && quiz.iriId,
 
         quizChoice: remote.choice,
         choiceId: quiz && quiz.type == QuizType.MCQ ? quiz.choiceIds[remote.choice] : null,
@@ -51,8 +52,12 @@ function mapDispatchToProps(dispatch, ownProps) {
         nextQuiz: () => dispatch(nextQuizAction()),
         prevQuiz: () => dispatch(prevQuizAction()),
 
-        validateAnswer: (type, choice, choiceId, questionId) => {
-            dispatch(answerAction({ type, choice, choiceId, questionId }))
+        validateAnswer: (type, choice, choiceId, questionId, questionIriId) => {
+            if(type != QuizType.TEXT) {
+                dispatch(answerAction({ type, choice, choiceId, questionId, questionIriId, text: null }))
+            } else {
+                dispatch(answerAction({ type, choice: null, choiceId: null, questionId, questionIriId, text: choice }))
+            }
         },
         sendComment: (text, sessionId, authorId) => dispatch(commentAction({ text, sessionId, authorId })),
 
@@ -79,43 +84,44 @@ function mapDispatchToProps(dispatch, ownProps) {
     }
 }
 
-function mergeProps(stateProps, dispatchProps, ownProps) {
-    return Object.assign({}, stateProps, dispatchProps, ownProps, {
-        nextQuiz: stateProps.question ? null : dispatchProps.nextQuiz,
-        prevQuiz: stateProps.question ? null : dispatchProps.prevQuiz,
-        choose: stateProps.sent || stateProps.showCorrection
+function mergeProps(sp, dp, ownProps) {
+    return Object.assign({}, sp, dp, ownProps, {
+        nextQuiz: sp.question ? null : dp.nextQuiz,
+        prevQuiz: sp.question ? null : dp.prevQuiz,
+        choose: sp.sent || sp.showCorrection
             ? null 
-            : dispatchProps.choose,
+            : dp.choose,
         validateAnswer: () => {
-            dispatchProps.validateAnswer(
-                stateProps.quiz.type, 
-                stateProps.quizChoice, 
-                stateProps.choiceId,
-                stateProps.questionId
+            dp.validateAnswer(
+                sp.quiz.type, 
+                sp.quizChoice, 
+                sp.choiceId,
+                sp.questionId,
+                sp.questionIriId
             )
         },
-        sendComment: (text) => dispatchProps.sendComment(
-            text, stateProps.sessionId, stateProps.authorId
+        sendComment: (text) => dp.sendComment(
+            text, sp.sessionId, sp.authorId
         ),
 
         signalPanic: () => {
-            if(stateProps.attentionState != AttentionStateType.PANIC) {
-                dispatchProps.signalPanic(stateProps.attentionState, stateProps.sessionId, stateProps.actionId)
+            if(sp.attentionState != AttentionStateType.PANIC) {
+                dp.signalPanic(sp.attentionState, sp.sessionId, sp.authorId)
             }
         },
         signalSlow: () => {
-            if(stateProps.attentionState != AttentionStateType.TOO_SLOW) {
-                dispatchProps.signalSlow(stateProps.attentionState, stateProps.sessionId, stateProps.actionId)
+            if(sp.attentionState != AttentionStateType.TOO_SLOW) {
+                dp.signalSlow(sp.attentionState, sp.sessionId, sp.authorId)
             }
         },
         signalFast: () => {
-            if(stateProps.attentionState != AttentionStateType.TOO_FAST) {
-                dispatchProps.signalFast(stateProps.attentionState, stateProps.sessionId, stateProps.actionId)
+            if(sp.attentionState != AttentionStateType.TOO_FAST) {
+                dp.signalFast(sp.attentionState, sp.sessionId, sp.authorId)
             }
         },
         signalOk: () => {
-            if(stateProps.attentionState != AttentionStateType.OK) {
-                dispatchProps.signalOk(stateProps.attentionState, stateProps.sessionId, stateProps.actionId)
+            if(sp.attentionState != AttentionStateType.OK) {
+                dp.signalOk(sp.attentionState, sp.sessionId, sp.authorId)
             }
         }
     })

@@ -195,6 +195,7 @@ export class ClassRoom extends IRoom {
             this.server.send(socket, SocketOutMsg.TEACHER_CLASS_JOINED, {
                 quiz: this.quiz,
                 sessionId: this.sessionId,
+                iriSessionId: (this as any).iriSessionId,
 
                 currQuizId: this.currQuizId,
                 currQuizState: this.currQuizState,
@@ -221,6 +222,7 @@ export class ClassRoom extends IRoom {
                 quiz,
                 quizHistory: this.quizHistory,
                 sessionId: this.sessionId,
+                iriSessionId: (this as any).iriSessionId,
 
                 currQuizId: this.currQuizId,
                 currQuizState: this.currQuizState,

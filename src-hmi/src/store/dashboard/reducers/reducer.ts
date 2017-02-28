@@ -103,6 +103,7 @@ const reducer = handleActions({
 
         return Object.assign({}, state, {
             sessionId: action.payload.sessionId,
+            iriSessionId: action.payload.iriSessionId,
             quiz: action.payload.quiz,
             quizLauncher: launchers,
 

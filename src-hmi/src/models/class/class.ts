@@ -10,6 +10,7 @@ export const QuizType = {
 // The heading of a quiz
 export interface Quiz {
     id: string
+    iriId: string
     type: string
     title: string
 

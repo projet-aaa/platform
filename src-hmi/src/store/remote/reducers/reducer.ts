@@ -14,6 +14,7 @@ export interface RemoteState {
     currConsulQuizInd: number
 
     currQuizId: string
+    iriSessionId: string
     currQuizState: string
     choice: any
     choiceId: string
@@ -31,6 +32,7 @@ let initialstate: RemoteState = {
     attentionState: AttentionStateType.OK,
 
     sessionId: null,
+    iriSessionId: null,
     quiz: [],
 
     quizHistory: [],
@@ -180,6 +182,7 @@ const reducer = handleActions({
         })
         return Object.assign({}, state, {
             sessionId: action.payload.sessionId,
+            iriSessionId: action.payload.iriSessionId,
             quiz: obj,
 
             quizHistory: action.payload.quizHistory,

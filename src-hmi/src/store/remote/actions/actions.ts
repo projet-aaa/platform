@@ -1,7 +1,7 @@
 import { createAPIActionCreator } from '../../../utils'
 import { ActionTypes, APIActionTypes, WSOutActionTypes } from './actionTypes'
 
-import { QuizType } from '../../../models/class/class'
+import { QuizType, AttentionStateType } from '../../../models/class/class'
 
 export function chooseAction(choice: any) {
     return { type: ActionTypes.CHOOSE, payload: { choice } }
@@ -17,9 +17,11 @@ export function nextQuizAction() {
 
 export function answerAction(info: {
     type: string
+    text: string
     choiceId: string,
     choice: string,
-    questionId: string
+    questionId: string,
+    questionIriId: string
 }) {
     return (dispatch) => {
         let answer = {
@@ -58,23 +60,29 @@ export function signalStateAction(info: {
 
 export const answerAPIAction: (info: { 
     type: string
+    text: string
     choiceId: string,
-    questionId: string
+    questionId: string,
+    questionIriId: string
 }) => any
 = createAPIActionCreator( 
     ((info) => {
         switch(info.type) {
             case QuizType.MCQ: return '/mcq_answers'
-            case QuizType.TEXT: return null
+            case QuizType.TEXT: return '/text_answers'
         }
     }), 
     ((info) => { 
         switch(info.type) {
             case QuizType.MCQ: return {
                 mcqChoice: info.choiceId,
-                question: info.questionId
+                question: info.questionIriId
+                
             }
-            case QuizType.TEXT: return null
+            case QuizType.TEXT: return {
+                question: info.questionIriId,
+                text: info.text
+            }
         }
     }),
     'POST',
@@ -94,7 +102,9 @@ export const signalStateAPIAction: (info: {
         author: bi.authorId,
         session: bi.sessionId,
         text: "null",
-        alertType: bi.state
+        alertType: bi.state == AttentionStateType.OK ? "good" :
+                   bi.state == AttentionStateType.TOO_FAST ? "tooFast" :
+                   bi.state == AttentionStateType.TOO_SLOW ? "tooSlow" : null
     }},
     'POST',
     APIActionTypes.SIGNAL_STATE,
@@ -111,7 +121,7 @@ export const commentAction: (payload: {
     ((ei) => '/feedbacks'), 
     ((bi) => { return {
         authorId: bi.authorId,
-        sessionId: bi.sessionId,
+        session: bi.sessionId,
         text: bi.text
     }}),
     'POST',
