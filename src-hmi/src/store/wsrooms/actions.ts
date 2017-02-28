@@ -1,4 +1,5 @@
 import { Action, fetcher, findAllIndex } from '../../utils'
+import { fetchSessionQuiz } from '../../api/fetchs'
 
 import { Quiz } from '../../models/class/class'
 
@@ -66,63 +67,10 @@ export function openClassRoom(sessionName: string) {
         .then(res => {
             console.log(res)
             sessionId = res.id
-            return res.tests.map(test => {
-            let list = test.split('/')
-            return list[list.length - 1]
-        })})
-        .then(tests => {
-            let resQuestions = [],
-                choicesMissing = 0
-            tests.forEach(test => {
-                fetcher('/tests/' + test)
-                .then((res: any) => res.questions.map(test => {
-                    let list = test.split('/')
-                    return list[list.length - 1]
-                }))
-                .then(questions => {
-                    questions.forEach(question => {
-                        fetcher('/questions/' + question)
-                        .then((question: any) => {
-                            resQuestions.push(question)
-                            question.choices = []
-
-                            choicesMissing += question.mcqChoices.length
-                            
-                            question.mcqChoices.forEach(choice => {
-                                let list = choice.split('/'),
-                                    choiceId = list[list.length - 1]
-
-                                fetcher('/mcq_choices/' + choiceId)
-                                .then((choice: any) => {
-                                    question.choices.push(choice)
-                                    choicesMissing--
-                                    if(!choicesMissing) {
-                                        let res = resQuestions.map(question => {
-                                            let type = question.typeAnswer == "multiple" ? "MMCQ" :
-                                                (question.typeAnswer == "unique" ? "MCQ" : "TEXT")
-                                            return {
-                                                id: question.id,
-                                                type,
-                                                title: question.text,
-                                                question: question.text,
-                                                choices: question.choices && question.choices.map(choice => choice.text),
-                                                choiceIds: question.choices && question.choices.map(choice => choice.id),
-                                                answer: type == "MMCQ" ? findAllIndex(question.choices, (choice: any) => choice.correct) :
-                                                        type == "MCQ" ? question.choices && question.choices.findIndex(choice => choice.correct) :
-                                                        question.textAnswers && question.textAnswers.length && question.textAnswers[0],
-                                                explanations: question.choices && question.choices.map(choice => ""),
-                                                justification: question.explication
-                                            }
-                                        })
-
-                                        dispatch(openClassRoomServer(res, sessionId))
-                                    }
-                                })
-                            })    
-                        })
-                    })
-                })
-            })
+            fetchSessionQuiz(
+                sessionId, 
+                res => dispatch(openClassRoomServer(res, sessionId))
+            )
         })
         .catch(error => console.log(error))
     }
