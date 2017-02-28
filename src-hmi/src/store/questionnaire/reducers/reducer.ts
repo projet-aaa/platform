@@ -2,15 +2,15 @@
 import { handleActions } from "redux-actions"
 
 // INTERNAL IMPORTS
-import { ActionTypes } from '../actions/actionTypes'
-import { Quiz, QuizType, QuizLocalChoice, QuizGroup } from '../../../models/class/class'
+import { ActionTypes, APIActionTypes } from '../actions/actionTypes'
+import { Quiz, QuizType, QuizLocalChoice, Test } from '../../../models/class/class'
 import { modifyArrayElement, shuffle } from '../../../utils/index'
 
 export interface QuestionnaireState {
     // all the quiz available for this session
-    quizGroups: QuizGroup[]
+    quizGroups: Test[]
     // the collection of quiz launched
-    actualQuizs: QuizGroup
+    actualQuizs: Test
     // the index of the current quiz in the quiz collection "actualQuizs"
     quizIndex: number
     // actual quiz
@@ -26,7 +26,7 @@ export interface QuestionnaireState {
 }
 
 // Initialize the array quizChoices
-function fillTabChoice(actualQuizs: QuizGroup): QuizLocalChoice[] {
+function fillTabChoice(actualQuizs: Test): QuizLocalChoice[] {
     let res = []
     for(var i=0 ; i<actualQuizs.quizs.length ; i++) {
         if (actualQuizs.quizs[i].type==QuizType.MCQ) {
@@ -39,7 +39,7 @@ function fillTabChoice(actualQuizs: QuizGroup): QuizLocalChoice[] {
 }
 
 // Initialize the array areValidated
-function fillTabValidated(actualQuizs: QuizGroup): QuizLocalChoice[] {
+function fillTabValidated(actualQuizs: Test): QuizLocalChoice[] {
     let res = []
     for(var i = 0; i<actualQuizs.quizs.length ; i++) {
         res[actualQuizs.quizs[i].id] = false
@@ -48,7 +48,7 @@ function fillTabValidated(actualQuizs: QuizGroup): QuizLocalChoice[] {
 }
 
 // compute the score after each validate action
-function computeScore(actualQuizs: QuizGroup, quizChoices: QuizLocalChoice[]): number {
+function computeScore(actualQuizs: Test, quizChoices: QuizLocalChoice[]): number {
     let res = 0
     for(var i=0 ; i<actualQuizs.quizs.length ; i++) {
         if (quizChoices[actualQuizs.quizs[i].id].choice==actualQuizs.quizs[i].answer) {
@@ -229,7 +229,7 @@ const reducer = handleActions({
         })
     },
     [ActionTypes.CHOOSE_QUIZ]: function(state: QuestionnaireState, action: any): QuestionnaireState {
-        let newQuizs = state.quizGroups[action.payload.quizGroupId]
+        let newQuizs = state.quizGroups.find(q => q.id == action.payload.quizGroupId)
         return Object.assign({}, state, {
             actualQuizs: newQuizs,
             quizIndex: 0,
@@ -243,6 +243,11 @@ const reducer = handleActions({
     [ActionTypes.RETURN_TO_CHOICES]: function(state: QuestionnaireState, action: any): QuestionnaireState {
         return Object.assign({}, state, {
             currentQuiz: null
+        })
+    },
+    [APIActionTypes.FETCH_TESTS_SUCCESS]: function(state: QuestionnaireState, action): QuestionnaireState {
+        return Object.assign({}, state, {
+            quizGroups: action.payload
         })
     }
 }, initialstate);

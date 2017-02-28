@@ -137,6 +137,21 @@ export function fetcher(url, method?, obj?) {
     }
     return fetch(apiRootURL + url, res).then(res => res.json())
 }
+export function listFetcher<T>(list: T[], urlMaker: (obj: T) => string, success, failure) {
+    let todo = list.length,
+        resList = []
+    list.forEach(o => {
+        fetcher(urlMaker(o), 'GET')
+        .then(res => {
+            resList.push(res)
+            todo--
+            if(!todo) {
+                success(resList)
+            }
+        })
+        .catch(error => failure(error))
+    })
+}
 
 export const authAPIMiddleware = auth => store => next => action => {
     if(action.type && action.type.substring(0, apiCallText.length) == apiCallText) {

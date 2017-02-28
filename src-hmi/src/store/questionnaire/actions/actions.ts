@@ -1,6 +1,6 @@
-import * as fetch from 'isomorphic-fetch'
+import { fetchSessionTests } from '../../../api/fetchs'
 
-import { ActionTypes } from './actionTypes'
+import { ActionTypes, APIActionTypes } from './actionTypes'
 import { Quiz } from "../../../models/class/class"
 
 export function chooseAction(choice: any) {
@@ -29,4 +29,21 @@ export function chooseQuizAction(quizGroupId: string, mode: string) {
 
 export function returnAction() {
     return { type: ActionTypes.RETURN_TO_CHOICES, payload: {} }
+}
+
+export function fetchTests(sessionId: string) {
+    return dispatch => {
+        dispatch({
+            type: APIActionTypes.FETCH_TESTS,
+            payload: {}
+        })
+        fetchSessionTests(sessionId,
+        quizs => {
+            dispatch({
+                type: APIActionTypes.FETCH_TESTS_SUCCESS,
+                payload: quizs
+            })
+        }, 
+        obj => console.log(obj))
+    }
 }

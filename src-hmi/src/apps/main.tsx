@@ -3,7 +3,7 @@ import 'babel-polyfill'
 import * as ReactDOM from 'react-dom'
 import * as React from 'react'
 import { Router, Route, IndexRoute, hashHistory } from 'react-router'
-import { Provider } from 'react-redux';
+import { Provider } from 'react-redux'
 
 import { auth } from '../store/auth/actions'
 

@@ -7,16 +7,16 @@ import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
 // INTERNAL IMPORTS
-import { QuizType, Quiz, QuizLocalChoice, QuizGroup } from "../../models/class/class"
+import { QuizType, Quiz, QuizLocalChoice, Test } from "../../models/class/class"
 import { View as QuizView } from "../../views/quiz/quizView"
 import { View as QuizViewMobile } from "../../views/quiz/quizViewMobile"
 import { getCbValue } from '../../utils'
 
 export interface StateProps {
     // all the quiz available for this session
-    quizGroups: QuizGroup[]
+    quizGroups: Test[]
     // the collection of quiz launched
-    actualQuizs: QuizGroup
+    actualQuizs: Test
     // the index of the current quiz in the quiz collection "actualQuizs"
     quizIndex: number
     // actual quiz

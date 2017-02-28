@@ -25,7 +25,7 @@ export interface Quiz {
 }
 
 // a group of quiz
-export interface QuizGroup {
+export interface Test {
     id: string
     title: string
     quizs: Quiz[]

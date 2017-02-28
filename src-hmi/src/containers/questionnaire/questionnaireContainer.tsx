@@ -7,7 +7,8 @@ import rootWrapper from "../../wrappers/rootWrapper"
 import { chooseAction, validateAction, 
         nextQuizAction, prevQuizAction,
         seeCorrectionAction, chooseQuizAction,
-        returnAction } from "../../store/questionnaire/actions/actions"
+        returnAction, fetchTests } from "../../store/questionnaire/actions/actions"
+import { fetchSessionByName } from "../../api/fetchs"
 import { Quiz } from "../../models/class/class"
 import { StateProps, ActionProps, View } from "../../views/questionnaire/questionnaireTabView"
 import { QuestionnaireState } from "../../store/questionnaire/reducers/reducer"
@@ -32,7 +33,7 @@ function mapStateToProps(state: any): StateProps {
     }
 }
 
-function mapDispatchToProps(dispatch, state): ActionProps {
+function mapDispatchToProps(dispatch, state) {
     return {
         // Fires an action signaling that a quiz has been chosen
         // id is the id of the quiz chosen and mode is answer or correction
@@ -50,7 +51,9 @@ function mapDispatchToProps(dispatch, state): ActionProps {
         // at the end of a quiz, launch the correction
         seeCorrection: () => dispatch(seeCorrectionAction()),
         // to return to the list of quiz
-        returnToChoices: () => dispatch(returnAction())
+        returnToChoices: () => dispatch(returnAction()),
+
+        fetchTests: (sessionId) => dispatch(fetchTests(sessionId))
     }
 }
 
@@ -58,6 +61,10 @@ export default rootWrapper(
     mapStateToProps, 
     mapDispatchToProps,
     null,
-    null,
+    props => {
+        fetchSessionByName(props.params.course, res => {
+            props.fetchTests(res["hydra:member"][0].id)
+        })
+    },
     View
 )
