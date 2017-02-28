@@ -121,6 +121,14 @@ class McqAnswer implements \JsonSerializable
     }
 
     /**
+     * @param string $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
      * @return McqChoice
      */
     public function getMcqChoice()

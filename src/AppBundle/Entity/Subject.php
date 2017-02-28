@@ -48,6 +48,14 @@ class Subject
     }
 
     /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
      * @return Session
      */
     public function getSession()

@@ -109,6 +109,15 @@ class User extends BaseUser implements \JsonSerializable
     }
 
     /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+
+    /**
      * @return string
      */
     public function getLastname()
