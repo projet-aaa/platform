@@ -1,7 +1,26 @@
 # API
 
+API groups all the URL available under `/api` base url.
 
+## Authentication
 
+API is protected using a JWT Auth system. It relies on the [LexikJWTAuthenticationBundle](https://github.com/lexik/LexikJWTAuthenticationBundle) to work.
+
+Keys for signing tokens are located in `var/jwt`.
+
+You can authenticate on the API using URL or HTTP-Header.
+
+**URL** 
+
+Simply add `?bearer=your_token` at the end of your url.
+
+Example : `http://localhost/app_dev.php/api?bearer=your_token`
+
+**HTTP Header**
+
+Add Authorization header to your HTTP Request. We recommend using that method, notabely because it makes logs easier to read.
+
+Example : `curl -X GET --header 'Accept: application/ld+json' --header 'Authorization: Bearer your_token' 'http://localhost/app_dev.php/api/alerts'`
 
 
 ## Filters
