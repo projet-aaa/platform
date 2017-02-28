@@ -12,9 +12,9 @@ web:
         - .:/app
     ports:
         - 80:80
-    labels:
-        - "traefik.backend=web-jetpack"
-        - "traefik.frontend.rule=Host:jetpack0.trendio.fr"
+###    labels:
+###        - "traefik.backend=web-jetpack"
+###        - "traefik.frontend.rule=Host:jetpack0.trendio.fr"
 
 #Persistent data storage
 database:
@@ -42,18 +42,18 @@ nodejs:
     ports:
         - 8080:8080
 
-traefik:
-    image: traefik:camembert
-    command: | 
-        -c /dev/null --web --docker --docker.domain=docker.localhost --logLevel=DEBUG 
-        --defaultEntryPoints='http,https' --entryPoints='Name:http Address::80 Redirect.EntryPoint:https' 
-        --entryPoints='Name:https Address::443 TLS:/tls/server.crt,/tls/server.key'
-#     --acme.entryPoint=https
-#    --acme.email='antoine.beyet+j1@gmail.com' --acme.storage=/tls/acme.json --acme.onDemand=true
-    ports:
-        - "80:80"
-#    - "8080:8080"
-        - "443:443"
-    volumes:
-        - /var/run/docker.sock:/var/run/docker.sock
-        - ./docker/tls:/tls
+###traefik:
+###    image: traefik:camembert
+###    command: |
+###        -c /dev/null --web --docker --docker.domain=docker.localhost --logLevel=DEBUG
+###        --defaultEntryPoints='http,https' --entryPoints='Name:http Address::80 Redirect.EntryPoint:https'
+###        --entryPoints='Name:https Address::443 TLS:/tls/server.crt,/tls/server.key'
+###     --acme.entryPoint=https
+###    --acme.email='antoine.beyet+j1@gmail.com' --acme.storage=/tls/acme.json --acme.onDemand=true
+###    ports:
+###        - "80:80"
+###    - "8080:8080"
+###        - "443:443"
+###    volumes:
+###        - /var/run/docker.sock:/var/run/docker.sock
+###        - ./docker/tls:/tls

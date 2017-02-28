@@ -57,7 +57,7 @@ web:
         - redis
     volumes:
         - .:/app
-    ports:
+#    ports:
 #       - 80:80
     labels:
       - "traefik.backend=web-jetpack"
