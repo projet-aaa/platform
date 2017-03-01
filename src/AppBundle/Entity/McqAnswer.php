@@ -8,6 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Service as Assert2;
 
 /**
  * A reply to a Question of type multiple or unique.
@@ -19,11 +20,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "filters"={"mcq_answer.search"}
  * })
  * @UniqueEntity(
- *     fields={"author", "question"},
+ *     fields={"author", "mcqChoice"},
  *     errorPath="question",
- *     message="This author already has an answer for that Question"
+ *     message="This author already has already answered that Choice"
  * )
- * @ORM\Entity
+ * @Assert2\McqAnswerConsistent()
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\McqAnswerRepository")
  * @ORM\HasLifecycleCallbacks()
  */
 class McqAnswer implements \JsonSerializable
@@ -99,6 +101,14 @@ class McqAnswer implements \JsonSerializable
      * @Assert\IsTrue(message = "The chosen McqChoice doesn't belong to the chosen Question")
      */
     public function isQuestionMcqChoiceConsistent()
+    {
+        return $this->mcqChoice->getQuestion() == $this->getQuestion();
+    }
+
+    /**
+     * @Assert\IsTrue(message = "You can't have multiple McqAnswer for a non 'multiple' question.")
+     */
+    public function isNumberMcqChoiceConsistent()
     {
         return $this->mcqChoice->getQuestion() == $this->getQuestion();
     }
