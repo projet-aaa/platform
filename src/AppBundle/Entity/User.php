@@ -56,6 +56,12 @@ class User extends BaseUser implements \JsonSerializable
     protected $roles;
 
     /**
+     * @var string
+     * @Groups({"user-write"})
+     */
+    protected $plainPassword;
+
+    /**
      * @ORM\PrePersist()
      */
     public function setUserEmail(){

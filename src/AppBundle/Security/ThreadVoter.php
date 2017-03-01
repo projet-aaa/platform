@@ -108,7 +108,7 @@ class ThreadVoter extends BaseVoter
      */
     private function canUpdate(Thread $thread, User $user)
     {
-        return $thread->getAuthor() === $user || in_array('ROLE_PROF',$user->getRoles()) || in_array('ROLE_ADMIN',$user->getRoles());
+        return $thread->getAuthor() === $user || in_array('ROLE_PROF', $this->getRolesHierarchy($user->getRoles()));
     }
 
     /**
@@ -120,6 +120,6 @@ class ThreadVoter extends BaseVoter
      */
     private function canDelete(Thread $thread, User $user)
     {
-        return $thread->getAuthor() === $user || in_array('ROLE_PROF',$user->getRoles()) || in_array('ROLE_ADMIN',$user->getRoles());
+        return $thread->getAuthor() === $user || in_array('ROLE_PROF', $this->getRolesHierarchy($user->getRoles()));
     }
 }

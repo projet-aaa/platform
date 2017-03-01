@@ -84,7 +84,7 @@ class SubjectVoter extends BaseVoter
      */
     private function canCreate(Subject $subject, User $user)
     {
-        return !in_array('ROLE_USER',$user->getRoles());
+        return in_array('ROLE_PROF', $this->getRolesHierarchy($user->getRoles()));
     }
 
     /**
@@ -108,7 +108,7 @@ class SubjectVoter extends BaseVoter
      */
     private function canUpdate(Subject $subject, User $user)
     {
-        return !in_array('ROLE_USER',$user->getRoles());
+        return in_array('ROLE_PROF', $this->getRolesHierarchy($user->getRoles()));
     }
 
     /**
@@ -120,6 +120,6 @@ class SubjectVoter extends BaseVoter
      */
     private function canDelete(Subject $subject, User $user)
     {
-        return !in_array('ROLE_USER',$user->getRoles());
+        return in_array('ROLE_PROF', $this->getRolesHierarchy($user->getRoles()));
     }
 }
