@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use AppBundle\Service as Assert2;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -14,13 +15,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "denormalization_context"={"groups"={"write"}},
  *     "filters"={"text_answer.search"}
  * })
- * @UniqueEntity(
- *     fields={"author", "question"},
- *     errorPath="question",
- *     message="This author already has an answer for that Question"
- * )
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\TextAnswerRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="author_question_uni", columns={"author_id", "question_id"})})
+ * @Assert2\TextAnswerConsistent()
  */
 class TextAnswer
 {
@@ -40,7 +38,7 @@ class TextAnswer
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
      * @Groups({"read"})
      * @Gedmo\Blameable(on="create")
      */
