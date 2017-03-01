@@ -28,10 +28,7 @@ export interface ActionProps {
     back()
 }
 
-// style for the text
-var sizeText = {
-    fontSize: 15
-}
+// styles
 var palNew = {
     paddingTop: 0,
     paddingLeft: 20,
@@ -92,7 +89,7 @@ export class View extends React.Component<Props, any> {
                 (<input id="quiz-text" 
                         type="text" 
                         value={ quizChoice }
-                        style={ inputFieldStyle }
+                        style={ { height: "30px", fontSize: "15pt", width: "100%", marginBottom: "10px"} }
                         onChange={ () => choose(getText("quiz-text")) }> 
                 </input>)
             break
@@ -101,7 +98,7 @@ export class View extends React.Component<Props, any> {
         // a question with its answers
         let questionRender = (
             <div>
-                <h3 style={ sizeText }>{ quiz.question }</h3>
+                <h3 style={ {fontSize: 15, marginTop: 0} }>{ quiz.question }</h3>
                 { answers }
             </div>
         )
@@ -177,7 +174,7 @@ export class View extends React.Component<Props, any> {
         return (
             <div>
                 <div className="panel">
-                    <div style={ palNew }>
+                    <div className="pal">
                         { quizRender }
                         { buttonsRender }
                     </div>

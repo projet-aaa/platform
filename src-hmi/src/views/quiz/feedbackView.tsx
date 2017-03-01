@@ -41,6 +41,16 @@ export class View extends React.Component<Props, any> {
             <div>
                 <div className="row">
                     <div className="col-lg-12 text-center">
+                        <h2>{ 
+                            state == AttentionStateType.OK ? <span>Je suis bien</span> : 
+                            (state == AttentionStateType.PANIC ? <span>Je panique!</span> :
+                            (state == AttentionStateType.TOO_FAST ? <span>Le cours est trop long</span> : 
+                                <span>Le cours est trop lent</span>))
+                        } </h2>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-lg-12 text-center">
                         <div className={ state == AttentionStateType.PANIC 
                                             ? "btn btn-lg btn-danger active" 
                                             : "btn btn-lg btn-danger" }

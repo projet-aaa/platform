@@ -5,7 +5,11 @@ import { connect } from "react-redux";
 import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
-export interface StateProps {}
+import { AttentionStateType } from "../../models/class/class"
+
+export interface StateProps {
+    state: string
+}
 
 export interface ActionProps { 
     signalPanic() // select the "panic"" button
@@ -24,11 +28,21 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
-            signalPanic, signalSlow, signalFast, signalOk
+            state, signalPanic, signalSlow, signalFast, signalOk
         } = this.props;
         // these 3 buttons form a triangle
         return (
             <div>
+                <div className="row">
+                    <div className="col-lg-12 text-center">
+                        <h4 style={ {marginTop: "0px"} }>{ 
+                            state == AttentionStateType.OK ? <span>Je suis bien</span> : 
+                            (state == AttentionStateType.PANIC ? <span>Je panique!</span> :
+                            (state == AttentionStateType.TOO_FAST ? <span>Le cours est trop rapide</span> : 
+                                <span>Le cours est trop lent</span>))
+                        } </h4>
+                    </div>
+                </div>
                 <div className="row">
                     <div className="col-lg-12 text-center">
                         <div className="btn btn-lg btn-danger" style={buttonMargin} onClick={ signalPanic }>
