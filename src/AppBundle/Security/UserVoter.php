@@ -119,6 +119,6 @@ class UserVoter extends BaseVoter
      */
     private function canDelete(User $oUser, User $user)
     {
-        return $user === $oUser || in_array('ROLE_ADMIN', $this->getRolesHierarchy($user->getRoles()));
+        return in_array('ROLE_ADMIN', $this->getRolesHierarchy($user->getRoles()));
     }
 }
