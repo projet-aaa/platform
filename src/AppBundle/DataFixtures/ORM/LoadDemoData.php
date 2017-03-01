@@ -116,6 +116,27 @@ class LoadDemoData extends AbstractFixture implements OrderedFixtureInterface
         $q2->setId('tyu987f7-fda0-11e6-aa56-0242ac110003');
         $manager->persist($q2);
 
+        $q2_t1 = new TextAnswer();
+        $q2_t1->setText('form 1, form2');
+        $q2_t1->setQuestion($q2);
+        $q2_t1->setAuthor($this->getReference('usereleve'));
+        $q2_t1->setId('tyt988t8-fda0-11e6-aa56-0242ac110003');
+        $manager->persist($q2_t1);
+
+        $q2_t2 = new TextAnswer();
+        $q2_t2->setText('form 1, form2');
+        $q2_t2->setQuestion($q2);
+        $q2_t2->setAuthor($this->getReference('userabeyet'));
+        $q2_t2->setId('tyv999t9-fda0-11e6-aa56-0242ac110003');
+        $manager->persist($q2_t2);
+
+        $q22 = new Question();
+        $q22->setText('Mention 2 true firms');
+        $q22->setTypeAnswer('text'); //one unique true answer.
+        $q22->setTest($tt);
+        $q22->setId('tex222d2-fda0-11e6-aa56-0242ac110003');
+        $manager->persist($q22);
+
         $q3 = new Question();
         $q3->setText('Check the words containing a E');
         $q3->setTypeAnswer('multiple'); //one unique true answer.
