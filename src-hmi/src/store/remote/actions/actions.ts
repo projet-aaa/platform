@@ -18,13 +18,24 @@ export function nextQuizAction() {
 export function answerAction(info: {
     type: string
     text: string
-    choiceId: string,
-    choice: string,
+    choiceId: any,
+    choice: any,
     questionId: string,
     questionIriId: string
 }) {
     return (dispatch) => {
-        dispatch(answerAPIAction(info))
+        if(info.type == QuizType.MMCQ) {
+            info.choiceId.forEach(c => {
+                dispatch(answerAPIAction({
+                    type: info.type,
+                    text: null,
+                    choiceId: c,
+                    questionIriId: info.questionIriId
+                }))
+            })
+        } else {
+            dispatch(answerAPIAction(info))
+        }
         dispatch({
             type: WSOutActionTypes.ANSWER,
             payload: {
@@ -61,22 +72,22 @@ export const answerAPIAction: (info: {
     type: string
     text: string
     choiceId: string,
-    questionId: string,
     questionIriId: string
 }) => any
 = createAPIActionCreator( 
     ((info) => {
         switch(info.type) {
+            case QuizType.MMCQ:
             case QuizType.MCQ: return '/mcq_answers'
             case QuizType.TEXT: return '/text_answers'
         }
     }), 
     ((info) => { 
         switch(info.type) {
+            case QuizType.MMCQ:
             case QuizType.MCQ: return {
                 mcqChoice: info.choiceId,
                 question: info.questionIriId
-                
             }
             case QuizType.TEXT: return {
                 question: info.questionIriId,
@@ -103,7 +114,7 @@ export const signalStateAPIAction: (info: {
         text: "null",
         alertType: bi.state == AttentionStateType.OK ? "good" :
                    bi.state == AttentionStateType.TOO_FAST ? "tooFast" :
-                   bi.state == AttentionStateType.TOO_SLOW ? "tooSlow" : null
+                   bi.state == AttentionStateType.TOO_SLOW ? "tooSlow" : "panic"
     }},
     'POST',
     APIActionTypes.SIGNAL_STATE,
