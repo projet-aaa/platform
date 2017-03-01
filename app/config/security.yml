@@ -2,6 +2,8 @@ security:
     encoders:
         FOS\UserBundle\Model\UserInterface: plaintext
 
+    # Voters take that hierarchy into account with a copycat code in Security\BaseVoter
+    # modify it if you change that hierarchy
     role_hierarchy:
         ROLE_ADMIN:       [ROLE_PROF, ROLE_USER, ROLE_SONATA_ADMIN]
         ROLE_SUPER_ADMIN: ROLE_ADMIN
