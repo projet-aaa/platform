@@ -40,7 +40,8 @@ import DisciplineContainer from '../containers/discipline/disciplineContainer'
 
 import QuestionnaireContainer from '../containers/questionnaire/questionnaireContainer'
 
-import LoginContainer from '../containers/devlogin/loginContainer'
+import LoginContainer from '../containers/dev/loginContainer'
+import CloseRoomContainer from '../containers/dev/closeRoomContainer'
 
 import { storeFactory } from '../utils'
 
@@ -67,7 +68,10 @@ let MainRouter =
         <Route path="/" component={ TopBandLeftMenuTemp }>
             <IndexRoute component={ MainContainer }/>
         </Route>
-        <Route path="/login" component={ LoginContainer}/>
+
+        <Route path="/login" component={ LoginContainer }/>
+        <Route path="/close_room/:prof" component={ CloseRoomContainer }/>
+
         <Route path="/profil" component={ TopBandLeftMenuTemp }>
             <IndexRoute component={ ProfileContainer }/>
         </Route>

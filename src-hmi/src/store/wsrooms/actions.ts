@@ -84,9 +84,9 @@ export function openClassRoomServer(quiz: Quiz[], sessionId, iriSessionId) {
     }
 }
 
-export function closeRoom(roomId: number) {
+export function closeRoom(roomProf: string) {
     return {
         type: OutMsgType.CLOSE_ROOM,
-        payload: { roomId }
+        payload: { roomProf }
     }
 }
