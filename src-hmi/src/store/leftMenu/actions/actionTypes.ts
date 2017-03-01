@@ -1,3 +1,3 @@
 export const ActionTypes = {
-    HIDE: "LEFT_MENU/HIDE"
+    HIDE: "LEFT_MENU/HIDE",
 }

@@ -12,15 +12,19 @@ export const APIActionTypes = {
     FETCH_SESSIONS_FAILURE: "SESSION/FETCH_SESSIONS_FAILURE"
 }
 
-// export const fetchSessions: (info: { }) => any
-// = createAPIActionCreator( 
-//     info => "/sessions", 
-//     null,
-//     'GET',
-//     APIActionTypes.FETCH_SESSIONS,
-//     APIActionTypes.FETCH_SESSIONS_SUCCESS,
-//     APIActionTypes.FETCH_SESSIONS_FAILURE
-// )
+export function fetchSesionsFromDiscipline(disciplineName: string, props: any) {
+        fetcher('/disciplines?name=' + disciplineName)
+        .then(res => {
+            var discipline = { 
+                id: res["hydra:member"][0].id,
+                name: res["hydra:member"][0].name,
+                sessions: res["hydra:member"][0].sessions
+             }
+            dispatch(fetchSessions(discipline))
+        })
+        .catch(error => 
+            console.log(error))
+}
 
 export function fetchSessions(disciplines: Discipline[]) {
     return dispatch => {
@@ -52,13 +56,3 @@ export function fetchSessions(disciplines: Discipline[]) {
         }
     }
 }
-
-// export const fetchSessionsWithDiscipline: (info: {
-//     disciplineIds: string[]
-// }) => any
-// = createAPIActionCreator(
-//     info => "/sessions",
-//     null,
-//     'GET",
-//     '
-// )
