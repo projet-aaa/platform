@@ -16,7 +16,7 @@ function mapStateToProps(state): StateProps {
     return { 
         sessions: _.values(state.sessions.sessions)
                     .filter(session => !state.main.areNotChecked[session.discipline])
-                    .filter(session => (session.sessionName.indexOf(state.main.searchedString)!=-1))
+                    .filter(session => (session.sessionName.toLowerCase().indexOf(state.main.searchedString.toLowerCase())!=-1))
                     .sort((elt1, elt2) => elt2.date - elt1.date),
         disciplines: auth.disciplines,
         areNotChecked: state.main.areNotChecked,

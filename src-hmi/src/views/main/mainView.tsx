@@ -77,13 +77,14 @@ export class View extends React.Component<Props, any> {
                 <div className="col-lg-8">
                     <div className="row">
                         <div className="input-group">
-                            <input id="search" type="text" placeholder="Rechercher" className="form-control input-lg"/>
 
-                            <div className="input-group-btn">
-                                <button className="btn btn-lg btn-primary" onClick={ () => search(getText("search")) }>
-                                    <i className="fa fa-search"></i>
-                                </button>
-                            </div>
+                                <input id="search" type="text" placeholder="Rechercher" className="form-control input-lg" onChange={ (event) => search(getText("search")) } />
+
+                                <div className="input-group-btn">
+                                    <button className="btn btn-lg btn-primary" onClick={ () => search(getText("search")) }>
+                                        <i className="fa fa-search"></i>
+                                    </button>
+                                </div>
                         </div>
                     </div>
                     <div className="row" style={ {marginTop:15} }>
