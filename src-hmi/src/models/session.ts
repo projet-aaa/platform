@@ -11,7 +11,11 @@ export interface Session {
     // the type of session
     sessionType: string
     // the date of the session
-    updatedAt: Date
+    date: Date
     // the discipline this session belongs to
     discipline: string
+    // The tacher for this session
+    teacherName: string
+    // If the session is running live
+    live: boolean
 }

@@ -14,6 +14,7 @@ export interface RemoteState {
     currConsulQuizInd: number
 
     currQuizId: string
+    iriSessionId: string
     currQuizState: string
     choice: any
     choiceId: string
@@ -31,6 +32,7 @@ let initialstate: RemoteState = {
     attentionState: AttentionStateType.OK,
 
     sessionId: null,
+    iriSessionId: null,
     quiz: [],
 
     quizHistory: [],
@@ -63,8 +65,16 @@ const reducer = handleActions({
             } else {
                 choice = action.payload.choice
             }
+
+            return Object.assign({}, state, {
+                choice
+            })
         } else if(type == QuizType.TEXT) {
             choice = action.payload.choice
+
+            return Object.assign({}, state, {
+                choice
+            })
         } else if(type == QuizType.MMCQ) {
             if(!choice) {
                 choice = []
@@ -74,11 +84,11 @@ const reducer = handleActions({
             } else {
                 choice.push(action.payload.choice)
             }
-        }
 
-        return Object.assign({}, state, {
-            choice: Object.assign([], choice)
-        })
+            return Object.assign({}, state, {
+                choice: Object.assign([], choice)
+            })
+        }
     },
     [ActionTypes.NEXT_CONSUL_QUIZ]: function(state: RemoteState, action: any): RemoteState {
         let len = state.quizHistory.length
@@ -171,7 +181,10 @@ const reducer = handleActions({
             obj[quiz.id] = quiz
         })
         return Object.assign({}, state, {
+            attentionState: AttentionStateType.OK,
+            
             sessionId: action.payload.sessionId,
+            iriSessionId: action.payload.iriSessionId,
             quiz: obj,
 
             quizHistory: action.payload.quizHistory,

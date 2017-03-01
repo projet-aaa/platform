@@ -101,6 +101,7 @@ export class SocketServer {
                     }
                     (room as ClassRoom).quiz = quizs;
                     (room as ClassRoom).sessionId = msg.sessionId;
+                    (room as any).iriSessionId = msg.iriSessionId
                 }
                 break
             }

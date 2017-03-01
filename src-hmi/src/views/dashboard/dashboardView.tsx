@@ -38,6 +38,7 @@ export interface ActionProps {
     launchQuiz(quizId: string)
     correction()
     finish()
+    closeRoom()
 }
 
 // style for ul tag
@@ -65,7 +66,8 @@ export class View extends React.Component<Props, any> {
 
             launchQuiz,
             correction,
-            finish
+            finish,
+            closeRoom
         } = this.props
 
         var quizInfoItem = quizLaunchers.map((item) => {
@@ -151,3 +153,14 @@ export class View extends React.Component<Props, any> {
         );
     }
 }
+
+// <div className="panel">
+//     <div className="panel-heading">
+//         Gestion de salle
+//     </div>
+//     <div className="panel-body pan white-background">
+//         <button className="btn btn-primary" onClick={ closeRoom }>
+//             Fermer la salle
+//         </button>
+//     </div>
+// </div>

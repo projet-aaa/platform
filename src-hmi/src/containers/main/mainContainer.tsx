@@ -16,9 +16,11 @@ function mapStateToProps(state): StateProps {
     return { 
         sessions: _.values(state.sessions.sessions)
                     .filter(session => !state.main.areNotChecked[session.discipline])
-                    .sort((elt1, elt2) => elt2.updatedAt - elt1.updatedAt),
+                    .filter(session => (session.sessionName.indexOf(state.main.searchedString)!=-1))
+                    .sort((elt1, elt2) => elt2.date - elt1.date),
         disciplines: auth.disciplines,
-        areNotChecked: state.main.areNotChecked
+        areNotChecked: state.main.areNotChecked,
+        searchedString: state.main.searchedString
     }
 }
 
@@ -26,7 +28,7 @@ function mapDispatchToProps(dispatch) {
     return {
         fetchSessions: (disciplines) => dispatch(fetchSessions(disciplines)),
         selectFilter: (discipline) => dispatch(selectFilter(discipline)),
-        search: () => dispatch(search())
+        search: (searchedString) => dispatch(search(searchedString))
     }
 }
 

@@ -17,8 +17,8 @@ function mapDispatchToProps(dispatch, ownProps): any {
     return {
         subscribe: () => dispatch(subscribe(true)),
         genURL: ownProps.isTeacher ? 
-            (teacher: string) => "/" + ownProps.UE + "/" + ownProps.course + "/" + teacher + "/tb" :
-            (teacher: string) => "/" + ownProps.UE + "/" + ownProps.course + "/" + teacher + "/tele" 
+            (teacher: string) => "/session/" + ownProps.course + "/" + teacher + "/tb" :
+            (teacher: string) => "/session/" + teacher
     }
 }
 

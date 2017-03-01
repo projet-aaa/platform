@@ -11,6 +11,13 @@ use Doctrine\ORM\EntityRepository;
 class TestRepository extends EntityRepository
 {
 
+    /**
+     * @param Discipline $discipline
+     * @param $filename
+     * @return Test | null
+     * Returns the test associated to filename among the tests of discipline if it exists.
+     * returns null otherwise.
+     */
     public function getOneByDisciplineFile(Discipline $discipline, $filename){
         $qb = $this->_em->createQueryBuilder();
         $query = $qb->select('t')->from('AppBundle:Test', 't')

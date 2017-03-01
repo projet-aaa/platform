@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * A question in a test.
@@ -19,6 +20,7 @@ class Question
      * @ORM\Id
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
+     * @Groups({"test_cascade"})
      */
     private $id;
 
@@ -27,6 +29,7 @@ class Question
      *
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255, nullable=false)
+     * @Groups({"test_cascade"})
      */
     private $text;
 
@@ -34,6 +37,7 @@ class Question
      * @var string a text displayed after the question.
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"test_cascade"})
      */
     private $explication;
 
@@ -46,6 +50,7 @@ class Question
      * @Assert\NotBlank()
      * @Assert\Choice({"text", "unique", "multiple"})
      * @ORM\Column(type="string", length=16, nullable=false)
+     * @Groups({"test_cascade"})
      */
     private $typeAnswer;
 
@@ -53,6 +58,7 @@ class Question
      * @var ArrayCollection[McqChoice] all the available choice of answer
      *
      * @ORM\OneToMany(targetEntity="McqChoice", mappedBy="question", cascade={"remove"})
+     * @Groups({"test_cascade"})
      */
     private $mcqChoices;
 
@@ -107,6 +113,14 @@ class Question
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     /**

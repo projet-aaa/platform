@@ -39,7 +39,6 @@ class GitlabController extends Controller
                     $yaml_importer = $this->get('app.importer.yaml');
                     foreach ($json->commits as $commit){
                         foreach ($commit->added as $file){
-                            dump($file);
                             $test = $em->getRepository('AppBundle:Test')->getOneByDisciplineFile($repo,$file);
 
                             if($test){
@@ -47,13 +46,14 @@ class GitlabController extends Controller
                                     $yaml_importer->createFromYmlToData($test, $path . '/' . $file);
                                 }
                                 catch (\Exception $e){
-                                    dump($e->getMessage().' '.$e->getTraceAsString());
+                                    $response_code = 500;
+                                    $response_content = (isset($response_content) ?
+                                        $response_content.'//'.$e->getMessage() : $e->getMessage());
                                 }
                             }
                         }
 
                         foreach ($commit->modified as $file){
-                            dump($file);
                             $test = $em->getRepository('AppBundle:Test')->getOneByDisciplineFile($repo,$file);
 
                             if($test){
@@ -61,16 +61,18 @@ class GitlabController extends Controller
                                     $yaml_importer->updateFromYmlToData($test, $path . '/' . $file);
                                 }
                                 catch (\Exception $e){
-                                    dump($e->getMessage().' '.$e->getTraceAsString());
+                                    $response_code = 500;
+                                    $response_content = (isset($response_content) ?
+                                        $response_content.'//'.$e->getMessage() : $e->getMessage());
                                 }
                             }
                         }
                     }
 
-
-                    $response_code = 200;
-                    $response_content = 'ok';
-                    dump($request->getContent());
+                    if(!isset($response_content) && !isset($response_code)) {
+                        $response_code = 200;
+                        $response_content = 'ok';
+                    }
 
                 } else { // No associated folder in var/git : the repository has been added after creation. let's clone it.
                     $this->cloneRepo($json->project->http_url, $repo->getId());

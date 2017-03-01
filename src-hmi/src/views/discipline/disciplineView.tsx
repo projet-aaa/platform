@@ -33,21 +33,21 @@ export class View extends React.Component<Props, any> {
             if (sessions[i].sessionType == SessionType.CM) {
                 CMRender.push(
                     <Link to={ sessions[i].discipline + "/" + sessions[i].sessionName } key={i} className="list-group-item">
-                        { ddmmyyyy(sessions[i].updatedAt) } | { sessions[i].sessionName }
+                        { ddmmyyyy(sessions[i].date) } | { sessions[i].sessionName }
                     </Link>
                 )
             }
             if (sessions[i].sessionType == SessionType.TD) {
                 TDRender.push(
                     <Link to={ sessions[i].discipline + "/" + sessions[i].sessionName } key={i} className="list-group-item">
-                        { ddmmyyyy(sessions[i].updatedAt) } | { sessions[i].sessionName }
+                        { ddmmyyyy(sessions[i].date) } | { sessions[i].sessionName }
                     </Link>
                 )
             }
             if (sessions[i].sessionType == SessionType.TP) {
                 TPRender.push(
                     <Link to={ sessions[i].discipline + "/" + sessions[i].sessionName } key={i} className="list-group-item">
-                        { ddmmyyyy(sessions[i].updatedAt) } | { sessions[i].sessionName }
+                        { ddmmyyyy(sessions[i].date) } | { sessions[i].sessionName }
                     </Link>
                 )
             }

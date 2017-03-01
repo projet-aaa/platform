@@ -5,6 +5,8 @@ namespace AppBundle\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
  * An option to answer a multiple choice question.
  *
@@ -17,6 +19,7 @@ class McqChoice
      * @ORM\Id
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
+     * @Groups({"test_cascade"})
      */
     private $id;
 
@@ -24,6 +27,7 @@ class McqChoice
      * @var string The option displayed text
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"test_cascade"})
      */
     private $text;
 
@@ -32,6 +36,7 @@ class McqChoice
      *
      * @Assert\NotNull()
      * @ORM\Column(type="boolean", nullable=false)
+     * @Groups({"test_cascade"})
      */
     private $correct;
 
@@ -68,6 +73,14 @@ class McqChoice
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     /**

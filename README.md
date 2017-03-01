@@ -5,6 +5,6 @@ The JetPack Platform is an assistant for active learning. It aims at adding inte
 
 JetPack stands for JetPack Engineer Training Pack.
 
-[Documentation](https://github.com/projet-aaa/platform/tree/master/var/docs)
+[Documentation](https://github.com/projet-aaa/platform/tree/master/docs)
 
 [Licence](LICENSE)

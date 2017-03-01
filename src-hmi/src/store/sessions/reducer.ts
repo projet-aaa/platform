@@ -38,7 +38,11 @@ const reducer = handleActions({
 
                     item.discipline = result.disciplineId;
 
-                    item.updatedAt = new Date(item.updatedAt);
+                    item.date = new Date(item.updatedAt);
+                    delete item.updatedAt;
+
+                    item.teacherName = null;
+                    item.live = false;
                 }
             )
             sessionList = sessionList.concat(tempSessionList);

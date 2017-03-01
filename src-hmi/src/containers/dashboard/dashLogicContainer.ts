@@ -2,13 +2,16 @@ import { connect } from "react-redux";
 
 import { StateProps, ActionProps, View } from "../../views/dashboard/dashboardView"
 import { DashboardState } from "../../store/dashboard/reducers/reducer"
+import { WSRoomState } from "../../store/wsrooms/reducer"
 
 import { Quiz, QuizType } from "../../models/class/class"
 
 import { startQuiz, showFeedback, stopQuiz } from "../../store/dashboard/actions/actions"
+import { closeRoom } from "../../store/wsrooms/actions"
 
 function mapStateToProps(state: any) {
-    let dash: DashboardState = state.dashboard
+    let dash: DashboardState = state.dashboard,
+        ws: WSRoomState = state.wsserver
 
     let stats = {},
         quiz: Quiz = dash.currQuizId && dash.quiz ? dash.quiz[dash.currQuizId] : null
@@ -25,22 +28,30 @@ function mapStateToProps(state: any) {
     }
 
     return { 
+        roomId: ws.currentRoom,
         studentCount: dash.studentPop,
         quizState: dash.currQuizState,
-        tooFast: dash.studentPop ? (dash.tooFast / dash.studentPop) * 100 : 0,
-        tooSlow: dash.studentPop ? (dash.tooSlow / dash.studentPop) * 100 : 0,
-        panic: dash.studentPop ? (dash.panic / dash.studentPop) * 100 : 0,
+        tooFast: dash.tooFast,
+        tooSlow: dash.tooSlow,
+        panic: dash.panic,
         currentQuiz: quiz,
         quizStats: stats, // choice for the current quiz => count who chose
         quizLaunchers: dash.quizLauncher ? dash.quizLauncher : []
     }
 }
-function mapDispatchToProps(dispatch): ActionProps {
+function mapDispatchToProps(dispatch) {
     return {
         launchQuiz: (quizId) => dispatch(startQuiz(quizId)),
         correction: () => dispatch(showFeedback()),
-        finish: () => dispatch(stopQuiz())
+        finish: () => dispatch(stopQuiz()),
+        closeRoom: (roomId) => dispatch(closeRoom(roomId))
     }
+}
+
+function mergeProps(sp, dp, op) {
+    return Object.assign(sp, dp, op, {
+        closeRoom: () => dp.closeRoom(sp.roomId)
+    })
 }
 
 export default connect<StateProps, ActionProps, any>(

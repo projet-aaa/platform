@@ -85,7 +85,7 @@ class McqChoiceVoter extends BaseVoter
      */
     private function canCreate(McqChoice $mcqChoice, User $user)
     {
-        return !in_array('ROLE_USER',$user->getRoles());
+        return !in_array('ROLE_PROF',$user->getRoles());
     }
 
     /**
@@ -109,7 +109,7 @@ class McqChoiceVoter extends BaseVoter
      */
     private function canUpdate(McqChoice $mcqChoice, User $user)
     {
-        return !in_array('ROLE_USER',$user->getRoles());
+        return !in_array('ROLE_PROF',$user->getRoles());
     }
 
 
@@ -122,6 +122,6 @@ class McqChoiceVoter extends BaseVoter
      */
     private function canDelete(McqChoice $mcqChoice, User $user)
     {
-        return !in_array('ROLE_USER',$user->getRoles());
+        return !in_array('ROLE_PROF',$user->getRoles());
     }
 }

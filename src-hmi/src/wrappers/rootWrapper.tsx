@@ -20,7 +20,6 @@ export default function rootWrapper(mapState, mapDispatch, mergeProps, fn, Compo
     class Wrapper extends React.Component<any, any> {
             componentWillMount () {
                 this.props.auth(() => {
-                    console.log("authentification done!")
                     if(fn) { fn(this.props) }
                 })
             }

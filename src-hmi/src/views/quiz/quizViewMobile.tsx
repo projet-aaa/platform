@@ -60,7 +60,7 @@ export class View extends React.Component<Props, any> {
                         ind={ i } 
                         text={ item } 
                         choose={ choose == null ? () => { } : () => choose(i) } 
-                        chosen={ quiz.type == QuizType.MMCQ ? quizChoice.contains(i) : quizChoice == i }
+                        chosen={ quiz.type == QuizType.MMCQ ? quizChoice.indexOf(i) >= 0 : quizChoice == i }
                     />
                 })
                 answers = (<ul style={ paddingUl }>{ answerItems }</ul>)
@@ -108,7 +108,7 @@ export class View extends React.Component<Props, any> {
                 <div className="panel">
                     <div style={ palNew }>
                         { quizRender }
-                        { validateButton }
+                        { choose && validateButton }
                     </div>
                 </div>
             </div>

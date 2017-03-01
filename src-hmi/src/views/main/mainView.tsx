@@ -9,7 +9,8 @@ import * as MediaQuery from "react-responsive"
 // INTERNAL IMPORTS
 import { Session, SessionType } from "../../models/session"
 import { Discipline } from "../../models/discipline"
-import { ddmmyyyy, findAllIndex } from "../../utils/index"
+import { ddmmyyyy, findAllIndex, getText } from "../../utils/index"
+
 
 export interface StateProps {
     // the list of sessions of all disciplines, it must be sorted by reverse date
@@ -18,6 +19,8 @@ export interface StateProps {
     disciplines: Discipline[]
     // the list of not checked disciplines in filters : discipline name -> is checked
     areNotChecked: any
+    // the string which was in the search bar when the search button was clicked
+    searchedString: string
 }
 
 
@@ -26,7 +29,7 @@ export interface ActionProps {
     // click on a discipline filter
     selectFilter(disciplineId: string)
     // click on the serach button of the search bar
-    search()
+    search(searchedString: string)
 }
 
 export type Props = StateProps & ActionProps;
@@ -38,6 +41,7 @@ export class View extends React.Component<Props, any> {
             sessions,
             disciplines,
             areNotChecked,
+            searchedString,
             selectFilter,
             search
         } = this.props
@@ -50,7 +54,7 @@ export class View extends React.Component<Props, any> {
                 var disciplineName = disciplines[findAllIndex(disciplines, (discipline) => {return (discipline.id == sessions[i].discipline)})[0]].name
                 sessionsRender.push( 
                     <Link to={"/" + disciplineName + "/" + sessions[i].sessionName} key={i} className="list-group-item">
-                        { ddmmyyyy(sessions[i].updatedAt) } | { disciplineName } | { sessions[i].sessionName }
+                        { ddmmyyyy(sessions[i].date) } | { disciplineName } | { sessions[i].sessionName }
                     </Link>
                 );
             }
@@ -69,14 +73,14 @@ export class View extends React.Component<Props, any> {
 
         // a list of sessions sorted by date
         return (
-            <div>
+            <div className="row">
                 <div className="col-lg-8">
                     <div className="row">
                         <div className="input-group">
-                            <input type="text" placeholder="Rechercher" name="search" className="form-control input-lg"/>
+                            <input id="search" type="text" placeholder="Rechercher" className="form-control input-lg"/>
 
                             <div className="input-group-btn">
-                                <button className="btn btn-lg btn-primary" onClick={ search }>
+                                <button className="btn btn-lg btn-primary" onClick={ () => search(getText("search")) }>
                                     <i className="fa fa-search"></i>
                                 </button>
                             </div>
