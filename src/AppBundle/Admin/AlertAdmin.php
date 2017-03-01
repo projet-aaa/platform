@@ -37,6 +37,7 @@ class AlertAdmin extends AbstractAdmin
             ->add('author')
             ->add('alertType')
             ->add('text')
-            ->add('session');
+            ->add('session')
+            ->add('createdAt');
     }
 }
