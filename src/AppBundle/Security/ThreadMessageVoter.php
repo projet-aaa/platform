@@ -108,7 +108,7 @@ class ThreadMessageVoter extends BaseVoter
      */
     private function canUpdate(ThreadMessage $threadMessage, User $user)
     {
-        return $threadMessage->getAuthor() === $user || in_array('ROLE_PROF',$user->getRoles()) || in_array('ROLE_ADMIN',$user->getRoles());
+        return $threadMessage->getAuthor() === $user || in_array('ROLE_PROF', $this->getRolesHierarchy($user->getRoles()));
     }
 
     /**
@@ -120,6 +120,6 @@ class ThreadMessageVoter extends BaseVoter
      */
     private function canDelete(ThreadMessage $threadMessage, User $user)
     {
-        return $threadMessage->getAuthor() === $user || in_array('ROLE_PROF',$user->getRoles()) || in_array('ROLE_ADMIN',$user->getRoles());
+        return $threadMessage->getAuthor() === $user || in_array('ROLE_PROF', $this->getRolesHierarchy($user->getRoles()));
     }
 }
