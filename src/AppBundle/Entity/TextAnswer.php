@@ -76,7 +76,12 @@ class TextAnswer
      * @return bool
      */
     public function isQuestionConsistent(){
-        return $this->getQuestion()->getTypeAnswer() == 'text';
+        if($this->getQuestion()) {
+            return $this->getQuestion()->getTypeAnswer() == 'text';
+        }
+        else{
+            return false;
+        }
     }
 
     /** Auto generated methods*/

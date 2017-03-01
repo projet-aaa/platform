@@ -49,9 +49,15 @@ class TextAnswerValidator extends ConstraintValidator
                 ->addViolation();
         }
 
-
-        if($textAnswer->getQuestion()->getTypeAnswer() == 'text'){
+        //we manage creation. if a textAnswer already has an id, it is an update, and we won't bother with author consistency.
+        if($textAnswer->getId()){
             return true;
+        }
+
+        if(!$textAnswer->getQuestion()){
+            $this->context->buildViolation('Question for TextAnswer is undefined')
+                ->addViolation();
+            return false;
         }
 
         if($textAnswer->getAuthor()){
