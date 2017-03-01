@@ -21,7 +21,7 @@ use AppBundle\Service as Assert2;
  * })
  * @UniqueEntity(
  *     fields={"author", "mcqChoice"},
- *     errorPath="question",
+ *     errorPath="mcqChoice",
  *     message="This author already has already answered that Choice"
  * )
  * @Assert2\McqAnswerConsistent()
