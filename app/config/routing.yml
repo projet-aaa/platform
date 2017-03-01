@@ -35,3 +35,11 @@ test_tree:
         _controller: 'AppBundle:Test:tree'
         _api_resource_class: 'AppBundle\Entity\Test'
         _api_item_operation_name: 'tree'
+
+thread_tree:
+    path: '/api/thread/{id}/tree'
+    methods:  ['GET']
+    defaults:
+        _controller: 'AppBundle:Thread:tree'
+        _api_resource_class: 'AppBundle\Entity\Thread'
+        _api_item_operation_name: 'tree'
