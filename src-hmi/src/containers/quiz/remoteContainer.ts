@@ -31,7 +31,8 @@ function mapStateToProps(state, ownProps) {
         questionIriId: quiz && quiz.iriId,
 
         quizChoice: remote.choice,
-        choiceId: quiz && quiz.type == QuizType.MCQ ? quiz.choiceIds[remote.choice] : null,
+        choiceId: quiz && (quiz.type == QuizType.MCQ ? quiz.choiceIds[remote.choice] :
+                           quiz.type == QuizType.MMCQ ? remote.choice.map(c => quiz.choiceIds[c]): null),
         sent: remote.sent,
 
         showCorrection: remote.currQuizState != QuizInstanceState.HEADING,

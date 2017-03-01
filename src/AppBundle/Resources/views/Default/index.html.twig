@@ -23,7 +23,10 @@
     <link type="text/css" rel="stylesheet" href="/webassets/styles/pace.css"><!-- loading bar -->
 </head>
 <body>
-<div id="main"></div>
+<div id="main">
+{% block main %}
+{% endblock %}
+</div>
 
 <!-- PACE: POUR LA BARRE DE CHARGEMENT -->
 <script src="/webassets/script/pace.min.js"></script>
@@ -41,7 +44,9 @@ var password_global = "{{ pass[0] }}";
 var id_global = {{ app.user.id }};
 </script>
 
+{%  block react %}
 <!-- REACT INTERFACE -->
 <script src="/webassets/main/bundle.js" type="text/javascript"></script>
+{% endblock %}
 </body>
 </html>

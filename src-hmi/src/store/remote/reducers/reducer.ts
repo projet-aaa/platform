@@ -17,7 +17,6 @@ export interface RemoteState {
     iriSessionId: string
     currQuizState: string
     choice: any
-    choiceId: string
     sent: boolean
 
     score: number
@@ -42,7 +41,6 @@ let initialstate: RemoteState = {
     currQuizState: QuizInstanceState.OFF,
     
     choice: -1,
-    choiceId: null,
     sent: false,
 
     score: 0,

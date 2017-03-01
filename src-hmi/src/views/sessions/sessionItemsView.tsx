@@ -24,7 +24,7 @@ export class View extends React.Component<Props, any> {
         } = this.props
 
         let sessionItems = sessions.map((session) => {
-            return <SessionItemView session={ session } choose={ () => choose(session.teacherName) }/>
+            return <SessionItemView session={ session } choose={ () => choose(session.id) }/>
         })
         return (
             <div className="list-group">
