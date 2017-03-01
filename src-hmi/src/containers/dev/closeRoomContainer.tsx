@@ -18,8 +18,9 @@ export default rootWrapper(
     mapStateToProps, 
     mapDispatchToProps,
     null,
-    p => {
+    (p, d) => {
         p.closeRoom()
+        d()
     },
     (p, c) => <div> { p.params.prof }'s room is now closed</div>
 )

@@ -40,7 +40,7 @@ export class View extends React.Component<Props, any> {
         // render is different if the quiz is not launched, is launched or is completed
         let res = null
         if(state == 2) { // the quiz is done
-            res = title + ": " + successRate + "%";
+            res = title + ": " + successRate.toFixed(2) + "%";
         } else if(state == 1) { // the quiz is launched, in heading mode
             res = <a className="link-text" onClick={ launch }>{ title }: correction</a>
         } else if(state == 0) { // the quiz is not launched, ready to be launched

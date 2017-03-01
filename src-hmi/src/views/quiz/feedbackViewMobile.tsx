@@ -70,7 +70,7 @@ export class View extends React.Component<Props, any> {
                 <br/>
                 <div className="row">
                     <div className="col-lg-12 text-center">
-                        <div className="btn btn-lg btn-success" style={buttonMargin} onClick={ signalOk }>
+                        <div className="btn btn-lg btn-primary" style={buttonMargin} onClick={ signalOk }>
                         Tout va bien
                         </div>
                     </div>

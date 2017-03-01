@@ -13,6 +13,7 @@ import { chartColors } from "../../models/consts"
 export interface StateProps {
     lastName: string
     firstName: string
+    password: string
     //email: string
     group: string
     // name of lessons a student take
@@ -42,6 +43,7 @@ export class View extends React.Component<Props, any> {
         const {
             lastName,
             firstName,
+            password,
             //email,
             group,
             disciplines,
@@ -110,6 +112,17 @@ export class View extends React.Component<Props, any> {
                                 </div>
                             </div>
                         </div>
+                        <div className="form-group">
+                            <label className="col-sm-3 control-label">Password</label>
+                            <div className="col-sm-9 controls">
+                                <div className="row">
+                                    <div className="col-xs-9">
+                                        <input type="text" value={ password } contentEditable={ false } className="form-control" readOnly/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div className="form-group">
                             <label className="col-sm-3 control-label" style={ noPaddingTop }>
                                 Groupe

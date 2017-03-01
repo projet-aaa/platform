@@ -10,7 +10,7 @@ function mapStateToProps(state: any): StateProps {
     let authInfo: AuthState = state.auth
     return {
         isAdmin: authInfo.admin,
-        userFullName: authInfo.firstName + " " + authInfo.lastName,
+        userFullName: authInfo.firstName != null ? authInfo.firstName + " " + authInfo.lastName : null,
         appName
     }
  }

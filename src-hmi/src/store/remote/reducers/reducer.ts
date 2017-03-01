@@ -199,7 +199,9 @@ const reducer = handleActions({
             studentPop: action.payload.studentPop,
             highscore: action.payload.highScore,
             maxscore: action.payload.maxscore,
-            average: action.payload.average
+            average: action.payload.average,
+
+            sent: action.payload.sent
         })
     },
     [WSInActionTypes.STUDENT_COUNT]: function(state: RemoteState, action: any): RemoteState {

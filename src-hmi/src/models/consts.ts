@@ -14,6 +14,7 @@ export const chartColors = [
 ]
 
 export const debug = true
+export const devtools = true
 export const log = true
 
 const domainWS = debug ? "localhost" : "jetpack0.trendio.fr"

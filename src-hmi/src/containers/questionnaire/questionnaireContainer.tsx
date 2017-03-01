@@ -53,7 +53,7 @@ function mapDispatchToProps(dispatch, state) {
         // to return to the list of quiz
         returnToChoices: () => dispatch(returnAction()),
 
-        fetchTests: (sessionId) => dispatch(fetchTests(sessionId))
+        fetchTests: (sessionId, success) => dispatch(fetchTests(sessionId, success))
     }
 }
 
@@ -61,9 +61,9 @@ export default rootWrapper(
     mapStateToProps, 
     mapDispatchToProps,
     null,
-    props => {
+    (props, done) => {
         fetchSessionByName(props.params.course, res => {
-            props.fetchTests(res["hydra:member"][0].id)
+            props.fetchTests(res["hydra:member"][0].id, done)
         })
     },
     View

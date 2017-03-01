@@ -31,7 +31,7 @@ export function returnAction() {
     return { type: ActionTypes.RETURN_TO_CHOICES, payload: {} }
 }
 
-export function fetchTests(sessionId: string) {
+export function fetchTests(sessionId: string, success) {
     return dispatch => {
         dispatch({
             type: APIActionTypes.FETCH_TESTS,
@@ -43,6 +43,7 @@ export function fetchTests(sessionId: string) {
                 type: APIActionTypes.FETCH_TESTS_SUCCESS,
                 payload: quizs
             })
+            success()
         }, 
         obj => console.log(obj))
     }

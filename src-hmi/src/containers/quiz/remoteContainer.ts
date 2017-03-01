@@ -1,6 +1,5 @@
 import { connect } from "react-redux"
 
-import rootWrapper from "../../wrappers/rootWrapper"
 import connectionWrapper from "../../wrappers/connectionWrapper"
 
 import { RemoteState } from "../../store/remote/reducers/reducer"
