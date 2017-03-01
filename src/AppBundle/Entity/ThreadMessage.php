@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -19,6 +20,7 @@ class ThreadMessage
      * @ORM\Id
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
+     * @Groups({"thread_cascade"})
      */
     private $id;
 
@@ -26,17 +28,20 @@ class ThreadMessage
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=false)
+     * @Groups({"thread_cascade"})
      */
     private $text;
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
+     * @Groups({"thread_cascade"})
      */
     private $createdAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @Groups({"thread_cascade"})
      */
     private $author;
 
@@ -53,6 +58,7 @@ class ThreadMessage
      *     joinColumns={@ORM\JoinColumn(name="commentary_id", referencedColumnName="id", nullable=false)},
      *     inverseJoinColumns={@ORM\JoinColumn(name="user_id2", referencedColumnName="id", nullable=false)}
      * )
+     * @Groups({"thread_cascade"})
      */
     private $plusVoters;
 
@@ -63,6 +69,7 @@ class ThreadMessage
      *     joinColumns={@ORM\JoinColumn(name="commentary_id", referencedColumnName="id", nullable=false)},
      *     inverseJoinColumns={@ORM\JoinColumn(name="user_id2", referencedColumnName="id", nullable=false)}
      * )
+     * @Groups({"thread_cascade"})
      */
     private $downVoters;
 
