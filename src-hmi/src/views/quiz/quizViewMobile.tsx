@@ -12,10 +12,20 @@ export interface StateProps {
     quiz: Quiz
     // the choice the player has done
     quizChoice: any
+    // true => show the correction
+    showCorrection: boolean
+    // true => answer explanations will be shown automatically, else we have to click on the answers
+    forceUnfold: boolean
 }
 export interface ActionProps {
     choose(choice: any) // select an answer
     validate() // validate the answer
+    // go to the next question
+    nextQuiz()
+    // go to the previous question
+    prevQuiz()
+    // go back
+    back()
 }
 
 // style for the text
@@ -31,6 +41,9 @@ var palNew = {
 var paddingUl = {
     padding: 0
 }
+var paddingButton = {
+    paddingBottom: 2
+}
 
 export type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
@@ -40,8 +53,13 @@ export class View extends React.Component<Props, any> {
         const {
             quiz,
             quizChoice,
+            showCorrection,
+            forceUnfold,
             choose, 
-            validate
+            validate,
+            nextQuiz,
+            prevQuiz,
+            back
         } = this.props
 
         let inputFieldStyle = {
@@ -61,6 +79,10 @@ export class View extends React.Component<Props, any> {
                         text={ item } 
                         choose={ choose == null ? () => { } : () => choose(i) } 
                         chosen={ quiz.type == QuizType.MMCQ ? quizChoice.indexOf(i) >= 0 : quizChoice == i }
+                        rightAnswer={ quiz.type == QuizType.MMCQ ? quiz.answer.indexOf(i) >= 0 : quiz.answer == i }
+                        showCorrection={ showCorrection }
+                        forceUnfold={ forceUnfold }
+                        explanation={ quiz.explanations[i] }
                     />
                 })
                 answers = (<ul style={ paddingUl }>{ answerItems }</ul>)
@@ -79,7 +101,7 @@ export class View extends React.Component<Props, any> {
         // a question with its answers
         let questionRender = (
             <div>
-                <h3 style={ sizeText }>Enoncé : { quiz.question }</h3>
+                <h3 style={ sizeText }>{ quiz.question }</h3>
                 { answers }
             </div>
         )
@@ -91,16 +113,65 @@ export class View extends React.Component<Props, any> {
             </div>
         )
 
-        // validate button
-        let validateButton = (
-            <div className="row">
-                <div className="pull-right">
-                    <div className="btn btn-success" onClick={ () => validate() }>
-                        Valider réponse
+        // // validate button
+        // let validateButton = (
+        //     <div className="row">
+        //         <div className="pull-right">
+        //             <div className="btn btn-success" onClick={ () => validate() }>
+        //                 Valider réponse
+        //             </div>
+        //         </div>
+        //     </div>
+        // )
+        
+        // buttons
+        var buttonsRender = []
+        if (choose) {
+            buttonsRender.push(
+                <div className="row" style={ paddingButton }>
+                    <div className="col-lg-12">
+                        <button className="btn btn-success covering-size" onClick={ validate }>
+                            Valider réponse
+                        </button>
                     </div>
                 </div>
-            </div>
-        )
+            )
+        }
+        if (prevQuiz) {
+            buttonsRender.push(
+                <div className="row" style={ paddingButton }>
+                    <div className="col-lg-12">
+                        <button className="btn btn-primary covering-size" onClick={ prevQuiz }>
+                            Précédent
+                        </button>
+                    </div>
+                </div>
+            )
+        }
+        if (nextQuiz) {
+            // if we are in answer mode (showcorrection is false) we display skip question
+            // else we display next
+            buttonsRender.push(
+                <div className="row" style={ paddingButton }>
+                    <div className="col-lg-12">
+                        <button className="btn btn-primary covering-size" onClick={ nextQuiz }>
+                            { showCorrection ? "Suivant" : "Passer la question" }
+                        </button>
+                    </div>
+                </div>
+            )
+        }
+        if (back) {
+            buttonsRender.push(
+                <div className="row" style={ {paddingTop: 8, paddingBottom: 2} }>
+                    <div className="col-lg-12">
+                        <button className="btn btn-primary covering-size" onClick={ back }>
+                            Retour
+                        </button>
+                    </div>
+                </div>
+            )
+        }
         
         // returns a panel containing the question and the answers defined above
         return (
@@ -108,7 +179,7 @@ export class View extends React.Component<Props, any> {
                 <div className="panel">
                     <div style={ palNew }>
                         { quizRender }
-                        { choose && validateButton }
+                        { buttonsRender }
                     </div>
                 </div>
             </div>

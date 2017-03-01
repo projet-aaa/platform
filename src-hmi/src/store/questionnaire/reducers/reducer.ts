@@ -30,7 +30,9 @@ function fillTabChoice(actualQuizs: Test): QuizLocalChoice[] {
     let res = []
     for(var i=0 ; i<actualQuizs.quizs.length ; i++) {
         if (actualQuizs.quizs[i].type==QuizType.MCQ) {
-            res[actualQuizs.quizs[i].id] = { quizId: actualQuizs.quizs[i].id, choice: -1}
+            res[actualQuizs.quizs[i].id] = -1
+        } else if (actualQuizs.quizs[i].type==QuizType.MMCQ) {
+            res[actualQuizs.quizs[i].id] = []
         } else {
             res[actualQuizs.quizs[i].id] = ""
         }
@@ -158,7 +160,7 @@ const name = "questionnaire"
 const reducer = handleActions({
     [ActionTypes.CHOOSE]: function(state: QuestionnaireState, action: any): QuestionnaireState {
         return Object.assign({}, state, {
-            quizChoices: modifyArrayElement(state.quizChoices, state.currentQuiz.id, { quizId: state.currentQuiz.id, choice: action.payload.choice}),
+            quizChoices: modifyArrayElement(state.quizChoices, state.currentQuiz.id, action.payload.choice),
             areValidated: modifyArrayElement(state.areValidated, state.currentQuiz.id, false)
         })
     },
@@ -192,7 +194,7 @@ const reducer = handleActions({
         // if the quiz hasn't been validate, we reset the choice
         let newQuizChoice = state.quizChoices
         if (!state.areValidated[state.currentQuiz.id]) {
-            newQuizChoice = modifyArrayElement(state.quizChoices,state.currentQuiz.id, { quizId: state.currentQuiz.id, choice: -1})
+            newQuizChoice = modifyArrayElement(state.quizChoices,state.currentQuiz.id, -1)
         }
         return Object.assign({}, state, {
             quizIndex: newIndex,
@@ -207,7 +209,7 @@ const reducer = handleActions({
             // if the quiz hasn't been validate, we reset the choice
             let newQuizChoice = state.quizChoices
             if (!state.areValidated[state.currentQuiz.id]) {
-                newQuizChoice = modifyArrayElement(state.quizChoices,state.currentQuiz.id, { quizId: state.currentQuiz.id, choice: -1})
+                newQuizChoice = modifyArrayElement(state.quizChoices,state.currentQuiz.id, -1)
             }
             // something is displayed when quizIndex=actualQuizs.length but actualQuizs[actualQuizs.quizs.length]
             // doesn't exist so we don't change currentQuiz in that case

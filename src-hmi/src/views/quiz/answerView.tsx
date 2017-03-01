@@ -65,8 +65,6 @@ export class View extends React.Component<Props, any> {
                 colorAnswerStyle = { }
             }
         }
-
-        console.log(ind + ": " + chosen)
         
         let indRef = "ind" + ind
         let res = null
@@ -108,7 +106,7 @@ export class View extends React.Component<Props, any> {
         // An answer is a radio button with text
         return (
             <div>
-            { res }
+                { res }
             </div>
         );
     }

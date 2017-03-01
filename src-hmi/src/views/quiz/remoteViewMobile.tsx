@@ -21,6 +21,11 @@ export interface StateProps {
     // the current choice
     quizChoice: any
 
+    // true => show the correction
+    showCorrection: boolean
+    // true => answer explanations whill be shown automatically, else we have to click on the answers
+    forceUnfold: boolean
+
     // true if there is a question now, false else (in that case we show the feedback buttons)
     question: boolean
     //the user score
@@ -33,6 +38,10 @@ export interface ActionProps {
     validateAnswer()
     // Fires an action signaling a comment has been sent
     sendComment(comment: string)
+    // go to the next question
+    nextQuiz()
+    // go to the previous question
+    prevQuiz()
     // signal panic
     signalPanic()
     // signal slow
@@ -62,12 +71,16 @@ export class View extends React.Component<any, any> {
 
             quiz,
             quizChoice,
+            showCorrection,
+            forceUnfold,
             validateAnswer,
             score,
             
             question,
             choose,
             sendComment,
+            nextQuiz,
+            prevQuiz,
             signalPanic,
             signalSlow,
             signalFast,
@@ -76,7 +89,7 @@ export class View extends React.Component<any, any> {
         
         // if there is a question we show the quiz, else we show the feedback buttons
         let mainComponent = question ?
-                    <QuizViewMobile quiz={ quiz } quizChoice={ quizChoice } choose={ choose } validate={ validateAnswer }/> :
+                    <QuizViewMobile quiz={ quiz } quizChoice={ quizChoice } showCorrection={ showCorrection } forceUnfold={ forceUnfold } choose={ choose } validate={ validateAnswer } nextQuiz={ nextQuiz } prevQuiz={ prevQuiz } back={ null }/> :
                     <FeedbackViewMobile signalPanic={ signalPanic } signalSlow={ signalSlow } signalFast={ signalFast } signalOk={ signalOk }/>
         // the score is on the top, next there is the quiz or feddback and last the comment box
         return (

@@ -37,7 +37,8 @@ export class View extends React.Component<Props, any> {
                             </div>
                             <div id="footer">
                                 <div className="copyright">
-                                    <a href="#">2017 @ Adam, Jules, Simon, Antoine, Vincent, Gibs </a></div>
+                                    <a href="#">2017 @ Adam, Jules, Simon, Antoine, Vincent, Gibs </a>
+                                </div>
                             </div>
                         </div>
                     </div>

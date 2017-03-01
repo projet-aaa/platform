@@ -126,8 +126,13 @@ export class View extends React.Component<Props, any> {
                     <QuizViewMobile
                         quiz={ aux }
                         quizChoice={ quizChoices[currentQuiz.id] }
+                        showCorrection={ (quizMode=="correction") }
+                        forceUnfold={ true }
                         choose={ (quizMode=="answer") ? (choice) => choose(currentQuiz.id, choice) : null }
                         validate={ () => validateAnswer(currentQuiz.id) }
+                        nextQuiz={ (quizMode=="correction" && quizIndex==actualQuizs.quizs.length-1) ? null : nextQuiz }
+                        prevQuiz={ (quizIndex==0) ? null : prevQuiz }
+                        back={ returnToChoices }
                     />
                     </MediaQuery>
                 </div>
@@ -140,7 +145,7 @@ export class View extends React.Component<Props, any> {
             topRender = (
                 <div className="row">
                     <div className="col-lg-12">
-                        <h2>{ actualQuizs.title }</h2>
+                        <h2 style={ {marginTop: 0} }>{ actualQuizs.title }</h2>
                     </div>
                 </div>
             )
