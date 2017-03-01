@@ -14,7 +14,8 @@ class McqAnswerAdmin extends AbstractAdmin
     {
         $formMapper->add('mcqChoice')
             ->add('question')
-            ->add('author');
+            ->add('author')
+            ->add('createdAt');
     }
 
     // Fields on which entities can be filtered.
@@ -28,6 +29,7 @@ class McqAnswerAdmin extends AbstractAdmin
     {
         $listMapper->addIdentifier('id')
             ->add('question')
+            ->add('mcqChoice')
             ->add('author')
             ;
     }

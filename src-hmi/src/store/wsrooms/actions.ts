@@ -61,25 +61,26 @@ export function leaveRoom() {
 
 export function openClassRoom(sessionName: string) {
     return dispatch => {
-        let sessionId
+        let sessionId, iriSessionId
         fetcher('/sessions?name=' + sessionName)
         .then((res: any) => res["hydra:member"][0])
         .then(res => {
-            console.log(res)
             sessionId = res.id
+            iriSessionId = res["@id"]
+
             fetchSessionQuiz(
                 sessionId, 
-                res => dispatch(openClassRoomServer(res, sessionId))
+                res => dispatch(openClassRoomServer(res, sessionId, iriSessionId))
             )
         })
         .catch(error => console.log(error))
     }
 }
 
-export function openClassRoomServer(quiz: Quiz[], sessionId) {
+export function openClassRoomServer(quiz: Quiz[], sessionId, iriSessionId) {
     return {
         type: OutMsgType.OPEN_ROOM,
-        payload: { type: "CLASS", quiz, sessionId }
+        payload: { type: "CLASS", quiz, sessionId, iriSessionId }
     }
 }
 

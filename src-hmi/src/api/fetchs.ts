@@ -14,13 +14,15 @@ export function fetchTest(testId: string, success?: (obj) => void, failure?: (ob
                 let type = question.typeAnswer == "unique" ? QuizType.MCQ :
                           question.typeAnswer == "multiple" ? QuizType.MMCQ 
                           : QuizType.TEXT
+                          
                 let q: Quiz = {
                     id: question.id,
+                    iriId: question["@id"],
                     title: question.text,
                     question: question.text,
                     type,
                     choices: question.mcqChoices && question.mcqChoices.map(choice => choice.text),
-                    choiceIds: question.mcqChoices && question.mcqChoices.map(choice => choice.id),
+                    choiceIds: question.mcqChoices && question.mcqChoices.map(choice => choice["@id"]),
                     explanations: question.mcqChoices && question.mcqChoices.map(choice => ""),
                     justification: question.explication,
                     answer: type == "MMCQ" ? findAllIndex(question.mcqChoices, (choice: any) => choice.correct) :

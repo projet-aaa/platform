@@ -52,7 +52,7 @@ export class View extends React.Component<Props, any> {
                             { Object.keys(quizStats).length === 0 && quizStats.constructor === Object 
                                 ? <h1>En attente de réponse...</h1>
                                 : <chartjs.Pie data={ data } height={ 105 }/> }                   
-                            { "Réponse correcte : " + correctChoice }
+                            { correctChoice ? "Réponse correcte : " + correctChoice : "Question ouverte" }
                             <button className="btn btn-primary pull-right" onClick={ quizButton }>
                                 { state == "correction" ? "terminer" : "correction" }
                             </button>

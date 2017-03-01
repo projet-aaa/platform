@@ -60,6 +60,8 @@ export class ClassRoom extends IRoom {
     tooFast: number = 0
     idToState: any // student id -> attention state
 
+    timeout
+
     get studentPop(): number { return this.studentSockets.length }
     get teacherPop(): number { return this.teacherSockets.length }
 
@@ -192,9 +194,13 @@ export class ClassRoom extends IRoom {
 
     socketEnter(socket: SocketInfo) {
         if(socket.isTeacher) {
+            if(socket.username == this.teacher) {
+                clearTimeout(this.timeout)
+            }
             this.server.send(socket, SocketOutMsg.TEACHER_CLASS_JOINED, {
                 quiz: this.quiz,
                 sessionId: this.sessionId,
+                iriSessionId: (this as any).iriSessionId,
 
                 currQuizId: this.currQuizId,
                 currQuizState: this.currQuizState,
@@ -221,6 +227,7 @@ export class ClassRoom extends IRoom {
                 quiz,
                 quizHistory: this.quizHistory,
                 sessionId: this.sessionId,
+                iriSessionId: (this as any).iriSessionId,
 
                 currQuizId: this.currQuizId,
                 currQuizState: this.currQuizState,
@@ -248,8 +255,10 @@ export class ClassRoom extends IRoom {
             console.log("[teacher disconnect]")
             this.teacherSockets.splice(this.teacherSockets.indexOf(socket), 1)
 
-            if(this.teacher == socket.username) {
-                this.server.closeRoom(this.id)
+            if(this.teacher == socket.username && this.teacherSockets.filter(s => this.teacher == s.username).length == 0) {
+                this.timeout = setTimeout(() => {
+                    this.server.closeRoom(this.id)
+                }, 120 * 1000)
             }
         } else {
             console.log("[student disconnect]")
