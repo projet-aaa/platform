@@ -9,10 +9,11 @@ import * as MediaQuery from "react-responsive"
 
 import { AttentionStateType } from "../../models/class/class"
 
-export interface StateProps {}
+export interface StateProps {
+    state: string
+}
 
 export interface ActionProps {
-    state: string
     // Fires an action signaling that the user is panicking
     signalPanic()
     // Fires an action signaling that the lesson goes too slow
