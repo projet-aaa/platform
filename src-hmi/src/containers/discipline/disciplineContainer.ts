@@ -25,7 +25,7 @@ export default rootWrapper(
     mapStateToProps, 
     mapDispatchToProps,
     null,
-    props => { 
+    (props, d) => { 
         fetcher('/disciplines?name=' + props.currDisciplineName)
         .then(res => {
             var discipline = { 
@@ -34,9 +34,10 @@ export default rootWrapper(
                 sessions: res["hydra:member"][0].sessions
              }
             props.fetchSessions(discipline)
-        })
+        })  
         .catch(error => 
             console.log(error))
+        d()
     },
     View
 )
