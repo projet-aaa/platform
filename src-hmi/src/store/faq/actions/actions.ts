@@ -1,73 +1,14 @@
-import * as fetch from 'isomorphic-fetch'
+import { createAPIActionCreator, fetcher } from "../../../utils"
+import { ActionTypes, APIActionTypes } from './actionTypes'
 
 import { Thread } from "../../../models/faq"
 
 import { Action } from '../../../utils'
-import { ActionTypes,
-     CreateThreadAction, 
-     RetrieveThreadInfosAction, 
-     PostThreadMessageAction,
-     ChangeQuestionValueAction,
-     ChangeAnswerValueAction     
-  } from './actionTypes'
 
 
-
-export function createThreadAction(text:string, author: string, sessionId: number ) {
+export function changeQuestionValueAction (sessionId: string, questionValue: string) {
     return {
-        type: ActionTypes.CREATETHREAD,
-        payload: {
-            text,
-            author,
-            sessionId
-        }
-    }
-}
-
-
-export function postThreadMessageAction(text: string, threadId: number) {
-    return {
-        type: ActionTypes.POSTTHREADMESSAGE,
-        payload: {
-            text,
-            threadId
-        }
-    }
-}
-
-
-export function retrieveThreadInfosAction(sessionId: number) {
-    return {
-        type: ActionTypes.RETRIEVETHREADINFOS,
-        payload: {
-            sessionId
-        }
-    }
-}
-
-export function receiveThreadInfosAction(sessionId: number, retrievedData: Thread[]) {
-    return {
-        type: ActionTypes.RECEIVETHREADINFOS,
-        payload: {
-            sessionId,
-            retrievedData
-        }
-    }
-}
-
-export function publishQuestionAction(sessionId: number, questionContent: string) {
-    return {
-        type: ActionTypes.PUBLISHQUESTION,
-        payload: {
-            sessionId,
-            questionContent
-        }
-    }
-}
-
-export function changeQuestionValueAction (sessionId: number, questionValue: string) {
-    return {
-        type: ActionTypes.CHANGEQUESTIONVALUE,
+        type: ActionTypes.CHANGE_QUESTION_VALUE,
         payload: {
             sessionId,
             questionValue
@@ -75,13 +16,26 @@ export function changeQuestionValueAction (sessionId: number, questionValue: str
     }
 }
 
-
-export function changeAnswerValueAction (threadId: number, answerValue: string){
+export function changeAnswerValueAction (threadId: string, answerValue: string){
     return  {
-        type: ActionTypes.CHANGEANSWERVALUE,
+        type: ActionTypes.CHANGE_ANSWER_VALUE,
         payload: {
             threadId,
             answerValue
         }
     }
+}
+
+//////// API CALLS /////
+
+export function fetchThreads(sessionId: string) {
+    
+}
+
+export function postThread(sessionId: string, title: string) {
+
+}
+
+export function postThreadAnswer(threadId: string, answerContent: string) {
+
 }

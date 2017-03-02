@@ -1,7 +1,7 @@
 import { handleActions } from "redux-actions"
-
+import { ActionTypes, APIActionTypes } from "../actions/actionTypes"
 import { Action } from "../../../utils"
-import { ActionTypes, RetrieveThreadInfosAction, ReceiveThreadInfosAction } from "../actions/actionTypes"
+
 import { Thread } from "../../../models/faq"
 
 interface ThreadContent {
@@ -12,7 +12,7 @@ let initialState: ThreadContent = {
     threadList: [{
         text: "Quel est le sens de la vie ?",
         author: "Jean Dupont",
-        id: 154,
+        id: "154",
         date: new Date(2017,0,1),
         answers: [{
             text: "<div>" +
@@ -29,21 +29,21 @@ let initialState: ThreadContent = {
             "</div>",
             author: "GibsS",
             date: new Date(2017,0,1),
-            id: 1654,
+            id: "1654",
             votes: 2
         },
         {
             text: "Non c'est par là ->",
             author: "Vincent",
             date: new Date(2017,0,2),
-            id: 156464,
+            id: "156464",
             votes: -3
         }
     ],
     },{
         text: "Une deuxieme question",
         author: "Vincent Hachar",
-        id: 121,
+        id: "121",
         date: new Date(2017,0,20),
         answers: [{
             text: "<div>" +
@@ -60,14 +60,14 @@ let initialState: ThreadContent = {
             "</div>",
             author: "GibsS",
             date: new Date(2017,0,1),
-            id: 1654,
+            id: "1654",
             votes: 1
         },
         {
             text: "Oui",
             author: "Vincent",
             date: new Date(2017,0,2),
-            id: 156464,
+            id: "156464",
             votes: -8
         }
         ]
@@ -76,11 +76,14 @@ let initialState: ThreadContent = {
 
 const name = "threadContent"
 const reducer = handleActions({
-    [ActionTypes.RETRIEVETHREADINFOS]: function(state: ThreadContent, action: Action<RetrieveThreadInfosAction>): ThreadContent {
+    [APIActionTypes.FETCH_THREADS]: function(state: ThreadContent, action:any) {
             return state;
     },
-    [ActionTypes.RECEIVETHREADINFOS]: function(state: ThreadContent, action: Action<ReceiveThreadInfosAction>): ThreadContent {
+    [APIActionTypes.FETCH_THREADS_SUCCESS]: function(state: ThreadContent, action: any) {
             return {...state, threadList: action.payload.retrievedInfos}
+    },
+    [APIActionTypes.FETCH_THREADS_FAILURE]: function(state: ThreadContent, action: any) {
+            return state
     },
 }, initialState);
 

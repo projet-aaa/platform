@@ -3,10 +3,11 @@ import { connect } from "react-redux";
 import rootWrapper from "../../wrappers/rootWrapper"
 
 import { 
-    retrieveThreadInfosAction, 
-    publishQuestionAction, 
+    fetchThreads, 
+    postThread, 
+    postThreadAnswer,
+
     changeQuestionValueAction,
-    postThreadMessageAction,
     changeAnswerValueAction 
 } from "../../store/faq/actions/actions"
 
@@ -20,10 +21,10 @@ function mapStateToProps(state: any): StateProps {
         editorContents: state.threadMessageInput.threadMessageInputVal
     }
 }
-function mapDispatchToProps(dispatch): ActionProps {
+function mapDispatchToProps(dispatch) {
     return {
         //Retrieve all thread information from server, and update store
-        retrieveThreadInfos : (threadId) => {
+        fetchThreads : (threadId) => {
             // console.log("thread id :" +  threadId)
             //Fetch call
             // dispatch(retrieveThreadInfosAction(threadId)) 
@@ -32,22 +33,21 @@ function mapDispatchToProps(dispatch): ActionProps {
             // dispatch(receivedThreadInfosAction(threadId))
         },
         //Publish a question to the server
-        publishQuestion : (sessionId, question) => {
-            dispatch(publishQuestionAction(sessionId,question));
-            dispatch(retrieveThreadInfosAction(sessionId))
+        postThread : (sessionId, question) => {
+            dispatch(postThread(sessionId,question));
+            dispatch(fetchThreads(sessionId))
+        },
+        //Send the answer content to the server
+        postThreadAnswer: (threadId,content) => {
+            console.log(content)
+            if (content) {
+                dispatch(postThreadAnswer(threadId,content))
+            }
         },
 
         //Update store with the content of the new question input
         changeQuestionInput : (sessionId, questionValue) => {
             dispatch(changeQuestionValueAction(sessionId,questionValue))
-        },
-
-        //Send the answer content to the server
-        sendAnswer: (content,threadId) => {
-            console.log(content)
-            if (content) {
-                dispatch(postThreadMessageAction(content,threadId))
-            }
         },
         //The content of the answer editor has changed
         changeAnswerInput: (threadId, content) => {
@@ -60,6 +60,9 @@ export default rootWrapper(
     mapStateToProps, 
     mapDispatchToProps,
     null,
-    null,
+    (props, d) => {
+        props.fetchThreads(props.sessionId)
+        d()
+    },
     View
 )

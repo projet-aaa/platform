@@ -5,7 +5,7 @@
 
 // An answer to a thread question
 export interface ThreadMessage {
-    id: number
+    id: string
     text: string
     author: string
     date: Date
@@ -14,7 +14,7 @@ export interface ThreadMessage {
 
 // A question and its answers
 export interface Thread {
-    id: number
+    id: string
     text: string
     author: string
     date: Date

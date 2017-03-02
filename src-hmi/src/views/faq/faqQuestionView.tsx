@@ -19,7 +19,7 @@ export interface StateProps {
 
 export interface ActionProps {
     //Send the answer to the server
-    sendAnswer(editorContent: string)
+    postThreadAnswer(editorContent: string)
     //Update the content of this question's answer in the store
     changeAnswerInput(editorContent: string )
 }
@@ -43,7 +43,7 @@ export class View extends React.Component<Props, any> {
     render() {
         const {
             thread, editorContent,
-            sendAnswer, changeAnswerInput
+            postThreadAnswer, changeAnswerInput
         } = this.props;
         var dateString = ddmmyyyy(thread.date)
         var heightAnswer = {
@@ -95,7 +95,7 @@ export class View extends React.Component<Props, any> {
                                     <div className="row">
                                         <div className="col-lg-12" style={{paddingTop: '20px'}}>
                                             <button className="btn btn-lg btn-primary pull-right" 
-                                                onClick={() =>  sendAnswer(markdown.toHTML(editorContent)) }>
+                                                onClick={() =>  postThreadAnswer(markdown.toHTML(editorContent)) }>
                                                     Envoyer la réponse
                                             </button>
                                         </div>
