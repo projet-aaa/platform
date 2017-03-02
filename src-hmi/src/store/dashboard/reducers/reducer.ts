@@ -52,8 +52,13 @@ const reducer = handleActions({
                         ? state.currQuizStat[choice] + 1 : 1
                 }
             } else {
-                choices[action.payload.choice] = state.currQuizStat[action.payload.choice] 
+                if(action.payload.choice) {
+                    choices[action.payload.choice] = state.currQuizStat[action.payload.choice] 
                         ? state.currQuizStat[action.payload.choice] + 1 : 1
+                } else {
+                    let s = "Je ne sais pas"
+                    choices[s] = state.currQuizStat[s] ? state.currQuizStat[s] + 1 : 1
+                }
             }
             return Object.assign({}, state, {
                 currQuizStat: Object.assign({}, state.currQuizStat, choices)

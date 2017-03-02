@@ -30,6 +30,8 @@ export interface StateProps {
     question: boolean
     //the user score
     score: number
+
+    attentionState: string
 }
 export interface ActionProps {
     // Fires an action signaling that an answer has been chosen
@@ -75,6 +77,7 @@ export class View extends React.Component<any, any> {
             forceUnfold,
             validateAnswer,
             score,
+            attentionState,
             
             question,
             choose,
@@ -90,7 +93,7 @@ export class View extends React.Component<any, any> {
         // if there is a question we show the quiz, else we show the feedback buttons
         let mainComponent = question ?
                     <QuizViewMobile quiz={ quiz } quizChoice={ quizChoice } showCorrection={ showCorrection } forceUnfold={ forceUnfold } choose={ choose } validate={ validateAnswer } nextQuiz={ nextQuiz } prevQuiz={ prevQuiz } back={ null }/> :
-                    <FeedbackViewMobile signalPanic={ signalPanic } signalSlow={ signalSlow } signalFast={ signalFast } signalOk={ signalOk }/>
+                    <FeedbackViewMobile state={ attentionState } signalPanic={ signalPanic } signalSlow={ signalSlow } signalFast={ signalFast } signalOk={ signalOk }/>
         // the score is on the top, next there is the quiz or feddback and last the comment box
         return (
             <div style={ palNew }>

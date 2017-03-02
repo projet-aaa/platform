@@ -1,5 +1,6 @@
 // EXTERNAL IMPORTS
-import * as React from "react";
+import * as React from "react"
+import { connect } from "react-redux"
 import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
@@ -9,16 +10,17 @@ import LeftMenuContainer from "../containers/navigation/leftMenuContainer"
 import { View as PathBandView } from "../views/navigation/pathBandView"
 import { View as LeftMenuView } from "../views/navigation/leftMenuView"
 
-export interface IntrinsicProps {
+interface Props {
+    mainLoading: boolean
     children: any
 }
 
-export type Props = IntrinsicProps;
-export class View extends React.Component<Props, any> {
+export default class View extends React.Component<Props, any> {
     props: Props
 
     render() {
         const {
+            mainLoading,
             children
         } = this.props
 
@@ -62,6 +64,6 @@ export class View extends React.Component<Props, any> {
                     </div>
                 </MediaQuery>
             </div>
-        );
+        )
     }
 }

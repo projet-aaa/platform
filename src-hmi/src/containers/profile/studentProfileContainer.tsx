@@ -15,6 +15,7 @@ function mapStateToProps(state): StateProps {
     return { 
         lastName: auth.lastName,
         firstName: auth.firstName,
+        password: auth.password,
         //email: auth.email,
         group: auth.group,
         disciplines: auth.disciplines.map(d => d.name),

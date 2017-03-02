@@ -84,7 +84,7 @@ class SessionVoter extends BaseVoter
      */
     private function canCreate(Session $session, User $user)
     {
-        return !in_array('ROLE_USER',$user->getRoles());
+        return in_array('ROLE_PROF', $this->getRolesHierarchy($user->getRoles()));
     }
 
     /**
@@ -108,7 +108,7 @@ class SessionVoter extends BaseVoter
      */
     private function canUpdate(Session $session, User $user)
     {
-        return !in_array('ROLE_USER',$user->getRoles());
+        return in_array('ROLE_PROF', $this->getRolesHierarchy($user->getRoles()));
     }
 
     /**
@@ -120,6 +120,6 @@ class SessionVoter extends BaseVoter
      */
     private function canDelete(Session $session, User $user)
     {
-        return !in_array('ROLE_USER',$user->getRoles());
+        return in_array('ROLE_PROF', $this->getRolesHierarchy($user->getRoles()));
     }
 }

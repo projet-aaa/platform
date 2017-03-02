@@ -20,10 +20,11 @@ import questionnaireInfo from '../store/questionnaire/reducers/reducer'
 import authInfo from '../store/auth/reducer'
 import mainInfo from '../store/main/reducers/reducer'
 import profileInfo from '../store/profile/reducer'
+import navigationInfo from '../store/navigation/reducer'
 
 // TEMPLATES
-import { View as TopBandLeftMenuTemp } from '../template/topBandLeftMenuTemp'
-import { View as TopBandTemp } from '../template/topBandTemp'
+import TopBandLeftMenuTemp from '../template/topBandLeftMenuTemp'
+import TopBandTemp from '../template/topBandTemp'
 import { View as TabsTemp } from '../template/tabsTemp'
 
 // VIEWS AND CONTAINERS
@@ -40,9 +41,11 @@ import DisciplineContainer from '../containers/discipline/disciplineContainer'
 
 import QuestionnaireContainer from '../containers/questionnaire/questionnaireContainer'
 
-import LoginContainer from '../containers/devlogin/loginContainer'
+import LoginContainer from '../containers/dev/loginContainer'
+import CloseRoomContainer from '../containers/dev/closeRoomContainer'
 
 import { storeFactory } from '../utils'
+import { devtools } from '../models/consts'
 
 // STORE CREATION (DEFINITION OF THE GLOBAL STATE)
 let store = storeFactory([
@@ -57,7 +60,8 @@ let store = storeFactory([
     questionnaireInfo,
     authInfo,
     mainInfo,
-    profileInfo
+    profileInfo,
+    navigationInfo
 ], true, auth)
     
 // ROUTE
@@ -67,7 +71,10 @@ let MainRouter =
         <Route path="/" component={ TopBandLeftMenuTemp }>
             <IndexRoute component={ MainContainer }/>
         </Route>
-        <Route path="/login" component={ LoginContainer}/>
+
+        { devtools && <Route path="/login" component={ LoginContainer }/> }
+        { devtools && <Route path="/close_room/:prof" component={ CloseRoomContainer }/> }
+
         <Route path="/profil" component={ TopBandLeftMenuTemp }>
             <IndexRoute component={ ProfileContainer }/>
         </Route>

@@ -35,7 +35,7 @@ export class View extends React.Component<Props, any> {
                             <div className="nav navbar navbar-top-links navbar-right mbn height-covering" style={ {marginRight: 0} }>
                                 <li className="dropdown topbar-user height-covering" style={ {marginRight: 0, bottom: 0} }>
                                     <a data-hover="dropdown" href="#" className="dropdown-toggle" data-toggle="dropdown">
-                                        <span>{ userFullName }</span>
+                                        <span>{ userFullName != null && userFullName }</span>
                                     </a>
                                     <ul className="dropdown-menu dropdown-user pull-right">
                                         <li><Link to="/profil"><i className="fa fa-user"></i>Mon Profil</Link></li>

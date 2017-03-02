@@ -12,6 +12,7 @@ import { chartColors } from "../../models/consts"
 export interface StateProps {
     lastName: string
     firstName: string
+    password: string
     //email: string
     // name of lessons a teacher teach
     disciplines: string[]
@@ -33,6 +34,7 @@ export class View extends React.Component<Props, any> {
         const {
             lastName,
             firstName,
+            password,
             //email,
             disciplines,
             groups
@@ -92,12 +94,21 @@ export class View extends React.Component<Props, any> {
                             <div className="col-sm-9 controls">
                                 <div className="row">
                                     <div className="col-xs-9">
-                                        <input type="text" value={ firstName} contentEditable={ false } className="form-control" readOnly/>
+                                        <input type="text" value={ firstName } contentEditable={ false } className="form-control" readOnly/>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
+                        <div className="form-group">
+                            <label className="col-sm-3 control-label">Password</label>
+                            <div className="col-sm-9 controls">
+                                <div className="row">
+                                    <div className="col-xs-9">
+                                        <input type="text" value={ password } contentEditable={ false } className="form-control" readOnly/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <hr/>
                         <h3>Cours</h3>

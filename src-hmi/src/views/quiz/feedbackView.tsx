@@ -9,10 +9,11 @@ import * as MediaQuery from "react-responsive"
 
 import { AttentionStateType } from "../../models/class/class"
 
-export interface StateProps {}
+export interface StateProps {
+    state: string
+}
 
 export interface ActionProps {
-    state: string
     // Fires an action signaling that the user is panicking
     signalPanic()
     // Fires an action signaling that the lesson goes too slow
@@ -38,6 +39,16 @@ export class View extends React.Component<Props, any> {
         // each action is associated to a button, these 3 buttons form a triangle
         return (
             <div>
+                <div className="row">
+                    <div className="col-lg-12 text-center">
+                        <h2>{ 
+                            state == AttentionStateType.OK ? <span>Je suis bien</span> : 
+                            (state == AttentionStateType.PANIC ? <span>Je panique!</span> :
+                            (state == AttentionStateType.TOO_FAST ? <span>Le cours est trop long</span> : 
+                                <span>Le cours est trop lent</span>))
+                        } </h2>
+                    </div>
+                </div>
                 <div className="row">
                     <div className="col-lg-12 text-center">
                         <div className={ state == AttentionStateType.PANIC 

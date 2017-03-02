@@ -48,9 +48,9 @@ export class View extends React.Component<Props, any> {
             }
         }
         return (
-            <div style={ {position: "absolute"} }>
+            <div>
                 <nav id="sidebar" role="navigation" data-step="2" data-intro="Template has &lt;b&gt;many navigation styles&lt;/b&gt;"
-                        data-position="right" className="navbar-default navbar-static-side" style={ {top: 0, bottom: 0} }>
+                        data-position="right" className="navbar-default navbar-static-side" style={ {minHeight: "100%"} }>
                     <div className="sidebar-collapse menu-scroll">
                         <ul id="side-menu" className="nav">
                             <div className="clearfix"></div>

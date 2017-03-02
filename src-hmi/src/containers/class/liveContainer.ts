@@ -26,6 +26,9 @@ export default rootWrapper(
     mapStateToProps,
     mapDispatchToProps,
     null,
-    props => { props.subscribe()},
+    (props, done) => { 
+        props.subscribe()
+        done()
+    },
     View
 )

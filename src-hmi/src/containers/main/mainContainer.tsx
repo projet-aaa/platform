@@ -36,6 +36,9 @@ export default rootWrapper(
     mapStateToProps, 
     mapDispatchToProps,
     null,
-    props => { props.fetchSessions(props.disciplines)},
+    (props, d) => { 
+        props.fetchSessions(props.disciplines)
+        d()
+    },
     View
 )
