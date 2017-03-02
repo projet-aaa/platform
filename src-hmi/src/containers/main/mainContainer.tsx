@@ -40,5 +40,6 @@ export default rootWrapper(
         props.fetchSessions(props.disciplines)
         d()
     },
+    null,
     View
 )

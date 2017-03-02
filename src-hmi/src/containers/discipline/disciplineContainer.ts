@@ -39,5 +39,6 @@ export default rootWrapper(
             console.log(error))
         d()
     },
+    null,
     View
 )

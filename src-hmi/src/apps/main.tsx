@@ -46,6 +46,8 @@ import CloseRoomContainer from '../containers/dev/closeRoomContainer'
 
 import { storeFactory } from '../utils'
 import { devtools } from '../models/consts'
+import rootWrapper from "../wrappers/rootWrapper"
+import { fetchTest, fetchSessionQuiz, fetchDisciplinesSessions, fetchSessionStats } from '../api/fetchs'
 
 // STORE CREATION (DEFINITION OF THE GLOBAL STATE)
 let store = storeFactory([
@@ -74,6 +76,16 @@ let MainRouter =
 
         { devtools && <Route path="/login" component={ LoginContainer }/> }
         { devtools && <Route path="/close_room/:prof" component={ CloseRoomContainer }/> }
+        { devtools && <Route path="/test" component={ rootWrapper(
+            (st => {return { }}),
+            (dp => {return { }}),
+            null,
+            (props, done) => {
+                done()
+            },
+            props => { },
+            (props, ctx) => <div>Un test</div>
+        )}/>}
 
         <Route path="/profil" component={ TopBandLeftMenuTemp }>
             <IndexRoute component={ ProfileContainer }/>
@@ -96,10 +108,10 @@ let MainRouter =
                     <IndexRoute component={ (p, c) => 
                         <CourseContainer name="Statistique" {...p} statType={ "SESSION" } /> }
                     />
-                    <Route path=":sessionId/quiz" component={ (p, c) => 
+                    <Route path=":profName/quiz" component={ (p, c) => 
                         <CourseContainer name="Statistique" {...p} statType={ "QUIZ" } /> }
                     />
-                    <Route path=":sessionId/attention" component={ (p, c) => 
+                    <Route path=":profName/attention" component={ (p, c) => 
                         <CourseContainer name="Statistique" {...p} statType={ "ATTENTION" } /> }
                     />
                 />

@@ -1,6 +1,6 @@
-import { listFetcher, fetcher, findAllIndex } from "../utils"
+import { listFetcher, fetcher, fixfetcher, findAllIndex, parseAPIDate } from "../utils"
 
-import { Test, Quiz, QuizType } from "../models/class/class"
+import { Test, Quiz, QuizType, AttentionStateType } from "../models/class/class"
 import { Discipline } from '../models/discipline'
 import { Session } from '../models/session'
 
@@ -118,4 +118,140 @@ export function fetchDisciplinesSessions(disciplineNames: string[], disciplineId
         }))
     })
     .catch(error => failure)
+}
+
+export function fetchSessionStats(sessionId: string, success?, failure?) {
+    let alerts = null,
+        comments = null,
+        quiz = null,
+        quizChoices = {},
+        quizChoicesDone = false,
+        tryEnd = () => {
+            if(alerts && comments && quiz && quizChoicesDone) {
+                success({ alerts, comments, quiz, quizChoices })
+            }
+        }
+
+    fetcher('/alerts?session=' + sessionId, 'GET')
+    .then((res: any) => res['hydra:member'])
+    .then(res => {
+        return res.map(a => {
+            return {
+                type: a.alertType == "tooSlow" ? AttentionStateType.TOO_SLOW :
+                    a.alertType == "tooFast" ? AttentionStateType.TOO_FAST :
+                    a.alertType == "good" ? AttentionStateType.OK :
+                    AttentionStateType.PANIC,
+                date: parseAPIDate(a.createdAt),
+                author: a.author
+            }
+        })
+    })
+    .then(res => res.sort((e1, e2) => e1.date >= e2.date))
+    .then(res => {
+        let states = {},
+            tooSlow = 0,
+            tooFast = 0,
+            panic = 0,
+            tooSlowCurve = [],
+            tooFastCurve = [],
+            panicCurve = [],
+            dates = [],
+            oldState,
+            newState
+
+        res.forEach(a => {
+            if(a.date) {
+                oldState = states[a.author]
+                newState = a.type
+                tooSlow += newState == AttentionStateType.TOO_SLOW ? 1 : 0 
+                    - ((oldState && oldState == AttentionStateType.TOO_SLOW) ? 1 : 0)
+                tooFast += newState == AttentionStateType.TOO_FAST ? 1 : 0 
+                    - ((oldState && oldState == AttentionStateType.TOO_FAST) ? 1 : 0)
+                panic += newState == AttentionStateType.PANIC ? 1 : 0 
+                    - ((oldState && oldState == AttentionStateType.PANIC) ? 1 : 0)
+                states[a.author] = newState    
+
+                tooSlowCurve.push(tooSlow)
+                tooFastCurve.push(tooFast)
+                panicCurve.push(panic)
+                dates.push(a.date)
+            }
+        })
+
+        alerts = ({
+            tooSlowCurve,
+            tooFastCurve,
+            panicCurve,
+            dates
+        })
+        console.log("alerts", alerts)
+        tryEnd()
+    })
+    .catch(error => { if(failure) {
+        failure(error)
+    } else {
+        console.log(error)
+    }})
+
+    fetcher('/feedbacks?session=' + sessionId, 'GET')
+    .then((res: any) => res['hydra:member'])
+    .then(res => res.map(c => {
+        return {
+            date: parseAPIDate(c.createdAt),
+            comment: c.text,
+            commenter: "anonyme"
+        }  
+    }))
+    .then(res => {
+        comments = res
+        console.log("comments", comments)
+        tryEnd()
+    })
+    .catch(error => { if(failure) {
+        failure(error)
+    } else {
+        console.log(error)
+    }})
+
+    fetchSessionQuiz(sessionId, 
+        obj => {
+            quiz = obj
+            // obj.forEach(q => {
+            //     quiz[q.id] = q
+            // })
+            tryEnd()
+        }
+    )
+
+    fetcher('/mcq_answers?question.test.session=' + sessionId)
+    .then((res: any) => res['hydra:member'])
+    .then(res => {
+        let answerCount = res.length
+
+        res.forEach(answer => {
+            let splitChoice = answer.mcqChoice.split('/'),
+                choiceId = splitChoice[splitChoice.length - 1],
+                splitQuiz = answer.question.split('/'),
+                quizId = splitQuiz[splitQuiz.length - 1]
+
+            fetcher('/mcq_choices/' + choiceId)
+            .then((res: any) => {
+                if(!quizChoices[quizId]) {
+                    quizChoices[quizId] = {}
+                }
+                
+                if(quizChoices[quizId][res.text]) {
+                    quizChoices[quizId][res.text] += 1
+                } else {
+                    quizChoices[quizId][res.text] = 1
+                }
+
+                answerCount--
+                if(!answerCount) {
+                    quizChoicesDone = true
+                    tryEnd()
+                }
+            })
+        })
+    })
 }

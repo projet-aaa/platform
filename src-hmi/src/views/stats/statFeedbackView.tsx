@@ -4,7 +4,7 @@ import * as chartjs from "react-chartjs-2"
 
 import { ClassEvent } from '../../models/class/class'
 
-import { calculateQuizData } from '../../utils'
+import { calculateQuizData, ddmmyyyy } from '../../utils'
 
 export interface StateProps {
     panic: number[]
@@ -107,7 +107,7 @@ export class View extends React.Component<Props, any> {
                     <div className="panel-body pan white-background"> 
                         { comments.map((comment) => {
                         return <li key={comment.comment} className="list-group-item">
-                            { '[' + comment.date + ']' + comment.commenter }: { comment.comment }
+                            { '[' + ddmmyyyy(comment.date) + '] ' + comment.commenter } : { comment.comment }
                         </li>
                         })}
                     </div>

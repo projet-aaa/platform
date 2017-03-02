@@ -27,7 +27,7 @@ export const appName = "Jetpack"
 export const apiRootURL = debug ? "http://localhost/app_dev.php/api" :
                                   "https://jetpack0.trendio.fr/api"
 
-export const loginURL = debug ? "http://localhost/app_dev.php/api/login_check" :
+export const loginURL = debug ? "http://localhost/api/login_check" :
                                 "https://jetpack0.trendio.fr/api/login_check"
 
 declare var username_global

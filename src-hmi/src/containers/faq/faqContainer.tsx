@@ -61,5 +61,6 @@ export default rootWrapper(
     mapDispatchToProps,
     null,
     null,
+    null,
     View
 )
