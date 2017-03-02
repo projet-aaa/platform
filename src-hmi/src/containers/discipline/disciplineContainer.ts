@@ -7,7 +7,7 @@ import { fetcher } from "../../utils"
 import { StateProps, ActionProps, View } from "../../views/discipline/disciplineView"
 import { Session } from "../../models/session"
 import { Discipline } from "../../models/discipline"
-import { fetchSessions, fetchSesionsFromDiscipline } from "../../store/sessions/actions"
+import { fetchSessions } from "../../store/sessions/actions"
 
 function mapStateToProps(state, ownProps): StateProps {
     return {
