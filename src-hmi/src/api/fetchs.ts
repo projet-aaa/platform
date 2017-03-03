@@ -1,4 +1,4 @@
-import { listFetcher, fetcher, fixfetcher, findAllIndex, parseAPIDate } from "../utils"
+import { listFetcher, fetcher, findAllIndex, parseAPIDate } from "../utils"
 
 import { Test, Quiz, QuizType, AttentionStateType } from "../models/class/class"
 import { Discipline } from '../models/discipline'
