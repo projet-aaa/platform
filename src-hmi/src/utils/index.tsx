@@ -9,7 +9,7 @@ import createSocketIoMiddleware from 'redux-socket.io'
 import * as io from 'socket.io-client'
 import * as fetch from 'isomorphic-fetch'
 
-import { urlWS, chartColors, apiRootURL, fixApiRootURL, log } from '../models/consts'
+import { urlWS, chartColors, apiRootURL, log } from '../models/consts'
 
 import { Quiz } from '../models/class/class'
 
