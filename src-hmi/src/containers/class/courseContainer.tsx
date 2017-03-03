@@ -1,8 +1,14 @@
+/* -- COURSE CONTAINER
+ * The root of a sessions page: contains and renders the list tabs in a session page (stats, quizzes, ...)
+ */
+
+// EXTERNAL IMPORTS
 import { connect } from "react-redux"
 import * as React from "react"
 
 import { View as TabsTemp } from '../../template/tabsTemp'
 
+// CONTAINERS
 import CourseMainContainer from '../../containers/class/mainContainer'
 import FAQContainer from '../../containers/faq/faqContainer'
 import LiveContainer from '../../containers/class/liveContainer'
@@ -13,6 +19,7 @@ import QuestionnaireContainer from '../../containers/questionnaire/questionnaire
 
 import { AuthState } from "../../store/auth/reducer"
 import { auth } from "../../store/auth/actions"
+
 import { id, username, password } from "../../models/consts"
 
 function mapStateToProps(state: any, ownProps: any): any {
@@ -32,12 +39,13 @@ export default connect<StateProps, ActionProps, any>(
     mapStateToProps, 
     mapDispatchToProps
 )((props, ctx) => {
-    let prePath = "/" + props.params.UE + "/" + props.params.course
-
+    // test if we are logged in or not, if not, show loader
     if(!props.infoFetched) {
         props.auth()
         return <div className="loader"></div>
     } else {
+        let prePath = "/" + props.params.UE + "/" + props.params.course
+
         if(props.isTeacher) {
             return <TabsTemp 
             actualTabName={ props.name } 

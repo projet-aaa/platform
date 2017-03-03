@@ -69,7 +69,7 @@ export default function rootWrapper(mapState, mapDispatch, mergeProps, onEnter: 
             this.loading = false
             
             return (!this.props.mainLoading && !tmp ? 
-                <Component {...this.props} /> : <div className="loader"></div>) 
+                <Component {...this.props}/> : <div className="loader"></div>) 
         }
     }
         

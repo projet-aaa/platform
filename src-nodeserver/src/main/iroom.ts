@@ -8,6 +8,9 @@ export abstract class IRoom {
     sockets: SocketInfo[]
     teacher: string
 
+    sessionId: string
+    iriSessionId: string
+
     get occupancy(): number { return this.sockets.length }
 
     constructor(server: any, id: number) {

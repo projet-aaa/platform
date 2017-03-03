@@ -99,14 +99,14 @@ export class SocketServer {
                     for(let quiz of msg.quiz) {
                         quizs[quiz.id] = quiz
                     }
-                    (room as ClassRoom).quiz = quizs;
-                    (room as ClassRoom).sessionId = msg.sessionId;
-                    (room as any).iriSessionId = msg.iriSessionId
+                    (room as ClassRoom).quiz = quizs
                 }
                 break
             }
         }
 
+        room.sessionId = msg.sessionId
+        room.iriSessionId = msg.iriSessionId
         this.rooms[id] = room
         
         room.teacher = teacher

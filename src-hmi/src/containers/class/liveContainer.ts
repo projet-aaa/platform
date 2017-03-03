@@ -1,12 +1,10 @@
-import { connect } from "react-redux"
+import { browserHistory } from 'react-router'
 
 import rootWrapper from "../../wrappers/rootWrapper"
 
 import { StateProps, ActionProps, View } from "../../views/class/liveView"
 
 import { subscribe } from "../../store/wsrooms/actions"
-
-import { browserHistory } from 'react-router';
 
 function mapStateToProps(state, ownProps): StateProps {
     return { 

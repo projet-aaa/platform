@@ -7,7 +7,7 @@ import * as fs from 'fs'
 
 import { SocketServer } from './socketServer'
 
-import { domain, port, debug } from '../models/consts'
+import { domain, port, debug, log } from '../models/consts'
 
 let sslmode_available = fs.existsSync('/tls/server.key') && fs.existsSync('/tls/server.crt');
 
@@ -30,7 +30,7 @@ let io = socketio(server)
 let redisClient = redis.createClient(6379, 'redis')
 redisClient.subscribe('general')
 
-let ss = new SocketServer(io, redisClient, true)
+let ss = new SocketServer(io, redisClient, log)
 
 if(debug){
     server.listen(port, function () {

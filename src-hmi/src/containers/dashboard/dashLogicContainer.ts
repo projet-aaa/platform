@@ -1,4 +1,4 @@
-import { connect } from "react-redux";
+import { connect } from "react-redux"
 
 import { StateProps, ActionProps, View } from "../../views/dashboard/dashboardView"
 import { DashboardState } from "../../store/dashboard/reducers/reducer"
