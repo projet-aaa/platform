@@ -40,9 +40,10 @@ export class View extends React.Component<Props, any> {
             currentQuiz = quiz[currentQuizId]
 
         return (
-            <div className="page-content">
+            <div className="col-lg-12">
                 <div className="row">
                     <div className="col-lg-12">
+                        <h2>Résultats aux quiz live</h2>
                         <Link to={ "/" + params.UE + "/" + params.course + "/statistique/prof/attention" }>
                             Regarder les retours des élèves
                         </Link><br/>
@@ -52,13 +53,14 @@ export class View extends React.Component<Props, any> {
                     </div>
                 </div>
 
+                <br/>
+
                 <div className="col-lg-7">
                     <div className="panel">
                         <div className="panel-heading">
                             { currentQuiz.title }
                         </div>
                         <div className="panel-body pan white-background"> 
-                            { currentQuiz.question }
                             <chartjs.Pie data={ data }/>  
                         </div>
                     </div>

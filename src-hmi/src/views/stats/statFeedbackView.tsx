@@ -77,9 +77,10 @@ export class View extends React.Component<Props, any> {
         let data = this.calculateData(panic, tooSlow, tooFast, date)
 
         return (
-            <div className="page-content">
+            <div className="col-lg-12">
                 <div className="row">
                     <div className="col-lg-12">
+                        <h2>Retours des élèves</h2>
                         <Link to={ "/" + params.UE + "/" + params.course + "/statistique/prof/quiz" }>
                             Regarder les résultats des quiz
                         </Link><br/>
@@ -88,6 +89,8 @@ export class View extends React.Component<Props, any> {
                         </Link>
                     </div>
                 </div>
+
+                <br/>
 
                 <div className="panel">
                     <div className="panel-heading">
@@ -111,6 +114,6 @@ export class View extends React.Component<Props, any> {
                     </div>
                 </div>
             </div>
-        );
+        )
     }
 }

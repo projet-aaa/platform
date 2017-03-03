@@ -12,15 +12,20 @@ import StatFeedbackContainer from '../../containers/class/statFeedbackContainer'
 import QuestionnaireContainer from '../../containers/questionnaire/questionnaireContainer'
 
 import { AuthState } from "../../store/auth/reducer"
+import { auth } from "../../store/auth/actions"
+import { id, username, password } from "../../models/consts"
 
 function mapStateToProps(state: any, ownProps: any): any {
     let authState: AuthState = state.auth
     return { 
-        isTeacher: authState.isTeacher
+        isTeacher: authState.isTeacher,
+        infoFetched: authState.infoFetched
     }
 }
 function mapDispatchToProps(dispatch, ownProps): any {
-    return { }
+    return { 
+        auth: () => dispatch(auth(id, username, password))
+    }
 }
 
 export default connect<StateProps, ActionProps, any>(
@@ -29,46 +34,51 @@ export default connect<StateProps, ActionProps, any>(
 )((props, ctx) => {
     let prePath = "/" + props.params.UE + "/" + props.params.course
 
-    if(props.isTeacher) {
-        return <TabsTemp 
-        actualTabName={ props.name } 
-        names={ ["Cours", "FAQ", "Statistique", "Direct"] }
-        urls={ [prePath,
-                prePath + "/faq",
-                prePath + "/statistique",
-                prePath + "/direct"] }>
-            { props.name == "Cours" ? 
-                <CourseMainContainer {...props}/> : <div>Shouldn't show</div> }
-            { props.name == "FAQ" ? 
-                <FAQContainer {...props}/> : <div>Shouldn't show</div> }
-            { props.name == "Statistique" ? 
-                (props.statType == "QUIZ" ?
-                    <StatQuizContainer {...props}/> :
-                    (props.statType == "SESSION" ?
-                        <StatSessionContainer {...props}/> :
-                        <StatFeedbackContainer {...props}/>
-                    )
-                )
-                : <div>Shouldn't show</div> }
-            { props.name == "Direct" ?
-                <LiveContainer {...props}/> : <div>Shouldn't show</div> }
-        </TabsTemp> 
+    if(!props.infoFetched) {
+        props.auth()
+        return <div className="loader"></div>
     } else {
-        return <TabsTemp 
-        actualTabName={ props.name } 
-        names={ ["Cours", "FAQ", "Direct", "Questionnaires"] }
-        urls={ [prePath,
-                prePath + "/faq",
-                prePath + "/direct",
-                prePath + "/questionnaires"] }>
-            { props.name == "Cours" ? 
-                <CourseMainContainer {...props}/> : <div>Shouldn't show</div> }
-            { props.name == "FAQ" ? 
-                <FAQContainer {...props}/> : <div>Shouldn't show</div> }
-            { props.name == "Direct" ? 
-                <LiveContainer {...props}/> : <div>Shouldn't show</div> }
-            { props.name == "Questionnaires" ?
-                <QuestionnaireContainer {...props}/> : <div>Shouldn't show</div> }
-        </TabsTemp> 
+        if(props.isTeacher) {
+            return <TabsTemp 
+            actualTabName={ props.name } 
+            names={ ["Cours", "FAQ", "Statistique", "Direct"] }
+            urls={ [prePath,
+                    prePath + "/faq",
+                    prePath + "/statistique",
+                    prePath + "/direct"] }>
+                { props.name == "Cours" ? 
+                    <CourseMainContainer {...props}/> : <div>Shouldn't show</div> }
+                { props.name == "FAQ" ? 
+                    <FAQContainer {...props}/> : <div>Shouldn't show</div> }
+                { props.name == "Statistique" ? 
+                    (props.statType == "QUIZ" ?
+                        <StatQuizContainer {...props}/> :
+                        (props.statType == "SESSION" ?
+                            <StatSessionContainer {...props}/> :
+                            <StatFeedbackContainer {...props}/>
+                        )
+                    )
+                    : <div>Shouldn't show</div> }
+                { props.name == "Direct" ?
+                    <LiveContainer {...props}/> : <div>Shouldn't show</div> }
+            </TabsTemp> 
+        } else {
+            return <TabsTemp 
+            actualTabName={ props.name } 
+            names={ ["Cours", "FAQ", "Direct", "Questionnaires"] }
+            urls={ [prePath,
+                    prePath + "/faq",
+                    prePath + "/direct",
+                    prePath + "/questionnaires"] }>
+                { props.name == "Cours" ? 
+                    <CourseMainContainer {...props}/> : <div>Shouldn't show</div> }
+                { props.name == "FAQ" ? 
+                    <FAQContainer {...props}/> : <div>Shouldn't show</div> }
+                { props.name == "Direct" ? 
+                    <LiveContainer {...props}/> : <div>Shouldn't show</div> }
+                { props.name == "Questionnaires" ?
+                    <QuestionnaireContainer {...props}/> : <div>Shouldn't show</div> }
+            </TabsTemp> 
+        }
     }
 })

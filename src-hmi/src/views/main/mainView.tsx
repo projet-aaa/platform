@@ -23,8 +23,6 @@ export interface StateProps {
     searchedString: string
 }
 
-
-
 export interface ActionProps {
     // click on a discipline filter
     selectFilter(disciplineId: string)
