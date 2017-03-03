@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -13,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiResource
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks()
  */
 class ThreadMessage
 {
@@ -29,6 +31,7 @@ class ThreadMessage
      *
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Groups({"thread_cascade"})
+     * @Assert\NotBlank()
      */
     private $text;
 
@@ -41,6 +44,7 @@ class ThreadMessage
     /**
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @Gedmo\Blameable(on="create")
      * @Groups({"thread_cascade"})
      */
     private $author;
@@ -48,6 +52,7 @@ class ThreadMessage
     /**
      * @ORM\ManyToOne(targetEntity="Thread", inversedBy="threadMessages")
      * @ORM\JoinColumn(name="thread_id", referencedColumnName="id")
+     * @Assert\NotNull()
      */
     private $thread;
 
@@ -79,6 +84,13 @@ class ThreadMessage
     public function __toString()
     {
         return 'ThreadMessage '.$this->getId().''.substr($this->getText(),0,100);
+    }
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function prePersist(){
+        $this->createdAt = new \DateTime('now');
     }
 
     /** auto generated methods */
