@@ -64,5 +64,6 @@ export default rootWrapper(
         props.fetchThreads(props.sessionId)
         d()
     },
+    null,
     View
 )

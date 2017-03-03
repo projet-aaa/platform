@@ -2,13 +2,13 @@ import { connect } from "react-redux"
 import * as React from "react"
 import * as _ from "underscore"
 
-import { startMainLoad, endMainLoad } from "../store/navigation/actions"
+import { startMainLoad, endMainLoad, endFixLoad } from "../store/navigation/actions"
 
 import { auth } from "../store/auth/actions"
 
 import { id, username, password } from "../models/consts"
 
-export default function rootWrapper(mapState, mapDispatch, mergeProps, fn: (props, done: () => void) => void, Component) {
+export default function rootWrapper(mapState, mapDispatch, mergeProps, onEnter: (props, done: () => void) => void, onExit: (props) => void, Component) {
     function mapStateToProps(state) {
         return { 
             mainLoading: state.navigation.mainLoading
@@ -16,6 +16,7 @@ export default function rootWrapper(mapState, mapDispatch, mergeProps, fn: (prop
     }
     function mapDispatchToProps(dispatch) {
         return {
+            endFixLoad: () => dispatch(endFixLoad()),
             startMainLoad: () => dispatch(startMainLoad()),
             endMainLoad: () => dispatch(endMainLoad()),
             auth: (promise) => dispatch(auth(id, username, password, promise))
@@ -23,11 +24,17 @@ export default function rootWrapper(mapState, mapDispatch, mergeProps, fn: (prop
     }
 
     class Wrapper extends React.Component<any, any> {
+        timeout
+        loading: boolean
         componentWillMount () {
             this.props.startMainLoad()
+            this.loading = true
+            this.timeout = setTimeout(() => {
+                this.props.endFixLoad()
+            }, 100)
             this.props.auth(() => {
-                if(fn) { 
-                    fn(this.props, () => this.props.endMainLoad()) 
+                if(onEnter) { 
+                    onEnter(this.props, () => this.props.endMainLoad()) 
                 } else {
                     this.props.endMainLoad()
                 }
@@ -36,18 +43,27 @@ export default function rootWrapper(mapState, mapDispatch, mergeProps, fn: (prop
 
         componentDidUpdate (prevProps) {
             if (!_.isEqual(this.props.params, prevProps.params)) {
-                console.log("did update", this.props.params, prevProps.params)
                 this.props.startMainLoad()
-                if(fn) { 
-                    fn(this.props, () => this.props.endMainLoad()) 
+                if(onEnter) { 
+                    onEnter(this.props, () => this.props.endMainLoad()) 
                 } else {
                     this.props.endMainLoad()
                 }
             }
         }
 
+        componentWillUnmount() {
+            if(onExit) {
+                onExit(this.props)
+            }
+        }
+
         render () { 
-            return (!this.props.mainLoading ? 
+            let tmp = this.loading
+            this.loading = false
+            clearTimeout(this.timeout)
+            
+            return (!this.props.mainLoading && !tmp ? 
                 <Component {...this.props} /> : 
                 <div className="loader" style={ { } }></div>) 
         }

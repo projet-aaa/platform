@@ -30,5 +30,6 @@ export default rootWrapper(
         props.subscribe()
         done()
     },
+    null,
     View
 )

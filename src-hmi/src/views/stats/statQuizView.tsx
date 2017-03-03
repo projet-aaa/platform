@@ -3,14 +3,15 @@ import { connect } from "react-redux";
 import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 import * as chartjs from "react-chartjs-2"
+import * as _ from "underscore"
 
 import { calculateQuizData } from "../../utils"
 
 import { Quiz } from "../../models/class/class"
 
 export interface StateProps {
-    quiz: Quiz[]
-    quizChoices: any[]
+    quiz: any // id -> Quiz
+    quizChoices: any // id -> choices
 
     currentQuizId: number
 }
@@ -71,9 +72,9 @@ export class View extends React.Component<Props, any> {
                         </div>
                         <div className="panel-body pan white-background"> 
                             <div className="page-content">
-                                { quiz.map((q) => {
+                                { _.values(quiz).map(q => {
                                     return <a 
-                                        key={q.id} 
+                                        key={ q.id } 
                                         className="list-group-item" 
                                         onClick={ () => chooseQuiz(q.id) }>
                                         { q.title }

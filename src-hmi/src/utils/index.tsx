@@ -9,7 +9,7 @@ import createSocketIoMiddleware from 'redux-socket.io'
 import * as io from 'socket.io-client'
 import * as fetch from 'isomorphic-fetch'
 
-import { urlWS, chartColors, apiRootURL, log } from '../models/consts'
+import { urlWS, chartColors, apiRootURL, fixApiRootURL, log } from '../models/consts'
 
 import { Quiz } from '../models/class/class'
 
@@ -138,6 +138,7 @@ export function fetcher(url, method?, obj?) {
     }
     return fetch(apiRootURL + url, res).then(res => res.json())
 }
+
 export function listFetcher<T>(list: T[], urlMaker: (obj: T) => string, success, failure) {
     let todo = list.length,
         resList = []
@@ -243,6 +244,21 @@ export function ddmmyyyy(date: Date): string {
   return (dd>9 ? '' : '0') + dd + '/' + 
             (mm>9 ? '' : '0') + mm + '/' +
             date.getFullYear()
+}
+
+const apiDateReg = /(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)/g
+
+export function parseAPIDate(date): Date {
+    let match = apiDateReg.exec(date)
+    apiDateReg.lastIndex = 0
+    if(match) {
+        return new Date(parseInt(match[1]), 
+                        parseInt(match[2]), 
+                        parseInt(match[3]), 
+                        parseInt(match[4]), 
+                        parseInt(match[5]), 
+                        parseInt(match[6]))
+    }
 }
 
 // modify the value of the ith element of an array

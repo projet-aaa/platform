@@ -214,7 +214,7 @@ export class ClassRoom extends IRoom {
                 tooSlow: this.tooSlow,
                 tooFast: this.tooFast,
 
-                sent: this.idToAnswer[socket.id] != null
+                sent: this.idToAnswer && this.idToAnswer[socket.id] != null
             })
             this.teacherSockets.push(socket)
         } else {

@@ -22,5 +22,6 @@ export default rootWrapper(
         p.closeRoom()
         d()
     },
+    null,
     (p, c) => <div> { p.params.prof }'s room is now closed</div>
 )

@@ -22,6 +22,9 @@ const reducer = handleActions({
         return Object.assign({}, state, {
             mainLoading: false
         })
+    },
+    [ActionTypes.END_FIX_LOAD]: function(state: NavigationState, action): NavigationState {
+        return Object.assign({}, state)
     }
 }, initialState)
 

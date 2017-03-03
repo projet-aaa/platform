@@ -66,5 +66,6 @@ export default rootWrapper(
             props.fetchTests(res["hydra:member"][0].id, done)
         })
     },
+    null,
     View
 )

@@ -5,7 +5,7 @@ import rootWrapper from "./rootWrapper"
 import { AuthState } from "../store/auth/reducer" 
 import { WSRoomState } from "../store/wsrooms/reducer"
 
-import { joinRoom, openClassRoom, openClassRoomServer, subscribe } from "../store/wsrooms/actions"
+import { joinRoom, leaveRoom, openClassRoom, openClassRoomServer, subscribe } from "../store/wsrooms/actions"
 import { authWS } from "../store/auth/actions"
 
 import { CONNECTION_STATE } from "../models/wsServer/server"
@@ -35,6 +35,7 @@ export default function connectionWrapper(View) {
             subscribe: () => dispatch(subscribe(true)),
             authWS: (id, username, isTeacher) => dispatch(authWS(id, username, isTeacher)),
             joinRoom: (roomId: number) => dispatch(joinRoom(roomId)),
+            leaveRoom: () => dispatch(leaveRoom()),
             createRoom: () => dispatch(openClassRoom(ownProps.params.course))
         }
     }
@@ -63,9 +64,13 @@ export default function connectionWrapper(View) {
         mapStateToProps,
         mapDispatchToProps,
         mergeProps,
-        props => { 
+        (props, done) => { 
             props.authWS(props.id, props.username, props.isTeacher)
             props.subscribe() 
+            done()
+        },
+        props => {
+            props.leaveRoom()
         },
         View
     )

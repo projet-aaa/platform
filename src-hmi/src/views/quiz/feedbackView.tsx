@@ -44,7 +44,7 @@ export class View extends React.Component<Props, any> {
                         <h2>{ 
                             state == AttentionStateType.OK ? <span>Je suis bien</span> : 
                             (state == AttentionStateType.PANIC ? <span>Je panique!</span> :
-                            (state == AttentionStateType.TOO_FAST ? <span>Le cours est trop long</span> : 
+                            (state == AttentionStateType.TOO_FAST ? <span>Le cours est trop rapide</span> : 
                                 <span>Le cours est trop lent</span>))
                         } </h2>
                     </div>
