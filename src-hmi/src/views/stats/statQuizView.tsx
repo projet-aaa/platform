@@ -10,6 +10,7 @@ import { calculateQuizData } from "../../utils"
 import { Quiz } from "../../models/class/class"
 
 export interface StateProps {
+    params: any
     quiz: any // id -> Quiz
     quizChoices: any // id -> choices
 
@@ -18,8 +19,6 @@ export interface StateProps {
 
 export interface ActionProps { 
     chooseQuiz(quizId: string)
-    gotoFeedback()
-    gotoSession()
 }
 
 export type Props = StateProps & ActionProps;
@@ -28,14 +27,13 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
+            params,
             quiz,
             quizChoices,
 
             currentQuizId,
 
-            chooseQuiz,
-            gotoFeedback,
-            gotoSession
+            chooseQuiz
         } = this.props
 
         let data = calculateQuizData(quizChoices[currentQuizId]),
@@ -45,12 +43,12 @@ export class View extends React.Component<Props, any> {
             <div className="page-content">
                 <div className="row">
                     <div className="col-lg-12">
-                        <button type="button" className="btn btn-primary" onClick={ gotoFeedback }>
-                            Voir les retours des élèves
-                        </button>
-                        <button type="button" className="btn btn-primary" onClick={ gotoSession }>
-                            Retourner aux sessions
-                        </button>
+                        <Link to={ "/" + params.UE + "/" + params.course + "/statistique/prof/attention" }>
+                            Regarder les retours des élèves
+                        </Link><br/>
+                        <Link to={ "/" + params.UE + "/" + params.course + "/statistique/" }>
+                            Retour
+                        </Link>
                     </div>
                 </div>
 

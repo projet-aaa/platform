@@ -30,6 +30,7 @@ export default function rootWrapper(mapState, mapDispatch, mergeProps, onEnter: 
             this.props.startMainLoad()
             this.loading = true
             this.timeout = setTimeout(() => {
+                this.loading = false
                 this.props.endFixLoad()
             }, 100)
             this.props.auth(() => {
