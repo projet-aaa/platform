@@ -6,8 +6,10 @@ import { ClassRoom } from '../rooms/classRoom'
 
 import { SocketOutMsg } from '../models/main'
 
+/* SOCKET SERVER
+ * Handles the basic communication, connection and disconnection
+ */
 export class SocketServer {
-
     io
     redis
     rooms: IRoom[]
@@ -17,6 +19,7 @@ export class SocketServer {
 
     log: boolean
 
+    // Requires the io server, the redis client and a boolean signalling whether we need to log information or not
     constructor(io, redis, log) {
         this.io = io
         this.redis = redis

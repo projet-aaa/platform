@@ -28,7 +28,7 @@ Then you need to understand the following libraries:
 
 - Redux: If React takes care of rendering the view, redux is the library that manages the client side "models" of the application. It is a bit complicated too grasp redux at first but their [website](http://redux.js.org/) does a fantastic job at explaining how it works: just read their website from top to bottom (~2-3h) and you will fully understand how it works.
 
-- Socket-io: Web sockets are a mean to establish real time communication between the client and the server and socket io is an implementation of web sockets.
+- Socket-io: Web sockets are a mean to establishing real time communication between the client and the server and socket io is an implementation of web sockets.
 
 ##Technology used
 
@@ -48,7 +48,8 @@ The NPM modules used can be found in src-hmi/package.json, the main ones are:
 - react-router: The application is an SPA (Single page application) so for handling the changing of the URL and the navigation in the application, we use this library.
 - react-responsive: Allows use to make the application responsive and run it on mobile aswell as desktop.
 - socket.io-client: The socket io client.
-- redux-api-middleware: This is a redux middleware that allows us to send API Calls and handle their response within the redux ecosystem
+- redux-api-middleware: This is a redux middleware that allows us to send API Calls and handle their response within the redux ecosystem.
+- fetch: A web API for making HTTP requests, it is used in unisson with redux-api-middleware to make api calls that are a bit more complicated.
 
 ##Architecture
 

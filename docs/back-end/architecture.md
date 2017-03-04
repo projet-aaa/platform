@@ -26,19 +26,13 @@ The backend is composed of 3 components :
    - Powered by Symfony, the PHP reference framework. Allow to use Symfony bundles and imposes a clean MVC architecture.
    - Allows the use of web semantic standards
 
-
  **A Websocket Engine**
  
  To power real-time exchanges, we use websockets. They are managed by a Websocket engine written in NodeJS.
- We chose NodeJS to manage websockets because it is a
-
 
   **A Message-Queue**
-   
- 
  
  Each of its components as its own docker, as described in docker-compose.yml
- 
 
 ## File Architecture
 
@@ -61,13 +55,13 @@ On the root  directory, we can find a traditionnal Symfony architecture
  - var: contains all files used by the platform. **that folder should be writable**. In details
 
     - cache : contains cache of the platform
-    - docs : contains documentation of the project
     - jwt : contains keys for the JWT Authentication system to work
     - logs : contains logs file
     - sessions : contains sessions file
     
  - vendor : contains  Symfony and project [dependencies](https://github.com/projet-aaa/platform/blob/master/var/docs/back-end/depencies.md)
  - web : contains all web-exposed assets. It is that folder which is Apache DocumentRoot.
+ - docs : contains documentation of the project
  
 Standalone files are : 
 
@@ -78,7 +72,6 @@ Standalone files are :
 - composer.lock : contains a solution of the dependencies resolution
 - Makefile : some shortcuts for dummies.
 - phpunit.xml.dist : PHPUnit configuration
-
 
 ## Entity schema
 
