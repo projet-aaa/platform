@@ -83,7 +83,6 @@ const reducer = handleActions({
     [APIActionTypes.FETCH_THREADS_SUCCESS]: function(state: ThreadContent, action: any) {
 
             let threadList = Object.assign([], action.payload);
-            console.log(threadList)
             threadList.map((item) => {
 
                 item.text = item.title;
