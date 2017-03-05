@@ -28,4 +28,21 @@ class McqAnswerRepository extends EntityRepository
         return $query->getSingleScalarResult();
     }
 
+
+    /**
+     *
+     * @return boolean is there already a couple mcqchoice / user among McqAnswer
+     */
+    public function isCoupleMcqChoiceAuthor(User $author, McqChoice $mcqChoice){
+        $qb = $this->_em->createQueryBuilder();
+        $query = $qb->select('count(m)')->from('AppBundle:McqAnswer', 'm')
+            ->where('m.author = :author')
+            ->setParameter('author',$author)
+            ->andWhere('m.mcqChoice = :mcqChoice')
+            ->setParameter('mcqChoice', $mcqChoice)
+            ->getQuery();
+
+        return $query->getSingleScalarResult() == 1;
+    }
+
 }

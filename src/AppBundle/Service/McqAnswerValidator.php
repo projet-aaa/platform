@@ -48,6 +48,14 @@ class McqAnswerValidator extends ConstraintValidator
                 ->addViolation();
         }
 
+        //we manage creation. if a mcqAnswer already has an id, it is an update, and we won't bother with author consistency.
+        if($mcqAnswer->getId()){
+            return true;
+        }
+
+        if(!$mcqAnswer->getQuestion()){
+            return false;
+        }
 
         if($mcqAnswer->getQuestion()->getTypeAnswer() == 'text'){
             return true;
@@ -86,6 +94,13 @@ class McqAnswerValidator extends ConstraintValidator
             }
         }
 
+        //test on does this couple already exists
+        if($this->em->getRepository('AppBundle:McqAnswer')->isCoupleMcqChoiceAuthor($author, $mcqAnswer->getMcqChoice())){
+            $this->context->buildViolation('You already have answered that choice')
+                ->addViolation();
+
+            return false;
+        }
         return true;
     }
 }

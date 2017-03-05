@@ -96,7 +96,7 @@ class LoadDemoData extends AbstractFixture implements OrderedFixtureInterface
         $a2 = new McqAnswer();
         $a2->setMcqChoice($q1_b);
         $a2->setQuestion($q1);
-        $a2->setAuthor($this->getReference('uservachard'));
+        $a2->setAuthor($this->getReference('usereleve'));
         $a2->setId('azi1jo8a-fda0-19e6-aa56-0242ac110003');
         $manager->persist($a2);
 
