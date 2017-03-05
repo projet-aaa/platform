@@ -261,6 +261,8 @@ export function fetchSessionStats(sessionId: string, success, failure?) {
 
 export function fetchTimeline(sessionId: string, success, failure?) {
     plainFetcher('/sessions/' + sessionId + "/timeline", 'GET')
-    .then(res => success(res.body))
+    .then(res => {
+        res.text().then(res => success(res))  
+    })
     .catch(error => fh(failure, error))
 }

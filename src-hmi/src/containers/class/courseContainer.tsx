@@ -47,6 +47,8 @@ export default connect<StateProps, ActionProps, any>(
     } else {
         let prePath = "/" + props.params.UE + "/" + props.params.course
 
+        console.log(props.statType)
+
         if(props.isTeacher) {
             return <TabsTemp 
             actualTabName={ props.name } 
@@ -64,7 +66,7 @@ export default connect<StateProps, ActionProps, any>(
                         <StatQuizContainer {...props}/> :
                     (props.statType == "SESSION" ?
                         <StatSessionContainer {...props}/> :
-                    (props.statType == "FEEDBACK" ? 
+                    (props.statType == "ATTENTION" ? 
                         <StatFeedbackContainer {...props}/> :
                         <StatTimelineContainer {...props}/>
                     )))
