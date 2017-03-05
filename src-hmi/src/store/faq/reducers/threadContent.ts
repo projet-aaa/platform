@@ -88,7 +88,8 @@ const reducer = handleActions({
                 item.text = item.title;
                 delete item.title;
 
-                item.date = new Date();
+                item.date = new Date(item.createdAt);
+                delete item.createdAt;
 
                 item.author = item.author.firstname + " " + item.author.lastname;
 

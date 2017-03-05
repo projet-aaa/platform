@@ -102,7 +102,7 @@ export function fetchSessionQuiz(sessionId: string, success: (quizs: Quiz[]) => 
 export function fetchSessionByName(sessionName: string, success, failure?) {
     fetcher('/sessions?name=' + sessionName)
     .then((res: any) => {
-        success(res)
+        success(res)   
     })
     .catch(error => fh(failure, error))
 }

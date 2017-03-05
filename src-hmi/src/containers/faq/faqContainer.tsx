@@ -33,17 +33,17 @@ function mapDispatchToProps(dispatch) {
         storeCurrentSession : (session) => dispatch(storeCurrentSession(session)),
 
         //Retrieve all thread information from server, and update store
-        fetchThreads : (threadId) => {dispatch(fetchThreads(threadId))},
+        fetchThreads : (threadIdList) => {dispatch(fetchThreads(threadIdList))},
 
         //Publish a question to the server
         postThread : (sessionId, question) => {
-            dispatch(postThread(sessionId,question));
-            dispatch(fetchThreads(sessionId))
+            if (question) {
+                dispatch(postThread(sessionId,question));
+            }
         },
 
         //Send the answer content to the server
         postThreadAnswer: (threadId,content) => {
-            console.log(content)
             if (content) {
                 dispatch(postThreadAnswer(threadId,content))
             }

@@ -5,7 +5,6 @@
 import * as React from "react"
 import { Link } from "react-router"
 import { MarkdownEditor } from "react-markdown-editor"
-import { markdown } from "markdown"
 
 //INTERNAL IMPORTS
 import { ThreadMessage, Thread } from "../../models/faq"
@@ -95,7 +94,7 @@ export class View extends React.Component<Props, any> {
                                     <div className="row">
                                         <div className="col-lg-12" style={{paddingTop: '20px'}}>
                                             <button className="btn btn-lg btn-primary pull-right" 
-                                                onClick={() =>  postThreadAnswer(markdown.toHTML(editorContent)) }>
+                                                onClick={() =>  postThreadAnswer(editorContent) }>
                                                     Envoyer la réponse
                                             </button>
                                         </div>

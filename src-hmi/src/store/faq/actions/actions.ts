@@ -63,29 +63,57 @@ export function fetchThreads(threadIdList: string[]) {
 
 export function postThread(sessionId: string, title: string) {
     return dispatch => {
-        let postObject = {
-            title: title,
-            text: title,
-            session: sessionId
-        };
-        fetcher('/threads', 'POST', postObject)
-        .then(res => {
-            dispatch({
-                type: APIActionTypes.POST_NEW_THREAD_SUCCESS,
-                payload: res
+        fetcher('/sessions/' + sessionId)
+        .then( res => {
+            let postObject = {
+                title: title,
+                text: title,
+                session: res["@id"]
+            };
+            fetcher('/threads', 'POST', postObject)
+            .then(res => {
+                dispatch({
+                    type: APIActionTypes.POST_NEW_THREAD_SUCCESS,
+                    payload: res
+                })
             })
-        })
-        .catch(error => {
-            console.log("Error posting thread to API");
-            console.log(error)
-            dispatch({
-                type: APIActionTypes.POST_NEW_THREAD_FAILURE,
-                payload: error
+            .catch(error => {
+                console.log("Error posting thread to API");
+                console.log(error)
+                dispatch({
+                    type: APIActionTypes.POST_NEW_THREAD_FAILURE,
+                    payload: error
+                })
             })
         })
     }
 }
 
 export function postThreadAnswer(threadId: string, answerContent: string) {
-
+    return dispatch => {
+        fetcher('/threads/' + threadId)
+        .then( res => {
+            let postObject = {
+                text: answerContent,
+                thread: res["@id"],
+                plusVoters: [],
+                downVoters: []
+            };
+            fetcher('/thread_messages', 'POST', postObject)
+            .then(res => {
+                dispatch({
+                    type: APIActionTypes.POST_THREAD_ANSWER_SUCCESS,
+                    payload: res
+                })
+            })
+            .catch(error => {
+                console.log("Error posting thread to API");
+                console.log(error)
+                dispatch({
+                    type: APIActionTypes.POST_NEW_THREAD_FAILURE,
+                    payload: error
+                })
+            })
+        })
+    }
 }
