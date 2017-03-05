@@ -31,6 +31,7 @@ class ThreadMessageAdmin extends AbstractAdmin
     {
         $listMapper->addIdentifier('id')
             ->add('author')
-            ->add('thread');
+            ->add('thread')
+            ->add('text');
     }
 }
