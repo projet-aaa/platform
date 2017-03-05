@@ -23,6 +23,7 @@ Feature: Manage ThreadMessages
     And I send a "POST" request to "/api/thread_messages" with body:
     """
     {
+      "thread": "/api/threads/rht30d20-fda0-11e6-aa56-0242ac110003",
       "text": "ThreadMessage text",
       "plusVoters": [],
       "downVoters": []

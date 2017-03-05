@@ -15,6 +15,7 @@ import LiveContainer from '../../containers/class/liveContainer'
 import StatSessionContainer from '../../containers/class/statSessionContainer'
 import StatQuizContainer from '../../containers/class/statQuizContainer'
 import StatFeedbackContainer from '../../containers/class/statFeedbackContainer'
+import StatTimelineContainer from '../../containers/class/statTimelineContainer'
 import QuestionnaireContainer from '../../containers/questionnaire/questionnaireContainer'
 
 import { AuthState } from "../../store/auth/reducer"
@@ -46,6 +47,8 @@ export default connect<StateProps, ActionProps, any>(
     } else {
         let prePath = "/" + props.params.UE + "/" + props.params.course
 
+        console.log(props.statType)
+
         if(props.isTeacher) {
             return <TabsTemp 
             actualTabName={ props.name } 
@@ -61,11 +64,12 @@ export default connect<StateProps, ActionProps, any>(
                 { props.name == "Statistique" ? 
                     (props.statType == "QUIZ" ?
                         <StatQuizContainer {...props}/> :
-                        (props.statType == "SESSION" ?
-                            <StatSessionContainer {...props}/> :
-                            <StatFeedbackContainer {...props}/>
-                        )
-                    )
+                    (props.statType == "SESSION" ?
+                        <StatSessionContainer {...props}/> :
+                    (props.statType == "ATTENTION" ? 
+                        <StatFeedbackContainer {...props}/> :
+                        <StatTimelineContainer {...props}/>
+                    )))
                     : <div>Shouldn't show</div> }
                 { props.name == "Direct" ?
                     <LiveContainer {...props}/> : <div>Shouldn't show</div> }

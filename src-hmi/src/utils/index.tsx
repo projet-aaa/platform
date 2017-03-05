@@ -123,6 +123,22 @@ export function createAPIActionCreator(
     }
 }
 
+export function plainFetcher(url, method?, obj?) {
+    let res: any = {
+        headers: {
+            Authorization: 'Bearer ' + (document as any).token
+        }
+    }
+    if(method) {
+        res.method = method
+    }
+    if(obj) {
+        res.headers['Content-type'] = 'application/ld+json'
+        res.body = JSON.stringify(obj)
+    }
+    return fetch(apiRootURL + url, res)
+}
+
 export function fetcher(url, method?, obj?) {
     let res: any = {
         headers: {

@@ -21,6 +21,9 @@ export interface StateProps {
     areNotChecked: any
     // the string which was in the search bar when the search button was clicked
     searchedString: string
+
+    showList: boolean
+    isTeacher: boolean
 }
 
 export interface ActionProps {
@@ -40,6 +43,9 @@ export class View extends React.Component<Props, any> {
             disciplines,
             areNotChecked,
             searchedString,
+            showList,
+            isTeacher,
+
             selectFilter,
             search
         } = this.props
@@ -72,36 +78,51 @@ export class View extends React.Component<Props, any> {
         // a list of sessions sorted by date
         return (
             <div className="row">
-                <div className="col-lg-8">
-                    <div className="row">
-                        <div className="input-group">
+                { showList ? 
+                <div>
+                    <div className="col-lg-8">
+                        <div className="row">
+                            <div className="input-group">
+                                    <input id="search" type="text" placeholder="Rechercher" className="form-control input-lg" onChange={ (event) => search(getText("search")) } />
 
-                                <input id="search" type="text" placeholder="Rechercher" className="form-control input-lg" onChange={ (event) => search(getText("search")) } />
-
-                                <div className="input-group-btn">
-                                    <button className="btn btn-lg btn-primary" onClick={ () => search(getText("search")) }>
-                                        <i className="fa fa-search"></i>
-                                    </button>
-                                </div>
+                                    <div className="input-group-btn">
+                                        <button className="btn btn-lg btn-primary" onClick={ () => search(getText("search")) }>
+                                            <i className="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                            </div>
+                        </div>
+                        <div className="row" style={ {marginTop:15} }>
+                            { sessionsRender }
                         </div>
                     </div>
-                    <div className="row" style={ {marginTop:15} }>
-                        { sessionsRender }
+                    <div className="col-lg-4">
+                        <div className="panel panel-grey">
+                            <div className="panel-heading">
+                                Filtres
+                            </div>
+                            <div className="panel-body pan">
+                                <ul>
+                                    { filtersRender }
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className="col-lg-4">
-                    <div className="panel panel-grey">
-                        <div className="panel-heading">
-                            Filtres
-                        </div>
-                        <div className="panel-body pan">
-                            <ul>
-                                { filtersRender }
-                            </ul>
-                        </div>
-                    </div>
+                :
+                <div className="col-lg-12">
+                { !isTeacher ?
+                    <h2>
+                        Vous n'avez pas de groupe, allez sur votre <b><Link to="/profil">profil</Link></b> pour choisir votre groupe.
+                    </h2>
+                   :
+                    <h2>
+                        Vous ne suivez aucune discipline, allez sur votre <b><Link to="/profil">profil</Link></b> pour choisir vos disciplines.
+                    </h2>
+                }
                 </div>
+                }
             </div>
-        );
+        )
     }
 }

@@ -14,6 +14,8 @@ use AppBundle\Entity\Question;
 use AppBundle\Entity\Session;
 use AppBundle\Entity\Test;
 use AppBundle\Entity\TextAnswer;
+use AppBundle\Entity\Thread;
+use AppBundle\Entity\ThreadMessage;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -30,7 +32,7 @@ class LoadDemoData extends AbstractFixture implements OrderedFixtureInterface
         //override id strategy for all fixtures objects
         $managed_classes = array(Discipline::class, Session::class, Test::class, Question::class,
             McqChoice::class, TextAnswer::class, Feedback::class, Alert::class,
-            McqAnswer::class);
+            McqAnswer::class, Thread::class, ThreadMessage::class);
         foreach ($managed_classes as $c) {
             $metadata = $manager->getClassMetaData($c);
             $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
@@ -193,6 +195,43 @@ class LoadDemoData extends AbstractFixture implements OrderedFixtureInterface
         $al1->setText("slow");
         $al1->setAlertType('tooSlow');
         $manager->persist($al1);
+
+        $thread1 = new Thread();
+        $thread1->setAuthor($this->getReference('usersmaurel'));
+        $thread1->setText('Thread1 text');
+        $thread1->setTitle('Thread1 title');
+        $thread1->setSession($session1);
+        $thread1->setId('thr34d10-fda0-11e6-aa56-0242ac110003');
+        $manager->persist($thread1);
+
+        $thread2 = new Thread();
+        $thread2->setAuthor($this->getReference('usereleve'));
+        $thread2->setText('Thread2 text');
+        $thread2->setTitle('Thread2 title');
+        $thread2->setSession($session1);
+        $thread2->setId('rht30d20-fda0-11e6-aa56-0242ac110003');
+        $manager->persist($thread2);
+
+        $thread1_a = new ThreadMessage();
+        $thread1_a->setAuthor($this->getReference('uservachard'));
+        $thread1_a->setText('First');
+        $thread1_a->setThread($thread1);
+        $thread1_a->setId('uvw14s97-fda0-11e6-aa56-0242ac110003');
+        $manager->persist($thread1_a);
+
+        $thread1_b = new ThreadMessage();
+        $thread1_b->setAuthor($this->getReference('userabeyet'));
+        $thread1_b->setText('## Markdown solid second');//not put into html because id is set.
+        $thread1_b->setThread($thread1);
+        $thread1_b->setId('tho08s01-fda0-11e6-aa56-0242ac110003');
+        $manager->persist($thread1_b);
+
+        $thread1_c = new ThreadMessage();
+        $thread1_c->setAuthor($this->getReference('userabeyet'));
+        $thread1_c->setText('<h2>Make html great again</h2>');//not put into html because id is set.
+        $thread1_c->setThread($thread1);
+        $thread1_c->setId('eme30s14-fda0-11e6-aa56-0242ac110003');
+        $manager->persist($thread1_c);
 
         $manager->flush();
     }

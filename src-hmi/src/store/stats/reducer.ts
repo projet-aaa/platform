@@ -23,6 +23,8 @@ export interface StatState {
     quizChoices: any[]
 
     currentQuizId: string
+
+    timeline: string
 }
 
 let initialState: StatState = {
@@ -35,11 +37,13 @@ let initialState: StatState = {
     quiz: null,
     quizChoices: null,
     currentQuizId: null,
+
+    timeline: null
 }
 
 const name = "stat"
 const reducer = handleActions({
-    [APIActionTypes.FETCH_STATS_SUCCESS]: function(state: StatState, action: any): StatState {
+    [APIActionTypes.FETCH_STATS_SUCCESS]: function(state: StatState, action): StatState {
         let obj = {}
         action.payload.quiz.forEach(q => {
             obj[q.id] = q
@@ -53,6 +57,11 @@ const reducer = handleActions({
             quiz: obj,
             quizChoices: action.payload.quizChoices,
             currentQuizId: action.payload.quiz[0].id
+        })
+    },
+    [APIActionTypes.FETCH_TIMELINE_SUCCESS]: function(state: StatState, action): StatState {
+        return Object.assign({}, state, {
+            timeline: action.payload.timeline
         })
     },
     [ActionTypes.CHOOSE_QUIZ]: function(state: StatState, action): StatState {

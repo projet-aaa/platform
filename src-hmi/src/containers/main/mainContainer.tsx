@@ -20,7 +20,9 @@ function mapStateToProps(state): StateProps {
                     .sort((elt1, elt2) => elt2.date - elt1.date),
         disciplines: auth.disciplines,
         areNotChecked: state.main.areNotChecked,
-        searchedString: state.main.searchedString
+        searchedString: state.main.searchedString,
+        showList: (!auth.isTeacher && auth.group != null) || (auth.isTeacher && auth.disciplines != null),
+        isTeacher: auth.isTeacher
     }
 }
 

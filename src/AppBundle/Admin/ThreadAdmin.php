@@ -16,7 +16,8 @@ class ThreadAdmin extends AbstractAdmin
         ->add('text')
         ->add('threadMessages')
         ->add('session')
-        ->add('author');
+        ->add('author')
+        ->add('createdAt');
     }
 
     // Fields on which entities can be filtered.
@@ -33,6 +34,7 @@ class ThreadAdmin extends AbstractAdmin
             ->add('title')
             ->add('text')
             ->add('session')
-            ->add('author');
+            ->add('author')
+            ->add('createdAt');
     }
 }
