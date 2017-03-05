@@ -3,7 +3,7 @@
  * through callbacks
  */
 
-import { listFetcher, fetcher, findAllIndex, parseAPIDate } from "../utils"
+import { listFetcher, fetcher, plainFetcher, findAllIndex, parseAPIDate } from "../utils"
 
 import { Test, Quiz, QuizType, AttentionStateType } from "../models/class/class"
 import { Discipline } from '../models/discipline'
@@ -256,5 +256,11 @@ export function fetchSessionStats(sessionId: string, success, failure?) {
             })
         })
     })
+    .catch(error => fh(failure, error))
+}
+
+export function fetchTimeline(sessionId: string, success, failure?) {
+    plainFetcher('/sessions/' + sessionId + "/timeline", 'GET')
+    .then(res => success(res.body))
     .catch(error => fh(failure, error))
 }

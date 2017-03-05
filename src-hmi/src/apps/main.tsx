@@ -121,6 +121,9 @@ let MainRouter =
                     <Route path=":profName/attention" component={ (p, c) => 
                         <CourseContainer name="Statistique" {...p} statType={ "ATTENTION" } /> }
                     />
+                    <Route path=":profName/timeline" component={ (p, c) => 
+                        <CourseContainer name="Statistique" {...p} statType={ "TIMELINE" } /> }
+                    />
                 />
                 </Route>
                 <Route path="direct" component={ (p, c) =>  <CourseContainer name="Direct" {...p} /> } />
