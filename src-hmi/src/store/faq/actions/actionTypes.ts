@@ -2,7 +2,8 @@ import { Thread } from "../../../models/faq"
 
 export const ActionTypes = {
     CHANGE_ANSWER_VALUE: "FAQ/CHANGEANSWERVALUE",
-    CHANGE_QUESTION_VALUE: "FAQ/CHANGEQUESTIONVALUE"
+    CHANGE_QUESTION_VALUE: "FAQ/CHANGEQUESTIONVALUE",
+    STORE_CURRENT_SESSION: "FAQ/STORE_CURRENT_SESSION"
 }
 
 export const APIActionTypes = {

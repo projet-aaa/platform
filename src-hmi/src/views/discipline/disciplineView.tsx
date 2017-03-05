@@ -25,7 +25,7 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
-            sessions
+            sessions, currDisciplineName
         } = this.props;
 
         var CMRender = []
@@ -34,21 +34,21 @@ export class View extends React.Component<Props, any> {
         for (var i=0; i<sessions.length; i++) {
             if (sessions[i].sessionType == SessionType.CM) {
                 CMRender.push(
-                    <Link to={ sessions[i].discipline + "/" + sessions[i].sessionName } key={i} className="list-group-item">
+                    <Link to={ currDisciplineName + "/" + sessions[i].sessionName } key={i} className="list-group-item">
                         { ddmmyyyy(sessions[i].date) } | { sessions[i].sessionName }
                     </Link>
                 )
             }
             if (sessions[i].sessionType == SessionType.TD) {
                 TDRender.push(
-                    <Link to={ sessions[i].discipline + "/" + sessions[i].sessionName } key={i} className="list-group-item">
+                    <Link to={ currDisciplineName + "/" + sessions[i].sessionName } key={i} className="list-group-item">
                         { ddmmyyyy(sessions[i].date) } | { sessions[i].sessionName }
                     </Link>
                 )
             }
             if (sessions[i].sessionType == SessionType.TP) {
                 TPRender.push(
-                    <Link to={ sessions[i].discipline + "/" + sessions[i].sessionName } key={i} className="list-group-item">
+                    <Link to={ currDisciplineName + "/" + sessions[i].sessionName } key={i} className="list-group-item">
                         { ddmmyyyy(sessions[i].date) } | { sessions[i].sessionName }
                     </Link>
                 )

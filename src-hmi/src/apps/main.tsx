@@ -15,6 +15,7 @@ import sessionsInfo from '../store/sessions/reducer'
 import threadMessageInputInfo from '../store/faq/reducers/answerInput'
 import threadContentInfo from '../store/faq/reducers/threadContent'
 import questionInputInfo from '../store/faq/reducers/questionInput'
+import currSessionInfo from '../store/faq/reducers/currSession'
 import wsServerInfo from '../store/wsrooms/reducer'
 import questionnaireInfo from '../store/questionnaire/reducers/reducer'
 import authInfo from '../store/auth/reducer'
@@ -58,6 +59,7 @@ let store = storeFactory([
     threadMessageInputInfo,
     threadContentInfo,
     questionInputInfo,
+    currSessionInfo,
     wsServerInfo,
     questionnaireInfo,
     authInfo,

@@ -4,16 +4,19 @@
 // EXTERAL IMPORTS
 import * as React from "react"
 import { Link } from "react-router"
+import { MarkdownEditor } from "react-markdown-editor"
 
 //INTERNAL IMPORTS
 import { Thread } from "../../models/faq"
 import { View as FaqQuestionView } from "../../views/faq/faqQuestionView"
+import { Session } from "../../models/session"
+
 
 export type StateProps = {
     //The list of question for this FAQ
     threadList:  Thread[]
-    //The id of the chapter this FAQ is related to
-    sessionId: string
+    //The current session
+    currSession: string
     //The content of the input used to ask a new question
     questionValue: string
     //The content of each answer editor indexed by thread id
@@ -22,12 +25,12 @@ export type StateProps = {
 
 export interface ActionProps {
     //Publish a new question
-    postThread(sessionId:string, question:string)
+    postThread(sessionId: string, question:string)
     //Send the answer to the server
     postThreadAnswer(threadId: string, content: string)
 
     //Update the store with the new content of the new question input
-    changeQuestionInput(sessionId:string, changeEvent: string)
+    changeQuestionInput(changeEvent: any)
     //Update the store with the new content of the answer input
     changeAnswerInput(threadId:string, content:string)
 
@@ -40,7 +43,7 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
-            threadList, sessionId, questionValue, editorContents,
+            threadList, currSession, questionValue, editorContents,
             postThread, postThreadAnswer, 
             changeQuestionInput, changeAnswerInput
         } = this.props;
@@ -73,13 +76,13 @@ export class View extends React.Component<Props, any> {
                 <div className="row">
                     <div className="col-lg-12">
                         <h2> Poser une question : </h2>
-                        <input style={{width: '100%'}} className="form-control" placeholder="Votre question"  onChange={(event) => changeQuestionInput(sessionId, event.target.value)} />
+                        <input style={{width: '100%'}} className="form-control" placeholder="Le titre de votre question"  onChange={(event) => changeQuestionInput(event.target.value)} />
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-lg-12">
                         <div className="text-right" style={{paddingTop: '20px'}}>   
-                            <button className="btn btn-lg btn-primary" onClick={() => postThread(sessionId,questionValue)}>Publier la question</button>
+                            <button className="btn btn-lg btn-primary" onClick={() => postThread(currSession, questionValue)}>Publier la question</button>
                         </div>
                     </div>
                 </div>

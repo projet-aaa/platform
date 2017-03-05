@@ -34,10 +34,12 @@ export default rootWrapper(
                 sessions: res["hydra:member"][0].sessions
              }
             props.fetchSessions(discipline)
+            d()
         })  
-        .catch(error => 
-            console.log(error))
-        d()
+        .catch(error => {
+            d() 
+            console.log(error)})
+        
     },
     null,
     View
