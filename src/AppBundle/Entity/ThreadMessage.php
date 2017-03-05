@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use AppBundle\Service\Parsedown;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -91,6 +92,13 @@ class ThreadMessage
      */
     public function prePersist(){
         $this->createdAt = new \DateTime('now');
+
+        //md to html, only the first time.
+        if(!$this->getId()){
+            $parser = new Parsedown();
+            $this->text= $parser->parse($this->text);
+        }
+
     }
 
     /** auto generated methods */
