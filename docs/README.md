@@ -1,34 +1,34 @@
 #Documentation : Table of contents
 
- - [Back-end](/back-end)
+ - [Back-end](/docs/back-end)
 
-    - [Technology options](/back-end/technology-options.md)
+    - [Technology options](/docs/back-end/technology-options.md)
    
-    - [Architecture](/back-end/architecture.md)
+    - [Architecture](/docs/back-end/architecture.md)
    
-    - [Install](/back-end/install.md)
+    - [Install](/docs/back-end/install.md)
   
-    - [(optionnal) SSL Setup](/back-end/ssl-setup.md)
+    - [(optionnal) SSL Setup](/docs/back-end/ssl-setup.md)
   
-    - [API](/back-end/api.md)
+    - [API](/docs/back-end/api.md)
     
-    - [Integration & Imports](/back-end/integration-imports.md)
+    - [Integration & Imports](/docs/back-end/integration-imports.md)
   
-    - [Dev - Redis messages](/back-end/redis-messages.md)
+    - [Dev - Redis messages](/docs/back-end/redis-messages.md)
     
-    - [Tests](/back-end/tests.md)
+    - [Tests](/docs/back-end/tests.md)
 
-    - [Socket server](/back-end/socket-server.md)
+    - [Socket server](/docs/back-end/socket-server.md)
     
- - [Browser front-end](/browser-front-end)    
+ - [Browser front-end](/docs/browser-front-end)    
 
-    - [React architecture](/browser-front-end/react-architecture.md)
+    - [React architecture](/docs/browser-front-end/react-architecture.md)
 
-    - [Build process](/browser-front-end/build-process.md)
+    - [Build process](/docs/browser-front-end/build-process.md)
  
-    - [Dev Tools](/browser-front-end/dev-tools.md)
+    - [Dev Tools](/docs/browser-front-end/dev-tools.md)
 
- - [Mobile front-end](/mobile-front-end)
+ - [Mobile front-end](/docs/mobile-front-end)
 
 #Launch the project
 
