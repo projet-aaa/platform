@@ -7,7 +7,7 @@ import { StateProps, ActionProps, View } from "../../views/stats/statFeedbackVie
 import { fetchSessionStats, fetchSessionByName } from "../../api/fetchs"
 import { fetchStatsSuccess } from "../../store/stats/actions"
 
-function mapStateToProps(state: any, ownProps: any): StateProps {
+function mapStateToProps(state, ownProps) {
     return { 
         panic: state.stat.panic,
         tooSlow: state.stat.tooSlow,
@@ -18,9 +18,7 @@ function mapStateToProps(state: any, ownProps: any): StateProps {
 }
 function mapDispatchToProps(dispatch, ownProps) {
     return {
-        fetchStatsSuccess: (res) => dispatch(fetchStatsSuccess(res)),
-        goToQuiz: () => console.log("go to quiz"),
-        goToSessions: () => console.log("go to sessions")
+        fetchStatsSuccess: (res) => dispatch(fetchStatsSuccess(res))
     }
 }
 

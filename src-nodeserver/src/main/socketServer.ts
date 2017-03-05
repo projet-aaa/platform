@@ -6,8 +6,10 @@ import { ClassRoom } from '../rooms/classRoom'
 
 import { SocketOutMsg } from '../models/main'
 
+/* SOCKET SERVER
+ * Handles the basic communication, connection and disconnection
+ */
 export class SocketServer {
-
     io
     redis
     rooms: IRoom[]
@@ -17,6 +19,7 @@ export class SocketServer {
 
     log: boolean
 
+    // Requires the io server, the redis client and a boolean signalling whether we need to log information or not
     constructor(io, redis, log) {
         this.io = io
         this.redis = redis
@@ -99,14 +102,14 @@ export class SocketServer {
                     for(let quiz of msg.quiz) {
                         quizs[quiz.id] = quiz
                     }
-                    (room as ClassRoom).quiz = quizs;
-                    (room as ClassRoom).sessionId = msg.sessionId;
-                    (room as any).iriSessionId = msg.iriSessionId
+                    (room as ClassRoom).quiz = quizs
                 }
                 break
             }
         }
 
+        room.sessionId = msg.sessionId
+        room.iriSessionId = msg.iriSessionId
         this.rooms[id] = room
         
         room.teacher = teacher

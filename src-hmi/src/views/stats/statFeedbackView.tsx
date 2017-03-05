@@ -17,11 +17,11 @@ export interface StateProps {
         commenter: string
         date: Date    
     }[]
+    params
 }
 
 export interface ActionProps {
-    goToQuiz()
-    goToSessions()
+    
 }
 
 const panicColor = "#FF6384"
@@ -71,25 +71,26 @@ export class View extends React.Component<Props, any> {
             tooFast,
             date,
             comments,
-
-            goToQuiz,
-            goToSessions
+            params
         } = this.props
 
         let data = this.calculateData(panic, tooSlow, tooFast, date)
 
         return (
-            <div className="page-content">
+            <div className="col-lg-12">
                 <div className="row">
                     <div className="col-lg-12">
-                        <button type="button" className="btn btn-primary" onClick={ goToQuiz }>
-                            Voir les résultats du quiz
-                        </button>
-                        <button type="button" className="btn btn-primary" onClick={ goToSessions }>
-                            Retourner aux sessions
-                        </button>
+                        <h2>Retours des élèves</h2>
+                        <Link to={ "/" + params.UE + "/" + params.course + "/statistique/prof/quiz" }>
+                            Regarder les résultats des quiz
+                        </Link><br/>
+                        <Link to={ "/" + params.UE + "/" + params.course + "/statistique/" }>
+                            Retour
+                        </Link>
                     </div>
                 </div>
+
+                <br/>
 
                 <div className="panel">
                     <div className="panel-heading">
@@ -113,6 +114,6 @@ export class View extends React.Component<Props, any> {
                     </div>
                 </div>
             </div>
-        );
+        )
     }
 }

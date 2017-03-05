@@ -54,6 +54,11 @@ const reducer = handleActions({
             quizChoices: action.payload.quizChoices,
             currentQuizId: action.payload.quiz[0].id
         })
+    },
+    [ActionTypes.CHOOSE_QUIZ]: function(state: StatState, action): StatState {
+        return Object.assign({}, state, {
+            currentQuizId: action.payload.quizId
+        })
     }
 }, initialState);
 

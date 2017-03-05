@@ -1,0 +1,43 @@
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="timeline-centered timeline-sm">
+
+            {% for event in events %}
+                {% set alert = (event.alertType is defined) %}
+                <article class="timeline-entry">
+                    <div class="timeline-entry-inner">
+                        <time datetime="{{ event.createdAt | date('Y/m/d g:i a') }}" class="timeline-time">
+                            <span>{{ event.createdAt | date('g:i') }}</span>
+                            <span>{{ event.createdAt | date('d/m/Y') }}</span></time>
+
+                        {% if not alert %}
+                            <div class="timeline-icon bg-violet"><i class="fa fa-comment"></i></div>
+                            <div class="timeline-label">
+                                <h4 class="timeline-title">Comment</h4>
+                                <p>{{ event.text }}</p>
+                            </div>
+                        {% else %}
+                            {% if event.alertType == 'page' %}
+                                {% set bg = 'info' %}
+                            {% elseif event.alertType == 'panic' %}
+                                {% set bg = 'danger' %}
+                            {% elseif event.alertType == 'good' %}
+                                {% set bg = 'success' %}
+                            {% elseif event.alertType == 'tooSlow' %}
+                                {% set bg = 'grey' %}
+                            {% elseif event.alertType == 'tooFast' %}
+                                {% set bg = 'orange' %}
+                            {% endif %}
+                            <div class="timeline-icon bg-{{ bg }}"><i class="fa fa-exclamation"></i></div>
+                            <div class="timeline-label">
+                                <h4 class="timeline-title">{{ event.alertType }}</h4>
+                                <p>{{ event.text }}</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </article>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>

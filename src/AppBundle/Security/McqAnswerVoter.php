@@ -109,7 +109,7 @@ class McqAnswerVoter extends BaseVoter
      */
     private function canUpdate(McqAnswer $mcqAnswer, User $user)
     {
-        return $mcqAnswer->getAuthor() === $user || in_array('ROLE_PROF', $this->getRolesHierarchy($user->getRoles()));
+        return $mcqAnswer->getAuthor() === $user || in_array('ROLE_ADMIN', $this->getRolesHierarchy($user->getRoles()));
     }
 
     /**
@@ -121,6 +121,6 @@ class McqAnswerVoter extends BaseVoter
      */
     private function canDelete(McqAnswer $mcqAnswer, User $user)
     {
-        return $mcqAnswer->getAuthor() === $user || in_array('ROLE_PROF', $this->getRolesHierarchy($user->getRoles()));
+        return $mcqAnswer->getAuthor() === $user || in_array('ROLE_ADMIN', $this->getRolesHierarchy($user->getRoles()));
     }
 }

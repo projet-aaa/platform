@@ -1,10 +1,21 @@
+/* -- API
+ * helper functions that make API calls (mostly GETs), process the results and send the results
+ * through callbacks
+ */
+
 import { listFetcher, fetcher, findAllIndex, parseAPIDate } from "../utils"
 
 import { Test, Quiz, QuizType, AttentionStateType } from "../models/class/class"
 import { Discipline } from '../models/discipline'
 import { Session } from '../models/session'
 
-export function fetchTest(testId: string, success?: (obj) => void, failure?: (obj) => void) {
+// failure handler: a small handler for logging errors in case of no failure handling
+function fh(failure, obj) {
+    return failure == null ? () => console.log(obj) : () => failure(obj)
+}
+
+// fetches a Test if given its ID
+export function fetchTest(testId: string, success: (obj) => void, failure?: (obj) => void) {
     fetcher('/tests/' + testId + '/tree', 'GET')
     .then((res: any) => {
         let test: Test = {
@@ -34,12 +45,11 @@ export function fetchTest(testId: string, success?: (obj) => void, failure?: (ob
         }
         success(test)
     })
-    .catch(error => {
-        failure(error)
-    })
+    .catch(error => fh(failure, error))
 }
 
-export function fetchSessionTests(sessionId: string, success?: (quizs: Quiz[]) => void, failure?) {
+// fetches the list of tests of a given session if given a session ID
+export function fetchSessionTests(sessionId: string, success: (quizs: Quiz[]) => void, failure?) {
     fetcher('/sessions/' + sessionId, 'GET')
     .then((res: any) => {
         let todo = res.tests.length,
@@ -56,14 +66,15 @@ export function fetchSessionTests(sessionId: string, success?: (quizs: Quiz[]) =
                         success(resList)
                     }
                 }, 
-                obj => failure(obj)
+                obj => fh(failure, obj)
             )
         })
     })
-    .catch(error => failure(error))
+    .catch(error => fh(failure, error))
 }
 
-export function fetchSessionQuiz(sessionId: string, success?: (quizs: Quiz[]) => void, failure?) {
+// fetches the list of all quizzes associated to a session (fetches all the tests and fetches all the questions)
+export function fetchSessionQuiz(sessionId: string, success: (quizs: Quiz[]) => void, failure?) {
     fetcher('/sessions/' + sessionId, 'GET')
     .then((res: any) => {
         let todo = res.tests.length,
@@ -80,25 +91,28 @@ export function fetchSessionQuiz(sessionId: string, success?: (quizs: Quiz[]) =>
                         success(resList)
                     }
                 }, 
-                obj => failure(obj)
+                obj => fh(failure, obj)
             )
         })
     })
-    .catch(error => failure(error))
+    .catch(error => fh(failure, error))
 }
 
-export function fetchSessionByName(sessionName: string, success?, failure?) {
+// fetch a session by name
+export function fetchSessionByName(sessionName: string, success, failure?) {
     fetcher('/sessions?name=' + sessionName)
     .then((res: any) => {
         success(res)
     })
-    .catch(error => failure(error))
+    .catch(error => fh(failure, error))
 }
 
+// fetch all the session associated to a discipline
 export function fetchDisciplineSessions(disciplineName: string, disciplineId: string, success?, failure?) {
     fetchDisciplinesSessions([disciplineName], [disciplineId], success, failure)
 }
 
+// fetch all the session associated to a list of disciplines
 export function fetchDisciplinesSessions(disciplineNames: string[], disciplineIds: string[], success?, failure?) {
     fetcher('/sessions?' + disciplineIds.map(d => 'discipline[]=' + d).join('&'), 'GET')
     .then((res: any) => {
@@ -117,10 +131,11 @@ export function fetchDisciplinesSessions(disciplineNames: string[], disciplineId
             }
         }))
     })
-    .catch(error => failure)
+    .catch(error => fh(failure, error))
 }
 
-export function fetchSessionStats(sessionId: string, success?, failure?) {
+// fetch all the stat relative to a session: every answer, every comments and every alerts
+export function fetchSessionStats(sessionId: string, success, failure?) {
     let alerts = null,
         comments = null,
         quiz = null,
@@ -184,14 +199,9 @@ export function fetchSessionStats(sessionId: string, success?, failure?) {
             panicCurve,
             dates
         })
-        console.log("alerts", alerts)
         tryEnd()
     })
-    .catch(error => { if(failure) {
-        failure(error)
-    } else {
-        console.log(error)
-    }})
+    .catch(error => fh(failure, error))
 
     fetcher('/feedbacks?session=' + sessionId, 'GET')
     .then((res: any) => res['hydra:member'])
@@ -204,21 +214,13 @@ export function fetchSessionStats(sessionId: string, success?, failure?) {
     }))
     .then(res => {
         comments = res
-        console.log("comments", comments)
         tryEnd()
     })
-    .catch(error => { if(failure) {
-        failure(error)
-    } else {
-        console.log(error)
-    }})
+    .catch(error => fh(failure, error))
 
     fetchSessionQuiz(sessionId, 
         obj => {
             quiz = obj
-            // obj.forEach(q => {
-            //     quiz[q.id] = q
-            // })
             tryEnd()
         }
     )
@@ -254,4 +256,5 @@ export function fetchSessionStats(sessionId: string, success?, failure?) {
             })
         })
     })
+    .catch(error => fh(failure, error))
 }

@@ -11,7 +11,8 @@ import { id, username, password } from "../models/consts"
 export default function rootWrapper(mapState, mapDispatch, mergeProps, onEnter: (props, done: () => void) => void, onExit: (props) => void, Component) {
     function mapStateToProps(state) {
         return { 
-            mainLoading: state.navigation.mainLoading
+            mainLoading: state.navigation.mainLoading,
+            fix: state.navigation.fix
         }
     }
     function mapDispatchToProps(dispatch) {
@@ -29,14 +30,19 @@ export default function rootWrapper(mapState, mapDispatch, mergeProps, onEnter: 
         componentWillMount () {
             this.props.startMainLoad()
             this.loading = true
-            this.timeout = setTimeout(() => {
+            setTimeout(() => {
+                this.loading = false
                 this.props.endFixLoad()
             }, 100)
             this.props.auth(() => {
                 if(onEnter) { 
-                    onEnter(this.props, () => this.props.endMainLoad()) 
+                    onEnter(this.props, () => {
+                        this.props.endMainLoad()
+                        this.loading = false
+                    }) 
                 } else {
                     this.props.endMainLoad()
+                    this.loading = false
                 }
             })
         }
@@ -61,11 +67,9 @@ export default function rootWrapper(mapState, mapDispatch, mergeProps, onEnter: 
         render () { 
             let tmp = this.loading
             this.loading = false
-            clearTimeout(this.timeout)
             
             return (!this.props.mainLoading && !tmp ? 
-                <Component {...this.props} /> : 
-                <div className="loader" style={ { } }></div>) 
+                <Component {...this.props}/> : <div className="loader"></div>) 
         }
     }
         

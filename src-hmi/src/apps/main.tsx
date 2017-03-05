@@ -1,3 +1,10 @@
+/* -- MAIN
+ * The root of the entire website: contains the list of redux reducers used (representing the 
+ * global state) and the urls of the website. Some of the URL references within the website are
+ * hard coded so be carefull when modifying the URLs on this page.
+ */
+
+// EXTERNAL
 import 'babel-polyfill'
 
 import * as ReactDOM from 'react-dom'
@@ -68,7 +75,7 @@ let store = storeFactory([
     navigationInfo
 ], true, auth)
     
-// ROUTE
+// THE WEBSITES REACT ROUTES
 let MainRouter =
 (<Provider store={store}>
     <Router history={hashHistory}>

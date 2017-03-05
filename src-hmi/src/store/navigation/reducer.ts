@@ -5,10 +5,12 @@ import { ActionTypes } from "./actions"
 export interface NavigationState {
     // the list of not checked disciplines in filters : discipline name -> is checked
     mainLoading: boolean
+    fix: boolean
 }
 
 let initialState: NavigationState = {
-    mainLoading: false
+    mainLoading: false,
+    fix: false
 }
 
 const name = "navigation"
@@ -24,7 +26,9 @@ const reducer = handleActions({
         })
     },
     [ActionTypes.END_FIX_LOAD]: function(state: NavigationState, action): NavigationState {
-        return Object.assign({}, state)
+        return Object.assign({}, state, {
+            fix: !state.fix
+        })
     }
 }, initialState)
 

@@ -4,9 +4,9 @@ import rootWrapper from "../../wrappers/rootWrapper"
 
 import { StateProps, ActionProps, View } from "../../views/class/mainView"
 
-function mapStateToProps(state: any, ownProps: any): StateProps {
+function mapStateToProps(state, ownProps) {
     return { 
-        
+        isTeacher: state.auth.isTeacher
     }
 }
 function mapDispatchToProps(dispatch, ownProps): ActionProps {

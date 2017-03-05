@@ -19,14 +19,10 @@ use AppBundle\Service as Assert2;
  *     "denormalization_context"={"groups"={"write"}},
  *     "filters"={"mcq_answer.search"}
  * })
- * @UniqueEntity(
- *     fields={"author", "mcqChoice"},
- *     errorPath="mcqChoice",
- *     message="This author already has already answered that Choice"
- * )
  * @Assert2\McqAnswerConsistent()
  * @ORM\Entity(repositoryClass="AppBundle\Entity\McqAnswerRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="author_mcqchoice_uni", columns={"author_id", "mcqchoice_id"})})
  */
 class McqAnswer implements \JsonSerializable
 {
@@ -94,7 +90,7 @@ class McqAnswer implements \JsonSerializable
      */
     public function __toString()
     {
-        return 'McqAnswer '.$this->getId();
+        return 'McqAnswer ' . $this->getId();
     }
 
     /**
@@ -102,21 +98,18 @@ class McqAnswer implements \JsonSerializable
      */
     public function isQuestionMcqChoiceConsistent()
     {
-        return $this->mcqChoice->getQuestion() == $this->getQuestion();
-    }
-
-    /**
-     * @Assert\IsTrue(message = "You can't have multiple McqAnswer for a non 'multiple' question.")
-     */
-    public function isNumberMcqChoiceConsistent()
-    {
-        return $this->mcqChoice->getQuestion() == $this->getQuestion();
+        if ($this->getQuestion() && $this->getMcqChoice()) {
+            return $this->mcqChoice->getQuestion() == $this->getQuestion();
+        } else {
+            return false;
+        }
     }
 
     /**
      * @ORM\PrePersist()
      */
-    public function prePersist(){
+    public function prePersist()
+    {
         $this->createdAt = new \DateTime('now');
     }
 

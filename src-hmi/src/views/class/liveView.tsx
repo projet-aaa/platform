@@ -7,6 +7,8 @@ import { RoomInfo } from "../../models/wsServer/server"
 
 export interface StateProps { 
     rooms: RoomInfo[]
+    isTeacher: boolean
+    username: string
 }
 
 export interface ActionProps { 
@@ -21,23 +23,32 @@ export class View extends React.Component<Props, any> {
     render() {
         const {
             rooms,
+            isTeacher,
+            username,
 
             genURL            
         } = this.props
 
         return (
-            <div>
-                <h2>Salles ouvertes</h2>
-                { rooms &&
-                    <ul className="list-group">
-                    {rooms.map(room => {
-                        return <Link to={ genURL(room.teacher) } className="list-group-item"> 
-                            { genURL(room.teacher) } : { room.teacher }
-                        </Link>
-                    })}
-                    </ul>
-                }
+            <div className="col-lg-12"> 
+                <div className="row">
+                    <div className="col-lg-12">
+                        <h2>Salles ouvertes</h2>
+                        { rooms &&
+                            <ul className="list-group">
+                            {rooms.map(room => {
+                                return <Link to={ genURL(room.teacher) } className="list-group-item"> 
+                                    { genURL(room.teacher) } : { room.teacher }
+                                </Link>
+                            })}
+                            </ul>
+                        }
+                        { isTeacher && 
+                            <Link to={ genURL(username) }>Créer ou rejoindre la salle à mon nom</Link> 
+                        }
+                    </div>
+                </div>
             </div>
-        );
+        )
     }
 }

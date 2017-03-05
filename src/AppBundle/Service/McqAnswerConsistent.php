@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class McqAnswerConsistent extends Constraint
 {
-    public $message = 'A question of type %type% can\'t have %number% answers. (%expected% expected)';
+    public $message = 'A question of type %type% can\'t have %number% answers from the same author. (%expected% expected)';
 
     public function validatedBy()
     {
