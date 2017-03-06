@@ -14,7 +14,9 @@ export const chartColors = [
 ]
 
 export const debug = true
-export const devtools = true
+// can't be set to false: if you want to set it to false (remove dev routes notably)
+// remove the routes in the dev section
+export const devtools = true 
 export const log = true
 
 const domainWS = debug ? "localhost" : "jetpack0.trendio.fr"

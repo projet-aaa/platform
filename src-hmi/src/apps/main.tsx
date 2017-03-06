@@ -76,25 +76,14 @@ let store = storeFactory([
 ], true, auth)
     
 // THE WEBSITES REACT ROUTES
+// cf. urls.md for the description of every page. Any modification here should be copied and documented
+// in urls.md
 let MainRouter =
 (<Provider store={store}>
     <Router history={hashHistory}>
         <Route path="/" component={ TopBandLeftMenuTemp }>
             <IndexRoute component={ MainContainer }/>
         </Route>
-
-        { devtools && <Route path="/login" component={ LoginContainer }/> }
-        { devtools && <Route path="/close_room/:prof" component={ CloseRoomContainer }/> }
-        { devtools && <Route path="/test" component={ rootWrapper(
-            (st => {return { }}),
-            (dp => {return { }}),
-            null,
-            (props, done) => {
-                done()
-            },
-            props => { },
-            (props, ctx) => <div>Un test</div>
-        )}/>}
 
         <Route path="/profil" component={ TopBandLeftMenuTemp }>
             <IndexRoute component={ ProfileContainer }/>
@@ -132,6 +121,9 @@ let MainRouter =
                 <Route path="questionnaires" component={ (p, c) => <CourseContainer name="Questionnaires" {...p} /> } />
             </Route>
         </Route>
+
+        { devtools && <Route path="/login" component={ LoginContainer }/> }
+        { devtools && <Route path="/close_room/:prof" component={ CloseRoomContainer }/> }
     </Router>
 </Provider>)
 
