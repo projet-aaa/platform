@@ -4,7 +4,7 @@ import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
 import { View as AnswerViewMobile} from "./answerViewMobile"
-import { QuizType, Quiz, QuizLocalChoice } from "../../models/class/class"
+import { QuizType, Quiz } from "../../models/class/class"
 import { getText } from "../../utils/index"
 
 export interface StateProps {
@@ -75,7 +75,7 @@ export class View extends React.Component<Props, any> {
                         ind={ i } 
                         text={ item } 
                         choose={ choose == null ? () => { } : () => choose(i) } 
-                        chosen={ quiz.type == QuizType.MMCQ ? quizChoice.indexOf(i) >= 0 : quizChoice == i }
+                        chosen={ quizChoice && quiz.type == QuizType.MMCQ ? quizChoice.indexOf(i) >= 0 : quizChoice == i }
                         rightAnswer={ quiz.type == QuizType.MMCQ ? quiz.answer.indexOf(i) >= 0 : quiz.answer == i }
                         showCorrection={ showCorrection }
                         forceUnfold={ forceUnfold }

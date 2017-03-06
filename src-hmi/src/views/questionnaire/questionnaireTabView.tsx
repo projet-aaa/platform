@@ -7,7 +7,7 @@ import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
 // INTERNAL IMPORTS
-import { QuizType, Quiz, QuizLocalChoice, Test } from "../../models/class/class"
+import { QuizType, Quiz, Test } from "../../models/class/class"
 import { View as QuizView } from "../../views/quiz/quizView"
 import { View as QuizViewMobile } from "../../views/quiz/quizViewMobile"
 import { getCbValue } from '../../utils'
@@ -22,7 +22,7 @@ export interface StateProps {
     // actual quiz
     currentQuiz: Quiz
     // the list of choices for each quiz
-    quizChoices: QuizLocalChoice[]
+    quizChoices: any[]
     // the mode of quiz consultation (answer or correction)
     quizMode: string
     // the user score
@@ -86,11 +86,12 @@ export class View extends React.Component<Props, any> {
             prevQuiz,
             seeCorrection,
             returnToChoices
-        } = this.props;
+        } = this.props
         
+        console.log(quizChoices)
 
         var quizItems = []
-        for (var i=0 ; i<quizGroups.length ; i++) {
+        for (var i = 0; i < quizGroups.length; i++) {
             var aux = quizGroups[i]
             quizItems.push(
                 <a key={ aux.id } className="list-group-item" onClick={ (function(id){ return () => chooseQuiz(id, "answer")})(aux.id) }>
@@ -100,9 +101,9 @@ export class View extends React.Component<Props, any> {
         }
 
         var quizRender = null
-        if (currentQuiz != null) {
+        if(currentQuiz != null) {
             // we add the the question its index into the actual quiz collection
-            let realIndex = quizIndex+1
+            let realIndex = quizIndex + 1
             let newQuestion = "Question " + realIndex + "/" + actualQuizs.quizs.length + " : " + currentQuiz.question
             let aux = Object.assign({}, currentQuiz, {
                 question: newQuestion

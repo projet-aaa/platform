@@ -32,14 +32,6 @@ export interface Test {
     quizs: Quiz[]
 }
 
-
-// The choice of a user for a given quiz
-export interface QuizLocalChoice {
-    quizId: string
-
-    choice: any
-}
-
 // The global result of a group of people for a given quiz
 export interface QuizRoomChoices {
     quizId: number

@@ -9,7 +9,7 @@ import { View as QuizView } from "../../views/quiz/quizView"
 import { View as ScoreView } from "../../views/quiz/scoreView"
 import { View as FeedbackView } from "../../views/quiz/feedbackView"
 import { View as CommentBoxView } from "./commentBoxView"
-import { QuizType, Quiz, QuizLocalChoice } from "../../models/class/class"
+import { QuizType, Quiz } from "../../models/class/class"
 import { getText } from '../../utils'
 
 export interface StateProps {

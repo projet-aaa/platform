@@ -179,7 +179,8 @@ export class SocketServer {
                 type: room.type,
                 popStudent: room.sockets.length,
                 popTeacher: room.sockets.length,
-                teacher: room.teacher
+                teacher: room.teacher,
+                sessionId: room.sessionId
             }
         }
     }

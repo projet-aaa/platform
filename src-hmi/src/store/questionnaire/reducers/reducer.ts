@@ -3,7 +3,7 @@ import { handleActions } from "redux-actions"
 
 // INTERNAL IMPORTS
 import { ActionTypes, APIActionTypes } from '../actions/actionTypes'
-import { Quiz, QuizType, QuizLocalChoice, Test } from '../../../models/class/class'
+import { Quiz, QuizType, Test } from '../../../models/class/class'
 import { modifyArrayElement, shuffle } from '../../../utils/index'
 
 export interface QuestionnaireState {
@@ -26,12 +26,12 @@ export interface QuestionnaireState {
 }
 
 // Initialize the array quizChoices
-function fillTabChoice(actualQuizs: Test): QuizLocalChoice[] {
+function fillTabChoice(actualQuizs: Test): any[] {
     let res = []
-    for(var i=0 ; i<actualQuizs.quizs.length ; i++) {
-        if (actualQuizs.quizs[i].type==QuizType.MCQ) {
+    for(var i = 0; i < actualQuizs.quizs.length; i++) {
+        if (actualQuizs.quizs[i].type == QuizType.MCQ) {
             res[actualQuizs.quizs[i].id] = -1
-        } else if (actualQuizs.quizs[i].type==QuizType.MMCQ) {
+        } else if (actualQuizs.quizs[i].type == QuizType.MMCQ) {
             res[actualQuizs.quizs[i].id] = []
         } else {
             res[actualQuizs.quizs[i].id] = ""
@@ -41,18 +41,18 @@ function fillTabChoice(actualQuizs: Test): QuizLocalChoice[] {
 }
 
 // Initialize the array areValidated
-function fillTabValidated(actualQuizs: Test): QuizLocalChoice[] {
+function fillTabValidated(actualQuizs: Test): any[] {
     let res = []
-    for(var i = 0; i<actualQuizs.quizs.length ; i++) {
+    for(var i = 0; i < actualQuizs.quizs.length; i++) {
         res[actualQuizs.quizs[i].id] = false
     }
     return res
 }
 
 // compute the score after each validate action
-function computeScore(actualQuizs: Test, quizChoices: QuizLocalChoice[]): number {
+function computeScore(actualQuizs: Test, quizChoices: any[]): number {
     let res = 0
-    for(var i=0; i < actualQuizs.quizs.length; i++) {
+    for(var i = 0; i < actualQuizs.quizs.length; i++) {
         if (quizChoices[actualQuizs.quizs[i].id] == actualQuizs.quizs[i].answer) {
             res = res + 1
         }
@@ -75,7 +75,7 @@ const name = "questionnaire"
 const reducer = handleActions({
     [ActionTypes.CHOOSE]: function(state: QuestionnaireState, action: any): QuestionnaireState {
         return Object.assign({}, state, {
-            quizChoices: modifyArrayElement(state.quizChoices, state.currentQuiz.id, action.payload.choice),
+            quizChoices: modifyArrayElement(state.quizChoices, state.currentQuiz.id, [action.payload.choice]),
             areValidated: modifyArrayElement(state.areValidated, state.currentQuiz.id, false)
         })
     },
@@ -90,10 +90,10 @@ const reducer = handleActions({
             newCurrentQuizz = state.actualQuizs.quizs[state.quizIndex]
         }
         return Object.assign({}, state, {
-            score: computeScore(state.actualQuizs,state.quizChoices),
+            score: computeScore(state.actualQuizs, state.quizChoices),
             quizIndex: newIndex,
             currentQuiz: newCurrentQuizz,
-            areValidated: modifyArrayElement(state.areValidated,state.currentQuiz.id, true)
+            areValidated: modifyArrayElement(state.areValidated, state.currentQuiz.id, true)
         })
     },
     [ActionTypes.NEXT_CONSUL_QUIZ]: function(state: QuestionnaireState, action: any): QuestionnaireState {

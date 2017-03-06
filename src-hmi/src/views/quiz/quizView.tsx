@@ -9,7 +9,7 @@ import * as MediaQuery from "react-responsive"
 
 // INTERNAL IMPORTS
 import { View as AnswerView} from "./answerView"
-import { QuizType, Quiz, QuizLocalChoice } from "../../models/class/class"
+import { QuizType, Quiz } from "../../models/class/class"
 import { getText } from "../../utils/index"
 
 export interface StateProps {
@@ -86,7 +86,7 @@ export class View extends React.Component<Props, any> {
                         key={ i }
                         ind={ i } 
                         text={ item } 
-                        chosen={ quiz.type == QuizType.MMCQ ? quizChoice.indexOf(i) >= 0 : quizChoice == i } 
+                        chosen={ quizChoice && quiz.type == QuizType.MMCQ ? quizChoice.indexOf(i) >= 0 : quizChoice == i } 
                         rightAnswer={ quiz.type == QuizType.MMCQ ? quiz.answer.indexOf(i) >= 0 : quiz.answer == i }
                         explanation={ quiz.explanations[i] } 
                         showCorrection={ showCorrection }

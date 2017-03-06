@@ -34,7 +34,7 @@ export class View extends React.Component<Props, any> {
                 <div className="row">
                     <div className="col-lg-12">
                         <h2 style={ { marginTop: 0 } }>Salles ouvertes</h2>
-                        { rooms &&
+                        { rooms && rooms.length > 0 ?
                             <ul className="list-group">
                             {rooms.map(room => {
                                 return <Link to={ genURL(room.teacher) } className="list-group-item"> 
@@ -42,6 +42,8 @@ export class View extends React.Component<Props, any> {
                                 </Link>
                             })}
                             </ul>
+                            :
+                            <div>Aucunes salles ouvertes</div>
                         }
                         { isTeacher && 
                             <Link to={ genURL(username) }>Créer ou rejoindre la salle à mon nom</Link> 

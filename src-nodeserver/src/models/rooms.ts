@@ -20,4 +20,5 @@ export interface RoomInfo {
     popStudent: number
     popTeacher: number
     teacher: string
+    sessionId: string
 }
