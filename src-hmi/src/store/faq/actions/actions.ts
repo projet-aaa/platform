@@ -5,7 +5,6 @@ import { Thread } from "../../../models/faq"
 
 import { Action } from '../../../utils'
 
-
 export function changeQuestionValueAction (questionValue: string) {
     return {
         type: ActionTypes.CHANGE_QUESTION_VALUE,
@@ -34,9 +33,10 @@ export function storeCurrentSession (currSession: string) {
 
 //////// API CALLS /////
 export function fetchThreads(threadIdList: string[], success) {
-        return dispatch => {
-            let resultList = [];
-            let receivedFetch = 0;
+    return dispatch => {
+        let resultList = [];
+        let receivedFetch = 0;
+        if(threadIdList.length > 0) {
             for (var index=0; index < threadIdList.length; index++) {
                 let currentId = threadIdList[index];
                 fetcher('/thread/' + currentId +  '/tree' )
@@ -59,7 +59,10 @@ export function fetchThreads(threadIdList: string[], success) {
                     })
                 })
             }
+        } else {
+            success()
         }
+    }
 }
 
 export function postThread(sessionId: string, title: string, author: string) {

@@ -119,7 +119,7 @@ export class View extends React.Component<Props, any> {
                     </h2>
                    :
                     <h2>
-                        Vous ne suivez aucune discipline, allez sur votre <b><Link to="/profil">profil</Link></b> pour choisir vos disciplines.
+                        Vous ne suivez aucune discipline, allez sur <b><a href="/admin">l'espace d'aministration</a></b> pour choisir vos disciplines.
                     </h2>
                 }
                 </div>
