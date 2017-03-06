@@ -55,20 +55,24 @@ export function fetchSessionTests(sessionId: string, success: (quizs: Quiz[]) =>
         let todo = res.tests.length,
             resList = []
 
-        res.tests.forEach(t => {
-            let split = t.split('/')
-            let id = split[split.length-1]
+        if(res.tests.length > 0) {
+            res.tests.forEach(t => {
+                let split = t.split('/')
+                let id = split[split.length-1]
 
-            fetchTest(id, obj => {
-                    todo--
-                    resList.push(obj)
-                    if(!todo) {
-                        success(resList)
-                    }
-                }, 
-                obj => fh(failure, obj)
-            )
-        })
+                fetchTest(id, obj => {
+                        todo--
+                        resList.push(obj)
+                        if(!todo) {
+                            success(resList)
+                        }
+                    }, 
+                    obj => fh(failure, obj)
+                )
+            })
+        } else {
+            success([])
+        }
     })
     .catch(error => fh(failure, error))
 }
@@ -80,20 +84,24 @@ export function fetchSessionQuiz(sessionId: string, success: (quizs: Quiz[]) => 
         let todo = res.tests.length,
             resList = []
 
-        res.tests.forEach(t => {
-            let split = t.split('/')
-            let id = split[split.length-1]
+        if(res.tests.length > 0) {
+            res.tests.forEach(t => {
+                let split = t.split('/')
+                let id = split[split.length-1]
 
-            fetchTest(id, obj => {
-                    todo--
-                    resList.push.apply(resList, obj.quizs)
-                    if(!todo) {
-                        success(resList)
-                    }
-                }, 
-                obj => fh(failure, obj)
-            )
-        })
+                fetchTest(id, obj => {
+                        todo--
+                        resList.push.apply(resList, obj.quizs)
+                        if(!todo) {
+                            success(resList)
+                        }
+                    }, 
+                    obj => fh(failure, obj)
+                )
+            })
+        } else {
+            success([])
+        }
     })
     .catch(error => fh(failure, error))
 }
@@ -230,31 +238,35 @@ export function fetchSessionStats(sessionId: string, success, failure?) {
     .then(res => {
         let answerCount = res.length
 
-        res.forEach(answer => {
-            let splitChoice = answer.mcqChoice.split('/'),
-                choiceId = splitChoice[splitChoice.length - 1],
-                splitQuiz = answer.question.split('/'),
-                quizId = splitQuiz[splitQuiz.length - 1]
+        if(res.length > 0) {
+            res.forEach(answer => {
+                let splitChoice = answer.mcqChoice.split('/'),
+                    choiceId = splitChoice[splitChoice.length - 1],
+                    splitQuiz = answer.question.split('/'),
+                    quizId = splitQuiz[splitQuiz.length - 1]
 
-            fetcher('/mcq_choices/' + choiceId)
-            .then((res: any) => {
-                if(!quizChoices[quizId]) {
-                    quizChoices[quizId] = {}
-                }
-                
-                if(quizChoices[quizId][res.text]) {
-                    quizChoices[quizId][res.text] += 1
-                } else {
-                    quizChoices[quizId][res.text] = 1
-                }
+                fetcher('/mcq_choices/' + choiceId)
+                .then((res: any) => {
+                    if(!quizChoices[quizId]) {
+                        quizChoices[quizId] = {}
+                    }
+                    
+                    if(quizChoices[quizId][res.text]) {
+                        quizChoices[quizId][res.text] += 1
+                    } else {
+                        quizChoices[quizId][res.text] = 1
+                    }
 
-                answerCount--
-                if(!answerCount) {
-                    quizChoicesDone = true
-                    tryEnd()
-                }
+                    answerCount--
+                    if(!answerCount) {
+                        quizChoicesDone = true
+                        tryEnd()
+                    }
+                })
             })
-        })
+        } else {
+            tryEnd()
+        }
     })
     .catch(error => fh(failure, error))
 }

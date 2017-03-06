@@ -123,9 +123,11 @@ export class SocketServer {
             if(this.log)
                 console.log('[close room] type=', room.type, 'id=', room.id)
 
-            for(let socket of room.sockets) {
-                this.changeSocketRoom(socket, -1)
-                this.send(socket, SocketOutMsg.ROOM_CLOSED, { roomId: roomId })
+            for(let socket of this.mainRoom.sockets) {
+                if(socket.subscribed) {
+                    this.changeSocketRoom(socket, -1)
+                    this.send(socket, SocketOutMsg.ROOM_CLOSED, { roomId: roomId })
+                }
             }
 
             this.rooms.splice(this.rooms.indexOf(room), 1)

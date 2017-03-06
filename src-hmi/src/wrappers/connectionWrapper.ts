@@ -39,19 +39,14 @@ export default function connectionWrapper(View) {
             createRoom: () => dispatch(openClassRoom(ownProps.params.course))
         }
     }
-    let lock = false
     function mergeProps(sp, dp, op) {
         switch(sp.connectionState) {
             case CONNECTION_STATE.AUTHENTIFIED: {
                 let room = sp.rooms.find(room => room.teacher == sp.teacher)
                 if(room) { 
                     dp.joinRoom(room.id) 
-                    lock = false
                 } else if(sp.isTeacher && sp.username == sp.teacher) {  
-                    if(!lock) {
-                        dp.createRoom()
-                        lock = true
-                    }
+                    dp.createRoom()
                 }
                 break
             }
