@@ -14,6 +14,7 @@ export interface StateProps {
 export interface ActionProps { 
     gotoLive()
     genURL(teacher: string)
+    closeRoom(teacher: string)
 }
 
 type Props = StateProps & ActionProps;
@@ -26,7 +27,8 @@ export class View extends React.Component<Props, any> {
             isTeacher,
             username,
 
-            genURL            
+            genURL,
+            closeRoom       
         } = this.props
 
         return (
@@ -37,9 +39,16 @@ export class View extends React.Component<Props, any> {
                         { rooms && rooms.length > 0 ?
                             <ul className="list-group">
                             {rooms.map(room => {
-                                return <Link to={ genURL(room.teacher) } className="list-group-item"> 
-                                    { genURL(room.teacher) } : { room.teacher }
-                                </Link>
+                                return <li className="list-group-item">
+                                    <Link to={ genURL(room.teacher) }> 
+                                        { genURL(room.teacher) } : { room.teacher }
+                                    </Link>
+                                    { isTeacher && <button 
+                                        className={ "btn btn-sm btn-primary" } 
+                                        onClick={ () => closeRoom(room.teacher) }>
+                                        Fermer
+                                    </button> }
+                                </li>
                             })}
                             </ul>
                             :

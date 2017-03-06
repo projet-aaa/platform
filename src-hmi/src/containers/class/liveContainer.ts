@@ -4,7 +4,7 @@ import rootWrapper from "../../wrappers/rootWrapper"
 
 import { StateProps, ActionProps, View } from "../../views/class/liveView"
 
-import { subscribe } from "../../store/wsrooms/actions"
+import { subscribe, closeRoom } from "../../store/wsrooms/actions"
 import { fetchSessionByName } from "../../api/fetchs"
 import { fetchSessionSuccess } from "../../store/navigation/actions"
 
@@ -19,6 +19,7 @@ function mapStateToProps(state, ownProps): StateProps {
 function mapDispatchToProps(dispatch, ownProps) {
     return {
         fetchSession: session => dispatch(fetchSessionSuccess(session)),
+        closeRoom: prof => dispatch(closeRoom(prof)),
         subscribe: () => dispatch(subscribe(true)),
         genURL: ownProps.isTeacher ? 
             (teacher: string) => "/session/" + ownProps.params.course + "/" + teacher + "/tb" :
