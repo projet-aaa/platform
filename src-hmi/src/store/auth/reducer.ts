@@ -58,12 +58,13 @@ const reducer = handleActions({
         return Object.assign({}, state, {
             id: action.payload.id,
             username: action.payload.username,
-            password: action.payload.password
+            password: action.payload.password,
         })
     },
     [ActionTypes.UPDATE_PROFILE]: function(state: AuthState, action): AuthState {
         return Object.assign({}, state, {
-            group: action.payload.group
+            group: action.payload.group,
+            infoFetched: false
         })
     },
     [APIActionTypes.FETCH_USER_SUCCESS]: function(state: AuthState, action: any): AuthState {

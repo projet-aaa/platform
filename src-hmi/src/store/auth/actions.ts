@@ -1,7 +1,7 @@
 import { CALL_API } from 'redux-api-middleware'
 import { createAPIActionCreator, fetcher } from '../../utils'
 
-import { loginURL } from "../../models/consts"
+import { loginURL, id, username, password } from "../../models/consts"
 
 export const ActionTypes = {
     AUTH_LOCAL: "AUTH/AUTH_LOCAL",
@@ -34,6 +34,7 @@ export const WSInActionTypes = {
 export function auth(id: number, username: string, password: string, successPromise?) {
     return (dispatch, getState) => {
         if(!getState().auth.infoFetched) {
+            console.log("authentification")
             dispatch(authAPI(username, password))
             dispatch(authLocal(id, username, password))
 
@@ -48,9 +49,7 @@ export function auth(id: number, username: string, password: string, successProm
                 }
             }, 250)
         } else {
-            if(successPromise) {
-                successPromise()
-            }
+            if(successPromise) { successPromise() }
         }
     }
 }
@@ -117,20 +116,22 @@ export function updateProfile(group: string) {
             type: ActionTypes.UPDATE_PROFILE,
             payload: { group }
         })
-        dispatch(updateProfileAPI(group))
+        dispatch(updateProfileAPI(group, () => {
+            dispatch(auth(id, username, password))
+        }))
     }
 }
 
-export function updateProfileAPI(group: string) {
+export function updateProfileAPI(group: string, success) {
     return (dispatch, getState) => {
         let { auth } = getState()
         fetcher('/users/' + auth.id, 'PUT', {
             part: group
         })
         .then(res => {
-            console.log("update successful:", res)
+            success(res)
         })
-        .catch(error => console.log("error"))
+        .catch(error => console.log("error in [store/auth/actions/actions.ts:updateProfileAPI]"))
     }
 }
 
