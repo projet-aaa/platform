@@ -34,7 +34,7 @@ function mapDispatchToProps(dispatch) {
         storeCurrentSession : (session) => dispatch(storeCurrentSession(session)),
 
         //Retrieve all thread information from server, and update store
-        fetchThreads : (threadIdList) => {dispatch(fetchThreads(threadIdList))},
+        fetchThreads : (threadIdList, success) => {dispatch(fetchThreads(threadIdList, success))},
 
         //Publish a question to the server
         postThread : (sessionId, question, author) => {
@@ -78,8 +78,7 @@ export default rootWrapper(
                            let split = item.split('/');                        
                            return split[split.length -1];
                         })
-                props.fetchThreads(threadIdList)
-                d()
+                props.fetchThreads(threadIdList, d)
             }, 
             (error) => console.log(error))
     },

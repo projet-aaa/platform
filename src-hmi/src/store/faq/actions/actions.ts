@@ -33,7 +33,7 @@ export function storeCurrentSession (currSession: string) {
 }
 
 //////// API CALLS /////
-export function fetchThreads(threadIdList: string[]) {
+export function fetchThreads(threadIdList: string[], success) {
         return dispatch => {
             let resultList = [];
             let receivedFetch = 0;
@@ -48,6 +48,7 @@ export function fetchThreads(threadIdList: string[]) {
                             type: APIActionTypes.FETCH_THREADS_SUCCESS,
                             payload: resultList
                         });
+                        success()
                     }
                 })
                 .catch(error => {
