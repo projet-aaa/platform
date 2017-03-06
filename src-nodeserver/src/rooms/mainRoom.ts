@@ -63,8 +63,14 @@ export class MainRoom extends IMainRoom {
                 break
             }
             case SocketInMsg.CLOSE_ROOM: {
-                let room = this.server.rooms.filter(r => r).find(r => r.teacher == msg.roomProf)
-                if(room) { this.server.closeRoom(room.id) }
+                let room: IRoom = this.server.rooms.filter(r => r).find(r => r.teacher == msg.roomProf)
+
+                if(room) { 
+                    let closeable = room.sockets.filter(s => s.username == msg.roomProf).length == 0
+                    if(closeable) {
+                        this.server.closeRoom(room.id)
+                    } 
+                }
                 break
             }
             case SocketInMsg.ROOM_SUBSCRIBE: {

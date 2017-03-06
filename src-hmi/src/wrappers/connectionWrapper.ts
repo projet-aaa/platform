@@ -5,10 +5,10 @@ import rootWrapper from "./rootWrapper"
 import { AuthState } from "../store/auth/reducer" 
 import { WSRoomState } from "../store/wsrooms/reducer"
 
-import { joinRoom, leaveRoom, openClassRoom, openClassRoomServer, subscribe } from "../store/wsrooms/actions"
+import { joinRoom, leaveRoom, closeRoom, openClassRoom, openClassRoomServer, subscribe } from "../store/wsrooms/actions"
 import { authWS } from "../store/auth/actions"
 
-import { CONNECTION_STATE } from "../models/wsServer/server"
+import { CONNECTION_STATE, RoomInfo } from "../models/wsServer/server"
 
 export default function connectionWrapper(View) {
     function mapStateToProps(state, ownProps) {
@@ -36,13 +36,20 @@ export default function connectionWrapper(View) {
             authWS: (id, username, isTeacher) => dispatch(authWS(id, username, isTeacher)),
             joinRoom: (roomId: number) => dispatch(joinRoom(roomId)),
             leaveRoom: () => dispatch(leaveRoom()),
+            closeRoom: prof => dispatch(closeRoom(prof)),
             createRoom: () => dispatch(openClassRoom(ownProps.params.course))
         }
     }
     function mergeProps(sp, dp, op) {
         switch(sp.connectionState) {
             case CONNECTION_STATE.AUTHENTIFIED: {
-                let room = sp.rooms.find(room => room.teacher == sp.teacher)
+                let room: RoomInfo = sp.rooms.find(room => room.teacher == sp.teacher)
+                
+                if(sp.isTeacher && room && sp.username == sp.teacher && room.sessionName != op.params.course) {
+                    dp.closeRoom(room.teacher)
+                    room = null
+                }
+
                 if(room) { 
                     dp.joinRoom(room.id) 
                 } else if(sp.isTeacher && sp.username == sp.teacher) {  

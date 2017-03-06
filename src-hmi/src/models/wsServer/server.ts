@@ -6,6 +6,8 @@ export const RoomType = {
 
 export interface RoomInfo {
     id: number
+    sessionId: string
+    sessionName: string
     type: string
     popStudent: number
     popTeacher: number

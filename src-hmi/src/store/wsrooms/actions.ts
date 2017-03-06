@@ -70,17 +70,17 @@ export function openClassRoom(sessionName: string) {
 
             fetchSessionQuiz(
                 sessionId, 
-                res => dispatch(openClassRoomServer(res, sessionId, iriSessionId))
+                res => dispatch(openClassRoomServer(res, sessionId, sessionName, iriSessionId))
             )
         })
         .catch(error => console.log(error))
     }
 }
 
-export function openClassRoomServer(quiz: Quiz[], sessionId, iriSessionId) {
+export function openClassRoomServer(quiz: Quiz[], sessionId, sessionName, iriSessionId) {
     return {
         type: OutMsgType.OPEN_ROOM,
-        payload: { type: "CLASS", quiz, sessionId, iriSessionId }
+        payload: { type: "CLASS", quiz, sessionId, sessionName, iriSessionId }
     }
 }
 

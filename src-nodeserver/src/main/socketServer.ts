@@ -110,6 +110,7 @@ export class SocketServer {
 
         room.sessionId = msg.sessionId
         room.iriSessionId = msg.iriSessionId
+        room.sessionName = msg.sessionName
         this.rooms[id] = room
         
         room.teacher = teacher
@@ -182,7 +183,8 @@ export class SocketServer {
                 popStudent: room.sockets.length,
                 popTeacher: room.sockets.length,
                 teacher: room.teacher,
-                sessionId: room.sessionId
+                sessionId: room.sessionId,
+                sessionName: room.sessionName
             }
         }
     }

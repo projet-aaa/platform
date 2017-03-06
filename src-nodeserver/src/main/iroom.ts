@@ -13,6 +13,7 @@ export abstract class IRoom {
     teacher: string
 
     sessionId: string
+    sessionName: string
     iriSessionId: string
 
     get occupancy(): number { return this.sockets.length }
