@@ -24,7 +24,8 @@ function mapStateToProps(state: any, ownProps): StateProps {
         threadList: state.threadContent.threadList,
         currSession: state.currSession.currSession,
         questionValue: state.questionInput.questionInputVal,
-        editorContents: state.threadMessageInput.threadMessageInputVal
+        editorContents: state.threadMessageInput.threadMessageInputVal,
+        currUser: state.auth.firstName + " " + state.auth.lastName
     }
 }
 function mapDispatchToProps(dispatch) {
@@ -36,16 +37,16 @@ function mapDispatchToProps(dispatch) {
         fetchThreads : (threadIdList) => {dispatch(fetchThreads(threadIdList))},
 
         //Publish a question to the server
-        postThread : (sessionId, question) => {
+        postThread : (sessionId, question, author) => {
             if (question) {
-                dispatch(postThread(sessionId,question));
+                dispatch(postThread(sessionId,question, author));
             }
         },
 
         //Send the answer content to the server
-        postThreadAnswer: (threadId,content) => {
+        postThreadAnswer: (threadId,content, author) => {
             if (content) {
-                dispatch(postThreadAnswer(threadId,content))
+                dispatch(postThreadAnswer(threadId, content, author))
             }
         },
 
@@ -63,7 +64,12 @@ function mapDispatchToProps(dispatch) {
 export default rootWrapper(
     mapStateToProps, 
     mapDispatchToProps,
-    null,
+    (stateProps, dispatchProps, op) => {
+        return Object.assign(stateProps, dispatchProps, op, {
+            postThread: (sessionId, question) => dispatchProps.postThread(sessionId, question, stateProps.currUser),
+            postThreadAnswer: (threadId, content) => dispatchProps.postThreadAnswer(threadId, content, stateProps.currUser)
+        })
+    },
     (props, d) => { 
         fetchSessionByName(props.params.course, session => {
                 props.storeCurrentSession(session["hydra:member"][0].id)    

@@ -21,6 +21,8 @@ export type StateProps = {
     questionValue: string
     //The content of each answer editor indexed by thread id
     editorContents: string[]
+
+    currUser:string
 }
 
 export interface ActionProps {

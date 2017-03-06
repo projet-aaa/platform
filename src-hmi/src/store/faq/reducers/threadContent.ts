@@ -112,6 +112,60 @@ const reducer = handleActions({
     [APIActionTypes.FETCH_THREADS_FAILURE]: function(state: ThreadContent, action: any) {
             return state
     },
+
+    [APIActionTypes.POST_NEW_THREAD_SUCCESS]: function(state: ThreadContent, action: any) {
+            let createdThread = {
+                id: action.payload.newThread.id,
+                text: action.payload.newThread.text,
+                author: action.payload.author,
+                date: new Date(action.payload.newThread.createdAt),
+                answers: []
+            }
+
+            let newList = [];
+            state.threadList.map((item) => {
+                newList.push(Object.assign({},item));   
+            });
+            newList.push(createdThread)
+
+            return {...state, threadList: newList}
+    },
+
+    [APIActionTypes.POST_THREAD_ANSWER_SUCCESS]: function(state: ThreadContent, action: any) {
+            //Find the index of the thread the answer was added to
+            let threadIndex = 0;
+            while (threadIndex < state.threadList.length) {
+                if (state.threadList[threadIndex].id == action.payload.threadId) {
+                    break;
+                }
+                threadIndex++;
+            }
+
+            let createdThreadMessage = {
+                id: action.payload.newThreadMessage.id,
+                text: action.payload.newThreadMessage.text,
+                author: action.payload.author,
+                date: new Date(action.payload.newThreadMessage.createdAt),
+                votes: 0
+            }
+
+            let retThreads = [];
+            for (var i=0; i< state.threadList.length; i++) {
+                let retThreadAnswers = [];
+                let currThread = Object.assign({}, state.threadList[i]);
+                for (var j=0; j< state.threadList[i].answers.length; j++) {
+                    let currAnswer = Object.assign({}, state.threadList[i].answers[j]);
+                    retThreadAnswers.push(currAnswer)
+                }
+                if (state.threadList[i].id == action.payload.threadId) {
+                    retThreadAnswers.push(createdThreadMessage);
+                }
+                currThread.answers = retThreadAnswers;
+                retThreads.push(currThread);
+            }
+            return {...state, threadList: retThreads}
+    }
+
 }, initialState);
 
 export default { [name]: reducer }

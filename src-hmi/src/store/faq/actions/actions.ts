@@ -61,7 +61,7 @@ export function fetchThreads(threadIdList: string[]) {
         }
 }
 
-export function postThread(sessionId: string, title: string) {
+export function postThread(sessionId: string, title: string, author: string) {
     return dispatch => {
         fetcher('/sessions/' + sessionId)
         .then( res => {
@@ -74,7 +74,10 @@ export function postThread(sessionId: string, title: string) {
             .then(res => {
                 dispatch({
                     type: APIActionTypes.POST_NEW_THREAD_SUCCESS,
-                    payload: res
+                    payload: {
+                        newThread: res,
+                        author: author
+                    }
                 })
             })
             .catch(error => {
@@ -89,7 +92,7 @@ export function postThread(sessionId: string, title: string) {
     }
 }
 
-export function postThreadAnswer(threadId: string, answerContent: string) {
+export function postThreadAnswer(threadId: string, answerContent: string, author: string) {
     return dispatch => {
         fetcher('/threads/' + threadId)
         .then( res => {
@@ -103,7 +106,11 @@ export function postThreadAnswer(threadId: string, answerContent: string) {
             .then(res => {
                 dispatch({
                     type: APIActionTypes.POST_THREAD_ANSWER_SUCCESS,
-                    payload: res
+                    payload: {
+                        newThreadMessage: res,
+                        author: author,
+                        threadId: threadId
+                    }
                 })
             })
             .catch(error => {
