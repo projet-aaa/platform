@@ -32,11 +32,11 @@
 
 #Launch the project
 
-To use that project, you need to install
+To use that project, you at least need to install
 - [docker](https://docs.docker.com/engine/installation/)
 - [docker-compose](https://docs.docker.com/compose/install/)
+- [node/npm](https://nodejs.org/en/)
  
-
 *Clone the project*
 
 ```bash
@@ -47,13 +47,17 @@ cd platform
 *Build the project*
 To build the web interface:
 ```bash
-cd src-hmi
+cd src-hmi # à partir de la racine
+npm install
+npm install -g gulp 
 gulp build
 ```
 
 To build the node server:
 ```bash
-cd src-nodeserver
+cd src-nodeserver # à partir de la racine
+npm install
+npm install -g gulp
 gulp build
 ```
 

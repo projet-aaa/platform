@@ -16,7 +16,7 @@ export interface QuestionnaireState {
     // actual quiz
     currentQuiz: Quiz
     // the list of choices for each quiz
-    quizChoices: QuizLocalChoice[]
+    quizChoices: any[]
     // the mode of quiz consultation (answer or correction)
     quizMode: string
     // the user score
@@ -52,8 +52,8 @@ function fillTabValidated(actualQuizs: Test): QuizLocalChoice[] {
 // compute the score after each validate action
 function computeScore(actualQuizs: Test, quizChoices: QuizLocalChoice[]): number {
     let res = 0
-    for(var i=0 ; i<actualQuizs.quizs.length ; i++) {
-        if (quizChoices[actualQuizs.quizs[i].id].choice==actualQuizs.quizs[i].answer) {
+    for(var i=0; i < actualQuizs.quizs.length; i++) {
+        if (quizChoices[actualQuizs.quizs[i].id] == actualQuizs.quizs[i].answer) {
             res = res + 1
         }
     }
@@ -109,7 +109,7 @@ const reducer = handleActions({
         // if the quiz hasn't been validate, we reset the choice
         let newQuizChoice = state.quizChoices
         if (!state.areValidated[state.currentQuiz.id]) {
-            newQuizChoice = modifyArrayElement(state.quizChoices,state.currentQuiz.id, -1)
+            newQuizChoice = modifyArrayElement(state.quizChoices, state.currentQuiz.id, -1)
         }
         return Object.assign({}, state, {
             quizIndex: newIndex,
@@ -124,7 +124,7 @@ const reducer = handleActions({
             // if the quiz hasn't been validate, we reset the choice
             let newQuizChoice = state.quizChoices
             if (!state.areValidated[state.currentQuiz.id]) {
-                newQuizChoice = modifyArrayElement(state.quizChoices,state.currentQuiz.id, -1)
+                newQuizChoice = modifyArrayElement(state.quizChoices, state.currentQuiz.id, -1)
             }
             // something is displayed when quizIndex=actualQuizs.length but actualQuizs[actualQuizs.quizs.length]
             // doesn't exist so we don't change currentQuiz in that case

@@ -21,7 +21,8 @@ function mapStateToProps(state): StateProps {
         disciplines: auth.disciplines,
         areNotChecked: state.main.areNotChecked,
         searchedString: state.main.searchedString,
-        showList: (!auth.isTeacher && auth.group != null) || (auth.isTeacher && auth.disciplines != null),
+        showList: (!auth.isTeacher && auth.group != null) 
+               || (auth.isTeacher && auth.disciplines != null && auth.disciplines.length > 0),
         isTeacher: auth.isTeacher
     }
 }

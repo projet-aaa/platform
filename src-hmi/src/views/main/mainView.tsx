@@ -97,6 +97,7 @@ export class View extends React.Component<Props, any> {
                         </div>
                     </div>
                     <div className="col-lg-4">
+                        { disciplines.length > 0 && 
                         <div className="panel panel-grey">
                             <div className="panel-heading">
                                 Filtres
@@ -107,6 +108,7 @@ export class View extends React.Component<Props, any> {
                                 </ul>
                             </div>
                         </div>
+                        }
                     </div>
                 </div>
                 :

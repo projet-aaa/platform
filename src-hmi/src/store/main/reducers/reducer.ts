@@ -14,8 +14,6 @@ let initialState: MainState = {
     searchedString: ""
 }
 
-
-
 const name = "main"
 const reducer = handleActions({
     [ActionTypes.SELECT_FILTER]: function(state: MainState, action: any): MainState {
