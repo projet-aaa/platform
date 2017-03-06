@@ -43,7 +43,7 @@ export class View extends React.Component<Props, any> {
             <div className="col-lg-12">
                 <div className="row">
                     <div className="col-lg-12">
-                        <h2>Résultats aux quiz live</h2>
+                        <h2 style={ { marginTop: 0 } }>Résultats aux quiz live</h2>
                         <Link to={ "/" + params.UE + "/" + params.course + "/statistique/prof/attention" }>
                             Regarder les retours des élèves
                         </Link><br/>

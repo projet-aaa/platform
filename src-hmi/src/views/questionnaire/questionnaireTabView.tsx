@@ -188,8 +188,13 @@ export class View extends React.Component<Props, any> {
         }
 
         return (
-            <div style={ palNew }>
-                { mainRender }
+            <div className="col-lg-12"> 
+                <div className="row">
+                    <div className="col-lg-12">
+                        <h2 style={ { marginTop: 0 } }>Questionnaires</h2>
+                        { mainRender }
+                    </div>
+                </div>
             </div>
         );
     }

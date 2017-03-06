@@ -33,7 +33,7 @@ export class View extends React.Component<Props, any> {
             <div className="col-lg-12"> 
                 <div className="row">
                     <div className="col-lg-12">
-                        <h2>Salles ouvertes</h2>
+                        <h2 style={ { marginTop: 0 } }>Salles ouvertes</h2>
                         { rooms &&
                             <ul className="list-group">
                             {rooms.map(room => {
