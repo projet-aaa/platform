@@ -17,6 +17,7 @@ copied in this document.
 - #/:UE/:courseName/statistique/:profName/timeline : a professor's session's stats view for the courses timeline ! for now, all results for the session is showed, regardless of teacher, to be fixed !
 - #/:UE/:courseName/direct : the page displaying the instances of the given session
 - #/:UE/:courseName/questionnaires : the page with all the quiz available for students
+- #/* : defaults to showing a 404 page if nothing is found
 
 - #/close_room/:profName : obsolete, allows the closing of a given's teacher's room (if he's not in it)
 - #/login : allows loging in as any users

@@ -36,6 +36,8 @@ import TopBandTemp from '../template/topBandTemp'
 import { View as TabsTemp } from '../template/tabsTemp'
 
 // VIEWS AND CONTAINERS
+import NotFoundView from '../views/navigation/notFoundView'
+
 import MainContainer from '../containers/main/mainContainer'
 import ProfileContainer from '../containers/profile/profileContainer'
 
@@ -126,6 +128,9 @@ let MainRouter =
                 <Route path="direct" component={ (p, c) =>  <CourseContainer name="Direct" {...p} /> } />
                 <Route path="questionnaires" component={ (p, c) => <CourseContainer name="Questionnaires" {...p} /> } />
             </Route>
+        </Route>
+        <Route path="*" component={ TopBandTemp }>
+            <IndexRoute component={ NotFoundView }/>
         </Route>
     </Router>
 </Provider>)
