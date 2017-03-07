@@ -47,3 +47,4 @@ services:
         arguments: ["@doctrine.orm.entity_manager", "@security.token_storage"]
         tags:
             - { name: validator.constraint_validator }
+
