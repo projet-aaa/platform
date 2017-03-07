@@ -3,6 +3,7 @@
 The code for the socket server is located in src-nodeserver.
 
 *Buid socket server*
+change the variables in src-nodeserver/src/models/consts.ts to the correct values and run :
 ```
 cd src-nodeserver
 gulp build

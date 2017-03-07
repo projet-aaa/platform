@@ -24,6 +24,13 @@ This will install all the dependencies and create the "node_modules" folder.
 
 ##Build manually 
 
+Before building, make sure you correctly modified the src-hmi/src/models/consts.ts file: 
+It contains three boolean variables that affect the rest of the program build process:
+- debug : defines if we are in a local environment of in production (and picks the domain in consequence)
+- devtools : defines whether the dev tools are to be added (specific urls...) !! If set to false, you must remove
+the dev urls in apps/main.tsx
+- log : defines whether logs should be printed or not
+
 To build a specific "application" (index.tsx in folder src/apps), run:
 
 ```sh

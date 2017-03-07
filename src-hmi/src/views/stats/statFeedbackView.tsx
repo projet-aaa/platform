@@ -84,6 +84,8 @@ export class View extends React.Component<Props, any> {
                         <Link to={ "/" + params.UE + "/" + params.course + "/statistique/prof/quiz" }>
                             Regarder les résultats des quiz
                         </Link><br/>
+                        <Link to={ "/" + params.UE + "/" + params.course + "/statistique/prof/timeline" }>
+                            Regarder la timeline</Link><br/>
                         <Link to={ "/" + params.UE + "/" + params.course + "/statistique/" }>
                             Retour
                         </Link>
