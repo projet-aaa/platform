@@ -55,20 +55,14 @@ export class View extends React.Component<Props, any> {
         
         let colorAnswerStyle = null
         if (!showCorrection) {
-            colorAnswerStyle = {}
+            colorAnswerStyle = { }
         } else {
             if(rightAnswer) {
-                colorAnswerStyle = {
-                    color: "green"
-                }
+                colorAnswerStyle = { color: "green" }
             } else if (chosen) {
-                colorAnswerStyle = {
-                    color: "red"
-                }
+                colorAnswerStyle = { color: "red" }
             } else {
-                colorAnswerStyle = {
-                    
-                }
+                colorAnswerStyle = { }
             }
         }
         
@@ -112,7 +106,7 @@ export class View extends React.Component<Props, any> {
         // An answer is a radio button with text
         return (
             <div>
-            { res }
+                { res }
             </div>
         );
     }

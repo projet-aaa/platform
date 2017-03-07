@@ -11,7 +11,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * @ApiResource(attributes={
  *     "normalization_context"={"groups"={"read"}},
- *     "denormalization_context"={"groups"={"write"}}
+ *     "denormalization_context"={"groups"={"write"}},
+ *     "filters"={"alert.search"}
  * })
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
@@ -54,7 +55,7 @@ class Alert implements \JsonSerializable
     private $text;
 
     /**
-     * @Assert\Choice({"tooFast", "tooSlow", "good","page"})
+     * @Assert\Choice({"tooFast", "tooSlow", "good", "page", "panic"})
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=15, nullable=false)
      * @Groups({"read", "write"})
@@ -103,6 +104,14 @@ class Alert implements \JsonSerializable
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     /**

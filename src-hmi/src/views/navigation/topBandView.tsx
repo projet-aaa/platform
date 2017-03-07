@@ -6,16 +6,9 @@ export interface StateProps {
     appName: string
     // the user full name
     userFullName: string
+    isAdmin: boolean
 }
 export interface ActionProps {}
-
-// style for nav bar
-var noMarginBottom = {
-    marginBottom: 0
-}
-var noMarginRight = {
-    marginRight: 0
-}
 
 export type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
@@ -24,34 +17,36 @@ export class View extends React.Component<Props, any> {
     render() {
         const {
             appName,
-            userFullName
-        } = this.props;
+            userFullName,
+            isAdmin
+        } = this.props
+        
         return (
             <div id="header-topbar-option-demo" className="page-header-topbar">
-            <nav id="topbar" role="navigation" data-step="3" className="navbar navbar-default navbar-static-top" style={ noMarginBottom }>
-                <div className="navbar-header">
-                    <span id="logo" href="#" className="navbar-brand" disabled>
-                    <span className="fa fa-rocket"></span>
-                    <span className="logo-text">{ appName }</span>
-                    </span>
-                </div>
-                <div className="topbar-main">
-                    <ul className="nav navbar navbar-top-links navbar-right mbn height-covering" style={ noMarginRight }>
-                        <li className="dropdown topbar-user height-covering" style={ noMarginRight }>
-                            <a data-hover="dropdown" href="#" className="dropdown-toggle" data-toggle="dropdown">
-                                &nbsp;
-                                <span className="hidden-xs">{ userFullName }</span>
-                                &nbsp;
-                                <span className="caret"></span>
+                <nav id="topbar" role="navigation" data-step="3" className="navbar navbar-default navbar-static-top" style={ {marginBottom: 0} }>
+                    <div className="topbar-main">
+                        <div className="pull-left">
+                            <a id="logo" href="#" className="navbar-brand">
+                                <span className="fa fa-rocket"></span>
+                                <span className="logo-text">{ appName }</span>
                             </a>
-                            <ul className="dropdown-menu dropdown-user pull-right">
-                                <li><i className="fa fa-user"></i>Mon Profil</li>
-                                <li><i className="fa fa-key"></i>Déconnection</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+                        </div>
+                        <div className="pull-right height-covering">
+                            <div className="nav navbar navbar-top-links navbar-right mbn height-covering" style={ {marginRight: 0} }>
+                                <li className="dropdown topbar-user height-covering" style={ {marginRight: 0, bottom: 0} }>
+                                    <a data-hover="dropdown" href="#" className="dropdown-toggle" data-toggle="dropdown">
+                                        <span>{ userFullName != null && userFullName }</span>
+                                    </a>
+                                    <ul className="dropdown-menu dropdown-user pull-right">
+                                        <li><Link to="/profil"><i className="fa fa-user"></i>Mon Profil</Link></li>
+                                        <li><a href="/logout"><i className="fa fa-key"></i>Déconnection</a></li>
+                                        { isAdmin && <li><a href="/admin"><i className="fa fa-lock"></i>Espace admin</a></li>}
+                                    </ul>
+                                </li>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
             </div>
         );
     }

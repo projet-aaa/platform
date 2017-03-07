@@ -1,7 +1,7 @@
 import { createAPIActionCreator } from '../../../utils'
 import { ActionTypes, APIActionTypes, WSOutActionTypes } from './actionTypes'
 
-import { QuizType } from '../../../models/class/class'
+import { QuizType, AttentionStateType } from '../../../models/class/class'
 
 export function chooseAction(choice: any) {
     return { type: ActionTypes.CHOOSE, payload: { choice } }
@@ -17,12 +17,26 @@ export function nextQuizAction() {
 
 export function answerAction(info: {
     type: string
-    choiceId: string,
-    choice: string,
-    questionId: string
+    text: string
+    choiceId: any,
+    choice: any,
+    questionId: string,
+    questionIriId: string
 }) {
     return (dispatch) => {
-        let answer = {
+        if(info.type == QuizType.MMCQ) {
+            info.choiceId.forEach(c => {
+                dispatch(answerAPIAction({
+                    type: info.type,
+                    text: null,
+                    choiceId: c,
+                    questionIriId: info.questionIriId
+                }))
+            })
+        } else {
+            dispatch(answerAPIAction(info))
+        }
+        dispatch({
             type: WSOutActionTypes.ANSWER,
             payload: {
                 type: info.type,
@@ -30,9 +44,7 @@ export function answerAction(info: {
                 choice: info.choice,
                 questionId: info.questionId
             }
-        }
-        dispatch(answerAPIAction(info))
-        dispatch(answer)
+        })
     }
 }
 
@@ -58,23 +70,29 @@ export function signalStateAction(info: {
 
 export const answerAPIAction: (info: { 
     type: string
+    text: string
     choiceId: string,
-    questionId: string
+    questionIriId: string
 }) => any
 = createAPIActionCreator( 
     ((info) => {
         switch(info.type) {
+            case QuizType.MMCQ:
             case QuizType.MCQ: return '/mcq_answers'
-            case QuizType.TEXT: return null
+            case QuizType.TEXT: return '/text_answers'
         }
     }), 
     ((info) => { 
         switch(info.type) {
+            case QuizType.MMCQ:
             case QuizType.MCQ: return {
                 mcqChoice: info.choiceId,
-                question: info.questionId
+                question: info.questionIriId
             }
-            case QuizType.TEXT: return null
+            case QuizType.TEXT: return {
+                question: info.questionIriId,
+                text: info.text
+            }
         }
     }),
     'POST',
@@ -94,7 +112,9 @@ export const signalStateAPIAction: (info: {
         author: bi.authorId,
         session: bi.sessionId,
         text: "null",
-        alertType: bi.state
+        alertType: bi.state == AttentionStateType.OK ? "good" :
+                   bi.state == AttentionStateType.TOO_FAST ? "tooFast" :
+                   bi.state == AttentionStateType.TOO_SLOW ? "tooSlow" : "panic"
     }},
     'POST',
     APIActionTypes.SIGNAL_STATE,
@@ -111,7 +131,7 @@ export const commentAction: (payload: {
     ((ei) => '/feedbacks'), 
     ((bi) => { return {
         authorId: bi.authorId,
-        sessionId: bi.sessionId,
+        session: bi.sessionId,
         text: bi.text
     }}),
     'POST',

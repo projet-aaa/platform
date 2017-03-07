@@ -6,8 +6,13 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
- * @ApiResource
+ * @ApiResource(itemOperations={
+ *     "get"={"method"="GET"},
+ *     "put"={"method"="PUT"},
+ *     "tree"={"route_name"="test_tree", "normalization_context"={"groups"={"test_cascade"}}}})
  * @ORM\Entity(repositoryClass="AppBundle\Entity\TestRepository")
  */
 class Test implements \JsonSerializable
@@ -16,17 +21,20 @@ class Test implements \JsonSerializable
      * @ORM\Id
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
+     * @Groups({"test_cascade"})
      */
     private $id;
 
     /**
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255, nullable=false)
+     * @Groups({"test_cascade"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"test_cascade"})
      */
     private $gitPath;
 
@@ -34,17 +42,20 @@ class Test implements \JsonSerializable
      * @var boolean True if the test is a test for live session (ie a test with only one question)
      *
      * @ORM\Column(type="boolean", nullable=false)
+     * @Groups({"test_cascade"})
      */
     private $live;
 
     /**
      * @ORM\OneToMany(targetEntity="Question", mappedBy="test", cascade={"persist","remove"})
+     * @Groups({"test_cascade"})
      */
     private $questions;
 
     /**
      * @ORM\ManyToOne(targetEntity="Session", inversedBy="tests")
      * @ORM\JoinColumn(name="session_id", referencedColumnName="id")
+     * @Groups({"test_cascade"})
      */
     private $session;
 
@@ -59,14 +70,6 @@ class Test implements \JsonSerializable
     public function __construct()
     {
         $this->questions = new ArrayCollection();
-    }
-
-    /**
-     * @Assert\IsTrue(message="A live test can't have more than one question")
-     * @return bool
-     */
-    public function isLiveConsistent(){
-        return ($this->live && $this->getQuestions()->count() <=1) || !$this->live;
     }
 
     /**
@@ -93,6 +96,15 @@ class Test implements \JsonSerializable
     {
         return $this->id;
     }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
 
     /**
      * @return string

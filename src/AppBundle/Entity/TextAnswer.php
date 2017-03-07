@@ -3,11 +3,21 @@
 namespace AppBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use AppBundle\Service as Assert2;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 /**
- * @ApiResource
- * @ORM\Entity
+ * @ApiResource(attributes={
+ *     "normalization_context"={"groups"={"read"}},
+ *     "denormalization_context"={"groups"={"write"}},
+ *     "filters"={"text_answer.search"}
+ * })
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\TextAnswerRepository")
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="author_question_uni", columns={"author_id", "question_id"})})
+ * @Assert2\TextAnswerConsistent()
  */
 class TextAnswer
 {
@@ -15,25 +25,38 @@ class TextAnswer
      * @ORM\Id
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
+     * @Groups({"read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read","write"})
+     * @Assert\NotBlank()
      */
     private $text;
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
+     * @Groups({"read"})
+     * @Gedmo\Blameable(on="create")
      */
     private $author;
 
     /**
+     * @Assert\NotNull()
      * @ORM\ManyToOne(targetEntity="Question", inversedBy="textAnswers")
      * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
+     * @Groups({"read","write"})
      */
     private $question;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=false)
+     * @Groups({"read"})
+     */
+    private $createdAt;
 
     public function __toString()
     {
@@ -41,11 +64,23 @@ class TextAnswer
     }
 
     /**
+     * @ORM\PrePersist()
+     */
+    public function prePersist(){
+        $this->createdAt = new \DateTime('now');
+    }
+
+    /**
      * @Assert\IsTrue(message="The owning question is not of type text")
      * @return bool
      */
     public function isQuestionConsistent(){
-        return $this->getQuestion()->getTypeAnswer() == 'text';
+        if($this->getQuestion()) {
+            return $this->getQuestion()->getTypeAnswer() == 'text';
+        }
+        else{
+            return false;
+        }
     }
 
     /** Auto generated methods*/
@@ -56,6 +91,14 @@ class TextAnswer
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     /**
@@ -105,5 +148,23 @@ class TextAnswer
     {
         $this->question = $question;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param mixed $createdAt
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    }
+
+
 
 }

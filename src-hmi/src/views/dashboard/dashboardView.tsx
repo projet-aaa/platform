@@ -11,10 +11,12 @@ import { View as QuizLauncherView} from "./quizLauncherView"
 import { View as QuizStatView } from "./quizStatView"
 import { View as StudentFeedbackView } from "./studentFeedbackView"
 
-import { Quiz, QuizLauncher } from '../../models/class/class'
+import { Quiz, QuizLauncher, QuizInstanceState, QuizType } from '../../models/class/class'
 
 export interface StateProps {
     isTeacher: boolean
+    studentCount: number
+    quizState: string
 
     // number of people who signaled lesson goes too fast
     tooFast: number
@@ -36,6 +38,7 @@ export interface ActionProps {
     launchQuiz(quizId: string)
     correction()
     finish()
+    closeRoom()
 }
 
 // style for ul tag
@@ -50,6 +53,8 @@ export class View extends React.Component<Props, any> {
     render() {
         const {
             isTeacher,
+            studentCount,
+            quizState,
 
             tooFast,
             tooSlow,
@@ -61,7 +66,8 @@ export class View extends React.Component<Props, any> {
 
             launchQuiz,
             correction,
-            finish
+            finish,
+            closeRoom
         } = this.props
 
         var quizInfoItem = quizLaunchers.map((item) => {
@@ -94,23 +100,37 @@ export class View extends React.Component<Props, any> {
                     <div>
                         <div className="col-lg-8">
                             <div className="row">
-                                { currentQuiz != null &&  
-                                    <QuizStatView quizStats={ quizStats } correctChoice={ 
-                                        currentQuiz.type == "MCQ" ? 
-                                        currentQuiz.choices[currentQuiz.answer] : currentQuiz.answer
-                                    }/>
-                                }
+                                <QuizStatView 
+                                    showQuiz={ currentQuiz != null }
+                                    question={ currentQuiz && currentQuiz.question }
+                                    state={ currentQuiz && 
+                                        (quizState == QuizInstanceState.HEADING ? "énoncé" : "correction") 
+                                    }
+                                    quizStats={ quizStats } 
+                                    correctChoice={ 
+                                        currentQuiz != null &&
+                                        (currentQuiz.type == QuizType.MCQ ? currentQuiz.choices[currentQuiz.answer] : 
+                                         currentQuiz.type == QuizType.MMCQ ? currentQuiz.answer.map(a => currentQuiz.choices[a]) :
+                                         currentQuiz.answer)
+                                    }
+                                    quizButton={ quizState == QuizInstanceState.HEADING ? 
+                                        () => correction() : () => finish() 
+                                    }
+                                />
                             </div>
                             <div className="row">
-                                <StudentFeedbackView panicRate={panic} 
-                                            slowRate={tooSlow}
-                                            quickRate={tooFast}/>
+                                <StudentFeedbackView 
+                                    studentCount={studentCount}
+                                    panicRate={panic} 
+                                    slowRate={tooSlow}
+                                    quickRate={tooFast}
+                                />
                             </div>
                         </div>
                         <div className="col-lg-4">
                             <div className="panel">
                                 <div className="panel-heading">
-                                    Statistiques de quizz
+                                    Statistiques de quiz
                                 </div>
                                 <div className="panel-body pan white-background">
                                     <div className="pal">
@@ -133,3 +153,14 @@ export class View extends React.Component<Props, any> {
         );
     }
 }
+
+// <div className="panel">
+//     <div className="panel-heading">
+//         Gestion de salle
+//     </div>
+//     <div className="panel-body pan white-background">
+//         <button className="btn btn-primary" onClick={ closeRoom }>
+//             Fermer la salle
+//         </button>
+//     </div>
+// </div>

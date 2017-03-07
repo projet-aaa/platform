@@ -13,11 +13,16 @@ import { calculateQuizData } from "../../utils"
 import { chartColors } from "../../models/consts"
 
 export interface StateProps {
+    showQuiz: boolean
+    question: string
+    state: string
     quizStats: any // map from choice to count
     correctChoice: string
 }
 
-export interface ActionProps { }
+export interface ActionProps { 
+    quizButton()
+}
 
 export type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
@@ -25,24 +30,37 @@ export class View extends React.Component<Props, any> {
     
     render() {
         const {
+            showQuiz,
+            question,
+            state,
             quizStats,
-            correctChoice   
-        } = this.props;
+            correctChoice,
+
+            quizButton 
+        } = this.props
 
         let data = calculateQuizData(quizStats)
 
         return (
             <div className="panel">
                 <div className="panel-heading">
-                    Statistiques du dernier Quiz
+                    Quiz{ showQuiz && ": " + question +" [" + state + "]" }
                 </div>
                 <div className="panel-body pan white-background"> 
-                    <div className="pal">
-                        { Object.keys(quizStats).length === 0 && quizStats.constructor === Object 
-                            ? <h1>En attente de réponse...</h1>
-                            : <chartjs.Pie data={ data } height={ 105 }/> }                   
-                        { "Réponse correcte : " + correctChoice }
-                    </div>
+                    { showQuiz ? 
+                        <div className="pal">
+                            { Object.keys(quizStats).length === 0 && quizStats.constructor === Object 
+                                ? <h1>En attente de réponse...</h1>
+                                : <chartjs.Pie data={ data } height={ 105 }/> }                   
+                            { correctChoice ? "Réponse correcte : " + correctChoice : "Question ouverte" }
+                            <button className="btn btn-primary pull-right" onClick={ quizButton }>
+                                { state == "correction" ? "terminer" : "correction" }
+                            </button>
+                        </div> :
+                        <div className="pal">
+                            <h1>Aucun quiz lancé</h1>
+                        </div>
+                    }
                 </div>
             </div>
         );

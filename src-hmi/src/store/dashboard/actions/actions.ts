@@ -4,23 +4,29 @@ import { Action } from '../../../utils'
 import { APIActionTypes, WSOutActionTypes } from './actionTypes'
 
 export function startQuiz(quizId) {
-    return {
-        type: WSOutActionTypes.START_QUIZ,
-        payload: { quizId }
+    return dispatch => {
+        dispatch({
+            type: WSOutActionTypes.START_QUIZ,
+            payload: { quizId }
+        })
     }
 }
 
 export function showFeedback() {
-    return {
-        type: WSOutActionTypes.SHOW_FEEDBACK,
-        payload: { }
+    return dispatch => {
+        dispatch({
+            type: WSOutActionTypes.SHOW_FEEDBACK,
+            payload: { }
+        })
     }
 }
 
 export function stopQuiz() {
-    return {
-        type: WSOutActionTypes.STOP_QUIZ,
-        payload: { }
+    return dispatch => {
+        dispatch({
+            type: WSOutActionTypes.STOP_QUIZ,
+            payload: { }
+        })
     }
 }
 

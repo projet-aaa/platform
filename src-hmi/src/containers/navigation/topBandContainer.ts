@@ -9,7 +9,8 @@ import { appName } from "../../models/consts"
 function mapStateToProps(state: any): StateProps {
     let authInfo: AuthState = state.auth
     return {
-        userFullName: authInfo.firstName + " " + authInfo.lastName,
+        isAdmin: authInfo.admin,
+        userFullName: authInfo.firstName != null ? authInfo.firstName + " " + authInfo.lastName : null,
         appName
     }
  }

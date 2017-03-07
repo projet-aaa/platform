@@ -2,6 +2,7 @@
 // -- QUIZ
 // ------------------------------
 export const QuizType = {
+    MMCQ: 'MMCQ',
     MCQ: 'MCQ', 
     TEXT: 'TEXT'
 }
@@ -9,6 +10,7 @@ export const QuizType = {
 // The heading of a quiz
 export interface Quiz {
     id: string
+    iriId: string
     type: string
     title: string
 
@@ -24,7 +26,7 @@ export interface Quiz {
 }
 
 // a group of quiz
-export interface QuizGroup {
+export interface Test {
     id: string
     title: string
     quizs: Quiz[]

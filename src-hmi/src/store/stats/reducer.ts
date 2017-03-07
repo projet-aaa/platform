@@ -1,4 +1,5 @@
 import { handleActions } from "redux-actions"
+import * as _ from "underscore"
 
 import { Action } from "../../utils"
 import { APIActionTypes, ActionTypes } from "./actions"
@@ -23,67 +24,50 @@ export interface StatState {
 
     currentQuizId: string
 
-    sessionIds: number[]
+    timeline: string
 }
 
 let initialState: StatState = {
-    panic: [10, 20, 20, 20, 30, 20],
-    tooSlow: [5, 10, 20, 30, 10, 2],
-    tooFast: [ 2, 2, 2, 2, 2, 3],
-    date: [0, 5, 10, 15, 20, 25],
-    comments: [
-        {
-            date: new Date(),
-            comment: "J'ai pas compris",
-            commenter: "Jules"
-        },
-        {
-            date: new Date(2017, 1, 25, 24, 3),
-            comment: 'Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.',
-            commenter: "Jules"
-        }
-    ],
+    panic: null,
+    tooSlow: null,
+    tooFast: null,
+    date: null,
+    comments: null,
 
-    quiz: [
-        {
-            id: "0",
-            type: QuizType.MCQ,
-            title: "La question à mille rouble",
-            question: "Est ce que je ok?",
-            choices: ["peut être", "mr l'arbitre", "oui", "D"],
-            choiceIds: ["0", "1", "2"],
-            explanations: ["peut-être que c'est faux", "aux chiottes l'arbitre", "NON !!!!!!!!!", "Voilà !"],
-            answer: 3,
-            justification: "test"
-        }, {
-            id: "1",
-            type: QuizType.MCQ,
-            title: "La question facile",
-            question: "Est ce que je ok?",
-            choices: ["peut être", "mr l'arbitre", "oui", "D"],
-            choiceIds: ["0", "1", "2"],
-            explanations: ["peut-être que c'est faux", "aux chiottes l'arbitre", "NON !!!!!!!!!", "Voilà !"],
-            answer: 3,
-            justification: "test"
-        }
-    ],
-    quizChoices: [
-        {
-            "peut être": 3,
-            "mr l'arbitre": 10    
-        }
-    ],
-    currentQuizId: "0",
+    quiz: null,
+    quizChoices: null,
+    currentQuizId: null,
 
-    sessionIds: [
-        0, 1
-    ]
+    timeline: null
 }
 
 const name = "stat"
 const reducer = handleActions({
-    ["jamais"]: function(state: StatState, action: any): StatState {
-        return state
+    [APIActionTypes.FETCH_STATS_SUCCESS]: function(state: StatState, action): StatState {
+        let obj = {}
+        action.payload.quiz.forEach(q => {
+            obj[q.id] = q
+        })
+        return Object.assign({}, state, {
+            panic: action.payload.alerts.panicCurve,
+            tooSlow: action.payload.alerts.tooSlowCurve,
+            tooFast: action.payload.alerts.tooFastCurve,
+            date: _.range(action.payload.alerts.tooFastCurve.length),
+            comments: action.payload.comments,
+            quiz: obj,
+            quizChoices: action.payload.quizChoices,
+            currentQuizId: action.payload.quiz[0].id
+        })
+    },
+    [APIActionTypes.FETCH_TIMELINE_SUCCESS]: function(state: StatState, action): StatState {
+        return Object.assign({}, state, {
+            timeline: action.payload.timeline
+        })
+    },
+    [ActionTypes.CHOOSE_QUIZ]: function(state: StatState, action): StatState {
+        return Object.assign({}, state, {
+            currentQuizId: action.payload.quizId
+        })
     }
 }, initialState);
 

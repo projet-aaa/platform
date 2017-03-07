@@ -11,7 +11,7 @@ export interface StateProps {
     date: Date
     //Number of upvotes for this question
     votes: number
-    id: number
+    id: string
 }
 export interface ActionProps {}
 
@@ -42,22 +42,21 @@ export class View extends React.Component<Props, any> {
         return (
             <div>
                 <div className="well">
-                            <div className="pull-right">
-                                <div>
-                                    <button className="btn btn-primary"><b>+</b></button>
-                                    <button className="btn btn-primary"><b>-</b></button>
-                                </div>
-                                <span className="small font-bold">Votes </span>
-                                <br/>
-                                {votes}
-                            </div>
-                            <h4>
-                                <b>Réponse de {author}</b> ajouté le {dateString}
-                            </h4>
-                            <div dangerouslySetInnerHTML={{__html:text}}>
-                                
-                            </div>
-
+                    <div className="pull-right">
+                        <div>
+                            <button className="btn btn-primary"><b>+</b></button>
+                            <button className="btn btn-primary"><b>-</b></button>
+                        </div>
+                        <span className="small font-bold">Votes </span>
+                        <br/>
+                        {votes}
+                    </div>
+                    <h4>
+                        <b>Réponse de {author}</b> ajouté le {dateString}
+                    </h4>
+                    <div dangerouslySetInnerHTML={{__html:text}}>
+                        
+                    </div>
                 </div>
             </div>
         );

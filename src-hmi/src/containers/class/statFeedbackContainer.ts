@@ -4,7 +4,10 @@ import rootWrapper from "../../wrappers/rootWrapper"
 
 import { StateProps, ActionProps, View } from "../../views/stats/statFeedbackView"
 
-function mapStateToProps(state: any, ownProps: any): StateProps {
+import { fetchSessionStats, fetchSessionByName } from "../../api/fetchs"
+import { fetchStatsSuccess } from "../../store/stats/actions"
+
+function mapStateToProps(state, ownProps) {
     return { 
         panic: state.stat.panic,
         tooSlow: state.stat.tooSlow,
@@ -13,10 +16,9 @@ function mapStateToProps(state: any, ownProps: any): StateProps {
         comments: state.stat.comments
     }
 }
-function mapDispatchToProps(dispatch, ownProps): ActionProps {
+function mapDispatchToProps(dispatch, ownProps) {
     return {
-        goToQuiz: () => console.log("go to quiz"),
-        goToSessions: () => console.log("go to sessions")
+        fetchStatsSuccess: (res) => dispatch(fetchStatsSuccess(res))
     }
 }
 
@@ -24,6 +26,14 @@ export default rootWrapper(
     mapStateToProps, 
     mapDispatchToProps,
     null,
+    (props, done) => {
+        fetchSessionByName(props.params.course, session => {
+            fetchSessionStats(session['hydra:member'][0].id, res => {
+                props.fetchStatsSuccess(res)
+                done()
+            })
+        })
+    },
     null,
     View
 )

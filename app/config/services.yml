@@ -35,3 +35,16 @@ services:
     app.importer.yaml:
         class: AppBundle\Service\YamlImporter
         arguments: ["@doctrine.orm.entity_manager"]
+
+    app.mcq_answer_validator:
+        class: AppBundle\Service\McqAnswerValidator
+        arguments: ["@doctrine.orm.entity_manager", "@security.token_storage"]
+        tags:
+            - { name: validator.constraint_validator }
+
+    app.text_answer_validator:
+        class: AppBundle\Service\TextAnswerValidator
+        arguments: ["@doctrine.orm.entity_manager", "@security.token_storage"]
+        tags:
+            - { name: validator.constraint_validator }
+

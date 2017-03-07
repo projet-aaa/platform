@@ -2,7 +2,7 @@ import { handleActions } from "redux-actions"
 
 import { ActionTypes, APIActionTypes, WSInActionTypes, WSOutActionTypes } from '../actions/actionTypes'
 
-import { QuizInstanceState, Quiz, AttentionStateType } from '../../../models/class/class'
+import { QuizInstanceState, Quiz, AttentionStateType, QuizType } from '../../../models/class/class'
 
 export interface RemoteState {
     attentionState: string,
@@ -14,9 +14,9 @@ export interface RemoteState {
     currConsulQuizInd: number
 
     currQuizId: string
+    iriSessionId: string
     currQuizState: string
     choice: any
-    choiceId: string
     sent: boolean
 
     score: number
@@ -31,6 +31,7 @@ let initialstate: RemoteState = {
     attentionState: AttentionStateType.OK,
 
     sessionId: null,
+    iriSessionId: null,
     quiz: [],
 
     quizHistory: [],
@@ -40,7 +41,6 @@ let initialstate: RemoteState = {
     currQuizState: QuizInstanceState.OFF,
     
     choice: -1,
-    choiceId: null,
     sent: false,
 
     score: 0,
@@ -54,9 +54,39 @@ let initialstate: RemoteState = {
 const name = "remote"
 const reducer = handleActions({
     [ActionTypes.CHOOSE]: function(state: RemoteState, action: any): RemoteState {
-        return Object.assign({}, state, {
-            choice: action.payload.choice
-        })
+        let type = state.quiz[state.currQuizId].type,
+            choice = state.choice
+
+        if(type == QuizType.MCQ) {
+            if(choice == action.payload.choice) {
+                choice = -1
+            } else {
+                choice = action.payload.choice
+            }
+
+            return Object.assign({}, state, {
+                choice
+            })
+        } else if(type == QuizType.TEXT) {
+            choice = action.payload.choice
+
+            return Object.assign({}, state, {
+                choice
+            })
+        } else if(type == QuizType.MMCQ) {
+            if(!choice) {
+                choice = []
+            }
+            if(choice.indexOf(action.payload.choice) >= 0) {
+                choice.splice(choice.indexOf(action.payload.choice), 1)
+            } else {
+                choice.push(action.payload.choice)
+            }
+
+            return Object.assign({}, state, {
+                choice: Object.assign([], choice)
+            })
+        }
     },
     [ActionTypes.NEXT_CONSUL_QUIZ]: function(state: RemoteState, action: any): RemoteState {
         let len = state.quizHistory.length
@@ -97,7 +127,7 @@ const reducer = handleActions({
                 quizHistory: [...state.quizHistory, state.currQuizId],
                 currQuizId: action.payload.quiz.id,
                 currQuizState: QuizInstanceState.HEADING,
-                choice: null,
+                choice: action.payload.quiz.type == QuizType.MMCQ ? [] : null,
                 choiceId: null,
                 currConsulQuizInd: state.quizHistory.length - 1,
                 sent: false
@@ -109,7 +139,7 @@ const reducer = handleActions({
                 }),
                 currQuizId: action.payload.quiz.id,
                 currQuizState: QuizInstanceState.HEADING,
-                choice: null,
+                choice: action.payload.quiz.type == QuizType.MMCQ ? [] : null,
                 choiceId: null,
                 sent: false
             })
@@ -149,7 +179,10 @@ const reducer = handleActions({
             obj[quiz.id] = quiz
         })
         return Object.assign({}, state, {
+            attentionState: AttentionStateType.OK,
+            
             sessionId: action.payload.sessionId,
+            iriSessionId: action.payload.iriSessionId,
             quiz: obj,
 
             quizHistory: action.payload.quizHistory,
@@ -157,7 +190,8 @@ const reducer = handleActions({
 
             currQuizId: action.payload.currQuizId,
             currQuizState: action.payload.currQuizState,
-            choice: null,
+            choice: obj[action.payload.currQuizId] && 
+                    (obj[action.payload.currQuizId].type == QuizType.MMCQ ? [] : null),
             choiceId: null,
 
             score: 0,
@@ -165,7 +199,9 @@ const reducer = handleActions({
             studentPop: action.payload.studentPop,
             highscore: action.payload.highScore,
             maxscore: action.payload.maxscore,
-            average: action.payload.average
+            average: action.payload.average,
+
+            sent: action.payload.sent
         })
     },
     [WSInActionTypes.STUDENT_COUNT]: function(state: RemoteState, action: any): RemoteState {

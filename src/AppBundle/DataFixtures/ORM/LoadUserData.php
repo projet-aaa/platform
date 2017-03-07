@@ -19,7 +19,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
     const DEFAULT_USERS = array(
         'admin' => array('username' => 'admin', 'password' => 'admin', 'roles'=> array('ROLE_ADMIN')),
         'prof' => array('username' => 'prof', 'password' => 'prof', 'roles' => array('ROLE_PROF')),
-        'eleve' => array('username' => 'eleve', 'password' => 'eleve', 'roles' => array('ROLE_ELEVE')),
+        'eleve' => array('username' => 'eleve', 'password' => 'eleve', 'roles' => array('ROLE_USER')),
 
         'abeyet' => array('username' => 'abeyet', 'password' => 'abeyet', 'roles'=> array('ROLE_ADMIN')),
         'vachard' => array('username' => 'vachard', 'password' => 'vachard', 'roles'=> array('ROLE_ADMIN')),

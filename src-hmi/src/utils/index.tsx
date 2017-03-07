@@ -9,7 +9,7 @@ import createSocketIoMiddleware from 'redux-socket.io'
 import * as io from 'socket.io-client'
 import * as fetch from 'isomorphic-fetch'
 
-import { urlWS, chartColors, apiRootURL, debug } from '../models/consts'
+import { urlWS, chartColors, apiRootURL, log } from '../models/consts'
 
 import { Quiz } from '../models/class/class'
 
@@ -42,7 +42,7 @@ export const storeFactory = (reducers: any[], connectWS: boolean, auth) => {
     middlewares.push(apiMiddleware)
     middlewares.push(authAPIMiddleware(auth))
     if(socket) { middlewares.push(createSocketIoMiddleware(socket, 'SERVER/')) }
-    if(debug) { middlewares.push(createLogger()) }
+    if(log) { middlewares.push(createLogger()) }
 
     let store = createStore(
         reducer,
@@ -108,6 +108,7 @@ export function createAPIActionCreator(
         }
 
         actionObj[CALL_API].headers = {
+            'Content-Type': 'application/ld+json',
             'Authorization': 'Bearer ' + (document as any).token
         }
 
@@ -122,6 +123,22 @@ export function createAPIActionCreator(
     }
 }
 
+export function plainFetcher(url, method?, obj?) {
+    let res: any = {
+        headers: {
+            Authorization: 'Bearer ' + (document as any).token
+        }
+    }
+    if(method) {
+        res.method = method
+    }
+    if(obj) {
+        res.headers['Content-type'] = 'application/ld+json'
+        res.body = JSON.stringify(obj)
+    }
+    return fetch(apiRootURL + url, res)
+}
+
 export function fetcher(url, method?, obj?) {
     let res: any = {
         headers: {
@@ -132,9 +149,26 @@ export function fetcher(url, method?, obj?) {
         res.method = method
     }
     if(obj) {
+        res.headers['Content-type'] = 'application/ld+json'
         res.body = JSON.stringify(obj)
     }
     return fetch(apiRootURL + url, res).then(res => res.json())
+}
+
+export function listFetcher<T>(list: T[], urlMaker: (obj: T) => string, success, failure) {
+    let todo = list.length,
+        resList = []
+    list.forEach(o => {
+        fetcher(urlMaker(o), 'GET')
+        .then(res => {
+            resList.push(res)
+            todo--
+            if(!todo) {
+                success(resList)
+            }
+        })
+        .catch(error => failure(error))
+    })
 }
 
 export const authAPIMiddleware = auth => store => next => action => {
@@ -228,6 +262,21 @@ export function ddmmyyyy(date: Date): string {
             date.getFullYear()
 }
 
+const apiDateReg = /(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)/g
+
+export function parseAPIDate(date): Date {
+    let match = apiDateReg.exec(date)
+    apiDateReg.lastIndex = 0
+    if(match) {
+        return new Date(parseInt(match[1]), 
+                        parseInt(match[2]), 
+                        parseInt(match[3]), 
+                        parseInt(match[4]), 
+                        parseInt(match[5]), 
+                        parseInt(match[6]))
+    }
+}
+
 // modify the value of the ith element of an array
 export function modifyArrayElement(array: any[], id: string, value: any): any[] {
     let res = array.slice()
@@ -252,4 +301,14 @@ export function shuffle(array) {
     }
 
     return array;
+}
+
+export function findAllIndex<T>(list: T[], f: (val:T) => boolean): number[] {
+    let res = []
+    for(let i = 0; i < list.length; i++) {
+        if(f(list[i])) {
+            res.push(i)
+        }
+    }
+    return res
 }

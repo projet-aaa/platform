@@ -3,6 +3,12 @@ import { SocketInfo, RoomInfo, RoomType } from '../models/rooms'
 
 import { SocketInMsg, SocketOutMsg } from '../models/main'
 
+/* MAIN ROOM
+ * The room everybody joins automatically. It handles the core requests: 
+ * - subscription: ask to receive new rooms
+ * - authentification: providing user information when logging in
+ * - room management: create/destroy/join/leave rooms
+ */
 export class MainRoom extends IMainRoom {
 
     type = RoomType.MAIN
@@ -13,7 +19,7 @@ export class MainRoom extends IMainRoom {
                 socket.id = msg.id
                 socket.username = msg.username
                 socket.isTeacher = msg.isTeacher
-                this.server.send(socket, SocketOutMsg.AUTHENTIFIED, { })
+                this.server.send(socket, SocketOutMsg.AUTHENTIFIED, {})
                 break
             }
             case SocketInMsg.GET_ROOMS: {
@@ -57,11 +63,11 @@ export class MainRoom extends IMainRoom {
                 break
             }
             case SocketInMsg.CLOSE_ROOM: {
-                this.server.closeRoom(msg.roomId)
+                let room = this.server.rooms.filter(r => r).find(r => r.teacher == msg.roomProf)
+                if(room) { this.server.closeRoom(room.id) }
                 break
             }
             case SocketInMsg.ROOM_SUBSCRIBE: {
-                console.log(this.server.rooms)
                 socket.subscribed = true
                 if(msg.fetch) {
                     this.server.send(socket, SocketOutMsg.GET_ROOMS_RES, {
@@ -77,21 +83,11 @@ export class MainRoom extends IMainRoom {
         }
     }
 
-    receiveRedisMsg(type: string, msg) {
-        
-    }
+    receiveRedisMsg(type: string, msg) { }
 
-    socketEnter(socket: SocketInfo) {
-        
-    }
-    socketLeave(socket: SocketInfo) {
-        
-    }
+    socketEnter(socket: SocketInfo) { }
+    socketLeave(socket: SocketInfo) { }
     
-    socketGeneralEnter(socket: SocketInfo) {
-        
-    }
-    socketGeneralLeave(socket: SocketInfo) {
-        
-    }
+    socketGeneralEnter(socket: SocketInfo) { }
+    socketGeneralLeave(socket: SocketInfo) { }
 }

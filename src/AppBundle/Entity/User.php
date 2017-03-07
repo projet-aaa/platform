@@ -22,37 +22,44 @@ class User extends BaseUser implements \JsonSerializable
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Groups({"thread_cascade","user-read"})
      */
     protected $id;
 
     /**
      * @ORM\Column(type="string", length=63, nullable=true)
-     * @Groups({"user"})
+     * @Groups({"user","thread_cascade"})
      */
     protected $firstname;
 
     /**
      * @ORM\Column(type="string", length=63, nullable=true)
-     * @Groups({"user"})
+     * @Groups({"user","thread_cascade"})
      */
     protected $lastname;
 
     /**
-     * @Groups({"user"})
+     * @Groups({"user","thread_cascade"})
      */
     protected $username;
 
     /**
      * @ORM\Column(type="string", length=31, nullable=true)
-     * @Groups({"user"})
+     * @Groups({"user","thread_cascade"})
      */
     private $part; //group is a reserved word in sql.
 
     /**
      * @var array
-     * @Groups({"user"})
+     * @Groups({"user","thread_cascade"})
      */
     protected $roles;
+
+    /**
+     * @var string
+     * @Groups({"user-write"})
+     */
+    protected $plainPassword;
 
     /**
      * @ORM\PrePersist()
@@ -107,6 +114,15 @@ class User extends BaseUser implements \JsonSerializable
     {
         return $this->id;
     }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
 
     /**
      * @return string

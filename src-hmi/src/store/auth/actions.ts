@@ -1,10 +1,12 @@
 import { CALL_API } from 'redux-api-middleware'
-import { createAPIActionCreator } from '../../utils'
+import { createAPIActionCreator, fetcher } from '../../utils'
 
 import { loginURL } from "../../models/consts"
 
 export const ActionTypes = {
     AUTH_LOCAL: "AUTH/AUTH_LOCAL",
+
+    UPDATE_PROFILE: "AUTH/UPDATE_PROFILE"
 }
 
 export const APIActionTypes = {
@@ -106,6 +108,29 @@ function authAPI(username: string, password: string) {
                 APIActionTypes.AUTH_FAILURE
             ]
         }
+    }
+}
+
+export function updateProfile(group: string) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: ActionTypes.UPDATE_PROFILE,
+            payload: { group }
+        })
+        dispatch(updateProfileAPI(group))
+    }
+}
+
+export function updateProfileAPI(group: string) {
+    return (dispatch, getState) => {
+        let { auth } = getState()
+        fetcher('/users/' + auth.id, 'PUT', {
+            part: group
+        })
+        .then(res => {
+            console.log("update successful:", res)
+        })
+        .catch(error => console.log("error"))
     }
 }
 

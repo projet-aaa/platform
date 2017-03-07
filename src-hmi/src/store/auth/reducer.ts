@@ -10,6 +10,7 @@ export interface AuthState {
     firstName: string
     lastName: string
     id: number
+    iriId: string
     //email: string
 
     admin: boolean
@@ -33,6 +34,7 @@ let initialState: AuthState = {
     firstName: null,
     lastName: null,
     id: -1,
+    iriId: null,
     //email: "somin.maurel@gmail.fr",
     
     admin: false,
@@ -59,8 +61,14 @@ const reducer = handleActions({
             password: action.payload.password
         })
     },
+    [ActionTypes.UPDATE_PROFILE]: function(state: AuthState, action): AuthState {
+        return Object.assign({}, state, {
+            group: action.payload.group
+        })
+    },
     [APIActionTypes.FETCH_USER_SUCCESS]: function(state: AuthState, action: any): AuthState {
         return Object.assign({}, state, {
+            iriId: action.payload["@id"],
             isTeacher: action.payload.roles.indexOf("ROLE_PROF") >= 0,
             admin: action.payload.roles.indexOf("ROLE_ADMIN") >= 0,
             firstName: action.payload.firstname,

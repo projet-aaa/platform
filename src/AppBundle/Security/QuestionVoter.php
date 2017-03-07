@@ -85,7 +85,7 @@ class QuestionVoter extends BaseVoter
      */
     private function canCreate(Question $question, User $user)
     {
-        return !in_array('ROLE_ELEVE',$user->getRoles());
+        return !in_array('ROLE_ADMIN', $this->getRolesHierarchy($user->getRoles()));
     }
 
     /**
@@ -109,7 +109,7 @@ class QuestionVoter extends BaseVoter
      */
     private function canUpdate(Question $question, User $user)
     {
-        return !in_array('ROLE_ELEVE',$user->getRoles());
+        return !in_array('ROLE_ADMIN', $this->getRolesHierarchy($user->getRoles()));
     }
 
     /**
@@ -121,6 +121,6 @@ class QuestionVoter extends BaseVoter
      */
     private function canDelete(Question $question, User $user)
     {
-        return !in_array('ROLE_ELEVE',$user->getRoles());
+        return !in_array('ROLE_ADMIN', $this->getRolesHierarchy($user->getRoles()));
     }
 }

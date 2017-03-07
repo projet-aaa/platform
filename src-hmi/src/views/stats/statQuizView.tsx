@@ -3,22 +3,22 @@ import { connect } from "react-redux";
 import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 import * as chartjs from "react-chartjs-2"
+import * as _ from "underscore"
 
 import { calculateQuizData } from "../../utils"
 
 import { Quiz } from "../../models/class/class"
 
 export interface StateProps {
-    quiz: Quiz[]
-    quizChoices: any[]
+    params: any
+    quiz: any // id -> Quiz
+    quizChoices: any // id -> choices
 
     currentQuizId: number
 }
 
 export interface ActionProps { 
     chooseQuiz(quizId: string)
-    gotoFeedback()
-    gotoSession()
 }
 
 export type Props = StateProps & ActionProps;
@@ -27,31 +27,33 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
+            params,
             quiz,
             quizChoices,
 
             currentQuizId,
 
-            chooseQuiz,
-            gotoFeedback,
-            gotoSession
+            chooseQuiz
         } = this.props
 
         let data = calculateQuizData(quizChoices[currentQuizId]),
             currentQuiz = quiz[currentQuizId]
 
         return (
-            <div className="page-content">
+            <div className="col-lg-12">
                 <div className="row">
                     <div className="col-lg-12">
-                        <button type="button" className="btn btn-primary" onClick={ gotoFeedback }>
-                            Voir les retours des élèves
-                        </button>
-                        <button type="button" className="btn btn-primary" onClick={ gotoSession }>
-                            Retourner aux sessions
-                        </button>
+                        <h2>Résultats aux quiz live</h2>
+                        <Link to={ "/" + params.UE + "/" + params.course + "/statistique/prof/attention" }>
+                            Regarder les retours des élèves
+                        </Link><br/>
+                        <Link to={ "/" + params.UE + "/" + params.course + "/statistique/" }>
+                            Retour
+                        </Link>
                     </div>
                 </div>
+
+                <br/>
 
                 <div className="col-lg-7">
                     <div className="panel">
@@ -59,7 +61,6 @@ export class View extends React.Component<Props, any> {
                             { currentQuiz.title }
                         </div>
                         <div className="panel-body pan white-background"> 
-                            { currentQuiz.question }
                             <chartjs.Pie data={ data }/>  
                         </div>
                     </div>
@@ -71,9 +72,9 @@ export class View extends React.Component<Props, any> {
                         </div>
                         <div className="panel-body pan white-background"> 
                             <div className="page-content">
-                                { quiz.map((q) => {
+                                { _.values(quiz).map(q => {
                                     return <a 
-                                        key={q.id} 
+                                        key={ q.id } 
                                         className="list-group-item" 
                                         onClick={ () => chooseQuiz(q.id) }>
                                         { q.title }

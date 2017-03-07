@@ -5,17 +5,17 @@ export const SessionType = {
 }
 
 export interface Session {
-    id: number
+    id: string
     // the name of the session
     sessionName: string
-    // the name of the teacher
-    teacherName: string
     // the type of session
     sessionType: string
     // the date of the session
-    date: Date,
+    date: Date
     // the discipline this session belongs to
     discipline: string
-    // true if a live of this session is going on actually
+    // The tacher for this session
+    teacherName: string
+    // If the session is running live
     live: boolean
 }

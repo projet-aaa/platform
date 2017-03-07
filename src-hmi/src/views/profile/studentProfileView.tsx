@@ -7,17 +7,28 @@ import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
 // INTERNAL IMPORTS
+import { getText } from "../../utils"
 import { chartColors } from "../../models/consts"
 
 export interface StateProps {
     lastName: string
     firstName: string
+    password: string
     //email: string
     group: string
     // name of lessons a student take
     disciplines: string[]
+
+    edition: boolean
+
+    groupCache
 }
-export interface ActionProps { }
+export interface ActionProps { 
+    toShow()
+    toEdition()
+
+    onGroupChange(group: string)
+}
 
 // style
 var noPaddingTop = {
@@ -32,9 +43,17 @@ export class View extends React.Component<Props, any> {
         const {
             lastName,
             firstName,
+            password,
             //email,
             group,
-            disciplines
+            disciplines,
+
+            edition,
+            groupCache,
+
+            toShow,
+            toEdition,
+            onGroupChange
         } = this.props;
         
         // the render of taken lessons
@@ -66,7 +85,13 @@ export class View extends React.Component<Props, any> {
                             <div className="col-sm-9 controls">
                                 <div className="row">
                                     <div className="col-xs-9">
-                                        <input type="text" value={ lastName } contentEditable={ false }  className="form-control" readOnly/>
+                                        <input 
+                                            type="text" 
+                                            value={ lastName } 
+                                            contentEditable={ false }  
+                                            className="form-control" 
+                                            readOnly
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -76,24 +101,50 @@ export class View extends React.Component<Props, any> {
                             <div className="col-sm-9 controls">
                                 <div className="row">
                                     <div className="col-xs-9">
-                                        <input type="text" value={ firstName} contentEditable={ false } className="form-control" readOnly/>
+                                        <input 
+                                            type="text" 
+                                            value={ firstName } 
+                                            contentEditable={ false } 
+                                            className="form-control" 
+                                            readOnly
+                                        />
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-sm-3 control-label" style={ noPaddingTop }>Groupe</label>
+                            <label className="col-sm-3 control-label">Password</label>
                             <div className="col-sm-9 controls">
                                 <div className="row">
                                     <div className="col-xs-9">
-                                        <span className="label label-yellow">
-                                            { group }
-                                        </span>
+                                        <input type="text" value={ password } contentEditable={ false } className="form-control" readOnly/>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
+                        <div className="form-group">
+                            <label className="col-sm-3 control-label" style={ noPaddingTop }>
+                                Groupe
+                                </label>
+                            <div className="col-sm-9 controls">
+                                <div className="row">
+                                    <div className="col-xs-9">
+                                        { !edition ? 
+                                            <span className="label label-green">
+                                                { group }
+                                            </span>:
+                                            <input 
+                                                type="text" 
+                                                id="group"
+                                                onChange={ () => onGroupChange(getText("group")) }
+                                                value={ groupCache }
+                                            />
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <hr/>
                         <h3>Cours</h3>
                         <div className="form-group">
@@ -108,12 +159,17 @@ export class View extends React.Component<Props, any> {
                         </div>
                         <hr/>
                     </form>
+                    { edition ? 
+                        <button className="btn btn-primary" onClick={ toShow }>Sauvegarder</button> :
+                        <button className="btn btn-primary" onClick={ toEdition }>Editer</button>    
+                    }
                 </div>
             </div>
         )
     }
 }
 
+// -- EMAIL
 // <div className="form-group">
 //     <label className="col-sm-3 control-label">Mail</label>
 //     <div className="col-sm-9 controls">

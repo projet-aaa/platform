@@ -2,7 +2,11 @@ import { IRoom } from '../main/iroom'
 import { SocketInfo, RoomInfo, RoomType } from '../models/rooms'
 
 import { SocketOutMsg, SocketInMsg, QuizInstanceState } from '../models/class'
+import { log } from '../models/consts'
 
+/* CLASS ROOM
+ * The class room in which students can answer to quiz and signal their attention state
+ */
 export class ClassRoom extends IRoom {
 
     type = RoomType.CLASS
@@ -11,37 +15,7 @@ export class ClassRoom extends IRoom {
     teacherSockets: SocketInfo[]
 
     // SESSION CACHED INFO
-    sessionId: string = "session0"
-    quiz: any = {
-        "0": {
-            id: "0",
-            type: "MCQ",
-            title: "La première question",
-
-            question: "Quel est la réelle identité de Simon?",
-
-            choices: ["Saumin", "Saumin", "Saumin"],
-            choiceIds: ["0", "1", "2"],
-
-            answer: 0,
-            explanations: ["N'est ce pas évident?", "N'est ce pas évident?", "N'est ce pas évident?"],
-            justification: "N'est ce pas évident?"
-        },
-        "1": {
-            id: "1",
-            type: "MCQ",
-            title: "La seconde question",
-
-            question: "2 + 2?",
-
-            choices: ["1", "2", "4"],
-            choiceIds: ["0", "1", "2"],
-
-            answer: 2,
-            explanations: ["faux", "faux", "2 + 2 = 1 + 1 + 1 + 1 = 4 * 1 = 4"],
-            justification: "2 + 2 = 1 + 1 + 1 + 1 = 4 * 1 = 4"
-        }
-    }
+    quiz: any
 
     quizHistory: string[] = []
 
@@ -49,16 +23,19 @@ export class ClassRoom extends IRoom {
     currQuizState: string = QuizInstanceState.OFF
     
     get maxscore(): number { return this.quizHistory.length }
-    average: number = 0
-    correctAnswer: number
-    totalAnswer: number
-    currentStat: any
+    average: number
+
+    correctAnswer: number // correct answer count to the current question
+    totalAnswer: number // total answer count
+    currentStat: any // choice -> count
     idToAnswer: any // student id -> choice
 
-    panic: number = 0
-    tooSlow: number = 0
-    tooFast: number = 0
+    panic: number
+    tooSlow: number
+    tooFast: number
     idToState: any // student id -> attention state
+
+    timeout
 
     get studentPop(): number { return this.studentSockets.length }
     get teacherPop(): number { return this.teacherSockets.length }
@@ -68,6 +45,11 @@ export class ClassRoom extends IRoom {
         this.studentSockets = []
         this.teacherSockets = []
         this.idToState = {}
+        this.average = 0
+
+        this.panic = 0
+        this.tooSlow = 0
+        this.tooFast = 0
     }
 
     receiveSocketMsg(socket: SocketInfo, type: string, msg) {
@@ -98,13 +80,13 @@ export class ClassRoom extends IRoom {
             case SocketInMsg.SHOW_FEEDBACK: {
                 if(QuizInstanceState.HEADING) {
                     this.currQuizState = QuizInstanceState.FEEDBACK
-                }
 
-                for(let socket of this.studentSockets) {
-                    this.server.send(socket, SocketOutMsg.STUDENT_SHOW_FEEDBACK, { })
-                }
-                for(let socket of this.teacherSockets) {
-                    this.server.send(socket, SocketOutMsg.TEACHER_SHOW_FEEDBACK, { })
+                    for(let socket of this.studentSockets) {
+                        this.server.send(socket, SocketOutMsg.STUDENT_SHOW_FEEDBACK, { })
+                    }
+                    for(let socket of this.teacherSockets) {
+                        this.server.send(socket, SocketOutMsg.TEACHER_SHOW_FEEDBACK, { })
+                    }
                 }
                 break
             }
@@ -127,16 +109,41 @@ export class ClassRoom extends IRoom {
             // STUDENT
             case SocketInMsg.ANSWER: {
                 if(this.currQuizId && msg.questionId == this.currQuizId) {
-                    if(this.quiz[this.currQuizId].answer == msg.choice) {
+                    let quiz = this.quiz[this.currQuizId]
+
+                    if(quiz.type == "MMCQ") {
+                        let contained = true
+
+                        for(let answer of msg.choice) {
+                            if(quiz.answer.indexOf(answer) < 0) {
+                                contained = false
+                                break
+                            }
+                        }
+
+                        if(contained) { this.correctAnswer++ }
+
+                        this.totalAnswer += msg.choice.length
+
+                        for(let choice of msg.choice) {
+                            if(this.currentStat[choice]) {
+                                this.currentStat[choice]++
+                            } else {
+                                this.currentStat[choice] = 1
+                            }
+                        }
+                    } else if(quiz.answer == msg.choice) {
                         this.correctAnswer++
+                        this.totalAnswer++
+
+                        if(this.currentStat[msg.choice]) {
+                            this.currentStat[msg.choice]++
+                        } else {
+                            this.currentStat[msg.choice] = 1
+                        }
                     }
-                    this.totalAnswer++
+
                     this.idToAnswer[socket.id] = msg.choice
-                    if(this.currentStat[msg.choice]) {
-                        this.currentStat[msg.choice]++
-                    } else {
-                        this.currentStat[msg.choice] = 1
-                    }
 
                     for(let socket of this.teacherSockets) {
                         this.server.send(socket, SocketOutMsg.ANSWER, msg)
@@ -161,15 +168,15 @@ export class ClassRoom extends IRoom {
         }
     }
 
-    receiveRedisMsg(type: string, msg) {
-        
-    }
-
     socketEnter(socket: SocketInfo) {
         if(socket.isTeacher) {
+            if(socket.username == this.teacher) {
+                clearTimeout(this.timeout)
+            }
             this.server.send(socket, SocketOutMsg.TEACHER_CLASS_JOINED, {
                 quiz: this.quiz,
                 sessionId: this.sessionId,
+                iriSessionId: this.iriSessionId,
 
                 currQuizId: this.currQuizId,
                 currQuizState: this.currQuizState,
@@ -181,7 +188,9 @@ export class ClassRoom extends IRoom {
 
                 panic: this.panic,
                 tooSlow: this.tooSlow,
-                tooFast: this.tooFast
+                tooFast: this.tooFast,
+
+                sent: this.idToAnswer && this.idToAnswer[socket.id] != null
             })
             this.teacherSockets.push(socket)
         } else {
@@ -196,6 +205,7 @@ export class ClassRoom extends IRoom {
                 quiz,
                 quizHistory: this.quizHistory,
                 sessionId: this.sessionId,
+                iriSessionId: this.iriSessionId,
 
                 currQuizId: this.currQuizId,
                 currQuizState: this.currQuizState,
@@ -220,20 +230,24 @@ export class ClassRoom extends IRoom {
     }
     socketLeave(socket: SocketInfo) {
         if(socket.isTeacher) {
-            console.log("[teacher disconnect]")
+            if(log) console.log("[teacher disconnect]", socket)
             this.teacherSockets.splice(this.teacherSockets.indexOf(socket), 1)
 
-            if(this.teacher == socket.username) {
-                this.server.closeRoom(this.id)
+            // if their is no more teachers in the room, close the room after a time out (cleared if a teacher joins)
+            if(this.teacherSockets.filter(s => this.teacher == s.username).length == 0) {
+                this.timeout = setTimeout(() => {
+                    this.server.closeRoom(this.id)
+                }, 120 * 1000)
             }
         } else {
-            console.log("[student disconnect]")
+            if(log) console.log("[student disconnect]", socket)
             this.studentSockets.splice(this.studentSockets.indexOf(socket), 1)
 
+            let choice = (this.idToAnswer ? this.idToAnswer[socket.id] : null),
+                state = this.idToState[socket.id]
             for(let socket of this.teacherSockets) {
                 this.server.send(socket, SocketOutMsg.STUDENT_DISCONNECT, {
-                    choice: this.idToAnswer ? this.idToAnswer[socket.id] : null,
-                    state: this.idToState[socket.id]
+                    choice, state
                 })
             }
 
@@ -254,4 +268,6 @@ export class ClassRoom extends IRoom {
             }
         }
     }
+
+    receiveRedisMsg(type: string, msg) { }
 }

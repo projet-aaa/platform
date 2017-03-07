@@ -34,8 +34,6 @@ class HomeController extends Controller
      */
     public function devAction()
     {
-        dump(Yaml::parse(file_get_contents(__DIR__.'/../../../var/docs/back-end/test_import.yml')));
-
         return $this->render('AppBundle:Default:dev.html.twig');
     }
 

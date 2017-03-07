@@ -1,9 +1,16 @@
+/* -- MAIN
+ * The root of the entire website: contains the list of redux reducers used (representing the 
+ * global state) and the urls of the website. Some of the URL references within the website are
+ * hard coded so be carefull when modifying the URLs on this page.
+ */
+
+// EXTERNAL
 import 'babel-polyfill'
 
 import * as ReactDOM from 'react-dom'
 import * as React from 'react'
 import { Router, Route, IndexRoute, hashHistory } from 'react-router'
-import { Provider } from 'react-redux';
+import { Provider } from 'react-redux'
 
 import { auth } from '../store/auth/actions'
 
@@ -15,14 +22,17 @@ import sessionsInfo from '../store/sessions/reducer'
 import threadMessageInputInfo from '../store/faq/reducers/answerInput'
 import threadContentInfo from '../store/faq/reducers/threadContent'
 import questionInputInfo from '../store/faq/reducers/questionInput'
+import currSessionInfo from '../store/faq/reducers/currSession'
 import wsServerInfo from '../store/wsrooms/reducer'
 import questionnaireInfo from '../store/questionnaire/reducers/reducer'
 import authInfo from '../store/auth/reducer'
 import mainInfo from '../store/main/reducers/reducer'
+import profileInfo from '../store/profile/reducer'
+import navigationInfo from '../store/navigation/reducer'
 
 // TEMPLATES
-import { View as TopBandLeftMenuTemp } from '../template/topBandLeftMenuTemp'
-import { View as TopBandTemp } from '../template/topBandTemp'
+import TopBandLeftMenuTemp from '../template/topBandLeftMenuTemp'
+import TopBandTemp from '../template/topBandTemp'
 import { View as TabsTemp } from '../template/tabsTemp'
 
 // VIEWS AND CONTAINERS
@@ -39,9 +49,13 @@ import DisciplineContainer from '../containers/discipline/disciplineContainer'
 
 import QuestionnaireContainer from '../containers/questionnaire/questionnaireContainer'
 
-import LoginContainer from '../containers/devlogin/loginContainer'
+import LoginContainer from '../containers/dev/loginContainer'
+import CloseRoomContainer from '../containers/dev/closeRoomContainer'
 
 import { storeFactory } from '../utils'
+import { devtools } from '../models/consts'
+import rootWrapper from "../wrappers/rootWrapper"
+import { fetchTest, fetchSessionQuiz, fetchDisciplinesSessions, fetchSessionStats } from '../api/fetchs'
 
 // STORE CREATION (DEFINITION OF THE GLOBAL STATE)
 let store = storeFactory([
@@ -52,23 +66,47 @@ let store = storeFactory([
     threadMessageInputInfo,
     threadContentInfo,
     questionInputInfo,
+    currSessionInfo,
     wsServerInfo,
     questionnaireInfo,
     authInfo,
-    mainInfo
+    mainInfo,
+    profileInfo,
+    navigationInfo
 ], true, auth)
     
-// ROUTE
+// THE WEBSITES REACT ROUTES
 let MainRouter =
 (<Provider store={store}>
     <Router history={hashHistory}>
         <Route path="/" component={ TopBandLeftMenuTemp }>
             <IndexRoute component={ MainContainer }/>
         </Route>
-        <Route path="/login" component={ LoginContainer}/>
+
+        { devtools && <Route path="/login" component={ LoginContainer }/> }
+        { devtools && <Route path="/close_room/:prof" component={ CloseRoomContainer }/> }
+        { devtools && <Route path="/test" component={ rootWrapper(
+            (st => {return { }}),
+            (dp => {return { }}),
+            null,
+            (props, done) => {
+                done()
+            },
+            props => { },
+            (props, ctx) => <div>Un test</div>
+        )}/>}
+
         <Route path="/profil" component={ TopBandLeftMenuTemp }>
             <IndexRoute component={ ProfileContainer }/>
         </Route>
+
+        <Route path="/session/:profName" component={ TopBandTemp }>
+            <IndexRoute component={ RemoteContainer }/>
+        </Route>
+        <Route path="/session/:course/:profName/tb" component={ TopBandTemp }>
+            <IndexRoute component={ DashboardContainer }/>
+        </Route>
+        <Route path="/session/:course/:profName/presentation" component={ PresentationContainer }/>
 
         <Route path="/:UE" component={ TopBandLeftMenuTemp }>
             <IndexRoute component={ DisciplineContainer }/>
@@ -79,11 +117,14 @@ let MainRouter =
                     <IndexRoute component={ (p, c) => 
                         <CourseContainer name="Statistique" {...p} statType={ "SESSION" } /> }
                     />
-                    <Route path=":sessionId/quiz" component={ (p, c) => 
+                    <Route path=":profName/quiz" component={ (p, c) => 
                         <CourseContainer name="Statistique" {...p} statType={ "QUIZ" } /> }
                     />
-                    <Route path=":sessionId/attention" component={ (p, c) => 
+                    <Route path=":profName/attention" component={ (p, c) => 
                         <CourseContainer name="Statistique" {...p} statType={ "ATTENTION" } /> }
+                    />
+                    <Route path=":profName/timeline" component={ (p, c) => 
+                        <CourseContainer name="Statistique" {...p} statType={ "TIMELINE" } /> }
                     />
                 />
                 </Route>
@@ -91,14 +132,6 @@ let MainRouter =
                 <Route path="questionnaires" component={ (p, c) => <CourseContainer name="Questionnaires" {...p} /> } />
             </Route>
         </Route>
-
-        <Route path="/:UE/:course/:profName/tele" component={ TopBandTemp }>
-            <IndexRoute component={ RemoteContainer }/>
-        </Route>
-        <Route path="/:UE/:course/:profName/tb" component={ TopBandTemp }>
-            <IndexRoute component={ DashboardContainer }/>
-        </Route>
-        <Route path="/:UE/:course/:profName/presentation" component={ PresentationContainer }/>
     </Router>
 </Provider>)
 

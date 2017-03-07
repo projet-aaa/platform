@@ -6,12 +6,12 @@ import { Session } from '../../models/session'
 import { View as SessionItemsView } from '../sessions/sessionItemsView'
 
 export interface StateProps {
-    sessions: Session[]
+    params: any
 }
 
 export interface ActionProps {
-    choose(profId: string)
- }
+
+}
 
 export type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
@@ -19,15 +19,24 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
-            sessions,
-            choose
+            params
         } = this.props
 
         return (
-            <div className="col-lg-12">
-                <h2>Session en cours: </h2>
-                <SessionItemsView sessions={ sessions } choose={ choose }/>
+            <div className="col-lg-12"> 
+                <div className="row">
+                    <div className="col-lg-12">
+                        <h2>Statistique de la session { params.course }</h2>
+                        <Link to={ "/" + params.UE + "/" + params.course + "/statistique/prof/quiz" }>
+                            Regarder les résultats des quizs</Link><br/>
+                        <Link to={ "/" + params.UE + "/" + params.course + "/statistique/prof/attention" }>
+                            Regarder les retours des élèves</Link>
+                    </div>
+                </div>
             </div>
         );
     }
 }
+
+                // <h2>Séance du cours: </h2>
+                // <SessionItemsView sessions={ sessions } choose={ choose }/>

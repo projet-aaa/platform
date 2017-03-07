@@ -8,11 +8,13 @@ import * as MediaQuery from "react-responsive"
 
 // INTERNAL IMPORTS
 import { Session, SessionType } from "../../models/session"
+import { Discipline } from "../../models/discipline"
 import { ddmmyyyy } from "../../utils/index"
 
 export interface StateProps {
     // the list of sessions, it must be sorted by date
     sessions: Session[]
+    currDisciplineName: string
 }
 
 export interface ActionProps { }
@@ -23,31 +25,31 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
-            sessions
+            sessions, currDisciplineName
         } = this.props;
 
         var CMRender = []
         var TDRender = []
         var TPRender = []
-        for (var i in sessions) {
+        for (var i=0; i<sessions.length; i++) {
             if (sessions[i].sessionType == SessionType.CM) {
                 CMRender.push(
-                    <Link to={ sessions[i].discipline + "/" + sessions[i].sessionName } key={i} className="list-group-item">
-                        { ddmmyyyy(sessions[i].date) } | { sessions[i].sessionName } : { sessions[i].teacherName } { sessions[i].live ? ": live!" : "" }
+                    <Link to={ currDisciplineName + "/" + sessions[i].sessionName } key={i} className="list-group-item">
+                        { ddmmyyyy(sessions[i].date) } | { sessions[i].sessionName }
                     </Link>
                 )
             }
             if (sessions[i].sessionType == SessionType.TD) {
                 TDRender.push(
-                    <Link to={ sessions[i].discipline + "/" + sessions[i].sessionName } key={i} className="list-group-item">
-                        { ddmmyyyy(sessions[i].date) } | { sessions[i].sessionName } : { sessions[i].teacherName } { sessions[i].live ? ": live!" : "" }
+                    <Link to={ currDisciplineName + "/" + sessions[i].sessionName } key={i} className="list-group-item">
+                        { ddmmyyyy(sessions[i].date) } | { sessions[i].sessionName }
                     </Link>
                 )
             }
             if (sessions[i].sessionType == SessionType.TP) {
                 TPRender.push(
-                    <Link to={ sessions[i].discipline + "/" + sessions[i].sessionName } key={i} className="list-group-item">
-                        { ddmmyyyy(sessions[i].date) } | { sessions[i].sessionName } : { sessions[i].teacherName } { sessions[i].live ? ": live!" : "" }
+                    <Link to={ currDisciplineName + "/" + sessions[i].sessionName } key={i} className="list-group-item">
+                        { ddmmyyyy(sessions[i].date) } | { sessions[i].sessionName }
                     </Link>
                 )
             }
