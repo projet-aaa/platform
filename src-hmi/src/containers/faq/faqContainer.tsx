@@ -1,4 +1,4 @@
-import { connect } from "react-redux";
+import { connect } from "react-redux"
 
 import rootWrapper from "../../wrappers/rootWrapper"
 
@@ -39,7 +39,7 @@ function mapDispatchToProps(dispatch) {
         //Publish a question to the server
         postThread : (sessionId, question, author) => {
             if (question) {
-                dispatch(postThread(sessionId,question, author));
+                dispatch(postThread(sessionId,question, author))
             }
         },
 
@@ -75,10 +75,10 @@ export default rootWrapper(
                 props.storeCurrentSession(session["hydra:member"][0].id)    
                 
                 var threadIdList = session["hydra:member"][0].threads.map((item) => {
-                    let split = item.split('/');                        
+                    let split = item.split('/')                      
                     return split[split.length -1];
                 })
-                console.log(threadIdList)
+                
                 props.fetchThreads(threadIdList, d)
             }, 
             (error) => console.log(error))

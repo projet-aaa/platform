@@ -134,6 +134,7 @@ export class View extends React.Component<Props, any> {
                         </div>
                         <hr/>
                     </form>
+                    <h2 style={ { margin: 0 } }><b><a href="/import/yaml">Importer des quizs</a></b></h2>
                 </div>
             </div>
         );

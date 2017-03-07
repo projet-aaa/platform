@@ -9,7 +9,7 @@ import 'babel-polyfill'
 
 import * as ReactDOM from 'react-dom'
 import * as React from 'react'
-import { Router, Route, IndexRoute, hashHistory } from 'react-router'
+import { Router, Route, IndexRoute, hashHistory, Redirect } from 'react-router'
 import { Provider } from 'react-redux'
 
 import { auth } from '../store/auth/actions'
@@ -78,12 +78,19 @@ let store = storeFactory([
 // THE WEBSITES REACT ROUTES
 // cf. urls.md for the description of every page. Any modification here should be copied and documented
 // in urls.md
+// to remove the devtools, remove them from the router
+
+// { devtools && <Route path="/login" component={ LoginContainer }/> }
+// { devtools && <Route path="/close_room/:prof" component={ CloseRoomContainer }/> }
 let MainRouter =
 (<Provider store={store}>
     <Router history={hashHistory}>
         <Route path="/" component={ TopBandLeftMenuTemp }>
             <IndexRoute component={ MainContainer }/>
         </Route>
+
+        { devtools && <Route path="/login" component={ LoginContainer }/> }
+        { devtools && <Route path="/close_room/:prof" component={ CloseRoomContainer }/> }
 
         <Route path="/profil" component={ TopBandLeftMenuTemp }>
             <IndexRoute component={ ProfileContainer }/>
@@ -121,9 +128,6 @@ let MainRouter =
                 <Route path="questionnaires" component={ (p, c) => <CourseContainer name="Questionnaires" {...p} /> } />
             </Route>
         </Route>
-
-        { devtools && <Route path="/login" component={ LoginContainer }/> }
-        { devtools && <Route path="/close_room/:prof" component={ CloseRoomContainer }/> }
     </Router>
 </Provider>)
 

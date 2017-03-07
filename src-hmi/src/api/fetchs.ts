@@ -209,7 +209,9 @@ export function fetchSessionStats(sessionId: string, success, failure?) {
         })
         tryEnd()
     })
-    .catch(error => fh(failure, error))
+    .catch(error => {
+        fh(failure, error)
+    })
 
     fetcher('/feedbacks?session=' + sessionId, 'GET')
     .then((res: any) => res['hydra:member'])
@@ -265,6 +267,7 @@ export function fetchSessionStats(sessionId: string, success, failure?) {
                 })
             })
         } else {
+            quizChoicesDone = true
             tryEnd()
         }
     })
