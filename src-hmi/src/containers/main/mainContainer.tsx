@@ -27,9 +27,9 @@ function mapStateToProps(state): StateProps {
     }
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch, op) {
     return {
-        fetchSessions: (disciplines) => dispatch(fetchSessions(disciplines)),
+        fetchSessions: (disciplines, success) => dispatch(fetchSessions(disciplines, success)),
         selectFilter: (discipline) => dispatch(selectFilter(discipline)),
         search: (searchedString) => dispatch(search(searchedString))
     }
@@ -40,8 +40,7 @@ export default rootWrapper(
     mapDispatchToProps,
     null,
     (props, d) => { 
-        props.fetchSessions(props.disciplines)
-        d()
+        props.fetchSessions(props.disciplines, d)
     },
     null,
     View

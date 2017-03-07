@@ -122,7 +122,6 @@ let MainRouter =
                     <Route path=":profName/timeline" component={ (p, c) => 
                         <CourseContainer name="Statistique" {...p} statType={ "TIMELINE" } /> }
                     />
-                />
                 </Route>
                 <Route path="direct" component={ (p, c) =>  <CourseContainer name="Direct" {...p} /> } />
                 <Route path="questionnaires" component={ (p, c) => <CourseContainer name="Questionnaires" {...p} /> } />

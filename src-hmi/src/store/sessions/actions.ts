@@ -12,7 +12,7 @@ export const APIActionTypes = {
     FETCH_SESSIONS_FAILURE: "SESSION/FETCH_SESSIONS_FAILURE"
 }
 
-export function fetchSessions(disciplines: Discipline[]) {
+export function fetchSessions(disciplines: Discipline[], success, failure?) {
     return dispatch => {
         let resultList = []
         let receivedFetch = 0;
@@ -25,15 +25,17 @@ export function fetchSessions(disciplines: Discipline[]) {
                     fetchResult: res,
                     disciplineId: currentId
                 });
-                if(receivedFetch==disciplines.length) {
+                if(receivedFetch == disciplines.length) {
+                    success()
                     dispatch({
                         type: APIActionTypes.FETCH_SESSIONS_SUCCESS,
                         payload: resultList
-                    });
+                    })
                 }
             })
             .catch(error => {
                 console.log(error)
+                if(failure) { failure(error) }
                 dispatch({
                     type: APIActionTypes.FETCH_SESSIONS_FAILURE,
                     payload: error

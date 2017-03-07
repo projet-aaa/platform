@@ -51,7 +51,7 @@ export class View extends React.Component<Props, any> {
         } = this.props
 
         var sessionsRender = []
-        for (var i=0 ; i<sessions.length ; i++) {
+        for (var i = 0; i < sessions.length; i++) {
             if ( !areNotChecked[sessions[i].discipline]) {
                 //Match the session's discipline id to disciplineName
                 //There should be only one result to findAllIndex so first element is picked 

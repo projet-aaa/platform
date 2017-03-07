@@ -17,7 +17,7 @@ function mapStateToProps(state, ownProps): StateProps {
 }
 function mapDispatchToProps(dispatch, ownProps): ActionProps {
     return {
-        fetchSessions: (discipline) => dispatch(fetchSessions([discipline]))
+        fetchSessions: (discipline, success) => dispatch(fetchSessions([discipline], success))
     }
 }
 
@@ -33,13 +33,12 @@ export default rootWrapper(
                 name: res["hydra:member"][0].name,
                 sessions: res["hydra:member"][0].sessions
              }
-            props.fetchSessions(discipline)
-            d()
+            props.fetchSessions(discipline, d)
         })  
         .catch(error => {
             d() 
-            console.log(error)})
-        
+            console.log(error)
+        })
     },
     null,
     View
