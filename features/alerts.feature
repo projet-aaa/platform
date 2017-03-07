@@ -1,6 +1,6 @@
 Feature: Manage alerts
   Alerts can be created by everyone authenticated.
-  Alerts can be read by their author, or admins
+  Alerts can be read by their author, or profs
 
   @createSchema
   Scenario: A student can only read its Alert
@@ -29,8 +29,8 @@ Feature: Manage alerts
       | prof  |
       | eleve |
 
-  Scenario: Admins can read all the Alerts
-    Given I authenticate myself as admin
+  Scenario: Profs can read all the Alerts
+    Given I authenticate myself as prof
     When I send a "GET" request to "/api/alerts"
     Then the response status code should be 200
 
