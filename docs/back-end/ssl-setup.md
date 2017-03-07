@@ -9,7 +9,7 @@ Why ? Because API relies on JWT authorization, thus everyone having a valid toke
  
  - Put your key and certificate in `docker/tls` folder. As long as those key are used in both traefik and nodejs, they should be named server.key (for your private key) and server.crt (for its certificate)
  
- - Edit docker-compose.yml to uncomment lines beginning with `###` and comment the port section of web container
+ - Edit docker-compose.yml to uncomment lines beginning with `###` and comment the port section of web container. This will add Traefik, a reverse proxy to manage SSL at runtime, to your infrastructure.
 
  - Stop your infrastructure and relaunch it `docker-compose stop && docker-compose up -d`
 
