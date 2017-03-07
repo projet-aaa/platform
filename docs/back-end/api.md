@@ -127,3 +127,101 @@ Example
     "session": "/app_dev.php/api/sessions/5a382436-fb35-11e6-a402-0242ac110004"
 }
 ```
+
+
+**Get the tree of a Thread**
+
+GET `/api/thread/{id}/tree` and you will get a Thread, its Thread messages and their authors.
+
+Example :
+
+```json
+{
+   "@context":"\/api\/contexts\/Thread",
+   "@id":"\/api\/threads\/373499b5-027c-11e7-8a6d-0242ac110002",
+   "@type":"Thread",
+   "id":"373499b5-027c-11e7-8a6d-0242ac110002",
+   "title":"Une classe peut-elle hériter de plusieurs classes?",
+   "text":"Une classe peut-elle hériter de plusieurs classes?",
+   "threadMessages":[
+      {
+         "@id":"\/api\/thread_messages\/33860352-0285-11e7-8a6d-0242ac110002",
+         "@type":"ThreadMessage",
+         "id":"33860352-0285-11e7-8a6d-0242ac110002",
+         "text":"\u003Cp\u003ENon, ce n\u0027est pas possible, je cite : \u003C\/p\u003E\n\u003Cblockquote\u003E\n\u003Cp\u003EUne classe ne peut hériter que d\u0027une seule autre classe\u003C\/p\u003E\n\u003C\/blockquote\u003E",
+         "createdAt":"2017-03-06T15:54:37+00:00",
+         "author":{
+            "@id":"\/api\/users\/71",
+            "@type":"User",
+            "id":71,
+            "firstname":"Simon",
+            "lastname":"Maurel",
+            "username":"smaurel",
+            "part":"1IN",
+            "roles":[
+               "ROLE_ADMIN",
+               "ROLE_USER"
+            ]
+         },
+         "plusVoters":[
+
+         ],
+         "downVoters":[
+
+         ]
+      },
+      {
+         "@id":"\/api\/thread_messages\/6e7a5130-0339-11e7-8a6d-0242ac110002",
+         "@type":"ThreadMessage",
+         "id":"6e7a5130-0339-11e7-8a6d-0242ac110002",
+         "text":"\u003Ch2\u003EComments are writtent as markdown\u003C\/h2\u003E\n\u003Cblockquote\u003E\n\u003Cp\u003EThis is a quote\u003C\/p\u003E\n\u003C\/blockquote\u003E",
+         "createdAt":"2017-03-07T13:24:45+00:00",
+         "author":{
+            "@id":"\/api\/users\/71",
+            "@type":"User",
+            "id":71,
+            "firstname":"Simon",
+            "lastname":"Maurel",
+            "username":"smaurel",
+            "part":"1IN",
+            "roles":[
+               "ROLE_ADMIN",
+               "ROLE_USER"
+            ]
+         },
+         "plusVoters":[
+
+         ],
+         "downVoters":[
+
+         ]
+      }
+   ],
+   "session":"\/api\/sessions\/4c8b7d76-0279-11e7-8a6d-0242ac110002",
+   "author":{
+      "@id":"\/api\/users\/66",
+      "@type":"User",
+      "id":66,
+      "firstname":"Antoine",
+      "lastname":"Beyet",
+      "username":"abeyet",
+      "part":"1IN",
+      "roles":[
+         "ROLE_ADMIN",
+         "ROLE_USER"
+      ]
+   },
+   "createdAt":"2017-03-06T14:50:00+00:00"
+}
+```
+**Get the timeline**
+
+GET `/api/sessions/{id}/timeline` returns some HTML to display eventsoff a session. Access granted only to Profs and admins.
+
+**Send a Gitlab hook**
+
+GET `/api/gitlab`. More at [/docs/back-end/integration-imports.md](Integration and imports).
+
+**Open and close a Room**
+
+Access granted only to prof. POST `/api/room/open|close/{id}` with id the id of the session to open a room in.
