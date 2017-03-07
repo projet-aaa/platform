@@ -19,7 +19,3 @@ fos_user_register:
 
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
-
-doctrine_yuml:
-    resource: "@OnurbYumlBundle/Resources/config/routing.yml"
-    prefix:   /yuml
