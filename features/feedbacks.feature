@@ -34,6 +34,11 @@ Feature: Manage feedbacks
     When I send a "GET" request to "/api/feedbacks"
     Then the response status code should be 200
 
+  Scenario: Profs can read all the Feedbacks
+    Given I authenticate myself as prof
+    When I send a "GET" request to "/api/feedbacks"
+    Then the response status code should be 200
+
   @dropSchema
   Scenario: void
 
