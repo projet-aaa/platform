@@ -12,7 +12,7 @@ import * as React from 'react'
 import { Router, Route, IndexRoute, hashHistory, Redirect } from 'react-router'
 import { Provider } from 'react-redux'
 
-import { auth } from '../store/auth/actions'
+import { auth, authAPI } from '../store/auth/actions'
 
 // REDUCERS
 import remoteInfo from '../store/remote/reducers/reducer'
@@ -76,6 +76,13 @@ let store = storeFactory([
     profileInfo,
     navigationInfo
 ], true, auth)
+
+// RE AUTH FIX : due to token time out, the client fetches the token on a regular basis
+declare var username_global
+declare var password_global
+setInterval(() => {
+    (store.dispatch as any)(authAPI(username_global, password_global))
+}, 1200000)
     
 // THE WEBSITES REACT ROUTES
 // cf. urls.md for the description of every page. Any modification here should be copied and documented

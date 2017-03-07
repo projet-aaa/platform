@@ -84,7 +84,7 @@ function authLocal(id: number, username: string, password: string) {
     }
 }
 
-function authAPI(username: string, password: string) {
+export function authAPI(username: string, password: string) {
     return {
         [CALL_API]: {
             endpoint: loginURL,
