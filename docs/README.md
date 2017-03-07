@@ -29,6 +29,8 @@
     - [Dev Tools](/docs/browser-front-end/dev-tools.md)
 
  - [Mobile front-end](/docs/mobile-front-end)
+ 
+ - [Jetpack PDF Viewer](https://github.com/projet-aaa/electron-pdfjs)
 
 #Launch the project
 
