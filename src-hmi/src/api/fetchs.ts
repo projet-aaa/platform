@@ -163,7 +163,7 @@ export function fetchSessionStats(sessionId: string, success, failure?) {
                 type: a.alertType == "tooSlow" ? AttentionStateType.TOO_SLOW :
                     a.alertType == "tooFast" ? AttentionStateType.TOO_FAST :
                     a.alertType == "good" ? AttentionStateType.OK :
-                    AttentionStateType.PANIC,
+                    a.alertType == "panic" ? AttentionStateType.PANIC : null,
                 date: parseAPIDate(a.createdAt),
                 author: a.author
             }
@@ -183,7 +183,7 @@ export function fetchSessionStats(sessionId: string, success, failure?) {
             newState
 
         res.forEach(a => {
-            if(a.date) {
+            if(a.type != null && a.date) {
                 oldState = states[a.author]
                 newState = a.type
                 tooSlow += newState == AttentionStateType.TOO_SLOW ? 1 : 0 
