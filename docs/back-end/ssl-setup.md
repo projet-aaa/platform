@@ -7,7 +7,7 @@ Why ? Because API relies on JWT authorization, thus everyone having a valid toke
 
  - Get a private key and its certificate. To generate your own self-signed certificate, jump to the end of that document
  
- - Put your key and certificate in `docker/tls` folder. As long as those key are used in both traefik and nodejs, they should be named server.key (for your pem file) and server.crt (for its certificate)
+ - Put your key and certificate in `docker/tls` folder. As long as those key are used in both traefik and nodejs, they should be named server.key (for your private key) and server.crt (for its certificate)
  
  - Edit docker-compose.yml to uncomment lines beginning with `###` and comment the port section of web container
 
@@ -42,10 +42,20 @@ openssl x509 -req -sha256 -days 365 -in server.csr -signkey server.key -out serv
 If you respect naming conventions, websocket server will automatically boot on ssl mode.
 Otherwise you will have to adapt names in `src-nodeserver/src/main/server.ts`.
 
+## Use a Letsencrypt certificate
+
+To have a valid SSl certificate, you can manage to get a valid Letsencrypt certificate. Letsencrypt is a non-profit organization which aims at encrypting the whole web and provides free, valid SSL certificates.
+
+ - Install Apache on the host machine
+ - define a `Servername` with the domain pointing on your server in `/etc/apache2/sites-available/000-default.conf`
+ - Run the [LetsEncrypt](https://letsencrypt.org/) agent with apache option. It should detect automatically your domain name if Servername is well configured
+ - copy the issued certificates to `docker/tls` folder and adapt their name to match naming convention. Verify that server.key is a gpg key and server.crt is well formed.
+
 
 ## Example of a docker-compose.yml ready for SSL
 
 ```yaml
+# If you want to use an SSL certificate : check the documentation in var/docs/back-end
 
 # Api server and main website
 web:
@@ -57,11 +67,9 @@ web:
         - redis
     volumes:
         - .:/app
-#    ports:
-#       - 80:80
     labels:
-      - "traefik.backend=web-jetpack"
-      - "traefik.frontend.rule=Host:jetpack1.trendio.fr"
+        - "traefik.backend=web-jetpack"
+        - "traefik.frontend.rule=Host:jetpack0.trendio.fr"
 
 #Persistent data storage
 database:
@@ -87,21 +95,23 @@ nodejs:
         - ./nodejs:/app
         - ./docker/tls:/tls
     ports:
-        - 8088:8088
+        - 8080:8080
 
 traefik:
-  image: traefik:camembert
-  command: | 
-    -c /dev/null --web --docker --docker.domain=docker.localhost --logLevel=DEBUG 
-    --defaultEntryPoints='http,https' --entryPoints='Name:http Address::80 Redirect.EntryPoint:https' 
-    --entryPoints='Name:https Address::443 TLS:tls/server.crt,tls/server.key'
-  ports:
-    - "80:80"
-    - "8080:8080"
-    - "443:443"
-  volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
-    - ./docker/tls:/tls
-
+    image: traefik:camembert
+    command: |
+        -c /dev/null --web --docker --docker.domain=docker.localhost --logLevel=DEBUG
+        --defaultEntryPoints='http,https' --entryPoints='Name:http Address::80 Redirect.EntryPoint:https'
+        --entryPoints='Name:https Address::443 TLS:/tls/server.crt,/tls/server.key'
+### Comment the former line and un comment the followiung to get a letsencrypt ssl certificate (won't work for websockets) 
+###        --acme.entryPoint=https
+###        --acme.email='REPLACE_WITH_YOUR_EMAIL' --acme.storage=/tls/acme.json --acme.onDemand=true
+    ports:
+        - "80:80"
+###     - "8080:8080"
+        - "443:443"
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - ./docker/tls:/tls
 
 ```

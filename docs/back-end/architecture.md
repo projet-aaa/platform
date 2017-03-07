@@ -39,6 +39,12 @@ The backend is composed of 3 components :
 On the root  directory, we can find a traditionnal Symfony architecture
 
  - app : contains Symfony kernel and configuration files
+ - docker: contains various files for Docker
+    - apache : files and config for the apache web server (container web)
+    - mysql : a volume containing mysql database files. Enable you to drop database container without loosing data
+    - tls : a folder to store private key and certificate to use a SSL certificate
+    - php : contains php config for web container
+ - docs : contains documentation
  - bin : contains Symfony console and other binaries
  - features : contains behavioural testing scenarios and related code
  - src : contains platform business code. In details :
@@ -50,7 +56,8 @@ On the root  directory, we can find a traditionnal Symfony architecture
     - Entity : contains models classes
     - Resources : contains views
     - Security: contains the voters of the entities
-
+ - src-hmi : [Read the doc in front-end](/docs/browser-front-end/react-architecture.md)
+ - src-nodeserver : contains web socket server sources.
  - tests : contains unit tests
  - var: contains all files used by the platform. **that folder should be writable**. In details
 
@@ -59,7 +66,7 @@ On the root  directory, we can find a traditionnal Symfony architecture
     - logs : contains logs file
     - sessions : contains sessions file
     
- - vendor : contains  Symfony and project [dependencies](https://github.com/projet-aaa/platform/blob/master/var/docs/back-end/depencies.md)
+ - vendor : contains  Symfony and project [dependencies](https://github.com/projet-aaa/platform/blob/master/docs/back-end/depencies.md)
  - web : contains all web-exposed assets. It is that folder which is Apache DocumentRoot.
  - docs : contains documentation of the project
  
