@@ -13,24 +13,29 @@
                         {% if not alert %}
                             <div class="timeline-icon bg-violet"><i class="fa fa-comment"></i></div>
                             <div class="timeline-label">
-                                <h4 class="timeline-title">Comment</h4>
+                                <h4 class="timeline-title">Comment from {{ event.author.username }}</h4>
                                 <p>{{ event.text }}</p>
                             </div>
                         {% else %}
                             {% if event.alertType == 'page' %}
                                 {% set bg = 'info' %}
+                                {% set title = 'Page change' %}
                             {% elseif event.alertType == 'panic' %}
                                 {% set bg = 'danger' %}
+                                {% set title = 'Student Panic' %}
                             {% elseif event.alertType == 'good' %}
                                 {% set bg = 'success' %}
+                                {% set title = 'Student ok' %}
                             {% elseif event.alertType == 'tooSlow' %}
                                 {% set bg = 'grey' %}
+                                {% set title = 'Student bored' %}
                             {% elseif event.alertType == 'tooFast' %}
                                 {% set bg = 'orange' %}
+                                {% set title = 'Student Lost' %}
                             {% endif %}
                             <div class="timeline-icon bg-{{ bg }}"><i class="fa fa-exclamation"></i></div>
                             <div class="timeline-label">
-                                <h4 class="timeline-title">{{ event.alertType }}</h4>
+                                <h4 class="timeline-title">{{ title }} - {{ event.author.username }}</h4>
                                 <p>{{ event.text }}</p>
                             </div>
                         {% endif %}
