@@ -2,26 +2,34 @@
 // -- QUIZ
 // ------------------------------
 export const QuizType = {
+    MMCQ: 'MMCQ',
     MCQ: 'MCQ', 
     TEXT: 'TEXT'
 }
 
 // The heading of a quiz
 export interface Quiz {
-    id: number
+    id: string
+    iriId: string
     type: string
     title: string
+
     question: string
+
     choices: any
+    choiceIds: string[]
+
     answer: any
     explanations: any
+
+    justification: string
 }
 
-// The choice of a user for a given quiz
-export interface QuizLocalChoice {
-    quizId: number
-
-    choice: any
+// a group of quiz
+export interface Test {
+    id: string
+    title: string
+    quizs: Quiz[]
 }
 
 // The global result of a group of people for a given quiz
@@ -46,7 +54,8 @@ export const AttentionEventType = {
 export const AttentionStateType = {
     PANIC: "PANIC",
     TOO_SLOW: "TOO_SLOW",
-    TOO_FAST: "TOO_FAST"
+    TOO_FAST: "TOO_FAST",
+    OK: "OK"
 }
 
 export interface AttentionEvent {
@@ -68,7 +77,7 @@ export const QuizInstanceState = {
 }
 
 export interface QuizLauncher {
-    quizId: number
+    quizId: string
     title: string
     state: number // 0: not done; 1: being run; 2: already ran 
     successRate: number

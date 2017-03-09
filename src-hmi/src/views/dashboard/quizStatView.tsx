@@ -8,96 +8,61 @@ import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 import * as chartjs from "react-chartjs-2"
 
+import { calculateQuizData } from "../../utils"
+
+import { chartColors } from "../../models/consts"
+
 export interface StateProps {
+    showQuiz: boolean
+    question: string
+    state: string
     quizStats: any // map from choice to count
     correctChoice: string
 }
 
-export interface ActionProps { }
-
-// The colors for the diagram
-const chartColors = [
-    "#FF6384",
-    "#36A2EB",
-    "#ffff00",
-    "#ff0000",
-    "#00e64d",
-    "#FF6384",// repeat (lazy)
-    "#36A2EB",
-    "#ffff00",
-    "#ff0000",
-    "#00e64d"
-]
+export interface ActionProps { 
+    quizButton()
+}
 
 export type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
     props: Props
-
-    filledDataset(quizStats: any) {
-        console.log(quizStats)
-        let choices = [],
-            percentages = []
-        for(var k in quizStats) {
-            choices.push(k)
-            percentages.push(quizStats[k])
-        }
-
-        console.log("choices: ", choices)
-        console.log("percentages: ", percentages)
-
-        let len = choices.length
-
-        let data = {
-            labels: choices,
-            datasets: [
-                {
-                    data: percentages,
-                    backgroundColor: chartColors.slice(0, len),
-                    hoverBackgroundColor: chartColors.slice(0, len)
-                }
-            ]
-        }
-        return data;
-    }
-
+    
     render() {
         const {
+            showQuiz,
+            question,
+            state,
             quizStats,
-            correctChoice   
-        } = this.props;
+            correctChoice,
 
-        let options = {
-            cutoutPercentage: 0,
-            rotation: -0.5 * Math.PI,
-            circumference: 2 * Math.PI,
-            animation: {
-                animateRotate: false,
-                animateScale: false,
-            },
-            legend: {
-                labels: {
-                    generateLabels: function(chart) {}
-                },
-                onClick: function(event, legendItem) {} 
-            }
-        }
+            quizButton 
+        } = this.props
 
-        let data = this.filledDataset(quizStats)
+        let data = calculateQuizData(quizStats)
 
         return (
             <div className="panel">
                 <div className="panel-heading">
-                    Statistiques du dernier Quiz
+                    Quiz{ showQuiz && ": " + question +" [" + state + "]" }
                 </div>
                 <div className="panel-body pan white-background"> 
-                    <div className="pal">
-                        <chartjs.Pie data={ data } height={ 105 }/>                    
-                        { "Réponse correcte : " + correctChoice }
-                    </div>
+                    { showQuiz ? 
+                        <div className="pal">
+                            { Object.keys(quizStats).length === 0 && quizStats.constructor === Object 
+                                ? <h1>En attente de réponse...</h1>
+                                : <chartjs.Pie data={ data } height={ 105 }/> }                   
+                            { correctChoice ? "Réponse correcte : " + correctChoice : "Question ouverte" }
+                            <button className="btn btn-primary pull-right" onClick={ quizButton }>
+                                { state == "correction" ? "terminer" : "correction" }
+                            </button>
+                        </div> :
+                        <div className="pal">
+                            <h1>Aucun quiz lancé</h1>
+                        </div>
+                    }
                 </div>
             </div>
         );
     }
 }
-
- //options={ options } width="150" height="150" />  

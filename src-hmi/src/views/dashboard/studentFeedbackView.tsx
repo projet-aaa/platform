@@ -5,6 +5,7 @@ import * as MediaQuery from "react-responsive"
 
 
 export interface StateProps {
+    studentCount: number
     // percent of panicking people
     panicRate: number
     // percent of people who think lesson goes too slow
@@ -29,6 +30,7 @@ export class View extends React.Component<Props, any> {
 
     render() {
         const {
+            studentCount,
             panicRate,
             slowRate,
             quickRate        
@@ -36,41 +38,44 @@ export class View extends React.Component<Props, any> {
 
         // widths of the progress bars
         var panicStyle = {
-            width: panicRate + "%",
+            width: (studentCount == 0 ? 0 : (panicRate/studentCount) * 100) + "%",
             backgroundColor: "#d9534f" // danger color
         }
         var slowStyle = {
-            width: slowRate + "%",
+            width: (studentCount == 0 ? 0 : (slowRate/studentCount) * 100) + "%",
             backgroundColor: "#5cb85c" // success color
         }
         var fastStyle = {
-            width: quickRate + "%",
+            width: (studentCount == 0 ? 0 : (quickRate/studentCount) * 100) + "%",
             backgroundColor: "#f0ad4e" // warning color
         }
 
         return (
                 <div className="panel">
                     <div className="panel-heading">
-                        Retours des élèves
+                        Informations de la salle:
                     </div>
                     <div className="panel-body">
                         <div style={ palNew }>
                             <div className="row">
-                                Incompréhension
+                                Nombre d'étudiants: { studentCount }
+                            </div>
+                            <div className="row">
+                                Incompréhension: { panicRate }/{ studentCount }
                                 <div className="progress progress-sm mbn">
                                     <div role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"
                                         style={ panicStyle } className="progress-bar covering-size"/>
                                 </div>
                             </div>
                             <div className="row">
-                                Trop lent
+                                Trop lent: { slowRate }/{ studentCount }
                                 <div className="progress progress-sm mbn">
                                     <div role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"
                                         style={ slowStyle } className="progress-bar covering-size"/>
                                 </div>
                             </div>
                             <div className="row">
-                                Trop rapide
+                                Trop rapide: { quickRate }/{ studentCount }
                                 <div className="progress progress-sm mbn">
                                     <div role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"
                                         style={ fastStyle } className="progress-bar covering-size"/>

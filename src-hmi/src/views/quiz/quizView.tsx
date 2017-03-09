@@ -9,14 +9,14 @@ import * as MediaQuery from "react-responsive"
 
 // INTERNAL IMPORTS
 import { View as AnswerView} from "./answerView"
-import { QuizType, Quiz, QuizLocalChoice } from "../../models/class/class"
+import { QuizType, Quiz } from "../../models/class/class"
 import { getText } from "../../utils/index"
 
 export interface StateProps {
     // the quiz 
     quiz: Quiz
     // the quiz choice
-    quizChoice: QuizLocalChoice
+    quizChoice: any
     // true => show the correction
     showCorrection: boolean
     // true => answer explanations will be shown automatically, else we have to click on the answers
@@ -24,13 +24,15 @@ export interface StateProps {
 }
 export interface ActionProps {
     // select an answer (if null, there will be no validate button and no answer will be able to be selected)
-    choose(quizId: number, choice: any)
+    choose(choice: any)
     // validate the answer
-    validate(quizId: number)
+    validate()
     // go to the next question
     nextQuiz()
     // go to the previous question
     prevQuiz()
+    // go back
+    back()
 }
 
 // style for the text
@@ -69,46 +71,38 @@ export class View extends React.Component<Props, any> {
             choose, 
             validate,
             nextQuiz,
-            prevQuiz
-        } = this.props;
+            prevQuiz,
+            back
+        } = this.props
 
         // the render of the answers can be different according to the type of quiz (MCQ, open question)
         let answers = null
         switch(quiz.type) {
             // the render is a list of AnswerView (radio button and answer text)
+            case QuizType.MMCQ:
             case QuizType.MCQ: 
-                let createChooseAction = (i) => {
-                    return (choose==null) ? () => {  }: () => { choose(quiz.id, i) }
-                } 
-                var answerItems = quiz.choices.map((item, i) => {
+                answers = (<ul>{ quiz.choices.map((item, i) => {
                     return <AnswerView
-                        key={item}
-                        ind={i} 
-                        text={item} 
-                        chosen={ quizChoice.choice == i } 
-                        rightAnswer={ i == quiz.answer }
+                        key={ i }
+                        ind={ i } 
+                        text={ item } 
+                        chosen={ quizChoice && quiz.type == QuizType.MMCQ ? quizChoice.indexOf(i) >= 0 : quizChoice == i } 
+                        rightAnswer={ quiz.type == QuizType.MMCQ ? quiz.answer.indexOf(i) >= 0 : quiz.answer == i }
                         explanation={ quiz.explanations[i] } 
                         showCorrection={ showCorrection }
                         forceUnfold={ forceUnfold }
-
-                        choose={ createChooseAction(i) } 
-                    />;
-                });
-                answers = 
-                (
-                    <ul>
-                        {answerItems}
-                    </ul>
-                )
+                        choose={ choose == null ? () => { }: () => { choose(i) } } 
+                    />
+                }) }</ul>)
             break
             // the render is a text field
             case QuizType.TEXT:
                 answers =
                 (<input id="quiz-text" 
                         type="text" 
-                        value={ quizChoice.choice }
+                        value={ quizChoice }
                         style={ inputFieldStyle }
-                        onChange={ () => choose(quiz.id, getText("quiz-text")) }> 
+                        onChange={ () => choose(getText("quiz-text")) }> 
                 </input>)
             break
         }
@@ -116,78 +110,73 @@ export class View extends React.Component<Props, any> {
         // a question with its answers
         let questionRender = (
             <div>
-                <h3 style={bigSizeText}>Enoncé : { quiz.question }</h3>
+                <h3 style={ bigSizeText }>{ quiz.question }</h3>
                 <br/>
                 { answers }
+                { showCorrection && <h3> { quiz.justification } </h3> }
             </div>
         )
-        // if we are in answer mode, we have to display a vilidate button
-        let validateButton = null;
-        if (!(choose==null)) {
-            validateButton = (
-                <div className="row">
-                    <div className="col-lg-offset-8 col-lg-4">
-                        <div className="btn btn-lg btn-success" onClick={ () => validate(quiz.id) }>
-                            Valider réponse
-                        </div>
-                    </div>
-                </div>
+
+        // back button
+        let backButtonRender = []
+        if (back) {
+            backButtonRender.push(
+                <button className="btn btn-primary" onClick={ back }>
+                    Retour
+                </button>
             )
         }
-        // if they are associated to an action, we have to display previous and next button
-        let quizRender = null;
-        if (nextQuiz == null && prevQuiz == null) {
-            quizRender = (
-                <div className="row">
-                    <div className="col-lg-12">
-                        { questionRender }
-                    </div>
-                </div>
-            )
-        } else if (nextQuiz == null) {
-            quizRender = (
-                <div className="row">
-                    <div className="col-lg-2">
-                        <button className="btn btn-primary covering-size">Précédent</button>
-                    </div>
-                    <div className="col-lg-8">
-                        { questionRender }
-                    </div>
-                </div>
-            )
-        } else if (prevQuiz == null) {
-            quizRender = (
-                <div className="row">
-                    <div className="col-lg-8 col-lg-offset-2">
-                        { questionRender }
-                    </div>
-                    <div className="col-lg-2">
-                        <button className="btn btn-primary covering-size">Suivant</button>
-                    </div>
-                </div>
-            )
-        } else {
-            quizRender = (
-                <div className="row">
-                    <div className="col-lg-2">
-                        <button className="btn btn-primary covering-size">Précédent</button>
-                    </div>
-                    <div className="col-lg-8">
-                        { questionRender }
-                    </div>
-                    <div className="col-lg-2">
-                        <button className="btn btn-primary covering-size">Suivant</button>
-                    </div>
-                </div>
+        
+        // buttons
+        var buttonsRender = []
+        if (prevQuiz) {
+            buttonsRender.push(
+                <button className="btn btn-primary" onClick={ prevQuiz }>
+                    Précédent
+                </button>
             )
         }
+        if (choose) {
+            buttonsRender.push(
+                <button className="btn btn-success" onClick={ validate }>
+                    Valider réponse
+                </button>
+            )
+        }
+        if (nextQuiz) {
+            // if we are in answer mode (showcorrection is false) we display skip question
+            // else we display next
+            buttonsRender.push(
+                <button className="btn btn-primary" onClick={ nextQuiz }>
+                    { showCorrection ? "Suivant" : "Passer la question" }
+                </button>
+            )
+        }
+
+        let quizRender = (
+            <div className="row">
+                <div className="col-lg-12">
+                    { questionRender }
+                </div>
+            </div>  
+        )
+               
         // returns a panel containing the question and the answers defined above
         return (
             <div>
                 <div className="panel">
                     <div className="pal">
-                        { quizRender }
-                        { validateButton }
+                        { quizRender } 
+                        <div className="row">
+                            <div className="col-lg-12">
+                                <div className="pull-left">
+                                    { backButtonRender }
+                                </div>
+                                <div className="pull-right">
+                                    { buttonsRender }
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

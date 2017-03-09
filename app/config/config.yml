@@ -49,6 +49,8 @@ doctrine:
         user:     "%database_user%"
         password: "%database_password%"
         charset:  UTF8
+        # set mysql version (according to docker config) to avoid cache clear to open a connection and fail in CI tools.
+        server_version: 5.6
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
@@ -135,3 +137,8 @@ lexik_jwt_authentication:
         query_parameter:           # check token in query string parameter
             enabled: true
             name:    bearer
+
+stof_doctrine_extensions:
+    orm:
+        default:
+            blameable: true

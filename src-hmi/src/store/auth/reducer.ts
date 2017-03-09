@@ -1,41 +1,108 @@
 import { handleActions } from "redux-actions"
 
-import { Action } from "../../utils"
-import { APIActionTypes, auth } from "./actions"
+import { APIActionTypes, ActionTypes, auth } from "./actions"
 
-interface AuthInfo {
-    user: string
+import { Discipline } from "../../models/discipline"
+
+export interface AuthState {
+    username: string
     password: string
+    firstName: string
+    lastName: string
+    id: number
+    iriId: string
+    //email: string
+
+    admin: boolean
+    isTeacher: boolean
+    
+    disciplines: Discipline[]
+    groups: string[]
+    group: string
+    infoFetched: boolean
+
     token: string
+
     authentifying: boolean
     authentified: boolean
+    lastAuthDate: Date
 }
 
-let initialState: AuthInfo = {
-    user: null,
+let initialState: AuthState = {
+    username: null,
     password: null,
+    firstName: null,
+    lastName: null,
+    id: -1,
+    iriId: null,
+    //email: "somin.maurel@gmail.fr",
+    
+    admin: false,
+    isTeacher: false,
+    
+    disciplines: [],
+    groups: [],
+    group: null,
+    infoFetched: false,
+    
     token: null,
-    authentifying: true,
-    authentified: false
+    authentifying: false,
+    authentified: false,
+    lastAuthDate: null
 }
 
 const name = "auth"
 const reducer = handleActions({
-    [APIActionTypes.AUTH]: function(state: AuthInfo, action: any): AuthInfo {
+    [ActionTypes.AUTH_LOCAL]: function(state: AuthState, action: any): AuthState {
+        (document as any).token = null
+        return Object.assign({}, state, {
+            id: action.payload.id,
+            username: action.payload.username,
+            password: action.payload.password,
+        })
+    },
+    [ActionTypes.UPDATE_PROFILE]: function(state: AuthState, action): AuthState {
+        return Object.assign({}, state, {
+            group: action.payload.group,
+            infoFetched: false
+        })
+    },
+    [APIActionTypes.FETCH_USER_SUCCESS]: function(state: AuthState, action: any): AuthState {
+        return Object.assign({}, state, {
+            iriId: action.payload["@id"],
+            isTeacher: action.payload.roles.indexOf("ROLE_PROF") >= 0,
+            admin: action.payload.roles.indexOf("ROLE_ADMIN") >= 0,
+            firstName: action.payload.firstname,
+            lastName: action.payload.lastname,
+            group: action.payload.part
+        })
+    },
+    [APIActionTypes.FETCH_DISCIPLINE_SUCCESS]: function(state: AuthState, action: any): AuthState {
+        return Object.assign({}, state, {
+            disciplines: action.payload["hydra:member"].map(discipline => { return {
+                id: discipline.id,
+                name: discipline.name
+            }}),
+            infoFetched: true
+        })
+    },
+    [APIActionTypes.AUTH]: function(state: AuthState, action: any): AuthState {
+        (document as any).token = null
         return Object.assign({}, state, {
             authentifying: true,
             authentified: false
         })
     },
-    [APIActionTypes.AUTH_SUCCESS]: function(state: AuthInfo, action: any): AuthInfo {
+    [APIActionTypes.AUTH_SUCCESS]: function(state: AuthState, action: any): AuthState {
         (document as any).token = action.payload.token
         return Object.assign({}, state, {
             token: action.payload.token,
             authentifying: false,
-            authentified: true
+            authentified: true,
+            lastAuthDate: Date.now()
         })
     },
-    [APIActionTypes.AUTH_FAILURE]: function(state: AuthInfo, action: any): AuthInfo {
+    [APIActionTypes.AUTH_FAILURE]: function(state: AuthState, action: any): AuthState {
         return Object.assign({}, state, {
             token: action.payload.token,
             authentifying: false,

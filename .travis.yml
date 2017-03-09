@@ -6,5 +6,5 @@ services:
 script:
     - docker-compose build
     - docker-compose run --rm web composer install -o -n
-    - docker-compose run --rm php bin/console cache:clear
-    - docker-compose run --rm web bin/console security:check
+    - docker-compose run --rm web php bin/console security:check
+    - docker-compose run --rm web vendor/bin/behat ./features/

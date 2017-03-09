@@ -1,7 +1,7 @@
-import * as fetch from 'isomorphic-fetch'
-
 import { createAPIActionCreator } from '../../../utils'
-import { ActionTypes, APIActionTypes } from './actionTypes'
+import { ActionTypes, APIActionTypes, WSOutActionTypes } from './actionTypes'
+
+import { QuizType, AttentionStateType } from '../../../models/class/class'
 
 export function chooseAction(choice: any) {
     return { type: ActionTypes.CHOOSE, payload: { choice } }
@@ -15,29 +15,127 @@ export function nextQuizAction() {
     return { type: ActionTypes.NEXT_CONSUL_QUIZ, payload: {} }
 }
 
-export const answerAction: (endpointInfo: any, payload: { id: number, choice: any}) => any
+export function answerAction(info: {
+    type: string
+    text: string
+    choiceId: any,
+    choice: any,
+    questionId: string,
+    questionIriId: string
+}) {
+    return (dispatch) => {
+        if(info.type == QuizType.MMCQ) {
+            info.choiceId.forEach(c => {
+                dispatch(answerAPIAction({
+                    type: info.type,
+                    text: null,
+                    choiceId: c,
+                    questionIriId: info.questionIriId
+                }))
+            })
+        } else {
+            dispatch(answerAPIAction(info))
+        }
+        dispatch({
+            type: WSOutActionTypes.ANSWER,
+            payload: {
+                type: info.type,
+                choiceId: info.choiceId,
+                choice: info.choice,
+                questionId: info.questionId
+            }
+        })
+    }
+}
+
+export function signalStateAction(info: {
+    oldState: string
+    state: string
+    sessionId: string
+    authorId: string
+}) {
+    return (dispatch) => {
+        dispatch(signalStateAPIAction(info))
+        dispatch({
+            type: WSOutActionTypes.SIGNAL_STATE,
+            payload: {
+                oldState: info.oldState,
+                state: info.state,
+                sessionId: info.sessionId,
+                authorId: info.authorId
+            }
+        })
+    }
+}
+
+export const answerAPIAction: (info: { 
+    type: string
+    text: string
+    choiceId: string,
+    questionIriId: string
+}) => any
 = createAPIActionCreator( 
-    ((endpointInfo) => 'http://localhost/app_dev.php/api/mcq_answers'), 
-    'GET',
+    ((info) => {
+        switch(info.type) {
+            case QuizType.MMCQ:
+            case QuizType.MCQ: return '/mcq_answers'
+            case QuizType.TEXT: return '/text_answers'
+        }
+    }), 
+    ((info) => { 
+        switch(info.type) {
+            case QuizType.MMCQ:
+            case QuizType.MCQ: return {
+                mcqChoice: info.choiceId,
+                question: info.questionIriId
+            }
+            case QuizType.TEXT: return {
+                question: info.questionIriId,
+                text: info.text
+            }
+        }
+    }),
+    'POST',
     APIActionTypes.ANSWER,
     APIActionTypes.ANSWER_SUCCESS,
     APIActionTypes.ANSWER_FAILURE
 )
 
-export const signalStateAction: (endpointInfo: any, payload: { state: number }) => any
+export const signalStateAPIAction: (info: {
+    state: string
+    sessionId: string
+    authorId: string
+}) => any
 = createAPIActionCreator( 
-    ((endpointInfo) => 'localhost/signalState'), 
+    (ei) => '/alerts', 
+    (bi) => { return { 
+        author: bi.authorId,
+        session: bi.sessionId,
+        text: "null",
+        alertType: bi.state == AttentionStateType.OK ? "good" :
+                   bi.state == AttentionStateType.TOO_FAST ? "tooFast" :
+                   bi.state == AttentionStateType.TOO_SLOW ? "tooSlow" : "panic"
+    }},
     'POST',
     APIActionTypes.SIGNAL_STATE,
     APIActionTypes.SIGNAL_STATE_SUCCESS,
     APIActionTypes.SIGNAL_STATE_FAILURE
 )
 
-export const commentAction: (endpointInfo: any, payload: { text: string }) => any
+export const commentAction: (payload: { 
+    text: string
+    sessionId: string
+    authorId: string
+}) => any
 = createAPIActionCreator( 
-    ((endpointInfo) => 'localhost/comment'), 
+    ((ei) => '/feedbacks'), 
+    ((bi) => { return {
+        authorId: bi.authorId,
+        session: bi.sessionId,
+        text: bi.text
+    }}),
     'POST',
-    APIActionTypes.SIGNAL_STATE,
-    APIActionTypes.SIGNAL_STATE_SUCCESS,
-    APIActionTypes.SIGNAL_STATE_FAILURE
+    APIActionTypes.COMMENT,
+    APIActionTypes.COMMENT_SUCCESS,
+    APIActionTypes.COMMENT_FAILURE
 )

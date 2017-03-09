@@ -96,7 +96,7 @@ class FeedbackVoter extends BaseVoter
      */
     private function canRead(Feedback $feedback, User $user)
     {
-        return $feedback->getAuthor() === $user || in_array('ROLE_ADMIN',$user->getRoles());
+        return $feedback->getAuthor() === $user || in_array('ROLE_PROF', $this->getRolesHierarchy($user->getRoles()));
     }
 
     /**
@@ -108,7 +108,7 @@ class FeedbackVoter extends BaseVoter
      */
     private function canUpdate(Feedback $feedback, User $user)
     {
-        return $feedback->getAuthor() === $user || in_array('ROLE_ADMIN',$user->getRoles());
+        return $feedback->getAuthor() === $user || in_array('ROLE_ADMIN', $this->getRolesHierarchy($user->getRoles()));
     }
 
     /**
@@ -120,6 +120,6 @@ class FeedbackVoter extends BaseVoter
      */
     private function canDelete(Feedback $feedback, User $user)
     {
-        return $feedback->getAuthor() === $user || in_array('ROLE_ADMIN',$user->getRoles());
+        return $feedback->getAuthor() === $user || in_array('ROLE_ADMIN', $this->getRolesHierarchy($user->getRoles()));
     }
 }

@@ -96,7 +96,7 @@ class AlertVoter extends BaseVoter
      */
     private function canRead(Alert $alert, User $user)
     {
-        return $alert->getAuthor() === $user || in_array('ROLE_ADMIN',$user->getRoles());
+        return $alert->getAuthor() === $user || in_array('ROLE_PROF', $this->getRolesHierarchy($user->getRoles()));
     }
 
     /**
@@ -108,7 +108,7 @@ class AlertVoter extends BaseVoter
      */
     private function canUpdate(Alert $alert, User $user)
     {
-        return $alert->getAuthor() === $user || in_array('ROLE_ADMIN',$user->getRoles());
+        return $alert->getAuthor() === $user || in_array('ROLE_ADMIN', $this->getRolesHierarchy($user->getRoles()));
     }
 
     /**
@@ -120,6 +120,6 @@ class AlertVoter extends BaseVoter
      */
     private function canDelete(Alert $alert, User $user)
     {
-        return $alert->getAuthor() === $user || in_array('ROLE_ADMIN',$user->getRoles());
+        return $alert->getAuthor() === $user || in_array('ROLE_ADMIN', $this->getRolesHierarchy($user->getRoles()));
     }
 }

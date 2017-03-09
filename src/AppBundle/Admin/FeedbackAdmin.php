@@ -31,6 +31,7 @@ class FeedbackAdmin extends AbstractAdmin
         $listMapper->addIdentifier('id')
             ->add('author')
             ->add('text')
-            ->add('session');
+            ->add('session')
+            ->add('createdAt');
     }
 }

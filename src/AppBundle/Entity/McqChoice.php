@@ -5,6 +5,8 @@ namespace AppBundle\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
  * An option to answer a multiple choice question.
  *
@@ -17,6 +19,7 @@ class McqChoice
      * @ORM\Id
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
+     * @Groups({"test_cascade"})
      */
     private $id;
 
@@ -24,6 +27,7 @@ class McqChoice
      * @var string The option displayed text
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"test_cascade"})
      */
     private $text;
 
@@ -32,13 +36,14 @@ class McqChoice
      *
      * @Assert\NotNull()
      * @ORM\Column(type="boolean", nullable=false)
+     * @Groups({"test_cascade"})
      */
     private $correct;
 
     /**
      * @var McqAnswer The list of McqAnswer that chose that answer
      *
-     * @ORM\OneToMany(targetEntity="McqAnswer", mappedBy="mcqChoice")
+     * @ORM\OneToMany(targetEntity="McqAnswer", mappedBy="mcqChoice", cascade={"remove"})
      */
     private $mcqAnswer;
 
@@ -46,12 +51,14 @@ class McqChoice
      * @var Question the question which that object is a choice of
      *
      * @Assert\NotNull()
-     * @ORM\ManyToOne(targetEntity="Question", inversedBy="mcqChoice")
+     * @ORM\ManyToOne(targetEntity="Question", inversedBy="mcqChoices")
      * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
      */
     private $question;
 
-
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return 'McqChoice '.$this->getText().' '.substr($this->getId(),0,5);
@@ -61,7 +68,7 @@ class McqChoice
     /** auto generated methods */
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
@@ -77,23 +84,7 @@ class McqChoice
     }
 
     /**
-     * @return mixed
-     */
-    public function getAnswer()
-    {
-        return $this->answer;
-    }
-
-    /**
-     * @param mixed $answer
-     */
-    public function setAnswer($answer)
-    {
-        $this->answer = $answer;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getText()
     {
@@ -101,7 +92,7 @@ class McqChoice
     }
 
     /**
-     * @param mixed $text
+     * @param string $text
      */
     public function setText($text)
     {
@@ -109,7 +100,7 @@ class McqChoice
     }
 
     /**
-     * @return mixed
+     * @return boolean
      */
     public function getCorrect()
     {
@@ -117,7 +108,7 @@ class McqChoice
     }
 
     /**
-     * @param mixed $correct
+     * @param boolean $correct
      */
     public function setCorrect($correct)
     {
@@ -125,7 +116,7 @@ class McqChoice
     }
 
     /**
-     * @return mixed
+     * @return McqAnswer
      */
     public function getMcqAnswer()
     {
@@ -133,7 +124,7 @@ class McqChoice
     }
 
     /**
-     * @param mixed $mcqAnswer
+     * @param McqAnswer $mcqAnswer
      */
     public function setMcqAnswer($mcqAnswer)
     {

@@ -4,3 +4,32 @@ services:
         arguments: [ { test: 'exact' } ]
         tags:      [ { name: 'api_platform.filter', id: 'question.search' } ]
 
+    discipline.search_filter:
+        parent:    'api_platform.doctrine.orm.search_filter'
+        arguments: [ { part: 'exact', name: 'exact'} ]
+        tags:      [ { name: 'api_platform.filter', id: 'discipline.search' } ]
+
+    session.search_filter:
+        parent:    'api_platform.doctrine.orm.search_filter'
+        arguments: [ { discipline: 'exact', name: 'exact'} ]
+        tags:      [ { name: 'api_platform.filter', id: 'session.search' } ]
+
+    alert.search_filter:
+        parent:    'api_platform.doctrine.orm.search_filter'
+        arguments: [ { session: 'exact', alertType: 'exact' } ]
+        tags:      [ { name: 'api_platform.filter', id: 'alert.search' } ]
+
+    feedback.search_filter:
+        parent:    'api_platform.doctrine.orm.search_filter'
+        arguments: [ { session: 'exact' } ]
+        tags:      [ { name: 'api_platform.filter', id: 'feedback.search' } ]
+
+    mcq_answer.search_filter:
+        parent:    'api_platform.doctrine.orm.search_filter'
+        arguments: [ { question.test.session: 'exact' } ]
+        tags:      [ { name: 'api_platform.filter', id: 'mcq_answer.search' } ]
+
+    text_answer.search_filter:
+        parent:    'api_platform.doctrine.orm.search_filter'
+        arguments: [ { question.test.session: 'exact' } ]
+        tags:      [ { name: 'api_platform.filter', id: 'text_answer.search' } ]

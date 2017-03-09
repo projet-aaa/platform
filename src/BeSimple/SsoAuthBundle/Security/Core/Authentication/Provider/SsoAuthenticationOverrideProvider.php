@@ -3,7 +3,9 @@
 namespace BeSimple\SsoAuthBundle\Security\Core\Authentication\Provider;
 
 
+use AppBundle\Entity\User;
 use BeSimple\SsoAuthBundle\Security\Core\Authentication\Token\SsoToken;
+use FOS\UserBundle\Doctrine\UserManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -22,9 +24,13 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class SsoAuthenticationOverrideProvider extends SsoAuthenticationProvider
 {
 
-    public function __construct(UserProviderInterface $userProvider, UserCheckerInterface $userChecker, $createUsers = false, array $createdUsersRoles = array('ROLE_USER'), $hideUserNotFound = true)
+    protected $userManager;
+
+    public function __construct(UserProviderInterface $userProvider, UserCheckerInterface $userChecker,
+                                $createUsers = false, array $createdUsersRoles = array('ROLE_USER'), $hideUserNotFound = true,UserManager $userManager)
     {
         parent::__construct($userProvider, $userChecker, $createUsers, $createdUsersRoles, $hideUserNotFound);
+        $this->userManager = $userManager;
     }
 
     /**
@@ -41,7 +47,7 @@ class SsoAuthenticationOverrideProvider extends SsoAuthenticationProvider
         try {
             $user = $this->retrieveUser($username);
         } catch (UsernameNotFoundException $notFound) {
-            if ($this->createUsers && $this->userProvider instanceof UserFactoryInterface) {
+            if ($this->createUsers && $this->userProvider instanceof UserProviderInterface) {
                 $user = $this->createUser($username, $attributes);
             } elseif ($this->hideUserNotFound) {
                 throw new BadCredentialsException('Bad credentials', 0, $notFound);
@@ -85,12 +91,19 @@ class SsoAuthenticationOverrideProvider extends SsoAuthenticationProvider
      */
     protected function createUser($username, array $attributes = array())
     {
-        if (!$this->userProvider instanceof UserFactoryInterface) {
-            throw new AuthenticationServiceException('UserProvider must implement UserFactoryInterface to create unknown users.');
+        if (!$this->userProvider instanceof UserProviderInterface) {
+            throw new AuthenticationServiceException('UserProvider must implement UserProviderInterface to create unknown users.');
         }
 
         try {
-            $user = $this->userProvider->createUser($username, $this->createdUsersRoles, $attributes);
+            /* @var User */
+            $user = $this->userManager->createUser($username, $this->createdUsersRoles, $attributes);
+            $user->setUsername($username);
+            $user->setPlainPassword($this->generateRandomString(8));
+            $user->setFirstname(substr($username,0,1));
+            $user->setLastname(substr($username,1,strlen($username)-1));
+            $user->setEnabled(true);
+            $this->userManager->updateUser($user);
 
             if (!$user instanceof UserInterface) {
                 throw new AuthenticationServiceException('The user provider must create an UserInterface object.');
@@ -128,5 +141,15 @@ class SsoAuthenticationOverrideProvider extends SsoAuthenticationProvider
         }
 
         return $authenticatedToken;
+    }
+
+    private function generateRandomString($length = 10) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 }

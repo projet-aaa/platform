@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * A question in a test.
@@ -19,6 +20,7 @@ class Question
      * @ORM\Id
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
+     * @Groups({"test_cascade"})
      */
     private $id;
 
@@ -27,6 +29,7 @@ class Question
      *
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255, nullable=false)
+     * @Groups({"test_cascade"})
      */
     private $text;
 
@@ -34,6 +37,7 @@ class Question
      * @var string a text displayed after the question.
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"test_cascade"})
      */
     private $explication;
 
@@ -46,20 +50,22 @@ class Question
      * @Assert\NotBlank()
      * @Assert\Choice({"text", "unique", "multiple"})
      * @ORM\Column(type="string", length=16, nullable=false)
+     * @Groups({"test_cascade"})
      */
     private $typeAnswer;
 
     /**
      * @var ArrayCollection[McqChoice] all the available choice of answer
      *
-     * @ORM\OneToMany(targetEntity="McqChoice", mappedBy="question")
+     * @ORM\OneToMany(targetEntity="McqChoice", mappedBy="question", cascade={"remove"})
+     * @Groups({"test_cascade"})
      */
-    private $mcqChoice;
+    private $mcqChoices;
 
     /**
      * @var ArrayCollection[TextAnswer] All the answers to a text Question
      *
-     * @ORM\OneToMany(targetEntity="TextAnswer", mappedBy="question")
+     * @ORM\OneToMany(targetEntity="TextAnswer", mappedBy="question", cascade={"remove"})
      */
     private $textAnswers;
 
@@ -73,14 +79,20 @@ class Question
      */
     private $test;
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return 'Q '.$this->getText();
     }
 
+    /**
+     * Question constructor.
+     */
     public function __construct()
     {
-        $this->mcqChoice = new ArrayCollection();
+        $this->mcqChoices = new ArrayCollection();
         $this->textAnswers = new ArrayCollection();
     }
 
@@ -89,14 +101,14 @@ class Question
      */
     public function isMcqChoiceQuestionTypeConsistent()
     {
-        return ($this->typeAnswer == 'text' && $this->mcqChoice->count() == 0) ||
+        return ($this->typeAnswer == 'text' && $this->mcqChoices->count() == 0) ||
             $this->typeAnswer != 'text';
     }
 
     /** auto generated methods */
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
@@ -112,7 +124,7 @@ class Question
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getText()
     {
@@ -120,7 +132,7 @@ class Question
     }
 
     /**
-     * @param mixed $text
+     * @param string $text
      */
     public function setText($text)
     {
@@ -128,7 +140,7 @@ class Question
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getExplication()
     {
@@ -136,7 +148,7 @@ class Question
     }
 
     /**
-     * @param mixed $explication
+     * @param string $explication
      */
     public function setExplication($explication)
     {
@@ -144,7 +156,7 @@ class Question
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getTypeAnswer()
     {
@@ -152,7 +164,7 @@ class Question
     }
 
     /**
-     * @param mixed $typeAnswer
+     * @param string $typeAnswer
      */
     public function setTypeAnswer($typeAnswer)
     {
@@ -162,35 +174,35 @@ class Question
     /**
      * @return mixed
      */
-    public function getMcqChoice()
+    public function getMcqChoices()
     {
-        return $this->mcqChoice;
+        return $this->mcqChoices;
     }
 
     /**
-     * @param mixed $mcqChoice
+     * @param mixed $mcqChoices
      */
-    public function setMcqChoice($mcqChoice)
+    public function setMcqChoices($mcqChoices)
     {
-        $this->mcqChoice = $mcqChoice;
+        $this->mcqChoices = $mcqChoices;
     }
 
     /**
      * @param $mcqChoice McqChoice a mcqchoice for the question
      */
     public function addMcqChoice(McqChoice $mcqChoice){
-        $this->mcqChoice[] = $mcqChoice;
+        $this->mcqChoices[] = $mcqChoice;
     }
 
     /**
      * @param McqChoice $mcqChoice
      */
     public function removeMcqChoice(McqChoice $mcqChoice){
-        $this->mcqChoice->removeElement($mcqChoice);
+        $this->mcqChoices->removeElement($mcqChoice);
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getTextAnswers()
     {
@@ -198,7 +210,7 @@ class Question
     }
 
     /**
-     * @param mixed $textAnswers
+     * @param string $textAnswers
      */
     public function setTextAnswers($textAnswers)
     {
@@ -220,7 +232,7 @@ class Question
     }
 
     /**
-     * @return mixed
+     * @return Test
      */
     public function getTest()
     {
@@ -228,9 +240,9 @@ class Question
     }
 
     /**
-     * @param mixed $test
+     * @param Test $test
      */
-    public function setTest($test)
+    public function setTest(Test $test)
     {
         $this->test = $test;
     }

@@ -1,18 +1,30 @@
+// FAQ QUESTION VIEW
+// Renders a question and its answers for a FAQ
+
+// EXTERNAL IMPORTS
 import * as React from "react"
 import { Link } from "react-router"
+import { MarkdownEditor } from "react-markdown-editor"
 
-import * as PagedownEditor from "pagedown-editor"
-
+//INTERNAL IMPORTS
 import { ThreadMessage, Thread } from "../../models/faq"
-import { View as ThreadMessageView} from "./faqAnswerView"
+import { View as ThreadMessageView } from "./faqAnswerView"
 
 
-export type StateProps = Thread
-
-export interface ActionProps {
-    sendAnswer(answerContent: string, threadId: number, userId: number )
+export interface StateProps {
+    thread: Thread
+    editorContent: string
 }
 
+export interface ActionProps {
+    //Send the answer to the server
+    postThreadAnswer(editorContent: string)
+    //Update the content of this question's answer in the store
+    changeAnswerInput(editorContent: string )
+}
+
+
+//Convert a Date format to string
 function ddmmyyyy(date: Date): string {
   var mm = date.getMonth() + 1; // getMonth() is zero-based
   var dd = date.getDate();
@@ -22,61 +34,43 @@ function ddmmyyyy(date: Date): string {
             date.getFullYear()
 };
 
-function getPagedownEditor() {
-    return PagedownEditor.getPagedownEditor();
-}
-
-function getAnswerContentAsHtml() {
-    return document.getElementById("wmd-preview").innerHTML;
-}
-
 
 export type Props = StateProps & ActionProps;
 export class View extends React.Component<Props, any> {
     props: Props
 
-    componentDidMount() {
-        getPagedownEditor().run();
-    }
-
     render() {
         const {
-            text, author, date, answers, id,
-            sendAnswer
+            thread, editorContent,
+            postThreadAnswer, changeAnswerInput
         } = this.props;
-        var dateString = ddmmyyyy(date)
+        var dateString = ddmmyyyy(thread.date)
         var heightAnswer = {
             height: "0px"
         }
         var answerRender = [];
-        for(var i=0;i<answers.length;i++) {
+        for(var i=0;i<thread.answers.length;i++) {
             answerRender.push(
                 <ThreadMessageView 
-                        text={answers[i].text}
-                        key={answers[i].id} 
-                        author={answers[i].author} 
-                        date={answers[i].date} 
-                        id={answers[i].id}
-                        votes={answers[i].votes}/>
+                        text={thread.answers[i].text}
+                        key={thread.answers[i].id} 
+                        author={thread.answers[i].author} 
+                        date={thread.answers[i].date} 
+                        id={thread.answers[i].id}
+                        votes={thread.answers[i].votes}/>
             )
         }
 
-        //Give name according to id for editor to make them unique 
-        // let editorBarName = "wmd-button-bar-" + id;
-        // let editorName = "wmd-input-" + id;
-        // let editorPreview = "wmd-preview" + id;
-
         //Give unique id to question tab
-        let questionId = "faq-" + id;
-
+        let questionId = "faq-" + thread.id;
 
         return (
             <div>
-                <div className="faq-item">
+                <div className="list-group-item">
                     <div className="row">
                         <div className="col-md-9">
-                            <a data-toggle="collapse" href={"#" + questionId} className="faq-question collapsed" aria-expanded="false">{text}</a>
-                            <small>Ajouté par <strong>{author}</strong> <i className="fa fa-clock-o"></i> {ddmmyyyy(date)} </small>
+                            <a data-toggle="collapse" href={"#" + questionId} className="faq-question collapsed" aria-expanded="false">{thread.text}</a>
+                            Ajouté par <strong>{thread.author}</strong> le {ddmmyyyy(thread.date)}
                         </div>
                     </div>
                     <br/>
@@ -87,20 +81,22 @@ export class View extends React.Component<Props, any> {
                                 <div className="well">
                                     <div className="row">
                                         <div className="col-lg-12">
-                                            <h5> Ajouter une réponse </h5>
+                                            <h4><b> Ajouter une réponse : </b></h4>
                                             <div>
-                                                <div id="wmd-button-bar"></div>
-
-                                                <textarea id="wmd-input" className="wmd-input"></textarea>
-
-                                                <div id="wmd-preview" className="wmd-panel wmd-preview"></div>
+                                                <MarkdownEditor 
+                                                    initialContent="" 
+                                                    iconsSet="font-awesome" 
+                                                    onContentChange={ (content) => changeAnswerInput(content)}
+                                                    />      
                                             </div>
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <div className="col-lg-12">
+                                        <div className="col-lg-12" style={{paddingTop: '20px'}}>
                                             <button className="btn btn-lg btn-primary pull-right" 
-                                                onClick={() => sendAnswer(getAnswerContentAsHtml(),id, 0 )}>Envoyer la réponse</button>
+                                                onClick={() =>  postThreadAnswer(editorContent) }>
+                                                    Envoyer la réponse
+                                            </button>
                                         </div>
                                     </div>
                                 </div>

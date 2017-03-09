@@ -30,9 +30,6 @@ export interface ActionProps {
 }
 
 // styles
-var heightExplanation = {
-    height: "0px"
-}
 var sizeText = {
     fontSize: 22
 }
@@ -58,20 +55,14 @@ export class View extends React.Component<Props, any> {
         
         let colorAnswerStyle = null
         if (!showCorrection) {
-            colorAnswerStyle = {}
+            colorAnswerStyle = { }
         } else {
             if(rightAnswer) {
-                colorAnswerStyle = {
-                    color: "green"
-                }
+                colorAnswerStyle = { color: "green" }
             } else if (chosen) {
-                colorAnswerStyle = {
-                    color: "red"
-                }
+                colorAnswerStyle = { color: "red" }
             } else {
-                colorAnswerStyle = {
-                    
-                }
+                colorAnswerStyle = { }
             }
         }
         
@@ -83,15 +74,15 @@ export class View extends React.Component<Props, any> {
                     <div className="faq-item">
                         <div className="row">
                             <div className="col-lg-12">
-                                <a data-toggle="collapse" href={"#" + indRef} className="collapsed" aria-expanded={ forceUnfold ? "true" : "false" } style={ colorAnswerStyle }>
-                                        <label className="tab" style={ mediumSizeText }>{ text }</label>
+                                <a data-toggle="collapse" href={ "#" + indRef } className={ forceUnfold ? "" : "collapsed" } aria-expanded={ forceUnfold ? "true" : "false" } style={ colorAnswerStyle }>
+                                    <label className="tab" style={ mediumSizeText }>{ text }</label>
                                 </a>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-lg-12">
-                                <div id={indRef} className="panel-collapse collapse" aria-expanded="false" style={heightExplanation}>
-                                    <div className="bigTab" style={sizeText}>
+                                <div id={ indRef } className={ "panel-collapse collapse" + (forceUnfold ? " in" : "") } aria-expanded={ forceUnfold ? "true" : "false" }>
+                                    <div className="bigTab" style={ sizeText }>
                                         { explanation }
                                     </div>
                                     <br/>
@@ -115,7 +106,7 @@ export class View extends React.Component<Props, any> {
         // An answer is a radio button with text
         return (
             <div>
-            { res }
+                { res }
             </div>
         );
     }
