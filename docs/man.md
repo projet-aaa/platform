@@ -1,4 +1,4 @@
-# Manuel d'utilisation
+# Manual
 
 ## Quick install
 
@@ -55,13 +55,20 @@ pages and sessions they have access to.
 
 ### Run a class
 
+To run a class session, the following needs to be done:
+The database contains information about a given session that you uploaded. See how to import this information in the database by checking out the admin space (mentionned earlier) or by looking into the [back end documentation](/docs/back-end/integration-imports.md)
+
 The teacher logs in and goes to [domain]/#/session/[session name]/[professor login]/tb
 
 The room will open.
 
 The students logs in and goes to [domain]/#/session/[professor login]
 
-The class can take place. Once done, everybody can leave. The room can be closed by going on 
+The class can then take place. 
+
+During the course, students can click on the different to signal their attention, teacher can monitor and launch quizzes and students can answer said questions.
+
+Once done, everybody can leave. The room can be closed by going on 
 [domain]/#/session/[session name]/direct and by closing the correct room, if it hasn't already been closed
 (they automatically close after a period of time if no teacher is inside them).
 
@@ -79,3 +86,7 @@ The best way of understanding the architecture is to browse the website as a tea
 the database is filled.
 
 For more information on the different pages and the urls, checkout urls.md in the browser-front-end section
+
+# Go further
+
+To understand the front end side of things, go to [the front end documentation](/docs/browser-front-end). For the back end, checkout [the back end documentation](/docs/back-end)
