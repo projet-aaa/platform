@@ -8,3 +8,5 @@ JetPack stands for JetPack Engineer Training Pack.
 [Documentation](/docs)
 
 [Licence](LICENSE)
+
+[Manual](/docs/man.md)

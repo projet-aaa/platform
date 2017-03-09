@@ -1,8 +1,7 @@
 #Documentation : Table of contents
+ - [Manual](/docs/man.md)
 
  - [Back-end](/docs/back-end)
-
-    - [Technology options](/docs/back-end/technology-options.md)
    
     - [Architecture](/docs/back-end/architecture.md)
    
