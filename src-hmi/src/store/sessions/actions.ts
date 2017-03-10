@@ -15,32 +15,36 @@ export const APIActionTypes = {
 export function fetchSessions(disciplines: Discipline[], success, failure?) {
     return dispatch => {
         let resultList = []
-        let receivedFetch = 0;
-        for(var index=0; index < disciplines.length; index++ ) {
-            let currentId = disciplines[index].id
-            fetcher('/sessions?discipline=' + currentId )
-            .then(res => {
-                receivedFetch++;
-                resultList.push({
-                    fetchResult: res,
-                    disciplineId: currentId
-                });
-                if(receivedFetch == disciplines.length) {
-                    success()
-                    dispatch({
-                        type: APIActionTypes.FETCH_SESSIONS_SUCCESS,
-                        payload: resultList
-                    })
-                }
-            })
-            .catch(error => {
-                console.log(error)
-                if(failure) { failure(error) }
-                dispatch({
-                    type: APIActionTypes.FETCH_SESSIONS_FAILURE,
-                    payload: error
+        let receivedFetch = 0
+        if(disciplines.length > 0) {
+            for(var index = 0; index < disciplines.length; index++ ) {
+                let currentId = disciplines[index].id
+                fetcher('/sessions?discipline=' + currentId )
+                .then(res => {
+                    receivedFetch++;
+                    resultList.push({
+                        fetchResult: res,
+                        disciplineId: currentId
+                    });
+                    if(receivedFetch == disciplines.length) {
+                        success()
+                        dispatch({
+                            type: APIActionTypes.FETCH_SESSIONS_SUCCESS,
+                            payload: resultList
+                        })
+                    }
                 })
-            });
+                .catch(error => {
+                    console.log(error)
+                    if(failure) { failure(error) }
+                    dispatch({
+                        type: APIActionTypes.FETCH_SESSIONS_FAILURE,
+                        payload: error
+                    })
+                });
+            }
+        } else {
+            success([])
         }
     }
 }

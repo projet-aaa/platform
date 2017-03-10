@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router"
 import * as MediaQuery from "react-responsive"
 
-import { View as QuizLauncherView} from "./quizLauncherView"
+import { View as QuizLauncherView } from "./quizLauncherView"
 import { View as QuizStatView } from "./quizStatView"
 import { View as StudentFeedbackView } from "./studentFeedbackView"
 
@@ -58,7 +58,7 @@ export class View extends React.Component<Props, any> {
 
             tooFast,
             tooSlow,
-            panic, 
+            panic,
             currentQuiz,
             quizStats,
             quizLaunchers,
@@ -71,79 +71,79 @@ export class View extends React.Component<Props, any> {
         } = this.props
 
         var quizInfoItem = quizLaunchers.map((item) => {
-            return <QuizLauncherView 
-                key={ item.title } 
-                quizId={ item.quizId } 
-                title={ item.title }
-                state={ item.state }
-                successRate={ item.successRate }
-                launch= { () => {
-                    switch(item.state) {
+            return <QuizLauncherView
+                key={item.title}
+                quizId={item.quizId}
+                title={item.title}
+                state={item.state}
+                successRate={item.successRate}
+                launch={() => {
+                    switch (item.state) {
                         case 0: launchQuiz(item.quizId); break
                         case 1: correction(); break
                         case 2: break
                         case 3: finish(); break
                     }
-                }}
-            />
+                } }
+                />
         })
 
-        var quizInfos = 
-        (<ul style={ paddingUl }>
-            {quizInfoItem}
-        </ul>)
+        var quizInfos =
+            (<ul style={paddingUl}>
+                {quizInfoItem}
+            </ul>)
 
         return (
             <div>
-                { isTeacher ?
-                    (isConnected ? 
-                    <div>
-                        <div className="col-lg-8">
-                            <div className="row">
-                                <QuizStatView 
-                                    showQuiz={ currentQuiz != null }
-                                    question={ currentQuiz && currentQuiz.question }
-                                    state={ currentQuiz && 
-                                        (quizState == QuizInstanceState.HEADING ? "énoncé" : "correction") 
-                                    }
-                                    quizStats={ quizStats } 
-                                    correctChoice={ 
-                                        currentQuiz != null &&
-                                        (currentQuiz.type == QuizType.MCQ ? currentQuiz.choices[currentQuiz.answer] : 
-                                         currentQuiz.type == QuizType.MMCQ ? currentQuiz.answer.map(a => currentQuiz.choices[a]) :
-                                         currentQuiz.answer)
-                                    }
-                                    quizButton={ quizState == QuizInstanceState.HEADING ? 
-                                        () => correction() : () => finish() 
-                                    }
-                                />
-                            </div>
-                            <div className="row">
-                                <StudentFeedbackView 
-                                    studentCount={studentCount}
-                                    panicRate={panic} 
-                                    slowRate={tooSlow}
-                                    quickRate={tooFast}
-                                />
-                            </div>
-                        </div>
-                        <div className="col-lg-4">
-                            <div className="panel">
-                                <div className="panel-heading">
-                                    Statistiques de quiz
+                {isTeacher ?
+                    (isConnected ?
+                        <div>
+                            <div className="col-lg-8">
+                                <div className="row">
+                                    <QuizStatView
+                                        showQuiz={currentQuiz != null}
+                                        question={currentQuiz && currentQuiz.question}
+                                        state={currentQuiz &&
+                                            (quizState == QuizInstanceState.HEADING ? "énoncé" : "correction")
+                                        }
+                                        quizStats={quizStats}
+                                        correctChoice={
+                                            currentQuiz != null &&
+                                            (currentQuiz.type == QuizType.MCQ ? currentQuiz.choices[currentQuiz.answer] :
+                                                currentQuiz.type == QuizType.MMCQ ? currentQuiz.answer.map(a => currentQuiz.choices[a]) :
+                                                    currentQuiz.answer)
+                                        }
+                                        quizButton={quizState == QuizInstanceState.HEADING ?
+                                            () => correction() : () => finish()
+                                        }
+                                        />
                                 </div>
-                                <div className="panel-body pan white-background">
-                                    <div className="pal">
-                                        { quizInfos }
+                                <div className="row">
+                                    <StudentFeedbackView
+                                        studentCount={studentCount}
+                                        panicRate={panic}
+                                        slowRate={tooSlow}
+                                        quickRate={tooFast}
+                                        />
+                                </div>
+                            </div>
+                            <div className="col-lg-4">
+                                <div className="panel">
+                                    <div className="panel-heading">
+                                        Statistiques de quiz
+                                </div>
+                                    <div className="panel-body pan white-background">
+                                        <div className="pal">
+                                            {quizInfos}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    :
-                    <div>
-                        <h1>Connection au server...</h1>
-                    </div>)
+                        :
+                        <div>
+                            <h1>Connection au server...</h1>
+                        </div>)
                     :
                     <div className="row">
                         <h1>Vous ne pouvez pas accéder au tableau de bord en tant qu'étudiant (bien essayé)</h1>

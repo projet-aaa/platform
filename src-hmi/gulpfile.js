@@ -7,7 +7,8 @@ var gulp        = require('gulp'),
     source      = require('vinyl-source-stream'),
     del         = require('del'),
     fs          = require('fs'),
-    path        = require('path')
+    path        = require('path'),
+    gulp_tslint = require('gulp-tslint');
 
 var project = ts.createProject('src/tsconfig.json', { typescript: typescript });
 
@@ -91,4 +92,18 @@ gulp.task('build', ['through-index', 'through-all', 'compile'], function () {
 gulp.task('clean', function (done) {
     del(['.tmp'], done.bind(this))
     del(['dist'], done.bind(this))
+});
+
+gulp.task('tslint', () => {
+    return gulp.src(['**/*.ts', '!**/*.d.ts', '!node_modules/**'])
+      .pipe(gulp_tslint({
+            formatter: "verbose",
+            configuration: {
+              "extends": "tslint:recommended",
+              "rules": {
+                  "semicolon": [true, "always"]
+              }
+            }
+        }))
+      .pipe(gulp_tslint.report());
 });
