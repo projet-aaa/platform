@@ -12,10 +12,10 @@
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit_Framework_Assert as PHPUnit;
-use Sanpi\Behatch\Context\JsonContext as BehatchJsonContext;
-use Sanpi\Behatch\HttpCall\HttpCallResultPool;
-use Sanpi\Behatch\Json\Json;
-use Sanpi\Behatch\Json\JsonInspector;
+use Behatch\Context\JsonContext as BehatchJsonContext;
+use Behatch\HttpCall\HttpCallResultPool;
+use Behatch\Json\Json;
+use Behatch\Json\JsonInspector;
 
 /**
  * @author Théo FIDRY <theo.fidry@gmail.com>

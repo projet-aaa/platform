@@ -18,9 +18,9 @@ use Doctrine\ORM\Tools\SchemaTool;
 use FOS\UserBundle\Model\UserManager;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTManagerInterface;
 use PHPUnit_Framework_Assert as PHPUnit;
-use Sanpi\Behatch\HttpCall\HttpCallResultPool;
-use Sanpi\Behatch\HttpCall\Request;
-use Sanpi\Behatch\Json\JsonInspector;
+use Behatch\HttpCall\HttpCallResultPool;
+use Behatch\HttpCall\Request;
+use Behatch\Json\JsonInspector;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**

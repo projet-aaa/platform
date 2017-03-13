@@ -2,8 +2,8 @@
 
 
 use Behat\Gherkin\Node\TableNode;
-use Sanpi\Behatch\Context\BaseContext;
-use Sanpi\Behatch\HttpCall\Request;
+use Behatch\Context\BaseContext;
+use Behatch\HttpCall\Request;
 use Behat\Gherkin\Node\PyStringNode;
 
 /**
